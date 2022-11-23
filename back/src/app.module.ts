@@ -1,9 +1,11 @@
-import { Module } from '@nestjs/common';
-import { CatsModule } from './cats/cats.module';
+import {Module} from '@nestjs/common';
+import { DatabaseOrm } from './database/db.config';
+import { SourceBlogModule } from './bussiness/source_blog/source_blog.module';
 
 @Module({
-  imports: [CatsModule],
-  controllers: [],
-  providers: []
+    imports: [DatabaseOrm, SourceBlogModule],
+    controllers: [],
+    providers: []
 })
-export class AppModule {}
+export class AppModule {
+}
