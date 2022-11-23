@@ -10,8 +10,8 @@ export class SourceBlogService {
         private sourceBlogRepository : Repository<SourceBlogEntity>
     ) {}
 
-    create(sourceBlog : SourceBlogEntity){
-        this.sourceBlogRepository.create(sourceBlog)
+    async save(sourceBlog: SourceBlogEntity) {
+        await this.sourceBlogRepository.save(sourceBlog)
     }
 
     findAll() : Promise<SourceBlogEntity[]>{

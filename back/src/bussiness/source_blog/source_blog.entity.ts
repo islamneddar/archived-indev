@@ -1,9 +1,10 @@
 import {Column, Entity, PrimaryGeneratedColumn, Unique} from "typeorm";
 
-@Entity('source_blogs')
+@Entity('source_blogs', {
+    synchronize : true
+})
 export class SourceBlogEntity {
-    @PrimaryGeneratedColumn()
-    @Column({name : 'source_blog_id'})
+    @PrimaryGeneratedColumn({name : "source_blog_id"})
     sourceBlogId : number
 
     @Column({

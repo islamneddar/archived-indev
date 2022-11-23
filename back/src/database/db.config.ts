@@ -9,6 +9,6 @@ export const DatabaseOrm = TypeOrmModule.forRoot({
     password: '',
     database: 'indev_staging',
     entities: [SourceBlogEntity],
-    synchronize: false,
+    synchronize: true,
     logging : true
 })
