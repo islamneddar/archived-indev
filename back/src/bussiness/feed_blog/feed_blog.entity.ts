@@ -18,8 +18,9 @@ export class FeedBlogEntity {
     })
     feedBlogId : number;
 
-    @Column({unique : true, nullable : false})
-    title : string
+    // rss feed url
+    @Column({unique : true, nullable : false, name : "url_feed"})
+    urlFeed : string
 
     @DeleteDateColumn({name: "delete_date"})
     deleteDate: Date
