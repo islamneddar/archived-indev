@@ -2,13 +2,13 @@ import {
     Column,
     CreateDateColumn,
     DeleteDateColumn,
-    Entity, OneToMany,
+    Entity, OneToMany, OneToOne,
     PrimaryGeneratedColumn,
-    Unique,
     UpdateDateColumn
 } from "typeorm";
 import {BlogEntity} from "../blog/blog.entity";
 import {blob} from "stream/consumers";
+import {FeedBlogEntity} from "../feed_blog/feed_blog.entity";
 
 @Entity('source_blogs', {
     synchronize: true
@@ -36,4 +36,7 @@ export class SourceBlogEntity {
 
     @OneToMany(()=>BlogEntity, (blog) => blog.sourceBlog)
     blogs : BlogEntity[]
+
+    @OneToOne(()=>FeedBlogEntity)
+    feedBlog : FeedBlogEntity
 }
