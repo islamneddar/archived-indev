@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import {InjectRepository} from "@nestjs/typeorm";
 import {BlogEntity} from "./blog.entity";
 import {Repository} from "typeorm";
+import LOG from "../../utils/logger";
 
 @Injectable()
 export class BlogService {
@@ -21,7 +22,7 @@ export class BlogService {
     }
 
     async getOrCreate(blog: BlogEntity) {
-        const existedBlog = this.getByTitleAndSourceBlog(blog.title,blog.sourceBlog.sourceBlogId)
+        const existedBlog = await this.getByTitleAndSourceBlog(blog.title,blog.sourceBlog.sourceBlogId)
         if(!existedBlog){
             const blogToAdd = {
                 ...blog
@@ -29,7 +30,7 @@ export class BlogService {
             if (blog.sourceBlog !== undefined) {
                 blogToAdd.sourceBlog.sourceBlogId = blog.sourceBlog.sourceBlogId;
             }
-            return this.blogRepository.create({
+            return this.blogRepository.save({
                 ...blogToAdd
             });
         }

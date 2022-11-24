@@ -37,7 +37,7 @@ export class BlogPollerService {
         const feedBlogs = await this.feedBlogService.getAll()
         for (const feedBlog of feedBlogs) {
             try {
-                this.logger.debug(feedBlog.urlFeed)
+                this.logger.debug("feed blog " + feedBlog.urlFeed)
                 this.currentUrl = feedBlog.urlFeed;
                 await this.readAndCreateBlogs(feedBlog)
             } catch (err) {
@@ -68,7 +68,7 @@ export class BlogPollerService {
             if (blogCheck === null) {
                 let blog = new BlogEntity();
                 blog.title = item.title;
-                blog.publishDate = item.pubDate
+                blog.publishDate = new Date(item.pubDate)
                 blog.thumbnail = this.retrieveImageFromFeed(item)
                 blog.permalink = item.link
                 blog.sourceBlog = sourceBlog
@@ -77,7 +77,7 @@ export class BlogPollerService {
                 //blog.content = "";//item.content
                 await this.dataSource.transaction(async t => {
                     const blogCreated = await this.blogService.getOrCreate(blog);
-                    this.logger.debug(blogCreated)
+                    this.logger.debug("blog created : ", blogCreated)
                     /*const blogTags = blog.tags
                                         if (blogTags !== undefined) {
                                             for (const blogTag of blogTags) {
