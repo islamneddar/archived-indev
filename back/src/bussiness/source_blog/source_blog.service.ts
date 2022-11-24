@@ -10,11 +10,19 @@ export class SourceBlogService {
         private sourceBlogRepository : Repository<SourceBlogEntity>
     ) {}
 
-    async save(sourceBlog: SourceBlogEntity) {
-        await this.sourceBlogRepository.save(sourceBlog)
+    async save(sourceBlog: SourceBlogEntity) : Promise<SourceBlogEntity> {
+        return await this.sourceBlogRepository.save(sourceBlog)
     }
 
     findAll() : Promise<SourceBlogEntity[]>{
         return this.sourceBlogRepository.find()
+    }
+
+    async getByTitle(titleFeed: string) {
+        return this.sourceBlogRepository.findOne({
+            where : {
+                name : titleFeed
+            }
+        });
     }
 }

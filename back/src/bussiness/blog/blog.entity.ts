@@ -36,4 +36,7 @@ export class BlogEntity {
 
     @UpdateDateColumn({name : "update_at"})
     updateDate : Date
+
+    @Column({name : "publish_date"})
+    publishDate : Date
 }
