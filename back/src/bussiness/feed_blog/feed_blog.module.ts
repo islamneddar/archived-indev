@@ -7,6 +7,7 @@ import {FeedBlogEntity} from "./feed_blog.entity";
 @Module({
     imports : [TypeOrmModule.forFeature([FeedBlogEntity])],
     controllers : [FeedBlogController],
-    providers : [FeedBlogService]
+    providers : [FeedBlogService],
+    exports : [FeedBlogService]
 })
 export class FeedBlogModule {}

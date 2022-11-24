@@ -12,5 +12,5 @@ export const DatabaseOrm = TypeOrmModule.forRoot({
     database: 'indev_staging',
     entities: [SourceBlogEntity, BlogEntity, FeedBlogEntity],
     synchronize: true,
-    logging : true
+    logging : false
 })
