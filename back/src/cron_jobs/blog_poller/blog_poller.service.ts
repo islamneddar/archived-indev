@@ -9,6 +9,8 @@ import {SourceBlogService} from "../../bussiness/source_blog/source_blog.service
 import {BlogService} from "../../bussiness/blog/blog.service";
 import {BlogEntity} from "../../bussiness/blog/blog.entity";
 import {DataSource} from "typeorm";
+import {TagEntity} from "../../bussiness/tag/tag.entity";
+import {TagService} from "../../bussiness/tag/tag.service";
 
 @Injectable()
 export class BlogPollerService {
@@ -28,11 +30,12 @@ export class BlogPollerService {
         private feedBlogService: FeedBlogService,
         private sourceBlogService: SourceBlogService,
         private blogService: BlogService,
+        private tagService : TagService,
         private dataSource: DataSource
     ) {
     }
 
-    @Cron(CronExpression.EVERY_10_SECONDS)
+    @Cron(CronExpression.EVERY_10_MINUTES)
     async handleCron() {
         const feedBlogs = await this.feedBlogService.getAll()
         for (const feedBlog of feedBlogs) {
@@ -62,7 +65,7 @@ export class BlogPollerService {
             const feedContent = await axios.get(feedBlog.urlFeed);
             await this.initFeedString(feedContent.data)
         }
-        const sourceBlog = await this.getInfoSourceBlog(feedBlog.urlFeed)
+        const sourceBlog = await this.getInfoSourceBlog()
         for (const item of this.feed.items) {
             const blogCheck: BlogEntity = await this.blogService.getByTitle(item.title)
             if (blogCheck === null) {
@@ -72,27 +75,21 @@ export class BlogPollerService {
                 blog.thumbnail = this.retrieveImageFromFeed(item)
                 blog.permalink = item.link
                 blog.sourceBlog = sourceBlog
-                //blog.tags = await this.retrieveBlogTags(item)
+                blog.tags = await this.retrieveBlogTags(item)
                 // TODO to enable later but find a way how to save in data base or put content snippet
                 //blog.content = "";//item.content
                 await this.dataSource.transaction(async t => {
                     const blogCreated = await this.blogService.getOrCreate(blog);
                     this.logger.debug("blog created : ", blogCreated)
-                    /*const blogTags = blog.tags
-                                        if (blogTags !== undefined) {
-                                            for (const blogTag of blogTags) {
-                                                blogTag.blogId = blogSaved.blogId;
-                                                await BlogTagRepositories.getInstance().getOrCreate(blogTag)
-                                            }
-                                        }*/
                 })
             } else {
+                this.logger.debug("blog already all seen")
                 break;
             }
         }
     }
 
-    async getInfoSourceBlog(feedBlog: string): Promise<SourceBlogEntity> {
+    async getInfoSourceBlog(): Promise<SourceBlogEntity> {
         let titleFeed: string = this.feed.title;
         let sourceBlog: SourceBlogEntity | null = await this.sourceBlogService.getByTitle(titleFeed)
         if (sourceBlog === null) {
@@ -124,4 +121,17 @@ export class BlogPollerService {
         return imageContent
     }
 
+    private async retrieveBlogTags(item: any) : Promise<TagEntity[]> {
+        const blogTags: TagEntity[] = []
+        if (item.categories !== undefined) {
+            for (let category of item.categories) {
+                if (typeof category == "object") {
+                    category = category._
+                }
+                const blogTag = await this.tagService.getByTitleOrCreate(category)
+                blogTags.push(blogTag)
+            }
+        }
+        return blogTags
+    }
 }

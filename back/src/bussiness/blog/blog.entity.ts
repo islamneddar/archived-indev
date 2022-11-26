@@ -2,13 +2,14 @@ import {
     Column,
     CreateDateColumn,
     DeleteDateColumn,
-    Entity,
+    Entity, JoinTable, ManyToMany,
     ManyToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from "typeorm";
 import {SourceBlogEntity} from "../source_blog/source_blog.entity";
 import {JoinColumn} from "typeorm";
+import {TagEntity} from "../tag/tag.entity";
 
 @Entity({name : 'blogs'})
 export class BlogEntity {
@@ -39,4 +40,8 @@ export class BlogEntity {
 
     @Column({name : "publish_date"})
     publishDate : Date
+
+    @ManyToMany(() => TagEntity, (tag) => tag.blogs)
+    @JoinTable()
+    tags: TagEntity[]
 }

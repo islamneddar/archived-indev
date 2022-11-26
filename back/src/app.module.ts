@@ -5,17 +5,20 @@ import {BlogModule} from './bussiness/blog/blog.module';
 import {FeedBlogModule} from './bussiness/feed_blog/feed_blog.module';
 import {ScheduleModule} from "@nestjs/schedule";
 import {BlogPollerModule} from './cron_jobs/blog_poller/blog_poller.module';
+import {TagModule} from "./bussiness/tag/tag.module";
 
 @Module({
-    imports: [ScheduleModule.forRoot(),
+    imports: [
+        ScheduleModule.forRoot(),
         DatabaseOrm,
         SourceBlogModule,
         BlogModule,
         FeedBlogModule,
-        BlogPollerModule],
+        BlogPollerModule,
+        TagModule],
     controllers: [],
     providers: [],
-    exports: [FeedBlogModule]
+    exports: []
 })
 export class AppModule {
 }

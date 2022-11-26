@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import {InjectRepository} from "@nestjs/typeorm";
 import {BlogEntity} from "./blog.entity";
 import {Repository} from "typeorm";
-import LOG from "../../utils/logger";
 
 @Injectable()
 export class BlogService {
@@ -30,6 +29,7 @@ export class BlogService {
             if (blog.sourceBlog !== undefined) {
                 blogToAdd.sourceBlog.sourceBlogId = blog.sourceBlog.sourceBlogId;
             }
+
             return this.blogRepository.save({
                 ...blogToAdd
             });
