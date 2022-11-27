@@ -11,7 +11,8 @@ export const DatabaseOrm = TypeOrmModule.forRoot({
     username: 'root',
     password: '12345678',
     database: 'indev_staging',
-    entities: [SourceBlogEntity,
+    entities: [
+        SourceBlogEntity,
         BlogEntity,
         FeedBlogEntity,
         TagEntity
