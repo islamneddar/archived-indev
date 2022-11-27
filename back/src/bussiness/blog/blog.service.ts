@@ -1,11 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import {Injectable, Logger} from '@nestjs/common';
 import {InjectRepository} from "@nestjs/typeorm";
 import {BlogEntity} from "./blog.entity";
 import {Repository} from "typeorm";
+import {PageOptionsDto} from "../../common/pagination/page_option.dto";
+import {PageMetaDto} from "../../common/pagination/page_meta.dto";
+import {PageDto} from "../../common/pagination/page.dto";
 
 @Injectable()
 export class BlogService {
-
+    private readonly logger = new Logger(BlogService.name);
     constructor(
         @InjectRepository(BlogEntity)
         private blogRepository : Repository<BlogEntity>
@@ -46,5 +49,22 @@ export class BlogService {
                 }
             }
         })
+    }
+
+    async getWithPaginate(pageOptionsDto: PageOptionsDto) {
+        const query = this.blogRepository
+            .createQueryBuilder("blog")
+            .leftJoinAndSelect("blog.sourceBlog", "sourceBlog")
+            .leftJoinAndSelect("blog.tags", "tag")
+            .select(["blog", "sourceBlog.name", "sourceBlog.image", "tag.title"])
+            .orderBy("blog.publishDate", pageOptionsDto.order)
+            .skip(pageOptionsDto.skip)
+            .take(pageOptionsDto.take);
+
+        const itemCount = await query.getCount();
+        const {entities} = await query.getRawAndEntities();
+
+        const pageMetaDto = new PageMetaDto({itemCount, pageOptionsDto});
+        return new PageDto(entities, pageMetaDto)
     }
 }

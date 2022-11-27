@@ -16,6 +16,6 @@ export const DatabaseOrm = TypeOrmModule.forRoot({
         FeedBlogEntity,
         TagEntity
     ],
-    synchronize: true,
+    synchronize: false,
     logging : false
 })
