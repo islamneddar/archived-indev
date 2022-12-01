@@ -28,7 +28,7 @@ function BlogList() {
     const fetchBlogs = async () => {
         const paginationRequest: PaginationRequestMeta = {
             page: page,
-            take: 4
+            take: 12
         }
         const res = await BlogService.getInstance().getAllBlogWithPagination(paginationRequest)
         const blogsFetched = res.data as GetBlogsResponse;
@@ -39,9 +39,10 @@ function BlogList() {
         setMetaPageBlog(blogsFetched.meta)
         setPage(page+1)
     }
+
     return (
         <div className={''}>
-            <div id={"scrollBlogId"} className={'overflow-y-auto  max-h-[calc(100vh_-_96px)]'}>
+            <div id={"scrollBlogId"} className={'overflow-y-auto max-h-[calc(100vh_-_176px)]'}>
                 <InfiniteScroll
                     next={fetchBlogs}
                     hasMore={metaPageBlog?.hasNextPage}
@@ -63,8 +64,6 @@ function BlogList() {
                     </div>
                 </InfiniteScroll>
             </div>
-
-
         </div>
 
     );
