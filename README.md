@@ -4,4 +4,4 @@
 database : mySql
 orm : typeOrm
 bacakend : nestjs
-frontend : nextjs
+frontend : nextjs, tailwind
