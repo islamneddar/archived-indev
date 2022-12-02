@@ -24,7 +24,6 @@ export class PageOptionsDto {
     readonly take?: number = 10;
 
     get skip(): number {
-        this.logger.debug(this.take)
         return (this.page - 1) * this.take;
     }
 }
