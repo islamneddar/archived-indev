@@ -7,19 +7,25 @@ import {ScheduleModule} from "@nestjs/schedule";
 import {BlogPollerModule} from './cron_jobs/blog_poller/blog_poller.module';
 import {TagModule} from "./bussiness/tag/tag.module";
 import {ConfigModule} from "@nestjs/config";
+import {getEnvPath} from "./common/env/env.helper";
+import { ConfigEnvModule } from './bussiness/config_env/config_env.module';
+
+const envFilePath: string = getEnvPath(`${__dirname}`);
 
 @Module({
     imports: [
-        ScheduleModule.forRoot(),
         ConfigModule.forRoot({
+            envFilePath,
             isGlobal: true,
         }),
+        ScheduleModule.forRoot(),
         DatabaseOrm,
         SourceBlogModule,
         BlogModule,
         FeedBlogModule,
         BlogPollerModule,
-        TagModule],
+        TagModule,
+        ConfigEnvModule],
     controllers: [],
     providers: [],
     exports: []
