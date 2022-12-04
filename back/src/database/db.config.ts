@@ -30,21 +30,6 @@ const DBModule = TypeOrmModule.forRootAsync({
             synchronize: true,
             logging: false,
         }
-        if(process.env.NODE_ENV === "production"){
-            const ssl = {
-                ssl : {
-                    ca : [rdsCa],
-                    rejectUnauthorized : true,
-                    require: false,
-                },
-            }
-
-            configToReturn = {
-                ...configToReturn,
-                ssl
-            };
-        }
-
         return configToReturn;
     },
     inject : [ConfigService]
