@@ -2,7 +2,7 @@ import {
     Column,
     CreateDateColumn,
     DeleteDateColumn,
-    Entity, JoinColumn,
+    Entity, JoinColumn, OneToMany,
     OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn
@@ -31,7 +31,6 @@ export class FeedBlogEntity {
     @UpdateDateColumn({name : "update_at"})
     updateDate : Date
 
-    @OneToOne(()=>SourceBlogEntity)
-    @JoinColumn({name : "source_blog_id"})
-    sourceBlog : SourceBlogEntity
+    @OneToMany(()=>SourceBlogEntity,(sourceBlog) => sourceBlog.feedBlog)
+    sourceBlogs : SourceBlogEntity[]
 }

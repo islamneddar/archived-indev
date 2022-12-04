@@ -57,7 +57,7 @@ export class BlogService {
             .leftJoinAndSelect("blog.sourceBlog", "sourceBlog")
             .leftJoinAndSelect("blog.tags", "tag")
             .select(["blog", "sourceBlog.name", "sourceBlog.image", "tag.title"])
-            .orderBy("blog.publishDate", pageOptionsDto.order)
+            .orderBy("blog.publishDate", "DESC")
             .skip(pageOptionsDto.skip)
             .take(pageOptionsDto.take);
 

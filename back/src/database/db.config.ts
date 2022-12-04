@@ -27,7 +27,7 @@ const DBModule = TypeOrmModule.forRootAsync({
                 FeedBlogEntity,
                 TagEntity
             ],
-            synchronize: false,
+            synchronize: true,
             logging: false,
         }
         if(process.env.NODE_ENV === "production"){
