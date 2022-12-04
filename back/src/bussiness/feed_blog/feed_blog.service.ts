@@ -17,4 +17,12 @@ export class FeedBlogService {
     async getAll() :  Promise<FeedBlogEntity[]> {
         return await this.feedBlogRepository.find({})
     }
+
+    async findOne(createFeedBlogRequest: CreateFeedBlogRequest) {
+        return await this.feedBlogRepository.findOne({
+            where : {
+                urlFeed : createFeedBlogRequest.urlFeed
+            }
+        })
+    }
 }

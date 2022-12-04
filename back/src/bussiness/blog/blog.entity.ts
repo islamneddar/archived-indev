@@ -42,6 +42,6 @@ export class BlogEntity {
     publishDate : Date
 
     @ManyToMany(() => TagEntity, (tag) => tag.blogs)
-    @JoinTable()
+    @JoinTable({name : "blogs_tags_tags"})
     tags: TagEntity[]
 }
