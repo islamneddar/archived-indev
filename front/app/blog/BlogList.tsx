@@ -1,7 +1,7 @@
 'use client'
 import React, {useEffect, useState} from 'react';
 import {BlogService} from "../../services/blog.service";
-import {PageMeta, PaginationRequestMeta} from "../../proto/common";
+import {Order, PageMeta, PaginationRequestMeta} from "../../proto/common";
 import {Blog, GetBlogsResponse} from "../../proto/blog";
 import BlogCard from "./BlogCard";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -28,7 +28,8 @@ function BlogList() {
     const fetchBlogs = async () => {
         const paginationRequest: PaginationRequestMeta = {
             page: page,
-            take: 12
+            take: 12,
+            order : Order.DESC
         }
         const res = await BlogService.getInstance().getAllBlogWithPagination(paginationRequest)
         const blogsFetched = res.data as GetBlogsResponse;
@@ -41,8 +42,11 @@ function BlogList() {
     }
 
     return (
-        <div className={''}>
-            <div id={"scrollBlogId"} className={'overflow-y-auto max-h-[calc(100vh_-_176px)]'}>
+        <div className={'px-20 w-full'}>
+            <div id={"scrollBlogId"} className={'overflow-y-auto max-h-[calc(100vh_-_176px)] scrollbar-hide'}>
+                <div className={"w-full flex justify-center items-center py-10"}>
+                    <h2 className={"text-3xl"}>The latest Blogs in the Tech Industry for developers</h2>
+                </div>
                 <InfiniteScroll
                     next={fetchBlogs}
                     hasMore={metaPageBlog?.hasNextPage}
