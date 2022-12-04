@@ -65,7 +65,7 @@ export class BlogPollerService {
             const feedContent = await axios.get(feedBlog.urlFeed);
             await this.initFeedString(feedContent.data)
         }
-        const sourceBlog = await this.getInfoSourceBlog()
+        const sourceBlog = await this.getInfoSourceBlog(feedBlog)
         for (const item of this.feed.items) {
             const blogCheck: BlogEntity = await this.blogService.getByTitle(item.title)
             if (blogCheck === null) {
@@ -89,12 +89,13 @@ export class BlogPollerService {
         }
     }
 
-    async getInfoSourceBlog(): Promise<SourceBlogEntity> {
+    async getInfoSourceBlog(feedBlog: FeedBlogEntity): Promise<SourceBlogEntity> {
         let titleFeed: string = this.feed.title;
         let sourceBlog: SourceBlogEntity | null = await this.sourceBlogService.getByTitle(titleFeed)
         if (sourceBlog === null) {
             sourceBlog = new SourceBlogEntity()
             sourceBlog.name = titleFeed;
+            sourceBlog.feedBlog = feedBlog;
             if (this.feed.image !== undefined) {
                 sourceBlog.image = this.feed.image?.url
             } else {

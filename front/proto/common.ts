@@ -10,5 +10,11 @@ export interface PageMeta {
 
 export interface PaginationRequestMeta {
     page : number,
-    take : number
+    take : number,
+    order : Order
+}
+
+export enum Order {
+    ASC = 'ASC',
+    DESC = 'DESC',
 }

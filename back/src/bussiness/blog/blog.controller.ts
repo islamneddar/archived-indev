@@ -5,7 +5,7 @@ import {PageOptionsDto} from "../../common/pagination/page_option.dto";
 
 @Controller('blogs')
 export class BlogController {
-    private readonly logger = new Logger(BlogController.name)
+    private readonly LOG = new Logger(BlogController.name)
     constructor(
         private blogService : BlogService
     ) {
@@ -16,6 +16,7 @@ export class BlogController {
     async getWithPaginate(
         @Query() pageOptionsDto: PageOptionsDto
     ){
+        this.LOG.debug(JSON.stringify(pageOptionsDto))
         return await this.blogService.getWithPaginate(pageOptionsDto)
     }
 }

@@ -2,15 +2,15 @@ import {
     Column,
     CreateDateColumn,
     DeleteDateColumn,
-    Entity, OneToMany, OneToOne,
+    Entity, JoinColumn, ManyToOne, OneToMany, OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from "typeorm";
 import {BlogEntity} from "../blog/blog.entity";
 import {FeedBlogEntity} from "../feed_blog/feed_blog.entity";
 
-@Entity('source_blogs', {
-    synchronize: true
+@Entity( {
+    name: "source_blogs"
 })
 export class SourceBlogEntity {
     @PrimaryGeneratedColumn({name: "source_blog_id"})
@@ -36,6 +36,7 @@ export class SourceBlogEntity {
     @OneToMany(()=>BlogEntity, (blog) => blog.sourceBlog)
     blogs : BlogEntity[]
 
-    @OneToOne(()=>FeedBlogEntity)
+    @ManyToOne(()=>FeedBlogEntity,(feedBlog) => feedBlog.sourceBlogs)
+    @JoinColumn({name : "feed_blog_id"})
     feedBlog : FeedBlogEntity
 }

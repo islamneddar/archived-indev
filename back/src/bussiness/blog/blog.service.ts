@@ -55,15 +55,15 @@ export class BlogService {
         const query = this.blogRepository
             .createQueryBuilder("blog")
             .leftJoinAndSelect("blog.sourceBlog", "sourceBlog")
+            .select(["blog", "sourceBlog.name", "sourceBlog.image"])
             .leftJoinAndSelect("blog.tags", "tag")
-            .select(["blog", "sourceBlog.name", "sourceBlog.image", "tag.title"])
-            .orderBy("blog.publishDate", pageOptionsDto.order)
+            .orderBy("blog.publishDate", "DESC")
             .skip(pageOptionsDto.skip)
             .take(pageOptionsDto.take);
 
         const itemCount = await query.getCount();
-        const {entities} = await query.getRawAndEntities();
-
+        const entities = await query.getMany();
+        this.logger.debug(JSON.stringify(entities))
         const pageMetaDto = new PageMetaDto({itemCount, pageOptionsDto});
         return new PageDto(entities, pageMetaDto)
     }
