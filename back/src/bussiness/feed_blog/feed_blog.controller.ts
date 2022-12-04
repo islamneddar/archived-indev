@@ -23,6 +23,10 @@ export class FeedBlogController {
             return;
         }
         await this.feedBlogService.save(createFeedBlogRequest)
+        res.status(HttpStatus.CREATED).json({
+            message : "feed created"
+        })
+        return;
     }
 
 }
