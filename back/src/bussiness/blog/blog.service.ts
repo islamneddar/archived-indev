@@ -63,7 +63,6 @@ export class BlogService {
 
         const itemCount = await query.getCount();
         const entities = await query.getMany();
-        this.logger.debug(JSON.stringify(entities))
         const pageMetaDto = new PageMetaDto({itemCount, pageOptionsDto});
         return new PageDto(entities, pageMetaDto)
     }
