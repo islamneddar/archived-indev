@@ -3,7 +3,7 @@ import {PaginationRequestMeta} from "../proto/common";
 
 export class BlogService {
 
-    private endpointBlog = `http://localhost:8080/blogs`;
+    private endpointBlog = `https://indev-back-gcnve.ondigitalocean.app/blogs`;
 
     private static instance = new BlogService();
 
