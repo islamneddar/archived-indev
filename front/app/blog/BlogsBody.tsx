@@ -1,6 +1,6 @@
 import BlogList from "./BlogList";
 
-async function BlogsBody() {
+function BlogsBody() {
     return (
         <div className={'px-10 h-full flex flex-1 '}>
             <div className={"flex h-full flex-1 py-10 justify-center"}>
