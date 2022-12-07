@@ -5,6 +5,7 @@ export class BlogService {
 
     private endpointBlog = `https://indev-back-gcnve.ondigitalocean.app/blogs`;
 
+
     private static instance = new BlogService();
 
     public static getInstance(): BlogService {
