@@ -14,7 +14,7 @@ function BlogCard(props : IBlogCardProps) {
     const blog = props.blog
     const date = dayjs(new Date(blog.publishDate))
     const dateFormat = `${date.year()}-${date.month()+1}-${date.date()}`
-    console.log(blog.tags)
+
     return (
         <div className={'h-80 bg-gray-700 rounded-xl cursor-pointer'} onClick={(event) => {
             event.stopPropagation();

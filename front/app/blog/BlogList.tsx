@@ -33,7 +33,7 @@ function BlogList() {
         }
         const res = await BlogService.getInstance().getAllBlogWithPagination(paginationRequest)
         const blogsFetched = res.data as GetBlogsResponse;
-        console.log(blogsFetched)
+
         const currentBlogs = [...blogs];
         currentBlogs.push(...blogsFetched.data)
         setBlogs(currentBlogs)
