@@ -14,7 +14,7 @@ const rdsCa = fs.readFileSync(`${__dirname}/../../ca-certificate.crt`);
 
 const DBModule = TypeOrmModule.forRootAsync({
     imports: [ConfigModule],
-    useFactory: (configService: ConfigService) => {
+    useFactory: () => {
         let configToReturn : TypeOrmModuleOptions= {
             type: 'mysql',
             host: process.env.DB_HOST || "",
