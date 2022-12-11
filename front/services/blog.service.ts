@@ -1,5 +1,6 @@
 import axios from "axios";
 import {PaginationRequestMeta} from "../proto/common";
+import {TypeFeed} from "../proto/source_blog";
 
 export class BlogService {
 
@@ -14,11 +15,22 @@ export class BlogService {
     }
 
     async getAllBlogWithPagination(paginationRequest: PaginationRequestMeta)  {
-        console.log(this.endpointBlog)
         return await axios.get(this.endpointBlog, {
             params: {
                 page: paginationRequest.page,
                 take: paginationRequest.take
+            }
+        })
+    }
+
+    async getAllBlogWithPaginationAndTypeFeed(paginationRequest: PaginationRequestMeta, feedType :TypeFeed) {
+        return await axios.get(this.endpointBlog+ "/by-feed-type", {
+            params: {
+                pageOption : {
+                    page: paginationRequest.page,
+                    take: paginationRequest.take,
+                },
+                feedType : feedType
             }
         })
     }

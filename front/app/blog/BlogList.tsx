@@ -5,9 +5,13 @@ import {Order, PageMeta, PaginationRequestMeta} from "../../proto/common";
 import {Blog, GetBlogsResponse} from "../../proto/blog";
 import BlogCard from "./BlogCard";
 import InfiniteScroll from "react-infinite-scroll-component";
+import {TypeFeed} from "../../proto/source_blog";
 
+export interface IBlogListProps {
+    typeFeed : TypeFeed
+}
 
-function BlogList() {
+function BlogList(props : IBlogListProps) {
     const [page, setPage] = useState<number>(1)
     const [blogs, setBlogs] = useState<Blog[]>([])
     const [metaPageBlog, setMetaPageBlog] = useState<PageMeta>({
@@ -22,8 +26,16 @@ function BlogList() {
         async function getBlogs() {
             await fetchBlogs();
         }
-        getBlogs()
-    }, [])
+        if(blogs.length === 0){
+            getBlogs()
+        }
+    }, [blogs.length])
+
+
+    useEffect(() => {
+        setBlogs([])
+        setPage(1)
+    },[props.typeFeed])
 
     const fetchBlogs = async () => {
         const paginationRequest: PaginationRequestMeta = {
@@ -31,7 +43,7 @@ function BlogList() {
             take: 12,
             order : Order.DESC
         }
-        const res = await BlogService.getInstance().getAllBlogWithPagination(paginationRequest)
+        const res = await BlogService.getInstance().getAllBlogWithPaginationAndTypeFeed(paginationRequest, props.typeFeed)
         const blogsFetched = res.data as GetBlogsResponse;
 
         const currentBlogs = [...blogs];
@@ -43,7 +55,7 @@ function BlogList() {
 
     return (
         <div className={'px-20 w-full'}>
-            <div id={"scrollBlogId"} className={'overflow-y-auto max-h-[calc(100vh_-_176px)] scrollbar-hide'}>
+            <div id={"scrollBlogId"} className={'overflow-y-auto h-[calc(100vh_-_176px)] scrollbar-hide'}>
                 <div className={"w-full flex justify-center items-center py-10"}>
                     <h2 className={"text-3xl"}>The latest Blogs in the Tech Industry for developers</h2>
                 </div>
