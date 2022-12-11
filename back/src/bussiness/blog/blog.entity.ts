@@ -1,4 +1,5 @@
 import {
+    BaseEntity,
     Column,
     CreateDateColumn,
     DeleteDateColumn,
@@ -12,7 +13,7 @@ import {JoinColumn} from "typeorm";
 import {TagEntity} from "../tag/tag.entity";
 
 @Entity({name : 'blogs'})
-export class BlogEntity {
+export class BlogEntity extends BaseEntity{
     @PrimaryGeneratedColumn({name : "blog_id"})
     blogId : number
 
