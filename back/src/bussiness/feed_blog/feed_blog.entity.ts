@@ -9,6 +9,13 @@ import {
     UpdateDateColumn
 } from "typeorm";
 import {SourceBlogEntity} from "../source_blog/source_blog.entity";
+import {Type} from "class-transformer";
+
+
+export enum TypeFeed {
+    COMMUNITY = "community",
+    ORIGINAL = "original"
+}
 
 @Entity({
     name : "feed_blogs"
@@ -34,4 +41,7 @@ export class FeedBlogEntity extends BaseEntity{
 
     @OneToMany(()=>SourceBlogEntity,(sourceBlog) => sourceBlog.feedBlog)
     sourceBlogs : SourceBlogEntity[]
+
+    @Column({type : "enum",nullable : false, enum : TypeFeed, default :  TypeFeed.ORIGINAL})
+    type : TypeFeed
 }

@@ -5,6 +5,7 @@ import {Repository} from "typeorm";
 import {PageOptionsDto} from "../../common/pagination/page_option.dto";
 import {PageMetaDto} from "../../common/pagination/page_meta.dto";
 import {PageDto} from "../../common/pagination/page.dto";
+import {TypeFeed} from "../feed_blog/feed_blog.entity";
 
 @Injectable()
 export class BlogService {
@@ -59,6 +60,24 @@ export class BlogService {
             .leftJoinAndSelect("blog.tags", "tag")
             .orderBy("blog.publishDate", "DESC")
             .skip(pageOptionsDto.skip)
+            .take(pageOptionsDto.take);
+
+        const itemCount = await query.getCount();
+        const entities = await query.getMany();
+        const pageMetaDto = new PageMetaDto({itemCount, pageOptionsDto});
+        return new PageDto(entities, pageMetaDto)
+    }
+
+    async getWithPaginateByFeedType(pageOptionsDto: PageOptionsDto, feedType: TypeFeed) {
+        const query = this.blogRepository
+            .createQueryBuilder("blog")
+            .leftJoinAndSelect("blog.sourceBlog", "sourceBlog")
+            .leftJoinAndSelect("sourceBlog.feedBlog", "feedBlog")
+            .where("feedBlog.type = :typeFeed", {typeFeed : feedType})
+            .select(["blog", "sourceBlog.name", "sourceBlog.image"])
+            .leftJoinAndSelect("blog.tags", "tag")
+            .orderBy("blog.publishDate", "DESC")
+            .skip((pageOptionsDto.page - 1) * pageOptionsDto.take)
             .take(pageOptionsDto.take);
 
         const itemCount = await query.getCount();
