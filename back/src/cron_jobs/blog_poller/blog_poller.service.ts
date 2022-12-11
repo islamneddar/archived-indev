@@ -61,17 +61,36 @@ export class BlogPollerService {
 
     @Cron(CronExpression.EVERY_10_MINUTES)
     async handleCron() {
-        const feedBlogs = await this.feedBlogService.getAll()
-        for (const feedBlog of feedBlogs) {
-            try {
-                this.logger.debug("feed blog " + feedBlog.urlFeed)
-                this.currentUrl = feedBlog.urlFeed;
-                await this.readAndCreateBlogs(feedBlog)
-            } catch (err) {
-                this.logger.error(err)
+        if(process.env.NODE_ENV === "production"){
+            const feedBlogs = await this.feedBlogService.getAll()
+            for (const feedBlog of feedBlogs) {
+                try {
+                    this.logger.debug("feed blog " + feedBlog.urlFeed)
+                    this.currentUrl = feedBlog.urlFeed;
+                    await this.readAndCreateBlogs(feedBlog)
+                } catch (err) {
+                    this.logger.error(err)
+                }
             }
         }
 
+
+    }
+
+    @Cron(CronExpression.EVERY_MINUTE)
+    async handleCronDev() {
+        if(process.env.NODE_ENV === "development"){
+            const feedBlogs = await this.feedBlogService.getAll()
+            for (const feedBlog of feedBlogs) {
+                try {
+                    this.logger.debug("feed blog " + feedBlog.urlFeed)
+                    this.currentUrl = feedBlog.urlFeed;
+                    await this.readAndCreateBlogs(feedBlog)
+                } catch (err) {
+                    this.logger.error(err)
+                }
+            }
+        }
     }
 
     async initFeed() {
@@ -144,7 +163,7 @@ export class BlogPollerService {
             if (results) imageContent = results[1];
         }
         if(imageContent.length === 0 ) {
-            imageContent = arrayLodash.sample(this.listImagesThmubnailsBlogs)
+            imageContent = this.listImagesThmubnailsBlogs[Math.floor(Math.random()*this.listImagesThmubnailsBlogs.length)]
         }
         return imageContent
     }
