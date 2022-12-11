@@ -54,8 +54,8 @@ function BlogList(props : IBlogListProps) {
     }
 
     return (
-        <div className={'px-20 w-full'}>
-            <div id={"scrollBlogId"} className={'overflow-y-auto h-[calc(100vh_-_176px)] scrollbar-hide'}>
+        <div className={'px-20 pt-5 w-full'}>
+            <div id={"scrollBlogId"} className={'overflow-y-auto h-[calc(100vh_-_196px)] scrollbar-hide'}>
                 <div className={"w-full flex justify-center items-center py-10"}>
                     <h2 className={"text-3xl"}>The latest Blogs in the Tech Industry for developers</h2>
                 </div>

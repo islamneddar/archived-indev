@@ -9,7 +9,7 @@ function BlogsBody() {
 
     return (
         <div className={'px-10 h-full flex flex-1 '}>
-            <div className={"flex h-full flex-1 flex-col py-10 justify-center"}>
+            <div className={"flex h-full flex-1 flex-col pt-10 justify-center"}>
                 <div className={"flex flex-row w-full justify-center"}>
                     <div
                         className={`px-5 cursor-pointer ${typeFeed === TypeFeed.ORIGINAL ? "bg-white rounded text-black" : ""}`}
