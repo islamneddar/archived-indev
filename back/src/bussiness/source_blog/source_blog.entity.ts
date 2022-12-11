@@ -1,4 +1,5 @@
 import {
+    BaseEntity,
     Column,
     CreateDateColumn,
     DeleteDateColumn,
@@ -12,7 +13,7 @@ import {FeedBlogEntity} from "../feed_blog/feed_blog.entity";
 @Entity( {
     name: "source_blogs"
 })
-export class SourceBlogEntity {
+export class SourceBlogEntity extends BaseEntity{
     @PrimaryGeneratedColumn({name: "source_blog_id"})
     sourceBlogId: number
 
