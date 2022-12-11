@@ -37,6 +37,7 @@ export class SourceBlogEntity extends BaseEntity{
     @OneToMany(()=>BlogEntity, (blog) => blog.sourceBlog)
     blogs : BlogEntity[]
 
+
     @ManyToOne(()=>FeedBlogEntity,(feedBlog) => feedBlog.sourceBlogs)
     @JoinColumn({name : "feed_blog_id"})
     feedBlog : FeedBlogEntity
