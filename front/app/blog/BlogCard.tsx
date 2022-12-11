@@ -4,6 +4,7 @@ import {Blog} from "../../proto/blog";
 import dayjs from "dayjs";
 import "./BlogCard.css"
 import ReactTooltip from "react-tooltip";
+import {timeSince} from "../../utils/time.util";
 
 export interface IBlogCardProps {
     blog : Blog
@@ -14,20 +15,24 @@ function BlogCard(props : IBlogCardProps) {
     const blog = props.blog
     const date = dayjs(new Date(blog.publishDate))
     const dateFormat = `${date.year()}-${date.month()+1}-${date.date()}`
-
+    console.log(Date.now())
+    console.log(new Date(blog.publishDate).getTime())
+    const dateFormatV2 = timeSince(new Date(blog.publishDate).getTime())
+    console.log(dateFormatV2)
     return (
-        <div className={'h-80 bg-gray-700 rounded-xl cursor-pointer'} onClick={(event) => {
+        <div className={'h-80 bg-gray-700 rounded-xl cursor-pointer shadow-xl'} onClick={(event) => {
             event.stopPropagation();
             window.open(blog.permalink, '_blank', 'noopener,noreferrer');
         }}>
-            <div className={'px-5 py-2 h-full flex flex-col'}>
-                <div>
-                    <p className={"truncate line-clamp-1 text-12"}>{blog.sourceBlog.name}</p>
-                </div>
-                <div className={'h-32 py-2'}>
+            <div className={'pb-2 h-full flex flex-col'}>
+                <div className={'h-40'}>
                     <img src={blog.thumbnail} className={"w-full h-full rounded-xl object-cover"}/>
                 </div>
-                <div className={'flex flex-col flex-1 h-full justify-between pt-2'}>
+                {/*<div>
+                    <p className={"truncate line-clamp-1 text-12"}>{blog.sourceBlog.name}</p>
+                </div>*/}
+
+                <div className={'flex flex-col flex-1 h-full justify-between pt-3 px-5'}>
                     <div className={"flex flex-row items-center"}>
                         <div className={"flex justify-start items-center"}>
                             <img data-tip={blog.sourceBlog.name} data-for='source_blog_name' src={blog.sourceBlog.image} className={"w-7 h-7 rounded-xl"} />
@@ -40,7 +45,7 @@ function BlogCard(props : IBlogCardProps) {
                             />
                         </div>
                         <div className={"flex justify-start items-end pl-3"}>
-                            <p className={"text-12"}>{dateFormat}</p>
+                            <p className={"text-12"}>{dateFormatV2} ago</p>
                         </div>
                     </div>
                     <div>
