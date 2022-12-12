@@ -6,6 +6,8 @@ import {Blog, GetBlogsResponse} from "../../proto/blog";
 import BlogCard from "./BlogCard";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {TypeFeed} from "../../proto/source_blog";
+import {AxiosError} from "axios";
+import toast from "react-hot-toast";
 
 export interface IBlogListProps {
     typeFeed : TypeFeed
@@ -14,6 +16,8 @@ export interface IBlogListProps {
 function BlogList(props : IBlogListProps) {
     const [page, setPage] = useState<number>(1)
     const [blogs, setBlogs] = useState<Blog[]>([])
+    const [restart, setRestart] = useState<boolean>(true)
+
     const [metaPageBlog, setMetaPageBlog] = useState<PageMeta>({
         page : 1,
         take : 4,
@@ -24,43 +28,60 @@ function BlogList(props : IBlogListProps) {
     })
     useEffect(() => {
         async function getBlogs() {
-            await fetchBlogs();
+            await fetchBlogs(restart);
         }
-        if(blogs.length === 0){
+        if(restart){
             getBlogs()
         }
-    }, [blogs.length])
+
+    }, [restart])
 
 
     useEffect(() => {
         setBlogs([])
         setPage(1)
+        setRestart(true)
     },[props.typeFeed])
 
-    const fetchBlogs = async () => {
-        const paginationRequest: PaginationRequestMeta = {
-            page: page,
-            take: 12,
-            order : Order.DESC
+    const fetchBlogs = async (restart : boolean) => {
+        try{
+            const paginationRequest: PaginationRequestMeta = {
+                page: page,
+                take: 12,
+                order : Order.DESC
+            }
+            const res = await BlogService.getInstance().getAllBlogWithPaginationAndTypeFeed(paginationRequest, props.typeFeed)
+            const blogsFetched = res.data as GetBlogsResponse;
+            const currentBlogs = [...blogs];
+            currentBlogs.push(...blogsFetched.data)
+            setBlogs(currentBlogs)
+            setMetaPageBlog(blogsFetched.meta)
+            setPage(page+1)
+            if(restart){
+                setRestart(false)
+            }
+        }catch (err){
+            if(err instanceof AxiosError){
+                console.log(err.response?.status)
+                if(err.response?.status === 429){
+                    toast.error("too many request")
+                    setMetaPageBlog({
+                        ...metaPageBlog,
+                        hasNextPage : false
+                    })
+                }
+            }
         }
-        const res = await BlogService.getInstance().getAllBlogWithPaginationAndTypeFeed(paginationRequest, props.typeFeed)
-        const blogsFetched = res.data as GetBlogsResponse;
-
-        const currentBlogs = [...blogs];
-        currentBlogs.push(...blogsFetched.data)
-        setBlogs(currentBlogs)
-        setMetaPageBlog(blogsFetched.meta)
-        setPage(page+1)
     }
 
     return (
         <div className={'px-20 pt-5 w-full'}>
-            <div id={"scrollBlogId"} className={'overflow-y-auto h-[calc(100vh_-_196px)] scrollbar-hide'}>
+            <div id={"scrollBlogId"} className={'overflow-y-auto h-[calc(100vh_-_196px)]'}>
                 <div className={"w-full flex justify-center items-center py-10"}>
                     <h2 className={"text-3xl"}>The latest Blogs in the Tech Industry for developers</h2>
                 </div>
                 <InfiniteScroll
-                    next={fetchBlogs}
+                    next={() => fetchBlogs(false)}
                     hasMore={metaPageBlog?.hasNextPage}
                     loader={<div>Loading ...</div>}
                     dataLength={blogs.length}
