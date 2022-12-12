@@ -14,6 +14,8 @@ import * as AdminJSTypeorm from '@adminjs/typeorm'
 import {FeedBlogEntity} from "./bussiness/feed_blog/feed_blog.entity";
 import {BlogEntity} from "./bussiness/blog/blog.entity";
 import {SourceBlogEntity} from "./bussiness/source_blog/source_blog.entity";
+import {ThrottlerGuard, ThrottlerModule} from "@nestjs/throttler";
+import {APP_GUARD} from "@nestjs/core";
 
 const LOG = new Logger("AppModule");
 
@@ -57,6 +59,10 @@ AdminJS.registerAdapter({
                 },
             }),
         }),
+        ThrottlerModule.forRoot({
+            ttl: 60,
+            limit: 85,
+        }),
         ConfigModule.forRoot({
             isGlobal: true
         }),
@@ -69,7 +75,12 @@ AdminJS.registerAdapter({
         TagModule,
     ],
     controllers: [],
-    providers: [],
+    providers: [
+        {
+            provide: APP_GUARD,
+            useClass: ThrottlerGuard,
+        }
+    ],
     exports: []
 })
 export class AppModule {
