@@ -1,5 +1,6 @@
 import '../styles/globals.css'
 import Script from "next/script";
+import ToasterClient from "../components/ToasterClient";
 
 export default function RootLayout({
                                        children,
@@ -19,7 +20,10 @@ export default function RootLayout({
                 `}
         </Script>
         <head/>
-        <body>{children}</body>
+        <body>
+            {children}
+            <ToasterClient />
+        </body>
         </html>
     )
 }

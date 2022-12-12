@@ -13,12 +13,8 @@ export interface IBlogCardProps {
 
 function BlogCard(props : IBlogCardProps) {
     const blog = props.blog
-    const date = dayjs(new Date(blog.publishDate))
-    const dateFormat = `${date.year()}-${date.month()+1}-${date.date()}`
-    console.log(Date.now())
-    console.log(new Date(blog.publishDate).getTime())
     const dateFormatV2 = timeSince(new Date(blog.publishDate).getTime())
-    console.log(dateFormatV2)
+
     return (
         <div className={'h-80 bg-gray-700 rounded-xl cursor-pointer shadow-xl'} onClick={(event) => {
             event.stopPropagation();
