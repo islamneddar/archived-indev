@@ -74,6 +74,7 @@ export class BlogService {
             .leftJoinAndSelect("blog.sourceBlog", "sourceBlog")
             .leftJoinAndSelect("sourceBlog.feedBlog", "feedBlog")
             .where("feedBlog.type = :typeFeed", {typeFeed : feedType})
+            .andWhere("feedBlog.blackList = :blackList", {blackList : false})
             .select(["blog", "sourceBlog.name", "sourceBlog.image"])
             .leftJoinAndSelect("blog.tags", "tag")
             .orderBy("blog.publishDate", "DESC")
