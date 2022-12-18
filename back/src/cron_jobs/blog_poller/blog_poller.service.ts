@@ -64,7 +64,7 @@ export class BlogPollerService {
         if(process.env.NODE_ENV === "production"){
             const feedBlogs = await this.feedBlogService.getAll()
             for (const feedBlog of feedBlogs) {
-                if(feedBlog.blackList){
+                if(!feedBlog.blackList){
                     try {
                         this.logger.debug("feed blog " + feedBlog.urlFeed)
                         this.currentUrl = feedBlog.urlFeed;
@@ -85,7 +85,7 @@ export class BlogPollerService {
         if(process.env.NODE_ENV === "development"){
             const feedBlogs = await this.feedBlogService.getAll()
             for (const feedBlog of feedBlogs) {
-                if(feedBlog.blackList){
+                if(!feedBlog.blackList){
                     try {
                         this.logger.debug("feed blog " + feedBlog.urlFeed)
                         this.currentUrl = feedBlog.urlFeed;
