@@ -20,28 +20,31 @@ export enum TypeFeed {
 @Entity({
     name : "feed_blogs"
 })
-export class FeedBlogEntity extends BaseEntity{
+export class FeedBlogEntity extends BaseEntity {
     @PrimaryGeneratedColumn({
-        name : "feed_blog_id"
+        name: "feed_blog_id"
     })
-    feedBlogId : number;
+    feedBlogId: number;
 
     // rss feed url
-    @Column({unique : true, nullable : false, name : "url_feed"})
-    urlFeed : string
+    @Column({unique: true, nullable: false, name: "url_feed"})
+    urlFeed: string
 
     @DeleteDateColumn({name: "delete_date"})
     deleteDate: Date
 
-    @CreateDateColumn({name : "creation_at"})
+    @CreateDateColumn({name: "creation_at"})
     creationDate: Date
 
-    @UpdateDateColumn({name : "update_at"})
-    updateDate : Date
+    @UpdateDateColumn({name: "update_at"})
+    updateDate: Date
 
-    @OneToMany(()=>SourceBlogEntity,(sourceBlog) => sourceBlog.feedBlog)
-    sourceBlogs : SourceBlogEntity[]
+    @OneToMany(() => SourceBlogEntity, (sourceBlog) => sourceBlog.feedBlog)
+    sourceBlogs: SourceBlogEntity[]
 
-    @Column({type : "enum",nullable : false, enum : TypeFeed, default :  TypeFeed.ORIGINAL})
-    type : TypeFeed
+    @Column({type: "enum", nullable: false, enum: TypeFeed, default: TypeFeed.ORIGINAL})
+    type: TypeFeed
+
+    @Column({name : 'blackList', default : false})
+    blackList : boolean
 }
