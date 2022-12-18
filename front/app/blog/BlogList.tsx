@@ -77,8 +77,8 @@ function BlogList(props : IBlogListProps) {
     return (
         <div className={'md:px-5 lg:px-20 pt-5 w-full'}>
             <div id={"scrollBlogId"} className={'overflow-y-auto h-[calc(100vh_-_196px)] sm:scrollbar-hide'}>
-                <div className={"w-full flex justify-center items-center py-10"}>
-                    <h2 className={"text-3xl"}>The latest Blogs in the Tech Industry for developers</h2>
+                <div className={"w-full flex justify-center items-center py-10 text-center"}>
+                    <h2 className={"text-3xl text-center"}>The latest Blogs in the Tech Industry for developers</h2>
                 </div>
                 <InfiniteScroll
                     next={() => fetchBlogs(false)}
