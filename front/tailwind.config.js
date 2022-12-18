@@ -59,7 +59,25 @@ module.exports = {
       flex : {
         '2': '2 2 0%',
         '3': '3 3 0%'
-      }
+      },
+    },
+    screens: {
+      tn : '0px',
+
+      sm: '425px',
+      // => @media (min-width: 425px) { ... }
+
+      md: '768px',
+      // => @media (min-width: 768px) { ... }
+
+      lg: '1025px',
+      // => @media (min-width: 1024px) { ... }
+
+      xl: '1300px',
+      // => @media (min-width: 1300px) { ... }
+
+      '2xl': '1440px',
+      // => @media (min-width: 1440px) { ... }
     },
   },
   plugins: [

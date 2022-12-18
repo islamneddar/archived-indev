@@ -75,8 +75,8 @@ function BlogList(props : IBlogListProps) {
     }
 
     return (
-        <div className={'px-20 pt-5 w-full'}>
-            <div id={"scrollBlogId"} className={'overflow-y-auto h-[calc(100vh_-_196px)]'}>
+        <div className={'md:px-5 lg:px-20 pt-5 w-full'}>
+            <div id={"scrollBlogId"} className={'overflow-y-auto h-[calc(100vh_-_196px)] sm:scrollbar-hide'}>
                 <div className={"w-full flex justify-center items-center py-10"}>
                     <h2 className={"text-3xl"}>The latest Blogs in the Tech Industry for developers</h2>
                 </div>
@@ -88,7 +88,7 @@ function BlogList(props : IBlogListProps) {
                     scrollableTarget={"scrollBlogId"}
                     scrollThreshold={0.5}
                 >
-                    <div className={'grid grid-cols-4 gap-4'}>
+                    <div className={'grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-4'}>
                         {blogs.map((blog) => {
                             return (
                                 <div key={blog.blogId}>

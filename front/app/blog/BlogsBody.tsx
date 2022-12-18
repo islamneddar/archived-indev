@@ -8,7 +8,7 @@ function BlogsBody() {
     const [typeFeed, setTypeFeed] = useState<TypeFeed>(TypeFeed.ORIGINAL)
 
     return (
-        <div className={'px-10 h-full flex flex-1 '}>
+        <div className={'px-10 tn:px-2 sm:px-3 h-full flex flex-1 '}>
             <div className={"flex h-full flex-1 flex-col pt-10 justify-center"}>
                 <div className={"flex flex-row w-full justify-center"}>
                     <div
