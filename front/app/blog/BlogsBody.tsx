@@ -8,7 +8,6 @@ import {localStorageKey} from "../../data/localstorage.data";
 
 
 function BlogsBody() {
-    //const [typeFeed, setTypeFeed] = useLocalStorage(localStorageKey.TYPE_FEED_KEY, TypeFeed.COMMUNITY)
     const [typeFeed, setTypeFeed] = useState<TypeFeed>(TypeFeed.UNKOWN)
 
     useEffect(()=>{
