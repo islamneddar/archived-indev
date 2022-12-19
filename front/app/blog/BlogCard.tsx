@@ -1,10 +1,10 @@
 'use client'
 import React from 'react';
 import {Blog} from "../../proto/blog";
-import dayjs from "dayjs";
 import "./BlogCard.css"
 import ReactTooltip from "react-tooltip";
 import {timeSince} from "../../utils/time.util";
+import { ScrollMenu, VisibilityContext } from 'react-horizontal-scrolling-menu';
 
 export interface IBlogCardProps {
     blog : Blog
