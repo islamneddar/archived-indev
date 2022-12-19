@@ -1,4 +1,5 @@
 'use client'
+
 import BlogList from "./BlogList";
 import {useEffect, useState} from "react";
 import {TypeFeed} from "../../proto/source_blog";
@@ -6,10 +7,14 @@ import {LocalstorageUtil} from "../../utils/localstorage.util";
 import {localStorageKey} from "../../data/localstorage.data";
 
 
-
 function BlogsBody() {
+    //const [typeFeed, setTypeFeed] = useLocalStorage(localStorageKey.TYPE_FEED_KEY, TypeFeed.COMMUNITY)
+    const [typeFeed, setTypeFeed] = useState<TypeFeed>(TypeFeed.UNKOWN)
 
-    const [typeFeed, setTypeFeed] = useState<TypeFeed>(LocalstorageUtil.getLocalStorage(localStorageKey.TYPE_FEED_KEY) || TypeFeed.COMMUNITY)
+    useEffect(()=>{
+        console.log(typeFeed)
+        setTypeFeed(LocalstorageUtil.getLocalStorage(localStorageKey.TYPE_FEED_KEY) || TypeFeed.COMMUNITY)
+    },[])
 
     return (
         <div className={'px-10 tn:px-2 sm:px-3 h-full flex flex-1 '}>
@@ -34,7 +39,9 @@ function BlogsBody() {
                         community
                     </div>
                 </div>
-                <BlogList typeFeed={typeFeed}></BlogList>
+                {
+                    typeFeed !== TypeFeed.UNKOWN && <BlogList typeFeed={typeFeed}></BlogList>
+                }
             </div>
         </div>
     );

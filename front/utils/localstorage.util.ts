@@ -13,11 +13,13 @@ export const LocalstorageUtil = {
         }
     },
     getLocalStorage (key: string) {
-        const localData = localStorage.getItem(key);
-        if (localData !== null) {
-            return JSON.parse(localData);
-        } else {
-            return null;
+        if (typeof window !== undefined) {
+            const localData = localStorage.getItem(key);
+            if (localData !== null) {
+                return JSON.parse(localData);
+            } else {
+                return null;
+            }
         }
     }
 }

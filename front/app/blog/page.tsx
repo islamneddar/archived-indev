@@ -1,5 +1,3 @@
-
-import NavBar from "../../layouts/NavBar";
 import BlogsBody from "./BlogsBody";
 
 export default function Page() {
