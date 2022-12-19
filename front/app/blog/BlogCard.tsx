@@ -22,7 +22,7 @@ function BlogCard(props : IBlogCardProps) {
         }}>
             <div className={'pb-2 h-full flex flex-col'}>
                 <div className={'h-40'}>
-                    <img src={blog.thumbnail} className={"w-full h-full rounded-xl object-cover"}/>
+                    <img src={blog.thumbnail} className={"w-full h-full rounded-xl object-contain"}/>
                 </div>
                 {/*<div>
                     <p className={"truncate line-clamp-1 text-12"}>{blog.sourceBlog.name}</p>
@@ -31,7 +31,7 @@ function BlogCard(props : IBlogCardProps) {
                 <div className={'flex flex-col flex-1 h-full justify-between pt-3 px-5'}>
                     <div className={"flex flex-row items-center"}>
                         <div className={"flex justify-start items-center"}>
-                            <img data-tip={blog.sourceBlog.name} data-for='source_blog_name' src={blog.sourceBlog.image} className={"w-7 h-7 rounded-xl"} />
+                            <img data-tip={blog.sourceBlog.name} data-for='source_blog_name' src={blog.sourceBlog.image} className={"w-7 h-7 rounded-xl "} />
                             <ReactTooltip
                                 id="source_blog_name"
                                 place={"top"}
