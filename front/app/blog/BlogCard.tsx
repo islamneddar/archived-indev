@@ -49,13 +49,18 @@ function BlogCard(props : IBlogCardProps) {
 
                         }}>{blog.title}</p>
                     </div>
-                    <div className={"flex flex-wrap overflow-x-auto cursor-grab "}>
-                        {blog.tags.slice(0,3).map(tag => {
-                            return (
-                                <span className={"py-1 px-1 mx-1 my-1 flex rounded-xl text-10 whitespace-nowrap text-gray-900 bg-gray-300 inline"}>{tag.title}</span>
-                            )
-                        })}
-                    </div>
+                    {
+                        //<div className={"flex flex-wrap overflow-x-auto cursor-grab "}>
+                        <ScrollMenu scrollContainerClassName={"scrollbar-hide"}>
+                            {blog.tags.slice(0,3).map(tag => {
+                                return (
+                                    <span className={"py-1 px-1 mx-1 my-1 flex rounded-xl text-10 whitespace-nowrap text-gray-900 bg-gray-300 inline"}>{tag.title}</span>
+                                )
+                            })}
+                        </ScrollMenu>
+
+                        //</div>
+                    }
                 </div>
             </div>
         </div>
