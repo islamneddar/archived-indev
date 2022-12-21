@@ -1,9 +1,9 @@
 'use client'
 import React from 'react';
-import {Blog} from "../../proto/blog";
+import {Blog} from "../../../proto/blog";
 import "./BlogCard.css"
 import ReactTooltip from "react-tooltip";
-import {timeSince} from "../../utils/time.util";
+import {timeSince} from "../../../utils/time.util";
 import { ScrollMenu, VisibilityContext } from 'react-horizontal-scrolling-menu';
 
 export interface IBlogCardProps {
@@ -19,7 +19,9 @@ function BlogCard(props : IBlogCardProps) {
         <div className={'h-80 bg-gray-700 rounded-xl cursor-pointer shadow-xl'} onClick={(event) => {
             event.stopPropagation();
             window.open(blog.permalink, '_blank', 'noopener,noreferrer');
-        }}>
+        }}
+            key={blog.blogId}
+        >
             <div className={'pb-2 h-full flex flex-col'}>
                 <div className={'h-40'}>
                     <img src={blog.thumbnail} className={"w-full h-full rounded-xl object-fit"}/>
