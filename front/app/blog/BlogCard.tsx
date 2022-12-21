@@ -22,7 +22,7 @@ function BlogCard(props : IBlogCardProps) {
         }}>
             <div className={'pb-2 h-full flex flex-col'}>
                 <div className={'h-40'}>
-                    <img src={blog.thumbnail} className={"w-full h-full rounded-xl object-contain"}/>
+                    <img src={blog.thumbnail} className={"w-full h-full rounded-xl object-fit"}/>
                 </div>
                 {/*<div>
                     <p className={"truncate line-clamp-1 text-12"}>{blog.sourceBlog.name}</p>
