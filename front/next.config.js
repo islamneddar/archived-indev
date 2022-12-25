@@ -11,6 +11,11 @@ const nextConfig = {
         source: '/',
         destination: '/blog/community',
         permanent: true
+      },
+      {
+        source: '/blog',
+        destination: '/blog/community',
+        permanent: true
       }
     ]
   }
