@@ -1,15 +1,25 @@
 import Script from "next/script";
-import {usePathname} from "next/navigation";
+import {NextSeo} from "next-seo";
 import React from "react";
 
-export default function Head() {
+interface IHeadTypeProps{
+    params : {
+        type : string
+    }
+}
 
+export default function Head(props : IHeadTypeProps) {
+    const headTitle : string = props.params.type
     return (
         <>
-            <title>inDevx</title>
-            <meta content="width=device-width, initial-scale=1" name="viewport"/>
-            <meta name="description" content="be up to date with the all updated from big tech industry and community"/>
+            <NextSeo
+                useAppDir={true}
+                title={`Tech Blogs for ${props.params.type.toUpperCase()}`}
+                description={`get the latest tech blogs from the `}
+            ></NextSeo>
             <meta name={"keyword"} content={"software engineer, developer, java, c, javascript, typescript, tech blogs"}/>
+            <meta content="width=device-width, initial-scale=1" name="viewport"/>
+            <meta name="description" content="get the latest blogs from the "/>
             <link rel="icon" href="/favicon.ico"/>
             <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
             <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
