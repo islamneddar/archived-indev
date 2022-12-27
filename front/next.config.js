@@ -3,15 +3,20 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   experimental: {
-    appDir: true,
+    appDir: true
   },
   redirects(){
     return [
       {
         source: '/',
-        destination: '/blog',
-        permanent: true,
+        destination: '/blog/community',
+        permanent: true
       },
+      {
+        source: '/blog',
+        destination: '/blog/community',
+        permanent: true
+      }
     ]
   }
 }

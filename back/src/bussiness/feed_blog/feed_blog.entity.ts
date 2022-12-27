@@ -14,7 +14,8 @@ import {Type} from "class-transformer";
 
 export enum TypeFeed {
     COMMUNITY = "community",
-    ORIGINAL = "original"
+    ORIGINAL = "original",
+    NEWS = "news"
 }
 
 @Entity({

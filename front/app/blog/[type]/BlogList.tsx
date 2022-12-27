@@ -1,11 +1,11 @@
 'use client'
 import React, {useEffect, useState} from 'react';
-import {BlogService} from "../../services/blog.service";
-import {Order, PageMeta, PaginationRequestMeta} from "../../proto/common";
-import {Blog, GetBlogsResponse} from "../../proto/blog";
+import {BlogService} from "../../../services/blog.service";
+import {Order, PageMeta, PaginationRequestMeta} from "../../../proto/common";
+import {Blog, GetBlogsResponse} from "../../../proto/blog";
 import BlogCard from "./BlogCard";
 import InfiniteScroll from "react-infinite-scroll-component";
-import {TypeFeed} from "../../proto/source_blog";
+import {TypeFeed} from "../../../proto/source_blog";
 import {AxiosError} from "axios";
 import toast from "react-hot-toast";
 
@@ -76,7 +76,7 @@ function BlogList(props : IBlogListProps) {
 
     return (
         <div className={'md:px-5 lg:px-20 pt-5 w-full'}>
-            <div id={"scrollBlogId"} className={'overflow-y-auto h-[calc(100vh_-_196px)] sm:scrollbar-hide'}>
+            <div id={"scrollBlogId"} className={'overflow-y-auto h-[calc(100vh_-_136px)] sm:scrollbar-hide'}>
                 <div className={"w-full flex justify-center items-center py-10 text-center"}>
                     <h2 className={"text-3xl text-center"}>The latest Blogs in the Tech Industry for developers</h2>
                 </div>
@@ -88,7 +88,7 @@ function BlogList(props : IBlogListProps) {
                     scrollableTarget={"scrollBlogId"}
                     scrollThreshold={0.5}
                 >
-                    <div className={'grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-4'}>
+                    <div className={'grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4'}>
                         {blogs.map((blog) => {
                             return (
                                 <div key={blog.blogId}>

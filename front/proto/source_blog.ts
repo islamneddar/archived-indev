@@ -6,5 +6,7 @@ export interface SourceBlog {
 export enum TypeFeed {
     UNKOWN = "unkown",
     COMMUNITY = "community",
-    ORIGINAL = "original"
+    ORIGINAL = "original",
+    NEWS = "news",
+    ALL = "all"
 }
