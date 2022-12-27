@@ -9,7 +9,9 @@ import {usePathname} from "next/navigation";
 const navigationTabs = [
     TypeFeed.COMMUNITY,
     TypeFeed.ORIGINAL,
-    TypeFeed.NEWS
+    TypeFeed.NEWS,
+    TypeFeed.DESIGN,
+    TypeFeed.DATASCIENCE,
 ]
 
 interface SideBarContentProps {
