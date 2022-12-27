@@ -6,7 +6,6 @@ import {XMarkIcon} from "@heroicons/react/24/solid";
 import {useDispatch} from "react-redux";
 import {mySelectors} from "../../redux/selectors";
 import {toggleSideBarTopic} from "../../redux/system.slice";
-import {IoIosArrowDown} from "react-icons/all";
 import SideBarContent from "./SideBarContent";
 
 function SideBarMobile() {
