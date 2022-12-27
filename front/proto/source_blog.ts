@@ -10,5 +10,6 @@ export enum TypeFeed {
     NEWS = "news",
     DESIGN = "design",
     DATASCIENCE = "datascience",
+    DEVOPS = "devops",
     ALL = "all"
 }

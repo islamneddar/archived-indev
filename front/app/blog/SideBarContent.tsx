@@ -12,6 +12,7 @@ const navigationTabs = [
     TypeFeed.NEWS,
     TypeFeed.DESIGN,
     TypeFeed.DATASCIENCE,
+    TypeFeed.DEVOPS
 ]
 
 interface SideBarContentProps {
