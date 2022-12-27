@@ -1,17 +1,26 @@
 'use client'
 
-import { Transition, Dialog } from '@headlessui/react';
-import React, {Fragment, useState} from 'react';
+import {Transition, Dialog} from '@headlessui/react';
+import React, {Fragment} from 'react';
 import {XMarkIcon} from "@heroicons/react/24/solid";
+import {useDispatch} from "react-redux";
+import {mySelectors} from "../../redux/selectors";
+import {toggleSideBarTopic} from "../../redux/system.slice";
+import {IoIosArrowDown} from "react-icons/all";
+import SideBarContent from "./SideBarContent";
 
 function SideBarMobile() {
 
-    const [sideBarOpen, setSideBarOpen] = useState(true)
+    const dispatch = useDispatch();
+
+    const sideBarOpen = mySelectors().system.sideBarTopics;
 
     return (
         <div className={"block md:hidden"}>
             <Transition.Root show={sideBarOpen} as={Fragment}>
-                <Dialog as="div" className="relative z-40 md:hidden" onClose={() => {setSideBarOpen(false)}}>
+                <Dialog as="div" className="relative z-40 md:hidden" onClose={() => {
+                    dispatch(toggleSideBarTopic())
+                }}>
                     <Transition.Child
                         as={Fragment}
                         enter="transition-opacity ease-linear duration-300"
@@ -34,7 +43,8 @@ function SideBarMobile() {
                             leaveFrom="translate-x-0"
                             leaveTo="-translate-x-full"
                         >
-                            <Dialog.Panel className="relative flex w-full max-w-xs flex-1 flex-col bg-indigo-700 pt-5 pb-4">
+                            <Dialog.Panel
+                                className="relative flex w-full max-w-xs flex-1 flex-col bg-indigo-700 pt-5 pb-4">
                                 <Transition.Child
                                     as={Fragment}
                                     enter="ease-in-out duration-300"
@@ -48,7 +58,9 @@ function SideBarMobile() {
                                         <button
                                             type="button"
                                             className="ml-1 flex h-10 w-10 items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                                            onClick={() => setSideBarOpen(false)}
+                                            onClick={() => {
+                                                dispatch(toggleSideBarTopic())
+                                            }}
                                         >
                                             <span className="sr-only">Close sidebar</span>
                                             <XMarkIcon className="h-6 w-6 text-white" aria-hidden="true"/>
@@ -56,16 +68,11 @@ function SideBarMobile() {
                                     </div>
                                 </Transition.Child>
                                 <div className="flex flex-shrink-0 items-center px-4">
-                                    <img
-                                        className="h-8 w-auto"
-                                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=300"
-                                        alt="Your Company"
-                                    />
                                 </div>
                                 <div className="mt-5 h-0 flex-1 overflow-y-auto">
-                                    <nav className="space-y-1 px-2">
-
-                                    </nav>
+                                    <SideBarContent handleAfterClick={() =>{
+                                        dispatch(toggleSideBarTopic())
+                                    }}/>
                                 </div>
                             </Dialog.Panel>
                         </Transition.Child>

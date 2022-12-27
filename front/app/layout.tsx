@@ -1,7 +1,11 @@
+'use client'
+
 import '../styles/globals.css'
 import Script from "next/script";
 import ToasterClient from "../components/ToasterClient";
 import NavBar from "../layouts/NavBar";
+import {Provider} from "react-redux";
+import {store} from "../redux/store";
 
 export default function RootLayout({
                                        children,
@@ -22,9 +26,11 @@ export default function RootLayout({
         </Script>
         <head/>
         <body>
-            <NavBar></NavBar>
-            {children}
-            <ToasterClient />
+            <Provider store={store}>
+                <NavBar></NavBar>
+                {children}
+                <ToasterClient />
+            </Provider>
         </body>
         </html>
     )
