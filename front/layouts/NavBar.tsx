@@ -8,10 +8,7 @@ function NavBar() {
     const dispatch = useDispatch()
 
     return (
-
         <div className={'h-24 bg-primary px-10'}>
-
-
             <div className={"flex flex-row justify-between md:items-center h-full"}>
                 <div className={"h-full flex justify-center items-center"}>
                     <Image src={Logo} alt={"logo"} className={"h-16 w-16"}/>
