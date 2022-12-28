@@ -26,6 +26,7 @@ function BlogList(props : IBlogListProps) {
         pageCount : 1,
         itemCount : 0,
     })
+    
     useEffect(() => {
         async function getBlogs() {
             await fetchBlogs(restart);
@@ -86,7 +87,7 @@ function BlogList(props : IBlogListProps) {
                     loader={<div>Loading ...</div>}
                     dataLength={blogs.length}
                     scrollableTarget={"scrollBlogId"}
-                    scrollThreshold={0.5}
+                    scrollThreshold={0.8}
                 >
                     <div className={'grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4'}>
                         {blogs.map((blog) => {

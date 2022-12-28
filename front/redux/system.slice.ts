@@ -1,11 +1,14 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {bool} from "prop-types";
 
 export interface SystemState {
-    sideBarTopics : boolean // the side bar where there is categories
+    sideBarTopics : boolean ,// the side bar where there is categories
+    searchEnabled : boolean
 }
 
 const initialState : SystemState = {
-    sideBarTopics : false
+    sideBarTopics : false,
+    searchEnabled : false
 }
 
 export const systemSlice = createSlice({
@@ -14,11 +17,14 @@ export const systemSlice = createSlice({
     reducers : {
         toggleSideBarTopic : (state) => {
             state.sideBarTopics = !state.sideBarTopics
+        },
+        toggleSearch : (state, action : PayloadAction<boolean>) => {
+            state.searchEnabled = action.payload
         }
     }
 })
 
 
-export const {toggleSideBarTopic} = systemSlice.actions;
+export const {toggleSideBarTopic,toggleSearch} = systemSlice.actions;
 
 export default systemSlice.reducer;
