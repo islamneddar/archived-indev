@@ -1,10 +1,10 @@
-import {Column, Entity, ManyToMany, PrimaryGeneratedColumn} from "typeorm";
+import {BaseEntity, Column, Entity, ManyToMany, PrimaryGeneratedColumn} from "typeorm";
 import {BlogEntity} from "../blog/blog.entity";
 
 @Entity({
     name : "tags"
 })
-export class TagEntity{
+export class TagEntity extends BaseEntity{
     @PrimaryGeneratedColumn({
         name : "tag_id"
     })

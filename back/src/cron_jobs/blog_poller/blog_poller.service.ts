@@ -167,8 +167,8 @@ export class BlogPollerService {
             const results = re.exec(retreiveImageFrom);
             if (results) imageContent = results[1];
         }
-        if(imageContent.length === 0 ) {
-            imageContent = this.listImagesThmubnailsBlogs[Math.floor(Math.random()*this.listImagesThmubnailsBlogs.length)]
+        if(imageContent.length === 0 ) { // we will not use images prebuiltin
+            // imageContent = this.listImagesThmubnailsBlogs[Math.floor(Math.random()*this.listImagesThmubnailsBlogs.length)]
         }
         return imageContent
     }

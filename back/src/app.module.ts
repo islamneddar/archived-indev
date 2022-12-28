@@ -16,6 +16,7 @@ import {BlogEntity} from "./bussiness/blog/blog.entity";
 import {SourceBlogEntity} from "./bussiness/source_blog/source_blog.entity";
 import {ThrottlerGuard, ThrottlerModule} from "@nestjs/throttler";
 import {APP_GUARD} from "@nestjs/core";
+import {TagEntity} from "./bussiness/tag/tag.entity";
 
 const LOG = new Logger("AppModule");
 
@@ -44,7 +45,8 @@ AdminJS.registerAdapter({
                     resources: [
                         FeedBlogEntity,
                         BlogEntity,
-                        SourceBlogEntity
+                        SourceBlogEntity,
+                        TagEntity
                     ],
                 },
                 auth: {
