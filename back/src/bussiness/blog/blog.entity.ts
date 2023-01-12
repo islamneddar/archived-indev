@@ -3,7 +3,7 @@ import {
     Column,
     CreateDateColumn,
     DeleteDateColumn,
-    Entity, JoinTable, ManyToMany,
+    Entity, Index, JoinTable, ManyToMany,
     ManyToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn
@@ -13,10 +13,12 @@ import {JoinColumn} from "typeorm";
 import {TagEntity} from "../tag/tag.entity";
 
 @Entity({name : 'blogs'})
+@Index("BLOG_TITLE_INDEX", {  synchronize : false})
 export class BlogEntity extends BaseEntity{
     @PrimaryGeneratedColumn({name : "blog_id"})
     blogId : number
 
+    @Index("title", {fulltext : true})
     @Column({unique : true})
     title : string
 

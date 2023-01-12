@@ -86,4 +86,23 @@ export class BlogService {
         const pageMetaDto = new PageMetaDto({itemCount, pageOptionsDto});
         return new PageDto(entities, pageMetaDto)
     }
+
+    getWithPaginateBySearch = async (pageOptionsDto: PageOptionsDto, search: string) => {
+        const query = this.blogRepository
+            .createQueryBuilder("blog")
+            .leftJoinAndSelect("blog.sourceBlog", "sourceBlog")
+            .leftJoinAndSelect("sourceBlog.feedBlog", "feedBlog")
+            .where("feedBlog.blackList = :blackList", {blackList : false})
+            .select(["blog", "sourceBlog.name", "sourceBlog.image"])
+            .leftJoinAndSelect("blog.tags", "tag")
+            .where(`MATCH(blog.title) AGAINST ('(${search})' IN BOOLEAN MODE)`)
+            .orderBy("blog.publishDate", "DESC")
+            .skip((pageOptionsDto.page - 1) * pageOptionsDto.take)
+            .take(pageOptionsDto.take);
+
+        const itemCount = await query.getCount();
+        const entities = await query.getMany();
+        const pageMetaDto = new PageMetaDto({itemCount, pageOptionsDto});
+        return new PageDto(entities, pageMetaDto)
+    }
 }

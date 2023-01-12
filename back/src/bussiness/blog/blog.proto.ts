@@ -5,3 +5,8 @@ export interface BlogByFeedTypeRequest{
     pageOption : PageOptionsDto,
     feedType : TypeFeed
 }
+
+export interface GetBlogBySearchRequest {
+    pageOption : PageOptionsDto,
+    search : string
+}
