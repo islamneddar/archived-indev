@@ -1,12 +1,11 @@
+import {ConfigModule} from "@nestjs/config";
 import {Logger, Module} from '@nestjs/common';
-import {ConfigModule, ConfigService} from "@nestjs/config";
 import {SourceBlogModule} from './bussiness/source_blog/source_blog.module';
 import {BlogModule} from './bussiness/blog/blog.module';
 import {FeedBlogModule} from './bussiness/feed_blog/feed_blog.module';
 import {ScheduleModule} from "@nestjs/schedule";
 import {BlogPollerModule} from './cron_jobs/blog_poller/blog_poller.module';
 import {TagModule} from "./bussiness/tag/tag.module";
-
 import DBModule from "./database/db.config";
 import {AdminModule} from "@adminjs/nestjs";
 import AdminJS from "adminjs";
@@ -38,6 +37,9 @@ AdminJS.registerAdapter({
 
 @Module({
     imports: [
+        ConfigModule.forRoot({
+            isGlobal: true
+        }),
         AdminModule.createAdminAsync({
             useFactory: () => ({
                 adminJsOptions: {
@@ -64,9 +66,6 @@ AdminJS.registerAdapter({
         ThrottlerModule.forRoot({
             ttl: 60,
             limit: 85,
-        }),
-        ConfigModule.forRoot({
-            isGlobal: true
         }),
         ScheduleModule.forRoot(),
         DBModule,

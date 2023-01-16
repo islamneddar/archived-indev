@@ -47,6 +47,7 @@
     "log4js": "^6.7.0",
     "mysql2": "^2.3.3",
     "nestjs-typeorm-paginate": "^4.0.2",
+    "pg": "^8.8.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rss-parser": "^3.12.0",
