@@ -10,28 +10,30 @@ import {AxiosError} from "axios";
 import toast from "react-hot-toast";
 
 export interface IBlogListProps {
-    typeFeed : TypeFeed
+    typeFeed: TypeFeed,
+    search: boolean
 }
 
-function BlogList(props : IBlogListProps) {
+function BlogList(props: IBlogListProps) {
     const [page, setPage] = useState<number>(1)
     const [blogs, setBlogs] = useState<Blog[]>([])
     const [restart, setRestart] = useState<boolean>(true)
 
     const [metaPageBlog, setMetaPageBlog] = useState<PageMeta>({
-        page : 1,
-        take : 4,
-        hasNextPage : true,
-        hasPreviousPage : false,
-        pageCount : 1,
-        itemCount : 0,
+        page: 1,
+        take: 4,
+        hasNextPage: true,
+        hasPreviousPage: false,
+        pageCount: 1,
+        itemCount: 0,
     })
-    
+
     useEffect(() => {
         async function getBlogs() {
             await fetchBlogs(restart);
         }
-        if(restart){
+
+        if (restart) {
             getBlogs()
         }
 
@@ -42,14 +44,14 @@ function BlogList(props : IBlogListProps) {
         setBlogs([])
         setPage(1)
         setRestart(true)
-    },[props.typeFeed])
+    }, [props.typeFeed])
 
-    const fetchBlogs = async (restart : boolean) => {
-        try{
+    const fetchBlogs = async (restart: boolean) => {
+        try {
             const paginationRequest: PaginationRequestMeta = {
                 page: page,
                 take: 12,
-                order : Order.DESC
+                order: Order.DESC
             }
             const res = await BlogService.getInstance().getAllBlogWithPaginationAndTypeFeed(paginationRequest, props.typeFeed)
             const blogsFetched = res.data as GetBlogsResponse;
@@ -57,18 +59,18 @@ function BlogList(props : IBlogListProps) {
             currentBlogs.push(...blogsFetched.data)
             setBlogs(currentBlogs)
             setMetaPageBlog(blogsFetched.meta)
-            setPage(page+1)
-            if(restart){
+            setPage(page + 1)
+            if (restart) {
                 setRestart(false)
             }
-        }catch (err){
-            if(err instanceof AxiosError){
+        } catch (err) {
+            if (err instanceof AxiosError) {
                 console.log(err.response?.status)
-                if(err.response?.status === 429){
+                if (err.response?.status === 429) {
                     toast.error("too many request")
                     setMetaPageBlog({
                         ...metaPageBlog,
-                        hasNextPage : false
+                        hasNextPage: false
                     })
                 }
             }
@@ -78,9 +80,11 @@ function BlogList(props : IBlogListProps) {
     return (
         <div className={'md:px-5 lg:px-20 pt-5 w-full'}>
             <div id={"scrollBlogId"} className={'overflow-y-auto h-[calc(100vh_-_136px)] sm:scrollbar-hide'}>
-                <div className={"w-full flex justify-center items-center py-10 text-center"}>
-                    <h2 className={"text-3xl text-center"}>The latest Blogs in the Tech Industry for developers</h2>
-                </div>
+                {
+                    !props.search && <div className={"w-full flex justify-center items-center py-10 text-center"}>
+                        <h2 className={"text-3xl text-center"}>The latest Blogs in the Tech Industry for developers</h2>
+                    </div>
+                }
                 <InfiniteScroll
                     next={() => fetchBlogs(false)}
                     hasMore={metaPageBlog?.hasNextPage}

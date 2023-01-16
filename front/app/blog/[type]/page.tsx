@@ -12,7 +12,6 @@ interface IBlogBodyTypeProps{
 function Page(props : IBlogBodyTypeProps) {
     return (
         <Fragment>
-
             <div className={" w-full"}>
                 <BlogsBody type={props.params.type as TypeFeed}></BlogsBody>
             </div>
