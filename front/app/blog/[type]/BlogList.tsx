@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
 
 export interface IBlogListProps {
     typeFeed: TypeFeed,
-    search: boolean
+    //search: boolean
 }
 
 function BlogList(props: IBlogListProps) {
@@ -81,7 +81,7 @@ function BlogList(props: IBlogListProps) {
         <div className={'md:px-5 lg:px-20 pt-5 w-full'}>
             <div id={"scrollBlogId"} className={'overflow-y-auto h-[calc(100vh_-_136px)] sm:scrollbar-hide'}>
                 {
-                    !props.search && <div className={"w-full flex justify-center items-center py-10 text-center"}>
+                     <div className={"w-full flex justify-center items-center py-10 text-center"}>
                         <h2 className={"text-3xl text-center"}>The latest Blogs in the Tech Industry for developers</h2>
                     </div>
                 }

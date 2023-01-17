@@ -5,7 +5,7 @@ import {TypeFeed} from "../../../proto/source_blog";
 function BlogListSearch() {
 
     return (
-        <BlogList typeFeed={TypeFeed.ALL} search={true}/>
+        <BlogList typeFeed={TypeFeed.ALL} />
     );
 }
 
