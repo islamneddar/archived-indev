@@ -27,44 +27,51 @@ const mysqlConfig : TypeOrmModuleOptions = {
     logging: false,
 }
 
-const postgresSql : TypeOrmModuleOptions = {
-    type: 'postgres',
-    host: process.env.DB_HOST || "localhost",
-    port: Number(process.env.DB_PORT) || 5433,
-    username: process.env.DB_USERNAME || "postgres",
-    password: process.env.DB_PASSWORD || "",
-    database: process.env.DB_NAME || "indev-local",
-    entities: [SourceBlogEntity,
-        BlogEntity,
-        FeedBlogEntity,
-        TagEntity
-    ],
-    synchronize: true,
-    logging: false,
-}
-
 const DBModule = TypeOrmModule.forRootAsync({
     imports: [ConfigModule],
     useFactory: () => {
         LOG.log(process.env.DB_PORT)
         LOG.log(process.env.DB_USERNAME)
         LOG.log(process.env.DB_PASSWORD)
-        let configToReturn : TypeOrmModuleOptions= {
-            type: "postgres",
-            host: process.env.DB_HOST || "localhost",
-            port: Number(process.env.DB_PORT) || 5433,
-            username: process.env.DB_USERNAME || "postgres",
-            password: process.env.DB_PASSWORD || "",
-            database: process.env.DB_NAME || "indev-local",
-            entities: [SourceBlogEntity,
-                BlogEntity,
-                FeedBlogEntity,
-                TagEntity
-            ],
-            synchronize: true,
-            logging: false,
+        if(process.env.NODE_ENV === "development"){
+            let configToReturn : TypeOrmModuleOptions= {
+                type: "postgres",
+                host: process.env.DB_HOST || "localhost",
+                port: Number(process.env.DB_PORT) || 5433,
+                username: process.env.DB_USERNAME || "postgres",
+                password: process.env.DB_PASSWORD || "",
+                database: process.env.DB_NAME || "indev-local",
+                entities: [SourceBlogEntity,
+                    BlogEntity,
+                    FeedBlogEntity,
+                    TagEntity
+                ],
+                synchronize: true,
+                logging: false,
+            }
+            return configToReturn;
+        }else{
+            let configToReturn : TypeOrmModuleOptions= {
+                type: "postgres",
+                host: process.env.DB_HOST || "localhost",
+                port: Number(process.env.DB_PORT) || 5433,
+                username: process.env.DB_USERNAME || "postgres",
+                password: process.env.DB_PASSWORD || "",
+                database: process.env.DB_NAME || "indev-local",
+                entities: [SourceBlogEntity,
+                    BlogEntity,
+                    FeedBlogEntity,
+                    TagEntity
+                ],
+                synchronize: true,
+                logging: false,
+                ssl : {
+                    rejectUnauthorized: false
+                }
+            }
+            return configToReturn;
         }
-        return configToReturn;
+
     },
     inject : [ConfigService]
 })
