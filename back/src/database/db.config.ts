@@ -50,7 +50,7 @@ const DBModule = TypeOrmModule.forRootAsync({
         LOG.log(process.env.DB_USERNAME)
         LOG.log(process.env.DB_PASSWORD)
         let configToReturn : TypeOrmModuleOptions= {
-            type: process.env.DB_TYPE || "postgres",
+            type: "postgres",
             host: process.env.DB_HOST || "localhost",
             port: Number(process.env.DB_PORT) || 5433,
             username: process.env.DB_USERNAME || "postgres",
