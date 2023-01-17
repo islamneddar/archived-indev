@@ -1,3 +1,3 @@
 export default interface IEnvConfigInterface {
-    [key: string]: string;
+  [key: string]: string;
 }

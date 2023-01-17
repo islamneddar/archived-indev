@@ -4,10 +4,12 @@ import { ConfigEnvService } from './config_env.service';
 @Module({
   providers: [
     {
-      provide : ConfigEnvService,
-      useValue: new ConfigEnvService(`env/${process.env.NODE_ENV || 'development'}.env`),
-    }
+      provide: ConfigEnvService,
+      useValue: new ConfigEnvService(
+        `env/${process.env.NODE_ENV || 'development'}.env`,
+      ),
+    },
   ],
-  exports : [ConfigEnvService]
+  exports: [ConfigEnvService],
 })
 export class ConfigEnvModule {}

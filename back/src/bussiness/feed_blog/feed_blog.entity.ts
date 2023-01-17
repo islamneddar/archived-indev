@@ -4,14 +4,11 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  JoinColumn,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { SourceBlogEntity } from '../source_blog/source_blog.entity';
-import { Type } from 'class-transformer';
 
 export enum TypeFeed {
   COMMUNITY = 'community',

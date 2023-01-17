@@ -1,10 +1,8 @@
-import Parser from "rss-parser";
-import {SourceBlogEntity} from "../../../bussiness/source_blog/source_blog.entity";
+import Parser from 'rss-parser';
+import { SourceBlogEntity } from '../../../bussiness/source_blog/source_blog.entity';
 
 export class RssReader {
-
-
-    /*public writeSourceBlogInfo() {
+  /*public writeSourceBlogInfo() {
         LOG.info("feed title " + this.feed.title);
         if (this.feed.image !== undefined) {
             LOG.info(this.feed.image?.url)
@@ -12,8 +10,7 @@ export class RssReader {
             LOG.info("image : " + "https://ui-avatars.com/api/?name=" + this.feed.title)
         }
     }*/
-
-    /*public writeBlogInfo() {
+  /*public writeBlogInfo() {
         const blog = this.feed.items[0]
         LOG.info("title : " + blog.title)
         LOG.info("pub date : " + blog.pubDate)
@@ -30,9 +27,7 @@ export class RssReader {
             }
         }
     }*/
-
-
-    /*private async retrieveBlogTags(item: any) {
+  /*private async retrieveBlogTags(item: any) {
         const blogTags: BlogTag[] = []
         if (item.categories !== undefined) {
             for (let category of item.categories) {
@@ -46,6 +41,4 @@ export class RssReader {
         }
         return blogTags
     }*/
-
-
 }
