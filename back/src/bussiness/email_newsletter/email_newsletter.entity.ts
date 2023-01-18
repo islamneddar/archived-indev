@@ -8,6 +8,6 @@ export class NewsletterEmailEntity extends BaseEntity {
   @Column({ unique: true, nullable: false })
   email: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, default: true })
   subscribed: boolean;
 }
