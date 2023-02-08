@@ -1,5 +1,5 @@
 import { ConfigModule } from '@nestjs/config';
-import { Logger, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { SourceBlogModule } from './bussiness/source_blog/source_blog.module';
 import { BlogModule } from './bussiness/blog/blog.module';
 import { FeedBlogModule } from './bussiness/feed_blog/feed_blog.module';
@@ -18,7 +18,6 @@ import { APP_GUARD } from '@nestjs/core';
 import { TagEntity } from './bussiness/tag/tag.entity';
 import { EmailNewsletterModule } from './bussiness/email_newsletter/email_newsletter.module';
 
-const LOG = new Logger('AppModule');
 
 const DEFAULT_ADMIN = {
   email: 'lemsijoker',
@@ -76,7 +75,7 @@ AdminJS.registerAdapter({
   providers: [
     {
       provide: APP_GUARD,
-      useClass: ThrottlerGuard, // test another test
+      useClass: ThrottlerGuard,
     },
   ],
   exports: [],
