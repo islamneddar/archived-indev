@@ -76,7 +76,7 @@ AdminJS.registerAdapter({
   providers: [
     {
       provide: APP_GUARD,
-      useClass: ThrottlerGuard,
+      useClass: ThrottlerGuard, // test
     },
   ],
   exports: [],
