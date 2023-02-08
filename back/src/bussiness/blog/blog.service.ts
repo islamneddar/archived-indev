@@ -113,4 +113,35 @@ export class BlogService {
     const pageMetaDto = new PageMetaDto({ itemCount, pageOptionsDto });
     return new PageDto(entities, pageMetaDto);
   };
+
+  async getAllPaginateWithSearchAndFeedType(
+    pageOption: PageOptionsDto,
+    search: string,
+    feedType: TypeFeed,
+  ) {
+    this.logger.debug('get all paginate with search and feed type');
+    this.logger.debug(pageOption);
+    this.logger.debug(pageOption.page);
+    this.logger.debug(pageOption.take);
+    const query = this.blogRepository
+      .createQueryBuilder('blog')
+      .leftJoinAndSelect('blog.sourceBlog', 'sourceBlog')
+      .leftJoinAndSelect('sourceBlog.feedBlog', 'feedBlog')
+      .where('feedBlog.type = :typeFeed', { typeFeed: feedType })
+      .andWhere('feedBlog.blackList = :blackList', { blackList: false })
+      .select(['blog', 'sourceBlog.name', 'sourceBlog.image'])
+      .leftJoinAndSelect('blog.tags', 'tag')
+      .where(`blog.title ILIKE :searchQuery`, { searchQuery: `%${search}%` })
+      .orderBy('blog.publishDate', 'DESC')
+      .skip((pageOption.page - 1) * pageOption.take)
+      .take(pageOption.take);
+
+    const itemCount = await query.getCount();
+    const entities = await query.getMany();
+    const pageMetaDto = new PageMetaDto({
+      itemCount,
+      pageOptionsDto: pageOption,
+    });
+    return new PageDto(entities, pageMetaDto);
+  }
 }
