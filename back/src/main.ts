@@ -14,4 +14,7 @@ async function bootstrap() {
   await app.listen(8080);
   logger.debug(process.env.NODE_ENV);
 }
+
+console.log("test")
+
 bootstrap();
