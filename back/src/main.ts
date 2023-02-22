@@ -3,8 +3,10 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
 
+declare const module: any;
+
+const logger = new Logger(bootstrap.name);
 async function bootstrap() {
-  const logger = new Logger(bootstrap.name);
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     abortOnError: false,
   });
@@ -13,8 +15,12 @@ async function bootstrap() {
   app.enableCors();
   await app.listen(8080);
   logger.debug(process.env.NODE_ENV);
+  if (module.hot) {
+    module.hot.accept();
+    module.hot.dispose(() => app.close());
+  }
 }
 
-console.log("test")
-
-bootstrap();
+bootstrap().then(() => {
+  logger.debug('bootstrap started');
+});

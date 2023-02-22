@@ -18,7 +18,6 @@ import { APP_GUARD } from '@nestjs/core';
 import { TagEntity } from './bussiness/tag/tag.entity';
 import { EmailNewsletterModule } from './bussiness/email_newsletter/email_newsletter.module';
 
-
 const DEFAULT_ADMIN = {
   email: 'lemsijoker',
   password: 'joker12345678',
