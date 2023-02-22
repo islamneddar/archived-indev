@@ -3,7 +3,6 @@ import IEnvConfigInterface from './env_config.interface';
 import * as dotenv from 'dotenv';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import * as fs from 'fs';
-import * as path from 'path';
 import Joi from 'joi';
 
 @Injectable()
@@ -16,7 +15,6 @@ export class ConfigEnvService {
   }
 
   public getTypeORMConfig(): TypeOrmModuleOptions {
-    const baseDir = path.join(__dirname, '../');
     return {
       type: 'mysql',
       host: this.envConfig.DB_HOST,

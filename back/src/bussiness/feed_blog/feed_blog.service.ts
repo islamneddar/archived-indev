@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FeedBlogEntity } from './feed_blog.entity';
-import { IsNull, Not, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CreateFeedBlogRequest } from './interface';
 
 @Injectable()
