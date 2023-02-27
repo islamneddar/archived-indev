@@ -1,21 +1,23 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { FeedBlogService } from '../../bussiness/feed_blog/feed_blog.service';
 import Parser from 'rss-parser';
 import axios from 'axios';
+import { DataSource } from 'typeorm';
+import { FeedBlogService } from '../../bussiness/feed_blog/feed_blog.service';
 import { FeedBlogEntity } from '../../bussiness/feed_blog/feed_blog.entity';
 import { SourceBlogEntity } from '../../bussiness/source_blog/source_blog.entity';
 import { SourceBlogService } from '../../bussiness/source_blog/source_blog.service';
 import { BlogService } from '../../bussiness/blog/blog.service';
 import { BlogEntity } from '../../bussiness/blog/blog.entity';
-import { DataSource } from 'typeorm';
-import { TagEntity } from '../../bussiness/tag/tag.entity';
+import TagEntity from '../../bussiness/tag/tag.entity';
 import { TagService } from '../../bussiness/tag/tag.service';
 
 @Injectable()
-export class BlogPollerService {
+export default class BlogPollerService {
   private readonly logger = new Logger(BlogPollerService.name);
+
   private feed: any;
+
   private currentUrl: string;
 
   private parser: Parser = new Parser({
@@ -39,15 +41,15 @@ export class BlogPollerService {
   async handleCron() {
     if (process.env.NODE_ENV === 'production') {
       const feedBlogs = await this.feedBlogService.getAll();
-      for (const feedBlog of feedBlogs) {
+      feedBlogs.forEach(async (feedBlog) => {
         try {
-          this.logger.debug('feed blog ' + feedBlog.urlFeed);
+          this.logger.debug(`feed blog ${feedBlog.urlFeed}`);
           this.currentUrl = feedBlog.urlFeed;
           await this.readAndCreateBlogs(feedBlog);
         } catch (err) {
           this.logger.error(err);
         }
-      }
+      });
     }
   }
 
@@ -55,15 +57,15 @@ export class BlogPollerService {
   async handleCronDev() {
     if (process.env.NODE_ENV === 'development') {
       const feedBlogs = await this.feedBlogService.getAll();
-      for (const feedBlog of feedBlogs) {
+      feedBlogs.forEach(async (feedBlog) => {
         try {
-          this.logger.debug('feed blog ' + feedBlog.urlFeed);
+          this.logger.debug(`feed blog ${feedBlog.urlFeed}`);
           this.currentUrl = feedBlog.urlFeed;
           await this.readAndCreateBlogs(feedBlog);
         } catch (err) {
           this.logger.error(err);
         }
-      }
+      });
     }
   }
 
@@ -87,29 +89,30 @@ export class BlogPollerService {
       this.logger.log(`source blog ${sourceBlog.name} is black listed`);
       return;
     }
-    for (const item of this.feed.items) {
+
+    this.feed.items.every(async (item) => {
       const blogCheck: BlogEntity = await this.blogService.getByTitle(
         item.title,
       );
-      if (blogCheck === null) {
-        const blog = new BlogEntity();
-        blog.title = item.title;
-        blog.publishDate = new Date(item.pubDate);
-        blog.thumbnail = this.retrieveImageFromFeed(item);
-        blog.permalink = item.link;
-        blog.sourceBlog = sourceBlog;
-        blog.tags = await this.retrieveBlogTags(item);
-        // TODO to enable later but find a way how to save in data base or put content snippet
-        //blog.content = "";//item.content
-        await this.dataSource.transaction(async (t) => {
-          const blogCreated = await this.blogService.getOrCreate(blog);
-          this.logger.debug('blog created : ', blogCreated);
-        });
-      } else {
+      if (blogCheck !== null) {
         this.logger.debug('blog already all seen');
-        break;
+        return false;
       }
-    }
+      const blog = new BlogEntity();
+      blog.title = item.title;
+      blog.publishDate = new Date(item.pubDate);
+      blog.thumbnail = this.retrieveImageFromFeed(item);
+      blog.permalink = item.link;
+      blog.sourceBlog = sourceBlog;
+      blog.tags = await this.retrieveBlogTags(item);
+      // TODO to enable later but find a way how to save in data base or put content snippet
+      // blog.content = "";//item.content
+      await this.dataSource.transaction(async () => {
+        const blogCreated = await this.blogService.getOrCreate(blog);
+        this.logger.debug('blog created : ', blogCreated);
+      });
+      return true;
+    });
   }
 
   async getInfoSourceBlog(feedBlog: FeedBlogEntity): Promise<SourceBlogEntity> {
@@ -123,9 +126,9 @@ export class BlogPollerService {
       if (this.feed.image !== undefined) {
         sourceBlog.image = this.feed.image?.url;
       } else {
-        sourceBlog.image = 'https://ui-avatars.com/api/?name=' + titleFeed;
+        sourceBlog.image = `https://ui-avatars.com/api/?name=${titleFeed}`;
       }
-      return await this.sourceBlogService.save(sourceBlog);
+      return this.sourceBlogService.save(sourceBlog);
     }
     return sourceBlog;
   }
@@ -134,9 +137,9 @@ export class BlogPollerService {
     let imageContent = '';
     if (
       itemFeed.mediaContent !== undefined &&
-      itemFeed.mediaContent['$'].url !== null
+      itemFeed.mediaContent.$.url !== null
     ) {
-      imageContent = itemFeed.mediaContent['$'].url;
+      imageContent = itemFeed.mediaContent.$.url;
     } else {
       let retreiveImageFrom = itemFeed.content;
       if (itemFeed.contentEncoded !== undefined) {
@@ -153,13 +156,12 @@ export class BlogPollerService {
   private async retrieveBlogTags(item: any): Promise<TagEntity[]> {
     const blogTags: TagEntity[] = [];
     if (item.categories !== undefined) {
-      for (let category of item.categories) {
-        if (typeof category == 'object') {
-          category = category._;
-        }
-        const blogTag = await this.tagService.getByTitleOrCreate(category);
+      item.categories.forEach(async (category) => {
+        // eslint-disable-next-line prettier/prettier
+        const categoryInfo = typeof category === 'object' ? category._ : category;
+        const blogTag = await this.tagService.getByTitleOrCreate(categoryInfo);
         blogTags.push(blogTag);
-      }
+      });
     }
     return blogTags;
   }

@@ -16,7 +16,7 @@ import {
 } from './blog.proto';
 
 @Controller('blogs')
-export class BlogController {
+export default class BlogController {
   private readonly LOG = new Logger(BlogController.name);
 
   constructor(private blogService: BlogService) {}
@@ -26,7 +26,7 @@ export class BlogController {
   async getWithPaginate(@Query() pageOptionsDto: PageOptionsDto) {
     this.LOG.debug(JSON.stringify(pageOptionsDto));
     this.LOG.debug(pageOptionsDto.skip);
-    return await this.blogService.getWithPaginate(pageOptionsDto);
+    return this.blogService.getWithPaginate(pageOptionsDto);
   }
 
   @Get('/by-feed-type')
@@ -34,12 +34,9 @@ export class BlogController {
   async getWithPaginateByFeedType(
     @Query() getBlogsByFeedTypeRequest: BlogByFeedTypeRequest,
   ) {
-    const pageOption = getBlogsByFeedTypeRequest.pageOption;
-    const feedType = getBlogsByFeedTypeRequest.feedType;
-    return await this.blogService.getWithPaginateByFeedType(
-      pageOption,
-      feedType,
-    );
+    const { pageOption } = getBlogsByFeedTypeRequest;
+    const { feedType } = getBlogsByFeedTypeRequest;
+    return this.blogService.getWithPaginateByFeedType(pageOption, feedType);
   }
 
   /**
@@ -48,9 +45,9 @@ export class BlogController {
   @Get('/deprecated/search')
   async getBlogsWithSearch(@Query() getBlogBySearch: GetBlogBySearchRequest) {
     this.LOG.debug(getBlogBySearch.search);
-    const pageOption = getBlogBySearch.pageOption;
-    const search = getBlogBySearch.search;
-    return await this.blogService.getWithPaginateBySearch(pageOption, search);
+    const { pageOption } = getBlogBySearch;
+    const { search } = getBlogBySearch;
+    return this.blogService.getWithPaginateBySearch(pageOption, search);
   }
 
   @Get('/search')
@@ -58,9 +55,9 @@ export class BlogController {
     @Query() getBlogRequest: GetBlogBySearchAndFeedTypeRequest,
   ) {
     this.LOG.debug('get blog with search and type');
-    const pageOption = getBlogRequest.pageOption;
-    const search = getBlogRequest.search;
-    const feedType = getBlogRequest.feedType;
+    const { pageOption } = getBlogRequest;
+    const { search } = getBlogRequest;
+    const { feedType } = getBlogRequest;
     if (pageOption === undefined) {
       throw new HttpException(
         'Argument Failed',
@@ -75,7 +72,7 @@ export class BlogController {
       );
     }
 
-    return await this.blogService.getAllPaginateWithSearchAndFeedType(
+    return this.blogService.getAllPaginateWithSearchAndFeedType(
       pageOption,
       search,
       feedType,

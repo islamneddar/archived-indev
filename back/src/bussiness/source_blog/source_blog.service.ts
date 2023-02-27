@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { SourceBlogEntity } from './source_blog.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { SourceBlogEntity } from './source_blog.entity';
 
 @Injectable()
 export class SourceBlogService {
@@ -11,7 +11,7 @@ export class SourceBlogService {
   ) {}
 
   async save(sourceBlog: SourceBlogEntity): Promise<SourceBlogEntity> {
-    return await this.sourceBlogRepository.save(sourceBlog);
+    return this.sourceBlogRepository.save(sourceBlog);
   }
 
   findAll(): Promise<SourceBlogEntity[]> {

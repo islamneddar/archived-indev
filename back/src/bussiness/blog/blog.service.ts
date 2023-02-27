@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BlogEntity } from './blog.entity';
 import { Repository } from 'typeorm';
+import { BlogEntity } from './blog.entity';
 import { PageOptionsDto } from '../../common/pagination/page_option.dto';
 import { PageMetaDto } from '../../common/pagination/page_meta.dto';
 import { PageDto } from '../../common/pagination/page.dto';
@@ -10,13 +10,14 @@ import { TypeFeed } from '../feed_blog/feed_blog.entity';
 @Injectable()
 export class BlogService {
   private readonly logger = new Logger(BlogService.name);
+
   constructor(
     @InjectRepository(BlogEntity)
     private blogRepository: Repository<BlogEntity>,
   ) {}
 
   async getByTitle(titleFeed: string) {
-    return await this.blogRepository.findOne({
+    return this.blogRepository.findOne({
       where: {
         title: titleFeed,
       },
@@ -48,7 +49,7 @@ export class BlogService {
       where: {
         title: blogTitle,
         sourceBlog: {
-          sourceBlogId: sourceBlogId,
+          sourceBlogId,
         },
       },
     });
@@ -131,7 +132,7 @@ export class BlogService {
       .andWhere('feedBlog.blackList = :blackList', { blackList: false })
       .select(['blog', 'sourceBlog.name', 'sourceBlog.image'])
       .leftJoinAndSelect('blog.tags', 'tag')
-      .where(`blog.title ILIKE :searchQuery`, { searchQuery: `%${search}%` })
+      .where('blog.title ILIKE :searchQuery', { searchQuery: `%${search}%` })
       .orderBy('blog.publishDate', 'DESC')
       .skip((pageOption.page - 1) * pageOption.take)
       .take(pageOption.take);

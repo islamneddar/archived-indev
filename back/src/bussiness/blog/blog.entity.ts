@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import {
   BaseEntity,
   Column,
@@ -9,10 +10,10 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  JoinColumn,
 } from 'typeorm';
 import { SourceBlogEntity } from '../source_blog/source_blog.entity';
-import { JoinColumn } from 'typeorm';
-import { TagEntity } from '../tag/tag.entity';
+import TagEntity from '../tag/tag.entity';
 
 @Entity({ name: 'blogs' })
 export class BlogEntity extends BaseEntity {

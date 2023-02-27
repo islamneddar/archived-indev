@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import {
   BaseEntity,
   Column,
@@ -10,7 +11,7 @@ import { BlogEntity } from '../blog/blog.entity';
 @Entity({
   name: 'tags',
 })
-export class TagEntity extends BaseEntity {
+export default class TagEntity extends BaseEntity {
   @PrimaryGeneratedColumn({
     name: 'tag_id',
   })
