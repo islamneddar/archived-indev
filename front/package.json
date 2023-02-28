@@ -20,12 +20,14 @@
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.9",
     "@types/redux-logger": "^3.0.9",
+    "D": "^1.0.0",
     "autoprefixer": "^10.4.13",
     "axios": "^1.2.0",
     "dayjs": "^1.11.6",
     "next": "13.0.4",
     "next-seo": "^5.15.0",
     "postcss": "^8.4.19",
+    "prettier": "^2.8.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-horizontal-scrolling-menu": "^3.2.3",
@@ -37,10 +39,19 @@
     "redux-logger": "^3.0.6",
     "tailwind-scrollbar-hide": "^1.1.7",
     "tailwindcss": "^3.2.4",
-    "typescript": "4.9.3"
+    "typescript": "*"
   },
   "devDependencies": {
-    "eslint": "8.28.0",
-    "eslint-config-next": "13.0.4"
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "eslint": "^8.0.1",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-next": "13.0.4",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-config-standard-with-typescript": "^34.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-react": "^7.32.2"
   }
 }

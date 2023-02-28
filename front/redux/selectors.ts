@@ -1,8 +1,8 @@
-import { useSelector } from 'react-redux';
-import {RootState} from "./store";
+import { useSelector } from "react-redux";
+import { RootState } from "./store";
 
-export function mySelectors() {
+export default function mySelectors() {
   return {
-    system : useSelector((state : RootState) => state.system)
-  }
+    system: useSelector((state: RootState) => state.system),
+  };
 }
