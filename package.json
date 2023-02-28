@@ -1,0 +1,12 @@
+{
+  "name": "indev",
+  "version": "1.0.0",
+  "repository": "git@github.com:islamneddar/indev.git",
+  "author": "islam neddar <islam.neddar@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "precommit-back" : "cd back && yarn lint",
+    "precommit-front" : "cd front"
+  }
+}
