@@ -9,7 +9,7 @@ import { SourceBlogEntity } from '../../bussiness/source_blog/source_blog.entity
 import { SourceBlogService } from '../../bussiness/source_blog/source_blog.service';
 import { BlogService } from '../../bussiness/blog/blog.service';
 import { BlogEntity } from '../../bussiness/blog/blog.entity';
-import TagEntity from '../../bussiness/tag/tag.entity';
+import { TagEntity } from '../../bussiness/tag/tag.entity';
 import { TagService } from '../../bussiness/tag/tag.service';
 
 @Injectable()
@@ -101,7 +101,7 @@ export default class BlogPollerService {
       const blog = new BlogEntity();
       blog.title = item.title;
       blog.publishDate = new Date(item.pubDate);
-      blog.thumbnail = this.retrieveImageFromFeed(item);
+      blog.thumbnail = BlogPollerService.retrieveImageFromFeed(item);
       blog.permalink = item.link;
       blog.sourceBlog = sourceBlog;
       blog.tags = await this.retrieveBlogTags(item);
@@ -133,7 +133,7 @@ export default class BlogPollerService {
     return sourceBlog;
   }
 
-  private retrieveImageFromFeed(itemFeed: any) {
+  private static retrieveImageFromFeed(itemFeed: any) {
     let imageContent = '';
     if (
       itemFeed.mediaContent !== undefined &&
@@ -141,13 +141,16 @@ export default class BlogPollerService {
     ) {
       imageContent = itemFeed.mediaContent.$.url;
     } else {
-      let retreiveImageFrom = itemFeed.content;
+      let retrieveImageFrom = itemFeed.content;
       if (itemFeed.contentEncoded !== undefined) {
-        retreiveImageFrom = itemFeed.contentEncoded;
+        retrieveImageFrom = itemFeed.contentEncoded;
       }
       const re = /<img[^>]+src="?([^"\s]+)"?[^>]*>/g;
-      const results = re.exec(retreiveImageFrom);
-      if (results) imageContent = results[1];
+      const results = re.exec(retrieveImageFrom);
+      if (results) {
+        const [imageContentInfo] = results[1];
+        imageContent = imageContentInfo;
+      }
     }
 
     return imageContent;
@@ -158,7 +161,8 @@ export default class BlogPollerService {
     if (item.categories !== undefined) {
       item.categories.forEach(async (category) => {
         // eslint-disable-next-line prettier/prettier
-        const categoryInfo = typeof category === 'object' ? category._ : category;
+        const categoryInfo =
+          typeof category === 'object' ? category._ : category;
         const blogTag = await this.tagService.getByTitleOrCreate(categoryInfo);
         blogTags.push(blogTag);
       });

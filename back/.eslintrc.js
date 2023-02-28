@@ -2,16 +2,16 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: 'tsconfig.json',
-    tsconfigRootDir : __dirname, 
+    tsconfigRootDir: __dirname,
     sourceType: 'module',
   },
   plugins: ['@typescript-eslint/eslint-plugin'],
   extends: [
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
-    "airbnb",
-    "airbnb-typescript",
-    "plugin:import/typescript"
+    'airbnb',
+    'airbnb-typescript',
+    'plugin:import/typescript',
   ],
   root: true,
   env: {
@@ -24,9 +24,16 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
-    '@typescript-eslint/indent' : 'off',
-    'implicit-arrow-linebreak' : 'off',
-    'import/prefer-default-export' : 'off',
-    'object-curly-newline' : 'off'
+    '@typescript-eslint/indent': 'off',
+    'implicit-arrow-linebreak': 'off',
+    'import/prefer-default-export': 'off',
+    'object-curly-newline': 'off',
+    'operator-linebreak': 'off',
+    'import/no-import-module-exports': [
+      'error',
+      {
+        exceptions: ['**/*/main.ts'],
+      },
+    ],
   },
 };

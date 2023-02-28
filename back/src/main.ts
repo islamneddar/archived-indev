@@ -21,8 +21,4 @@ async function bootstrap() {
   }
 }
 
-bootstrap().then(() => {
-  logger.debug('bootstrap started');
-});
-
-export default logger;
+bootstrap();

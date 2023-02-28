@@ -11,7 +11,7 @@ import { BlogEntity } from '../blog/blog.entity';
 @Entity({
   name: 'tags',
 })
-export default class TagEntity extends BaseEntity {
+export class TagEntity extends BaseEntity {
   @PrimaryGeneratedColumn({
     name: 'tag_id',
   })
