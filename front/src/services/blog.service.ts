@@ -24,7 +24,7 @@ export default class BlogService {
     paginationRequest: PaginationRequestMeta,
     feedType: TypeFeed
   ) {
-    return axios.get(`${this.endpointBlog  }/by-feed-type`, {
+    return axios.get(`${this.endpointBlog}/by-feed-type`, {
       params: {
         pageOption: {
           page: paginationRequest.page,

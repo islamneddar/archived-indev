@@ -1,11 +1,12 @@
 "use client";
-
+ 
+import React from "react"
 import "../styles/globals.css";
 import Script from "next/script";
 import { Provider } from "react-redux";
-import ToasterClient from "../components/ToasterClient";
-import NavBar from "../layouts/NavBar";
-import { store } from "../redux/store";
+import ToasterClient from "../src/components/ToasterClient";
+import NavBar from "../src/layouts/NavBar";
+import { store } from "../src/redux/store";
 
 export default function RootLayout({
   children,
@@ -27,15 +28,13 @@ export default function RootLayout({
       <head />
       <body>
         <Provider store={store}>
-          <NavBar></NavBar>
+          <NavBar />
           {
             // children
           }
-          <div className={"bg-secondary h-[calc(100vh_-_96px)]"}>
+          <div className="bg-secondary h-[calc(100vh_-_96px)]">
             <div
-              className={
-                "flex flex-col h-full w-full justify-center items-center"
-              }
+              className="flex flex-col h-full w-full justify-center items-center"
             >
               <div className="bg-white w-full">
                 <div className="mx-auto max-w-7xl py-12 px-6 lg:py-16 lg:px-8">

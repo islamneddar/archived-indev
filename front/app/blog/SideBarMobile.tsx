@@ -4,8 +4,9 @@ import { Transition, Dialog } from "@headlessui/react";
 import React, { Fragment } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useDispatch } from "react-redux";
-import { mySelectors } from "../../redux/selectors";
-import { toggleSideBarTopic } from "../../redux/system.slice";
+// eslint-disable-next-line import/no-unresolved, import/extensions
+import mySelectors from "../../src/redux/selectors";
+import { toggleSideBarTopic } from "../../src/redux/system.slice";
 import SideBarContent from "./SideBarContent";
 
 function SideBarMobile() {

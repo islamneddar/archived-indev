@@ -1,9 +1,11 @@
-// apply the hot reload based on webpack hmr, so we don't need to recompile the entire project each time a change occurs
+// apply the hot reload based on webpack hmr,
+// so we don't need to recompile the entire
+// project each time a change occurs
 
-const nodeExternals = require('webpack-node-externals');
-const { RunScriptWebpackPlugin } = require('run-script-webpack-plugin');
+import nodeExternals from 'webpack-node-externals';
+import { RunScriptWebpackPlugin } from 'run-script-webpack-plugin';
 
-module.exports = function (options, webpack) {
+export default function (options, webpack) {
   return {
     ...options,
     entry: ['webpack/hot/poll?100', options.entry],
@@ -18,7 +20,10 @@ module.exports = function (options, webpack) {
       new webpack.WatchIgnorePlugin({
         paths: [/\.js$/, /\.d\.ts$/],
       }),
-      new RunScriptWebpackPlugin({ name: options.output.filename, autoRestart: false }),
+      new RunScriptWebpackPlugin({
+        name: options.output.filename,
+        autoRestart: false,
+      }),
     ],
   };
-};
+}

@@ -21,7 +21,7 @@ function NavBar() {
             onClick={() => {
               dispatch(toggleSideBarTopic());
             }}
-           />
+          />
         </div>
       </div>
     </div>
