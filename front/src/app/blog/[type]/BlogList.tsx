@@ -1,15 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { BlogService } from "../../../src/services/blog.service";
-import {
-  Order,
-  PageMeta,
-  PaginationRequestMeta,
-} from "../../../src/proto/common";
-import { Blog, GetBlogsResponse } from "../../../src/proto/blog";
+import { BlogService } from "../../../services/blog.service";
+import { Order, PageMeta, PaginationRequestMeta } from "../../../proto/common";
+import { Blog, GetBlogsResponse } from "../../../proto/blog";
 import BlogCard from "./BlogCard";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { TypeFeed } from "../../../src/proto/source_blog";
+import { TypeFeed } from "../../../proto/source_blog";
 import { AxiosError } from "axios";
 import toast from "react-hot-toast";
 

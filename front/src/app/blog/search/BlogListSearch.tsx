@@ -1,6 +1,6 @@
 import React from "react";
 import BlogList from "../[type]/BlogList";
-import { TypeFeed } from "../../../src/proto/source_blog";
+import { TypeFeed } from "../../../proto/source_blog";
 
 function BlogListSearch() {
   return <BlogList typeFeed={TypeFeed.ALL} />;

@@ -1,20 +1,20 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { Cron, CronExpression } from '@nestjs/schedule';
+import {Injectable, Logger} from '@nestjs/common';
+import {Cron, CronExpression} from '@nestjs/schedule';
 import Parser from 'rss-parser';
 import axios from 'axios';
-import { DataSource } from 'typeorm';
-import { FeedBlogService } from '../../bussiness/feed_blog/feed_blog.service';
-import { FeedBlogEntity } from '../../bussiness/feed_blog/feed_blog.entity';
-import { SourceBlogEntity } from '../../bussiness/source_blog/source_blog.entity';
-import { SourceBlogService } from '../../bussiness/source_blog/source_blog.service';
-import { BlogService } from '../../bussiness/blog/blog.service';
-import { BlogEntity } from '../../bussiness/blog/blog.entity';
-import { TagEntity } from '../../bussiness/tag/tag.entity';
-import { TagService } from '../../bussiness/tag/tag.service';
+import {DataSource} from 'typeorm';
+import {FeedBlogService} from '../../bussiness/feed_blog/feed_blog.service';
+import {FeedBlogEntity} from '../../bussiness/feed_blog/feed_blog.entity';
+import {SourceBlogEntity} from '../../bussiness/source_blog/source_blog.entity';
+import {SourceBlogService} from '../../bussiness/source_blog/source_blog.service';
+import {BlogService} from '../../bussiness/blog/blog.service';
+import {BlogEntity} from '../../bussiness/blog/blog.entity';
+import {TagEntity} from '../../bussiness/tag/tag.entity';
+import {TagService} from '../../bussiness/tag/tag.service';
 
 @Injectable()
 export default class BlogPollerService {
-  private readonly logger = new Logger(BlogPollerService.name);
+  private readonly LOG = new Logger(BlogPollerService.name);
 
   private feed: any;
 
@@ -41,31 +41,32 @@ export default class BlogPollerService {
   async handleCron() {
     if (process.env.NODE_ENV === 'production') {
       const feedBlogs = await this.feedBlogService.getAll();
-      feedBlogs.forEach(async (feedBlog) => {
+      for (const feedBlog of feedBlogs) {
         try {
-          this.logger.debug(`feed blog ${feedBlog.urlFeed}`);
+          this.LOG.debug(`feed blog ${feedBlog.urlFeed}`);
           this.currentUrl = feedBlog.urlFeed;
           await this.readAndCreateBlogs(feedBlog);
         } catch (err) {
-          this.logger.error(err);
+          this.LOG.error(err);
         }
-      });
+      }
     }
   }
 
   @Cron(CronExpression.EVERY_MINUTE)
   async handleCronDev() {
+    this.LOG.debug('handleCronDev');
     if (process.env.NODE_ENV === 'development') {
       const feedBlogs = await this.feedBlogService.getAll();
-      feedBlogs.forEach(async (feedBlog) => {
+      for (const feedBlog of feedBlogs) {
         try {
-          this.logger.debug(`feed blog ${feedBlog.urlFeed}`);
+          this.LOG.debug(`feed blog ${feedBlog.urlFeed}`);
           this.currentUrl = feedBlog.urlFeed;
           await this.readAndCreateBlogs(feedBlog);
         } catch (err) {
-          this.logger.error(err);
+          this.LOG.error(err);
         }
-      });
+      }
     }
   }
 
@@ -86,16 +87,16 @@ export default class BlogPollerService {
     }
     const sourceBlog = await this.getInfoSourceBlog(feedBlog);
     if (sourceBlog.blackList) {
-      this.logger.log(`source blog ${sourceBlog.name} is black listed`);
+      this.LOG.log(`source blog ${sourceBlog.name} is black listed`);
       return;
     }
 
-    this.feed.items.every(async (item) => {
+    this.feed.items.every(async item => {
       const blogCheck: BlogEntity = await this.blogService.getByTitle(
         item.title,
       );
       if (blogCheck !== null) {
-        this.logger.debug('blog already all seen');
+        this.LOG.debug('blog already all seen');
         return false;
       }
       const blog = new BlogEntity();
@@ -109,7 +110,7 @@ export default class BlogPollerService {
       // blog.content = "";//item.content
       await this.dataSource.transaction(async () => {
         const blogCreated = await this.blogService.getOrCreate(blog);
-        this.logger.debug('blog created : ', blogCreated);
+        this.LOG.debug('blog created : ', blogCreated);
       });
       return true;
     });
@@ -159,13 +160,13 @@ export default class BlogPollerService {
   private async retrieveBlogTags(item: any): Promise<TagEntity[]> {
     const blogTags: TagEntity[] = [];
     if (item.categories !== undefined) {
-      item.categories.forEach(async (category) => {
+      for (const category of item.categories) {
         // eslint-disable-next-line prettier/prettier
         const categoryInfo =
           typeof category === 'object' ? category._ : category;
         const blogTag = await this.tagService.getByTitleOrCreate(categoryInfo);
         blogTags.push(blogTag);
-      });
+      }
     }
     return blogTags;
   }

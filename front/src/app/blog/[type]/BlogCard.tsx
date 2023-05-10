@@ -1,10 +1,10 @@
 "use client";
 
 import React from "react";
-import { Blog } from "../../../src/proto/blog";
+import { Blog } from "../../../proto/blog";
 import "./BlogCard.css";
 import ReactTooltip from "react-tooltip";
-import { timeSince } from "../../../src/utils/time.util";
+import { timeSince } from "../../../utils/time.util";
 import { ScrollMenu } from "react-horizontal-scrolling-menu";
 
 export interface IBlogCardProps {

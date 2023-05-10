@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import BlogsBody from "./BlogsBody";
-import { TypeFeed } from "../../../src/proto/source_blog";
+import { TypeFeed } from "../../../proto/source_blog";
 import { NextSeo } from "next-seo";
 
 interface IBlogBodyTypeProps {

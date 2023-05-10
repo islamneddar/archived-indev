@@ -2,9 +2,9 @@
 
 import BlogList from "./BlogList";
 import { useEffect, useState } from "react";
-import { TypeFeed } from "../../../src/proto/source_blog";
-import { LocalstorageUtil } from "../../../src/utils/localstorage.util";
-import { localStorageKey } from "../../../src/data/localstorage.data";
+import { TypeFeed } from "../../../proto/source_blog";
+import { LocalstorageUtil } from "../../../utils/localstorage.util";
+import { localStorageKey } from "../../../data/localstorage.data";
 
 export interface IBlogBodyProps {
   type: TypeFeed;

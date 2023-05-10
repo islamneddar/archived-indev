@@ -5,10 +5,10 @@ import { IoIosArrowDown } from "react-icons/all";
 import { useRouter as useNavigation } from "next/dist/client/components/navigation";
 import { usePathname } from "next/navigation";
 import { useDispatch } from "react-redux";
-import SimpleToggleInnom from "../../src/components/innoom/SimpleToggleInnoom";
-import { TypeFeed } from "../../src/proto/source_blog";
-import { toggleSearch } from "../../src/redux/system.slice";
-import mySelectors from "../../src/redux/selectors";
+import SimpleToggleInnom from "../../components/innoom/SimpleToggleInnoom";
+import { TypeFeed } from "../../proto/source_blog";
+import { toggleSearch } from "../../redux/system.slice";
+import mySelectors from "../../redux/selectors";
 
 const navigationTabs = [
   TypeFeed.COMMUNITY,

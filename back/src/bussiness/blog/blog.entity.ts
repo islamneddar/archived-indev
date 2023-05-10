@@ -13,7 +13,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { SourceBlogEntity } from '../source_blog/source_blog.entity';
-import TagEntity from '../tag/tag.entity';
+import { TagEntity } from '../tag/tag.entity';
 
 @Entity({ name: 'blogs' })
 export class BlogEntity extends BaseEntity {
