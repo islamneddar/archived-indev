@@ -1,17 +1,16 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import { BlogService } from "../../../services/blog.service";
-import { Order, PageMeta, PaginationRequestMeta } from "../../../proto/common";
-import { Blog, GetBlogsResponse } from "../../../proto/blog";
-import BlogCard from "./BlogCard";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { TypeFeed } from "../../../proto/source_blog";
-import { AxiosError } from "axios";
-import toast from "react-hot-toast";
+'use client';
+import React, {useEffect, useState} from 'react';
+import {Order, PageMeta, PaginationRequestMeta} from '../../types/api/common';
+import {Blog, GetBlogsResponse} from '../../types/api/blog';
+import BlogCard from './blog-card/BlogCard';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import {TypeFeed} from '../../types/api/source_blog';
+import {AxiosError} from 'axios';
+import toast from 'react-hot-toast';
+import BlogService from '../../services/blog.service';
 
 export interface IBlogListProps {
   typeFeed: TypeFeed;
-  //search: boolean
 }
 
 function BlogList(props: IBlogListProps) {
@@ -54,7 +53,7 @@ function BlogList(props: IBlogListProps) {
       const res =
         await BlogService.getInstance().getAllBlogWithPaginationAndTypeFeed(
           paginationRequest,
-          props.typeFeed
+          props.typeFeed,
         );
       const blogsFetched = res.data as GetBlogsResponse;
       const currentBlogs = [...blogs];
@@ -69,7 +68,7 @@ function BlogList(props: IBlogListProps) {
       if (err instanceof AxiosError) {
         console.log(err.response?.status);
         if (err.response?.status === 429) {
-          toast.error("too many request");
+          toast.error('too many request');
           setMetaPageBlog({
             ...metaPageBlog,
             hasNextPage: false,
@@ -80,18 +79,16 @@ function BlogList(props: IBlogListProps) {
   };
 
   return (
-    <div className={"md:px-5 lg:px-20 pt-5 w-full"}>
+    <div className={'md:px-5 lg:px-20 pt-5 w-full'}>
       <div
-        id={"scrollBlogId"}
-        className={"overflow-y-auto h-[calc(100vh_-_136px)] sm:scrollbar-hide"}
-      >
+        id={'scrollBlogId'}
+        className={'overflow-y-auto h-[calc(100vh_-_136px)] sm:scrollbar-hide'}>
         {
           <div
             className={
-              "w-full flex justify-center items-center py-10 text-center"
-            }
-          >
-            <h2 className={"text-3xl text-center"}>
+              'w-full flex justify-center items-center py-10 text-center'
+            }>
+            <h2 className={'text-3xl text-center'}>
               The latest Blogs in the Tech Industry for developers
             </h2>
           </div>
@@ -101,15 +98,13 @@ function BlogList(props: IBlogListProps) {
           hasMore={metaPageBlog?.hasNextPage}
           loader={<div>Loading ...</div>}
           dataLength={blogs.length}
-          scrollableTarget={"scrollBlogId"}
-          scrollThreshold={0.8}
-        >
+          scrollableTarget={'scrollBlogId'}
+          scrollThreshold={0.8}>
           <div
             className={
-              "grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4"
-            }
-          >
-            {blogs.map((blog) => {
+              'grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4'
+            }>
+            {blogs.map(blog => {
               return (
                 <div key={blog.blogId}>
                   <BlogCard blog={blog} />

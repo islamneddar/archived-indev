@@ -1,19 +1,28 @@
 import Script from 'next/script';
+import {NextSeo} from 'next-seo';
 import React from 'react';
 
-export default function Head() {
+interface IHeadTypeProps {
+  params: {
+    type: string;
+  };
+}
+
+export default function Head(props: IHeadTypeProps) {
   return (
     <>
-      <title>inDevx</title>
+      <NextSeo
+        useAppDir={true}
+        title={`Tech Blogs}`}
+        description={`get the latest tech blogs from the `}></NextSeo>
+      <meta
+        name={'keyword'}
+        content={
+          'software engineer, developer, java, c, javascript, typescript, tech blogs'
+        }
+      />
       <meta content="width=device-width, initial-scale=1" name="viewport" />
-      <meta
-        name="description"
-        content="be up to date with the all updated from big tech industry and community"
-      />
-      <meta
-        name="keyword"
-        content="software engineer, developer, java, c, javascript, typescript, tech blogs"
-      />
+      <meta name="description" content="get the latest blogs from the " />
       <link rel="icon" href="/favicon.ico" />
       <link
         rel="apple-touch-icon"

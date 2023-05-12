@@ -1,7 +1,6 @@
-import React, { Fragment } from "react";
-import BlogsBody from "./BlogsBody";
-import { TypeFeed } from "../../../proto/source_blog";
-import { NextSeo } from "next-seo";
+import React, {Fragment} from 'react';
+import BlogsBody from '../../app-page-component/blog/BlogsBody';
+import {TypeFeed} from '../../types/api/source_blog';
 
 interface IBlogBodyTypeProps {
   params: {
@@ -12,7 +11,7 @@ interface IBlogBodyTypeProps {
 function Page(props: IBlogBodyTypeProps) {
   return (
     <Fragment>
-      <div className={" w-full"}>
+      <div className={' w-full'}>
         <BlogsBody type={props.params.type as TypeFeed}></BlogsBody>
       </div>
     </Fragment>

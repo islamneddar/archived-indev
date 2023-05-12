@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {useAppDispatch, useAppSelector} from '../store';
 
 export interface SystemState {
   sideBarTopics: boolean; // the side bar where there is categories
@@ -11,10 +12,10 @@ const initialState: SystemState = {
 };
 
 export const systemSlice = createSlice({
-  name: "system",
+  name: 'system',
   initialState,
   reducers: {
-    toggleSideBarTopic: (state) => {
+    toggleSideBarTopic: state => {
       state.sideBarTopics = !state.sideBarTopics;
     },
     toggleSearch: (state, action: PayloadAction<boolean>) => {
@@ -23,6 +24,11 @@ export const systemSlice = createSlice({
   },
 });
 
-export const { toggleSideBarTopic, toggleSearch } = systemSlice.actions;
+export const {toggleSideBarTopic, toggleSearch} = systemSlice.actions;
 
-export default systemSlice.reducer;
+export const selectSystem = (state: {systemReducer: SystemState}) =>
+  state.systemReducer;
+
+export const useSystemSelector = () => useAppSelector(selectSystem);
+
+export const useSystemDispatch = () => useAppDispatch();

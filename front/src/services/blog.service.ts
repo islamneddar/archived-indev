@@ -1,6 +1,6 @@
-import axios from "axios";
-import { PaginationRequestMeta } from "../proto/common";
-import { TypeFeed } from "../proto/source_blog";
+import axios from 'axios';
+import {PaginationRequestMeta} from '../types/api/common';
+import {TypeFeed} from '../types/api/source_blog';
 
 export default class BlogService {
   private endpointBlog = `${process.env.NEXT_PUBLIC_API_URL}/blogs`;
@@ -22,7 +22,7 @@ export default class BlogService {
 
   async getAllBlogWithPaginationAndTypeFeed(
     paginationRequest: PaginationRequestMeta,
-    feedType: TypeFeed
+    feedType: TypeFeed,
   ) {
     return axios.get(`${this.endpointBlog}/by-feed-type`, {
       params: {

@@ -1,10 +1,10 @@
-import { Switch } from "@headlessui/react";
-import React from "react";
-import { classNames } from "../../utils/style";
+import {Switch} from '@headlessui/react';
+import React from 'react';
+import {classNames} from '../../utils/style';
 
 interface SimpleToggleProps {
-  classNameContainer: string | "";
-  classNamePoint: string | "";
+  classNameContainer: string | '';
+  classNamePoint: string | '';
   whenSwitchEnabled: () => void;
   whenSwitchDisabled: () => void;
   switchEnabled: boolean;
@@ -26,19 +26,18 @@ function SimpleToggleInnom(props: SimpleToggleProps) {
       checked={props.switchEnabled}
       onChange={setEnabledFunction}
       className={classNames(
-        props.switchEnabled ? "bg-indigo-600" : "bg-gray-200",
+        props.switchEnabled ? 'bg-indigo-600' : 'bg-gray-200',
         `relative inline-flex h-4 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out 
                 focus:outline-none focus:ring-indigo-500 focus:ring-offset-2`,
-        props.classNameContainer
-      )}
-    >
+        props.classNameContainer,
+      )}>
       <span className="sr-only">Use setting</span>
       <span
         aria-hidden="true"
         className={classNames(
-          props.switchEnabled ? "translate-x-5" : "translate-x-0",
-          "pointer-events-none inline-block h-3 w-3 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out",
-          props.classNamePoint
+          props.switchEnabled ? 'translate-x-5' : 'translate-x-0',
+          'pointer-events-none inline-block h-3 w-3 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
+          props.classNamePoint,
         )}
       />
     </Switch>
