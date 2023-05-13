@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import {useDispatch} from 'react-redux';
-import {logoInDev} from '../../assets/images/images';
+import {logoInDev} from '../../assets/images';
 //import {toggleSideBarTopic} from '../../redux/system/system.slice';
 import {AiOutlineMenu} from 'react-icons/all';
 

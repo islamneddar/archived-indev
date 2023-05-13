@@ -1,7 +1,7 @@
 'use client';
 
 import BlogList from './BlogList';
-import {TypeFeed} from '../../types/api/source_blog';
+import {TypeFeed} from '@/types/api/source_blog';
 
 export interface IBlogBodyProps {
   type: TypeFeed;

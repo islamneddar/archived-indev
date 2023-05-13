@@ -1,10 +1,10 @@
 'use client';
 import React, {useEffect, useState} from 'react';
-import {Order, PageMeta, PaginationRequestMeta} from '../../types/api/common';
-import {Blog, GetBlogsResponse} from '../../types/api/blog';
+import {Order, PageMeta, PaginationRequestMeta} from '@/types/api/common';
+import {Blog, GetBlogsResponse} from '@/types/api/blog';
 import BlogCard from './blog-card/BlogCard';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import {TypeFeed} from '../../types/api/source_blog';
+import {TypeFeed} from '@/types/api/source_blog';
 import {AxiosError} from 'axios';
 import toast from 'react-hot-toast';
 import BlogService from '../../services/blog.service';

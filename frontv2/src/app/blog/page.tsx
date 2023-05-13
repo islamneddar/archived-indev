@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react';
-import BlogsBody from '../../app-page-component/blog/BlogsBody';
-import {TypeFeed} from '../../types/api/source_blog';
+import BlogsBody from '@/app-page-component/blog/BlogsBody';
+import {TypeFeed} from '@/types/api/source_blog';
 
 interface IBlogBodyTypeProps {
   params: {

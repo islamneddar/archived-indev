@@ -1,6 +1,6 @@
 import {Switch} from '@headlessui/react';
 import React from 'react';
-import {classNames} from '../../utils/style';
+import {classNames} from '@/utils/style';
 
 interface SimpleToggleProps {
   classNameContainer: string | '';

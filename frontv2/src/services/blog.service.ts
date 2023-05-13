@@ -1,6 +1,7 @@
 import axios from 'axios';
-import {PaginationRequestMeta} from '../types/api/common';
-import {TypeFeed} from '../types/api/source_blog';
+import {PaginationRequestMeta} from '@/types/api/common';
+import {TypeFeed} from '@/types/api/source_blog';
+
 
 export default class BlogService {
   private endpointBlog = `${process.env.NEXT_PUBLIC_API_URL}/blogs`;

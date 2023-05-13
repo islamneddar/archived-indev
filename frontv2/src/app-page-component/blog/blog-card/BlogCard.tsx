@@ -1,10 +1,11 @@
 'use client';
 
 import React from 'react';
-import {Blog} from '../../../types/api/blog';
+import {Blog} from '@/types/api/blog';
 import './BlogCard.css';
-import ReactTooltip from 'react-tooltip';
-import {timeSince} from '../../../utils/time.util';
+import {Tooltip as ReactTooltip} from 'react-tooltip';
+import 'react-tooltip/dist/react-tooltip.css'
+import {timeSince} from '@/utils/time.util';
 import {ScrollMenu} from 'react-horizontal-scrolling-menu';
 
 export interface IBlogCardProps {
@@ -44,13 +45,13 @@ function BlogCard(props: IBlogCardProps) {
                 src={blog.sourceBlog.image}
                 className={'w-7 h-7 rounded-xl '}
                 alt={'img blog'}
+                data-tooltip-id="my-source_blog_name"
+                data-tooltip-content={blog.sourceBlog.name}
+                data-tooltip-place="top"
               />
               <ReactTooltip
                 id="source_blog_name"
                 place="top"
-                type="dark"
-                effect="float"
-                multiline
               />
             </div>
             <div className="flex justify-start items-end pl-3">

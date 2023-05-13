@@ -14,7 +14,7 @@ if (process.env.NODE_ENV === `development`) {
 
 export const store = configureStore({
   reducer: {
-    system: systemSlice.reducer,
+    systemReducer: systemSlice.reducer,
   },
   devTools: process.env.NODE_ENV !== 'production',
   middleware: middlewares,

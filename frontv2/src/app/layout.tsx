@@ -7,7 +7,9 @@ import NavBar from '../app-page-component/navbar/NavBar';
 import {store} from '@/redux/store';
 import ToasterClient from '../components/ToasterClient';
 
-export default function RootLayout() {
+export default function RootLayout(
+  {children}: {children: React.ReactNode}
+) {
   return (
     <Provider store={store}>
       <html lang="en">
@@ -27,7 +29,7 @@ export default function RootLayout() {
         <body>
           <NavBar />
           {
-            // children
+            children
           }
           <ToasterClient />
         </body>
