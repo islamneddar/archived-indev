@@ -7,8 +7,8 @@ import {
   Logger,
   Query,
 } from '@nestjs/common';
-import { BlogService } from './blog.service';
-import { PageOptionsDto } from '../../common/pagination/page_option.dto';
+import {BlogService} from './blog.service';
+import {PageOptionsDto} from '../../common/pagination/page_option.dto';
 import {
   BlogByFeedTypeRequest,
   GetBlogBySearchAndFeedTypeRequest,
@@ -34,8 +34,8 @@ export default class BlogController {
   async getWithPaginateByFeedType(
     @Query() getBlogsByFeedTypeRequest: BlogByFeedTypeRequest,
   ) {
-    const { pageOption } = getBlogsByFeedTypeRequest;
-    const { feedType } = getBlogsByFeedTypeRequest;
+    const {pageOption} = getBlogsByFeedTypeRequest;
+    const {feedType} = getBlogsByFeedTypeRequest;
     return this.blogService.getWithPaginateByFeedType(pageOption, feedType);
   }
 
@@ -45,8 +45,8 @@ export default class BlogController {
   @Get('/deprecated/search')
   async getBlogsWithSearch(@Query() getBlogBySearch: GetBlogBySearchRequest) {
     this.LOG.debug(getBlogBySearch.search);
-    const { pageOption } = getBlogBySearch;
-    const { search } = getBlogBySearch;
+    const {pageOption} = getBlogBySearch;
+    const {search} = getBlogBySearch;
     return this.blogService.getWithPaginateBySearch(pageOption, search);
   }
 
@@ -55,9 +55,9 @@ export default class BlogController {
     @Query() getBlogRequest: GetBlogBySearchAndFeedTypeRequest,
   ) {
     this.LOG.debug('get blog with search and type');
-    const { pageOption } = getBlogRequest;
-    const { search } = getBlogRequest;
-    const { feedType } = getBlogRequest;
+    const {pageOption} = getBlogRequest;
+    const {search} = getBlogRequest;
+    const {feedType} = getBlogRequest;
     if (pageOption === undefined) {
       throw new HttpException(
         'Argument Failed',
