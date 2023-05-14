@@ -3,14 +3,14 @@ import {Cron, CronExpression} from '@nestjs/schedule';
 import Parser from 'rss-parser';
 import axios from 'axios';
 import {DataSource} from 'typeorm';
-import {FeedBlogService} from '../../bussiness/feed_blog/feed_blog.service';
-import {FeedBlogEntity} from '../../bussiness/feed_blog/feed_blog.entity';
-import {SourceBlogEntity} from '../../bussiness/source_blog/source_blog.entity';
-import {SourceBlogService} from '../../bussiness/source_blog/source_blog.service';
-import {BlogService} from '../../bussiness/blog/blog.service';
-import {BlogEntity} from '../../bussiness/blog/blog.entity';
-import {TagEntity} from '../../bussiness/tag/tag.entity';
-import {TagService} from '../../bussiness/tag/tag.service';
+import {FeedBlogService} from '@/bussiness/feed_blog/feed_blog.service';
+import {FeedBlogEntity} from '@/bussiness/feed_blog/feed_blog.entity';
+import {SourceBlogEntity} from '@/bussiness/source_blog/source_blog.entity';
+import {SourceBlogService} from '@/bussiness/source_blog/source_blog.service';
+import {BlogService} from '@/bussiness/blog/blog.service';
+import {BlogEntity} from '@/bussiness/blog/blog.entity';
+import {TagEntity} from '@/bussiness/tag/tag.entity';
+import {TagService} from '@/bussiness/tag/tag.service';
 
 @Injectable()
 export default class BlogPollerService {
@@ -147,11 +147,10 @@ export default class BlogPollerService {
       const re = /<img[^>]+src="?([^"\s]+)"?[^>]*>/g;
       const results = re.exec(retrieveImageFrom);
       if (results) {
-        const [imageContentInfo] = results[1];
-        imageContent = imageContentInfo;
+        imageContent = results[1];
       }
     }
-
+    console.log(imageContent);
     return imageContent;
   }
 

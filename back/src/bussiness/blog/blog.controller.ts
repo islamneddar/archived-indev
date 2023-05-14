@@ -8,9 +8,8 @@ import {
   Query,
 } from '@nestjs/common';
 import {BlogService} from './blog.service';
-import {PageOptionsDto} from '../../common/pagination/page_option.dto';
+import {PageOptionsDto} from '@/common/pagination/page_option.dto';
 import {
-  BlogByFeedTypeRequest,
   GetBlogBySearchAndFeedTypeRequest,
   GetBlogBySearchRequest,
 } from './blog.proto';
@@ -24,20 +23,17 @@ export default class BlogController {
   @Get('')
   @HttpCode(HttpStatus.OK)
   async getWithPaginate(@Query() pageOptionsDto: PageOptionsDto) {
-    this.LOG.debug(JSON.stringify(pageOptionsDto));
-    this.LOG.debug(pageOptionsDto.skip);
-    return this.blogService.getWithPaginate(pageOptionsDto);
+    return await this.blogService.getWithPaginate(pageOptionsDto);
   }
 
-  @Get('/by-feed-type')
+  /*@Get('/by-feed-type')
   @HttpCode(HttpStatus.OK)
   async getWithPaginateByFeedType(
     @Query() getBlogsByFeedTypeRequest: BlogByFeedTypeRequest,
   ) {
-    const {pageOption} = getBlogsByFeedTypeRequest;
-    const {feedType} = getBlogsByFeedTypeRequest;
+    const {pageOption, feedType} = getBlogsByFeedTypeRequest;
     return this.blogService.getWithPaginateByFeedType(pageOption, feedType);
-  }
+  }*/
 
   /**
    * @deprecated

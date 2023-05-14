@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { TagEntity } from './tag.entity';
+import {Injectable, Logger} from '@nestjs/common';
+import {InjectRepository} from '@nestjs/typeorm';
+import {Repository} from 'typeorm';
+import {TagEntity} from './tag.entity';
 
 @Injectable()
 export class TagService {
+  LOG = new Logger(TagService.name);
   constructor(
     @InjectRepository(TagEntity)
     private tagRepository: Repository<TagEntity>,
@@ -16,6 +17,7 @@ export class TagService {
         title: category,
       },
     });
+    this.LOG.log('tagFound', tagFound);
     if (!tagFound) {
       const tag = new TagEntity();
       tag.title = category;

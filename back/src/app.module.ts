@@ -1,22 +1,22 @@
-import { ConfigModule } from '@nestjs/config';
-import { Module } from '@nestjs/common';
-import { ScheduleModule } from '@nestjs/schedule';
-import { AdminModule } from '@adminjs/nestjs';
+import {ConfigModule} from '@nestjs/config';
+import {Module} from '@nestjs/common';
+import {ScheduleModule} from '@nestjs/schedule';
+import {AdminModule} from '@adminjs/nestjs';
 import AdminJS from 'adminjs';
 import * as AdminJSTypeorm from '@adminjs/typeorm';
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-import { APP_GUARD } from '@nestjs/core';
-import { SourceBlogModule } from './bussiness/source_blog/source_blog.module';
-import { BlogModule } from './bussiness/blog/blog.module';
-import { FeedBlogModule } from './bussiness/feed_blog/feed_blog.module';
-import { BlogPollerModule } from './cron_jobs/blog_poller/blog_poller.module';
-import { TagModule } from './bussiness/tag/tag.module';
+import {ThrottlerGuard, ThrottlerModule} from '@nestjs/throttler';
+import {APP_GUARD} from '@nestjs/core';
+import {SourceBlogModule} from './bussiness/source_blog/source_blog.module';
+import {BlogModule} from './bussiness/blog/blog.module';
+import {FeedBlogModule} from './bussiness/feed_blog/feed_blog.module';
+import {BlogPollerModule} from '@/jobs/blog_poller/blog_poller.module';
+import {TagModule} from './bussiness/tag/tag.module';
 import DBModule from './database/db.config';
-import { FeedBlogEntity } from './bussiness/feed_blog/feed_blog.entity';
-import { BlogEntity } from './bussiness/blog/blog.entity';
-import { SourceBlogEntity } from './bussiness/source_blog/source_blog.entity';
-import { TagEntity } from './bussiness/tag/tag.entity';
-import { EmailNewsletterModule } from './bussiness/email_newsletter/email_newsletter.module';
+import {FeedBlogEntity} from './bussiness/feed_blog/feed_blog.entity';
+import {BlogEntity} from './bussiness/blog/blog.entity';
+import {SourceBlogEntity} from './bussiness/source_blog/source_blog.entity';
+import {TagEntity} from './bussiness/tag/tag.entity';
+import {EmailNewsletterModule} from './bussiness/email_newsletter/email_newsletter.module';
 
 const DEFAULT_ADMIN = {
   email: 'lemsijoker',
