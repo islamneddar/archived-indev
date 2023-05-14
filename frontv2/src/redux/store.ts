@@ -1,8 +1,10 @@
 import {configureStore} from '@reduxjs/toolkit';
-import {createLogger} from 'redux-logger';
-import {systemSlice} from './system/system.slice';
-import thunk from 'redux-thunk';
 import {useDispatch, useSelector} from 'react-redux';
+import {createLogger} from 'redux-logger';
+import thunk from 'redux-thunk';
+
+import {systemSlice} from './system/system.slice';
+import {blogSlice} from '@/redux/blog/blog.slice';
 
 const middlewares = [];
 // add thunk
@@ -15,6 +17,7 @@ if (process.env.NODE_ENV === `development`) {
 export const store = configureStore({
   reducer: {
     systemReducer: systemSlice.reducer,
+    blogReducer: blogSlice.reducer,
   },
   devTools: process.env.NODE_ENV !== 'production',
   middleware: middlewares,

@@ -1,13 +1,13 @@
-export interface PageMeta {
+export interface PageMetaResponse {
   page: number;
-  take: number;
-  itemCount: number;
-  pageCount: number;
+  //take: number;
+  //itemCount: number;
+  //pageCount: number;
   hasPreviousPage: boolean;
   hasNextPage: boolean;
 }
 
-export interface PaginationRequestMeta {
+export interface PaginationRequestMetaRequest {
   page: number;
   take: number;
   order: Order;

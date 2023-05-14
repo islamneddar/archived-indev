@@ -11,7 +11,7 @@ export default function RootLayout(
   {children}: {children: React.ReactNode}
 ) {
   return (
-    <Provider store={store}>
+
       <html lang="en">
         <Script strategy="lazyOnload" id={'script launcher'}>
           {`
@@ -27,13 +27,15 @@ export default function RootLayout(
           <title>blog for community</title>
         </head>
         <body>
+        <Provider store={store}>
           <NavBar />
           {
             children
           }
           <ToasterClient />
+
+        </Provider>
         </body>
       </html>
-    </Provider>
   );
 }

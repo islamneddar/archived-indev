@@ -1,6 +1,7 @@
 import axios from 'axios';
-import {PaginationRequestMeta} from '@/types/api/common';
 import {TypeFeed} from '@/types/api/source_blog';
+import {GetAllBlogRequest, GetBlogsResponse} from '@/types/api/blog';
+import {PaginationRequestMetaRequest} from '@/types/api/common';
 
 
 export default class BlogService {
@@ -12,17 +13,19 @@ export default class BlogService {
     return this.instance;
   }
 
-  async getAllBlogWithPagination(paginationRequest: PaginationRequestMeta) {
-    return axios.get(this.endpointBlog, {
+  async getAllBlogWithPagination(getAllBlogRequest: GetAllBlogRequest) {
+    const res = await axios.get(this.endpointBlog, {
       params: {
-        page: paginationRequest.page,
-        take: paginationRequest.take,
+        page: getAllBlogRequest.paginationRequestMeta.page,
+        take: getAllBlogRequest.paginationRequestMeta.take,
       },
     });
+    const data = await res.data;
+    return data as GetBlogsResponse;
   }
 
   async getAllBlogWithPaginationAndTypeFeed(
-    paginationRequest: PaginationRequestMeta,
+    paginationRequest: PaginationRequestMetaRequest,
     feedType: TypeFeed,
   ) {
     return axios.get(`${this.endpointBlog}/by-feed-type`, {

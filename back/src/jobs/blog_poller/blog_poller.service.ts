@@ -55,7 +55,6 @@ export default class BlogPollerService {
 
   @Cron(CronExpression.EVERY_MINUTE)
   async handleCronDev() {
-    this.LOG.debug('handleCronDev');
     if (process.env.NODE_ENV === 'development') {
       const feedBlogs = await this.feedBlogService.getAll();
       for (const feedBlog of feedBlogs) {
@@ -96,7 +95,6 @@ export default class BlogPollerService {
         item.title,
       );
       if (blogCheck !== null) {
-        this.LOG.debug('blog already all seen');
         return false;
       }
       const blog = new BlogEntity();
@@ -110,7 +108,7 @@ export default class BlogPollerService {
       // blog.content = "";//item.content
       await this.dataSource.transaction(async () => {
         const blogCreated = await this.blogService.getOrCreate(blog);
-        this.LOG.debug('blog created : ', blogCreated);
+        this.LOG.debug('blog created : ', blogCreated.title);
       });
       return true;
     });
