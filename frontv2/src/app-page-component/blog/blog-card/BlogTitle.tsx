@@ -7,7 +7,7 @@ interface IBlogTitleProps {
 
 function BlogTitle(props : IBlogTitleProps) {
   return (
-    <div>
+    <div className={"py-2"}>
       <p
         className="line-clamp-3 font-medium cursor-pointer"
         onClick={() => {

@@ -7,18 +7,21 @@ import 'react-tooltip/dist/react-tooltip.css'
 import SourceAndTimeContainer from '@/app-page-component/blog/blog-card/SourceAndTimeContainer';
 import BlogTitle from '@/app-page-component/blog/blog-card/BlogTitle';
 import TagsContainer from '@/app-page-component/blog/blog-card/TagsContainer';
+import {RenderComponentProps} from 'masonic';
 
 export interface IBlogCardProps {
+  index : number;
   blog: Blog;
+  width: number;
 }
 
-function BlogCard(props: IBlogCardProps) {
-  const {blog} = props;
+function BlogCard(props: RenderComponentProps<Blog>) {
+  const {data : blog} = props;
 
 
   return (
     <div
-      className="h-80 bg-gray-700 rounded-xl cursor-pointer shadow-xl"
+      className="bg-gray-700 rounded-xl cursor-pointer shadow-xl"
       onClick={event => {
         event.stopPropagation();
         window.open(blog.permalink, '_blank', 'noopener,noreferrer');
@@ -34,7 +37,7 @@ function BlogCard(props: IBlogCardProps) {
             alt={'img blog'}
           />
         </div>}
-        <div className="flex flex-col flex-1 h-full justify-between pt-3 px-5">
+        <div className="flex flex-col flex-1 h-full justify-between py-3 px-5">
           <SourceAndTimeContainer blog={blog}></SourceAndTimeContainer>
           <BlogTitle blog={blog}></BlogTitle>
           <TagsContainer blog={blog}></TagsContainer>

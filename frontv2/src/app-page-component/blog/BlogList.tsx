@@ -2,11 +2,12 @@
 import React, {useEffect, useState} from 'react';
 import {Order, PaginationRequestMetaRequest} from '@/types/api/common';
 import BlogCard from './blog-card/BlogCard';
-import InfiniteScroll from 'react-infinite-scroll-component';
 import {TypeFeed} from '@/types/api/source_blog';
 import {useDispatch} from 'react-redux';
 import {getAllBlogThunk} from '@/redux/blog/blog.thunk';
 import {useBlogSelector} from '@/redux/blog/blog.selector';
+import {Masonry, useInfiniteLoader} from 'masonic';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 export interface IBlogListProps {
   typeFeed: TypeFeed;
@@ -35,6 +36,7 @@ function BlogList(props: IBlogListProps) {
 
   useEffect(()=>{
     if(success){
+      console.log("set page + 1")
       setPage(page + 1);
     }
   }, [success])
@@ -63,6 +65,7 @@ function BlogList(props: IBlogListProps) {
       }
   };
 
+
   return (
     <div className={'md:px-5 lg:px-20 w-full'}>
       <div
@@ -85,18 +88,15 @@ function BlogList(props: IBlogListProps) {
           dataLength={blogs.length}
           scrollableTarget={'scrollBlogId'}
           scrollThreshold={0.8}>
-          <div
-            className={
-              'grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4'
-            }>
-            {blogs.map(blog => {
-              return (
-                <div key={blog.blogId}>
-                  <BlogCard blog={blog} />
-                </div>
-              );
-            })}
-          </div>
+        <Masonry items={blogs}
+                 columnGutter={15}
+          // Sets the minimum column width to 172px
+                 columnWidth={172}
+          // Pre-renders 5 windows worth of content
+                 overscanBy={3}
+                 columnCount={4}
+                 render={BlogCard}
+        />
         </InfiniteScroll>
       </div>
     </div>
