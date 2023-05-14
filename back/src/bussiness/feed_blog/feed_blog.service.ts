@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { FeedBlogEntity } from './feed_blog.entity';
-import { IsNull, Not, Repository } from 'typeorm';
 import { CreateFeedBlogRequest } from './interface';
 
 @Injectable()
@@ -16,11 +16,11 @@ export class FeedBlogService {
   }
 
   async getAll(): Promise<FeedBlogEntity[]> {
-    return await this.feedBlogRepository.find({});
+    return this.feedBlogRepository.find({});
   }
 
   async findOne(createFeedBlogRequest: CreateFeedBlogRequest) {
-    return await this.feedBlogRepository.findOne({
+    return this.feedBlogRepository.findOne({
       where: {
         urlFeed: createFeedBlogRequest.urlFeed,
       },

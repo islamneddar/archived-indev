@@ -1,54 +1,38 @@
-import {
-  BaseEntity,
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
-import { SourceBlogEntity } from '../source_blog/source_blog.entity';
+/* eslint-disable import/no-cycle */
+import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
+import {SourceBlogEntity} from '../source_blog/source_blog.entity';
+import {BaseTable} from '@/database/base-table.entity';
 
 export enum TypeFeed {
   COMMUNITY = 'community',
   ORIGINAL = 'original',
   NEWS = 'news',
   DESIGN = 'design',
-  DATASCIENCE = 'datascience',
+  DATA_SCIENCE = 'data science',
   DEVOPS = 'devops',
 }
 
 @Entity({
   name: 'feed_blogs',
 })
-export class FeedBlogEntity extends BaseEntity {
+export class FeedBlogEntity extends BaseTable {
   @PrimaryGeneratedColumn({
     name: 'feed_blog_id',
   })
   feedBlogId: number;
 
   // rss feed url
-  @Column({ unique: true, nullable: false, name: 'url_feed' })
+  @Column({unique: true, nullable: false, name: 'url_feed'})
   urlFeed: string;
 
-  @DeleteDateColumn({ name: 'delete_date' })
-  deleteDate: Date;
-
-  @CreateDateColumn({ name: 'creation_at' })
-  creationDate: Date;
-
-  @UpdateDateColumn({ name: 'update_at' })
-  updateDate: Date;
-
-  @OneToMany(() => SourceBlogEntity, (sourceBlog) => sourceBlog.feedBlog)
+  @OneToMany(() => SourceBlogEntity, sourceBlog => sourceBlog.feedBlog)
   sourceBlogs: SourceBlogEntity[];
 
-  @Column({
+  /*@Column({
     type: 'enum',
     nullable: false,
     enum: TypeFeed,
     default: TypeFeed.ORIGINAL,
   })
-  type: TypeFeed;
+  type: TypeFeed;*/
 }

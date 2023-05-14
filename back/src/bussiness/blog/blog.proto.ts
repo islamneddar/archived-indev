@@ -10,3 +10,9 @@ export interface GetBlogBySearchRequest {
   pageOption: PageOptionsDto;
   search: string;
 }
+
+export interface GetBlogBySearchAndFeedTypeRequest {
+  pageOption: PageOptionsDto;
+  feedType: TypeFeed;
+  search: string;
+}

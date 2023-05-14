@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { TagController } from './tag.controller';
 import { TagService } from './tag.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { TagEntity } from './tag.entity';
 
 @Module({

@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BlogEntity } from './blog.entity';
 import { Repository } from 'typeorm';
+import { BlogEntity } from './blog.entity';
 import { PageOptionsDto } from '../../common/pagination/page_option.dto';
 import { PageMetaDto } from '../../common/pagination/page_meta.dto';
 import { PageDto } from '../../common/pagination/page.dto';
@@ -10,13 +10,14 @@ import { TypeFeed } from '../feed_blog/feed_blog.entity';
 @Injectable()
 export class BlogService {
   private readonly logger = new Logger(BlogService.name);
+
   constructor(
     @InjectRepository(BlogEntity)
     private blogRepository: Repository<BlogEntity>,
   ) {}
 
   async getByTitle(titleFeed: string) {
-    return await this.blogRepository.findOne({
+    return this.blogRepository.findOne({
       where: {
         title: titleFeed,
       },
@@ -48,7 +49,7 @@ export class BlogService {
       where: {
         title: blogTitle,
         sourceBlog: {
-          sourceBlogId: sourceBlogId,
+          sourceBlogId,
         },
       },
     });
@@ -113,4 +114,35 @@ export class BlogService {
     const pageMetaDto = new PageMetaDto({ itemCount, pageOptionsDto });
     return new PageDto(entities, pageMetaDto);
   };
+
+  async getAllPaginateWithSearchAndFeedType(
+    pageOption: PageOptionsDto,
+    search: string,
+    feedType: TypeFeed,
+  ) {
+    this.logger.debug('get all paginate with search and feed type');
+    this.logger.debug(pageOption);
+    this.logger.debug(pageOption.page);
+    this.logger.debug(pageOption.take);
+    const query = this.blogRepository
+      .createQueryBuilder('blog')
+      .leftJoinAndSelect('blog.sourceBlog', 'sourceBlog')
+      .leftJoinAndSelect('sourceBlog.feedBlog', 'feedBlog')
+      .where('feedBlog.type = :typeFeed', { typeFeed: feedType })
+      .andWhere('feedBlog.blackList = :blackList', { blackList: false })
+      .select(['blog', 'sourceBlog.name', 'sourceBlog.image'])
+      .leftJoinAndSelect('blog.tags', 'tag')
+      .where('blog.title ILIKE :searchQuery', { searchQuery: `%${search}%` })
+      .orderBy('blog.publishDate', 'DESC')
+      .skip((pageOption.page - 1) * pageOption.take)
+      .take(pageOption.take);
+
+    const itemCount = await query.getCount();
+    const entities = await query.getMany();
+    const pageMetaDto = new PageMetaDto({
+      itemCount,
+      pageOptionsDto: pageOption,
+    });
+    return new PageDto(entities, pageMetaDto);
+  }
 }

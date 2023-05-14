@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import {
   BaseEntity,
   Column,
@@ -7,18 +8,18 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { BlogEntity } from '../blog/blog.entity';
-import { FeedBlogEntity } from '../feed_blog/feed_blog.entity';
+import {BlogEntity} from '../blog/blog.entity';
+import {FeedBlogEntity, TypeFeed} from '../feed_blog/feed_blog.entity';
+import {BaseTable} from '../../database/base-table.entity';
 
 @Entity({
   name: 'source_blogs',
 })
-export class SourceBlogEntity extends BaseEntity {
-  @PrimaryGeneratedColumn({ name: 'source_blog_id' })
+export class SourceBlogEntity extends BaseTable {
+  @PrimaryGeneratedColumn({name: 'source_blog_id'})
   sourceBlogId: number;
 
   @Column({
@@ -29,22 +30,13 @@ export class SourceBlogEntity extends BaseEntity {
   @Column()
   image: string;
 
-  @DeleteDateColumn({ name: 'delete_date' })
-  deleteDate: Date;
-
-  @CreateDateColumn({ name: 'creation_at' })
-  creationDate: Date;
-
-  @UpdateDateColumn({ name: 'update_at' })
-  updateDate: Date;
-
-  @OneToMany(() => BlogEntity, (blog) => blog.sourceBlog)
+  @OneToMany(() => BlogEntity, blog => blog.sourceBlog)
   blogs: BlogEntity[];
 
-  @ManyToOne(() => FeedBlogEntity, (feedBlog) => feedBlog.sourceBlogs)
-  @JoinColumn({ name: 'feed_blog_id' })
+  @ManyToOne(() => FeedBlogEntity, feedBlog => feedBlog.sourceBlogs)
+  @JoinColumn({name: 'feed_blog_id'})
   feedBlog: FeedBlogEntity;
 
-  @Column({ name: 'blackList', default: false })
+  @Column({name: 'blackList', default: false})
   blackList: boolean;
 }

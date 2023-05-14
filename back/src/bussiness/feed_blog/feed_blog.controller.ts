@@ -7,8 +7,8 @@ import {
   Req,
   Res,
 } from '@nestjs/common';
-import { FeedBlogService } from './feed_blog.service';
 import { Request, Response } from 'express';
+import { FeedBlogService } from './feed_blog.service';
 import { CreateFeedBlogRequest } from './interface';
 
 @Controller('feed-blog')
@@ -33,6 +33,5 @@ export class FeedBlogController {
     res.status(HttpStatus.CREATED).json({
       message: 'feed created',
     });
-    return;
   }
 }

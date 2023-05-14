@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { NewsletterEmailEntity } from './email_newsletter.entity';
 import { Repository } from 'typeorm';
+import { NewsletterEmailEntity } from './email_newsletter.entity';
 
 @Injectable()
 export class EmailNewsletterService {
