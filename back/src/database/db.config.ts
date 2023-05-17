@@ -1,12 +1,12 @@
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { Logger } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TypeOrmModuleOptions } from '@nestjs/typeorm/dist/interfaces/typeorm-options.interface';
-import { SourceBlogEntity } from '../bussiness/source_blog/source_blog.entity';
-import { BlogEntity } from '../bussiness/blog/blog.entity';
-import { FeedBlogEntity } from '../bussiness/feed_blog/feed_blog.entity';
-import { TagEntity } from '../bussiness/tag/tag.entity';
-import { NewsletterEmailEntity } from '../bussiness/email_newsletter/email_newsletter.entity';
+import {TypeOrmModule} from '@nestjs/typeorm';
+import {Logger} from '@nestjs/common';
+import {ConfigModule, ConfigService} from '@nestjs/config';
+import {TypeOrmModuleOptions} from '@nestjs/typeorm/dist/interfaces/typeorm-options.interface';
+import {SourceBlogEntity} from '@/bussiness/source_blog/source_blog.entity';
+import {BlogEntity} from '@/bussiness/blog/blog.entity';
+import {FeedBlogEntity} from '@/bussiness/feed_blog/feed_blog.entity';
+import {TagEntity} from '@/bussiness/tag/tag.entity';
+import {NewsletterEmailEntity} from '@/bussiness/email_newsletter/email_newsletter.entity';
 
 const LOG = new Logger('db.config');
 
