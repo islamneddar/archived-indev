@@ -17,7 +17,6 @@ export class TagService {
         title: category,
       },
     });
-    this.LOG.log('tagFound', tagFound);
     if (!tagFound) {
       const tag = new TagEntity();
       tag.title = category;

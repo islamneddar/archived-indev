@@ -90,13 +90,14 @@ export default class BlogPollerService {
       return;
     }
 
-    this.feed.items.every(async item => {
+    for (const item of this.feed.items) {
       const blogCheck: BlogEntity = await this.blogService.getByTitle(
         item.title,
       );
       if (blogCheck !== null) {
-        return false;
+        break;
       }
+      this.LOG.log('blog to add : ', item.title);
       const blog = new BlogEntity();
       blog.title = item.title;
       blog.publishDate = new Date(item.pubDate);
@@ -108,10 +109,9 @@ export default class BlogPollerService {
       // blog.content = "";//item.content
       await this.dataSource.transaction(async () => {
         const blogCreated = await this.blogService.getOrCreate(blog);
-        this.LOG.debug('blog created : ', blogCreated.title);
+        this.LOG.debug('blog created : ' + blogCreated.title);
       });
-      return true;
-    });
+    }
   }
 
   async getInfoSourceBlog(feedBlog: FeedBlogEntity): Promise<SourceBlogEntity> {
