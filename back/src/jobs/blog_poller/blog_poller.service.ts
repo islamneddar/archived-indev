@@ -90,12 +90,14 @@ export default class BlogPollerService {
       return;
     }
 
+    this.LOG.debug('feed titles number : ' + this.feed.items.length);
     for (const item of this.feed.items) {
+      this.LOG.debug('blog to check : ' + item.title);
       const blogCheck: BlogEntity = await this.blogService.getByTitle(
         item.title,
       );
       if (blogCheck !== null) {
-        break;
+        continue;
       }
       this.LOG.log('blog to add : ', item.title);
       const blog = new BlogEntity();
