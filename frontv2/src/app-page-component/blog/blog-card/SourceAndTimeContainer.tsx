@@ -6,7 +6,7 @@ import {timeSince} from '@/utils/time.util';
 export interface SourceAndTimeContainerProps {
   blog: Blog;
 }
-function SourceAndTimeContainer(props : SourceAndTimeContainerProps) {
+function SourceAndTimeContainer(props: SourceAndTimeContainerProps) {
   const dateFormatV2 = timeSince(new Date(props.blog.publishDate).getTime());
   return (
     <div className="flex flex-row items-center py-3">
@@ -21,10 +21,7 @@ function SourceAndTimeContainer(props : SourceAndTimeContainerProps) {
           data-tooltip-content={props.blog.sourceBlog.name}
           data-tooltip-place="top"
         />
-        <ReactTooltip
-          id="source_blog_name"
-          place="top"
-        />
+        <ReactTooltip id="source_blog_name" place="top" />
       </div>
       <div className="flex justify-start items-end pl-3">
         <p className="text-12">{dateFormatV2} ago</p>

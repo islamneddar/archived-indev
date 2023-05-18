@@ -7,14 +7,11 @@ import NavBar from '../app-page-component/navbar/NavBar';
 import {store} from '@/redux/store';
 import ToasterClient from '../components/ToasterClient';
 
-export default function RootLayout(
-  {children}: {children: React.ReactNode}
-) {
+export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
-
-      <html lang="en">
-        <Script strategy="lazyOnload" id={'script launcher'}>
-          {`
+    <html lang="en">
+      <Script strategy="lazyOnload" id={'script launcher'}>
+        {`
                     window.dataLayer = window.dataLayer || [];
                     function gtag(){dataLayer.push(arguments);}
                     gtag('js', new Date());
@@ -22,20 +19,17 @@ export default function RootLayout(
                     page_path: window.location.pathname,
                     });
                 `}
-        </Script>
-        <head>
-          <title>blog for community</title>
-        </head>
-        <body>
+      </Script>
+      <head>
+        <title>blog for community</title>
+      </head>
+      <body>
         <Provider store={store}>
           <NavBar />
-          {
-            children
-          }
+          {children}
           <ToasterClient />
-
         </Provider>
-        </body>
-      </html>
+      </body>
+    </html>
   );
 }

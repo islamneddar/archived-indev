@@ -13,16 +13,15 @@
   },
   "extends": [
     "eslint:recommended",
-    "prettier",
     "plugin:react/recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:prettier/recommended",
     "plugin:import/typescript",
-    "next/core-web-vitals"
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
   ],
   "overrides": [],
 
-  "plugins": ["react", "@typescript-eslint"],
+  "plugins": ["react", "@typescript-eslint/eslint-plugin"],
   "rules": {
     "react/jsx-filename-extension": [
       2,

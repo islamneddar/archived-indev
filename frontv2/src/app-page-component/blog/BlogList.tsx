@@ -35,37 +35,36 @@ function BlogList(props: IBlogListProps) {
     setRestart(true);
   }, [props.typeFeed]);
 
-  useEffect(()=>{
-    if(success){
-      console.log("set page + 1")
+  useEffect(() => {
+    if (success) {
+      console.log('set page + 1');
       setPage(page + 1);
     }
-  }, [success])
+  }, [success]);
 
   useEffect(() => {
-    if(error !== undefined) {
+    if (error !== undefined) {
       console.log(error);
       return;
     }
-  }, [error])
+  }, [error]);
 
   const fetchBlogs = async (restart: boolean) => {
-      const paginationRequest: PaginationRequestMetaRequest = {
-        page: page,
-        take: 12,
-        order: Order.DESC,
-      };
+    const paginationRequest: PaginationRequestMetaRequest = {
+      page: page,
+      take: 12,
+      order: Order.DESC,
+    };
 
-      const getAllBlogRequest = {
-        paginationRequestMeta: paginationRequest,
-      }
-      console.log(page)
-      dispatchThunk(getAllBlogThunk(getAllBlogRequest));
-      if (restart) {
-        setRestart(false);
-      }
+    const getAllBlogRequest = {
+      paginationRequestMeta: paginationRequest,
+    };
+    console.log(page);
+    dispatchThunk(getAllBlogThunk(getAllBlogRequest));
+    if (restart) {
+      setRestart(false);
+    }
   };
-
 
   return (
     <div className={'md:px-5 lg:px-20 w-full'}>
@@ -89,26 +88,13 @@ function BlogList(props: IBlogListProps) {
           dataLength={blogs.length}
           scrollableTarget={'scrollBlogId'}
           scrollThreshold={0.8}
-          className={"mx-auto w-full"}>
-          {
-            /*<Masonry items={blogs}
-                    columnGutter={15}
-            // Sets the minimum column width to 172px
-                    columnWidth={172}
-            // Pre-renders 5 windows worth of content
-            //overscanBy={3}
-                    columnCount={4}
-                    render={BlogCard}
-          />*/
-          }
-          <div className={"flex flex-wrap gap-x-2.5 justify-center items-center"}>
-            {
-              blogs.map((blog, index) => {
-                return <BlogCard key={index} blog={blog}></BlogCard>;
-              })
-            }
+          className={'mx-auto w-full'}>
+          <div
+            className={'flex flex-wrap gap-x-2.5 justify-center items-center'}>
+            {blogs.map((blog, index) => {
+              return <BlogCard key={index} blog={blog}></BlogCard>;
+            })}
           </div>
-
         </InfiniteScroll>
       </div>
     </div>
