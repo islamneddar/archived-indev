@@ -7,13 +7,15 @@ import {useDispatch} from 'react-redux';
 import {getAllBlogThunk} from '@/redux/blog/blog.thunk';
 import {useBlogSelector} from '@/redux/blog/blog.selector';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import {AppDispatch} from '@/redux/store';
+import {ThunkDispatch} from '@reduxjs/toolkit';
 
 export interface IBlogListProps {
   typeFeed: TypeFeed;
 }
 
 function BlogList(props: IBlogListProps) {
-  const dispatch = useDispatch();
+  const dispatchThunk = useDispatch<ThunkDispatch<any, any, any>>();
   const {loading, blogs, meta, success, error} = useBlogSelector();
   const [page, setPage] = useState<number>(1);
   const [restart, setRestart] = useState<boolean>(true);
@@ -58,7 +60,7 @@ function BlogList(props: IBlogListProps) {
         paginationRequestMeta: paginationRequest,
       }
       console.log(page)
-      dispatch(getAllBlogThunk(getAllBlogRequest));
+      dispatchThunk(getAllBlogThunk(getAllBlogRequest));
       if (restart) {
         setRestart(false);
       }
