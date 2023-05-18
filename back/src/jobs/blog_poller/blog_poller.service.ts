@@ -92,7 +92,6 @@ export default class BlogPollerService {
 
     this.LOG.debug('feed titles number : ' + this.feed.items.length);
     for (const item of this.feed.items) {
-      this.LOG.debug('blog to check : ' + item.title);
       const blogCheck: BlogEntity = await this.blogService.getByTitle(
         item.title,
       );

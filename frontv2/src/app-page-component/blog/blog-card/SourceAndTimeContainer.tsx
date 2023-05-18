@@ -9,7 +9,7 @@ export interface SourceAndTimeContainerProps {
 function SourceAndTimeContainer(props : SourceAndTimeContainerProps) {
   const dateFormatV2 = timeSince(new Date(props.blog.publishDate).getTime());
   return (
-    <div className="flex flex-row items-center">
+    <div className="flex flex-row items-center py-3">
       <div className="flex justify-start items-center">
         <img
           data-tip={props.blog.sourceBlog.name}

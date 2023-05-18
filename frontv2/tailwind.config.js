@@ -45,6 +45,8 @@ module.exports = {
       width: {
         214: '214px',
         248: '248px',
+        260: '260px',
+        300: '300px',
         354: '354px',
         509: '509px',
         649: '649px',
@@ -70,7 +72,7 @@ module.exports = {
       sm: '425px',
       // => @media (min-width: 425px) { ... }
 
-      md: '768px',
+      md: '769px',
       // => @media (min-width: 768px) { ... }
 
       lg: '1025px',
