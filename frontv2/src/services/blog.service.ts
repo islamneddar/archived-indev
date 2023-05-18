@@ -3,7 +3,6 @@ import {TypeFeed} from '@/types/api/source_blog';
 import {GetAllBlogRequest, GetBlogsResponse} from '@/types/api/blog';
 import {PaginationRequestMetaRequest} from '@/types/api/common';
 
-
 export default class BlogService {
   private endpointBlog = `${process.env.NEXT_PUBLIC_API_URL}/blogs`;
 

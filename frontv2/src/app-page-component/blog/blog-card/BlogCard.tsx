@@ -3,7 +3,7 @@
 import React from 'react';
 import {Blog} from '@/types/api/blog';
 import './BlogCard.css';
-import 'react-tooltip/dist/react-tooltip.css'
+import 'react-tooltip/dist/react-tooltip.css';
 import SourceAndTimeContainer from '@/app-page-component/blog/blog-card/SourceAndTimeContainer';
 import BlogTitle from '@/app-page-component/blog/blog-card/BlogTitle';
 import TagsContainer from '@/app-page-component/blog/blog-card/TagsContainer';
@@ -14,8 +14,7 @@ export interface IBlogCardProps {
 }
 
 function BlogCard(props: IBlogCardProps) {
-  const {blog : blog} = props;
-
+  const {blog: blog} = props;
 
   return (
     <div
@@ -26,18 +25,19 @@ function BlogCard(props: IBlogCardProps) {
       }}
       key={blog.blogId}>
       <div className={'pb-2 h-full flex flex-col'}>
-        <div className={"px-5"}>
+        <div className={'px-5'}>
           <BlogTitle blog={blog}></BlogTitle>
         </div>
         <div className="flex flex-col flex-1 h-full justify-between py-3 px-5">
-          {
-            blog.thumbnail && <div className={'h-16'}>
+          {blog.thumbnail && (
+            <div className={'h-16'}>
               <img
                 src={blog.thumbnail}
                 className={'w-full h-full rounded-xl object-cover'}
                 alt={'img blog'}
               />
-            </div>}
+            </div>
+          )}
           <SourceAndTimeContainer blog={blog}></SourceAndTimeContainer>
 
           <TagsContainer blog={blog}></TagsContainer>

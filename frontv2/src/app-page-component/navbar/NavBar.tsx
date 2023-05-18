@@ -2,12 +2,10 @@ import React from 'react';
 import Image from 'next/image';
 import {useDispatch} from 'react-redux';
 import {logoInDev} from '../../assets/images';
-//import {toggleSideBarTopic} from '../../redux/system/system.slice';
 import {AiOutlineMenu} from 'react-icons/all';
 
 function NavBar() {
   const dispatch = useDispatch();
-
   return (
     <div className="h-24 bg-primary px-10">
       {

@@ -7,12 +7,10 @@ interface IHeadTypeProps {
     type: string;
   };
 }
-
 export default function Head(props: IHeadTypeProps) {
   return (
     <>
       <NextSeo
-        useAppDir={true}
         title={`Tech Blogs}`}
         description={`get the latest tech blogs from the `}></NextSeo>
       <meta
