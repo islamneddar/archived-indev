@@ -1,11 +1,12 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { BlogEntity } from './blog.entity';
-import { PageOptionsDto } from '../../common/pagination/page_option.dto';
-import { PageMetaDto } from '../../common/pagination/page_meta.dto';
-import { PageDto } from '../../common/pagination/page.dto';
-import { TypeFeed } from '../feed_blog/feed_blog.entity';
+import {Injectable, Logger} from '@nestjs/common';
+import {InjectRepository} from '@nestjs/typeorm';
+import {Repository} from 'typeorm';
+import {BlogEntity} from './blog.entity';
+import {PageOptionsDto} from '../../common/pagination/page_option.dto';
+import {PageMetaDto} from '../../common/pagination/page_meta.dto';
+import {PageDto} from '../../common/pagination/page.dto';
+import {TypeFeed} from '../feed_blog/feed_blog.entity';
+import logger from '@/utils/logger';
 
 @Injectable()
 export class BlogService {
@@ -67,7 +68,8 @@ export class BlogService {
 
     const itemCount = await query.getCount();
     const entities = await query.getMany();
-    const pageMetaDto = new PageMetaDto({ itemCount, pageOptionsDto });
+    const pageMetaDto = new PageMetaDto({itemCount, pageOptionsDto});
+    this.logger.debug('meta dto' + JSON.stringify(pageMetaDto));
     return new PageDto(entities, pageMetaDto);
   }
 
@@ -79,8 +81,8 @@ export class BlogService {
       .createQueryBuilder('blog')
       .leftJoinAndSelect('blog.sourceBlog', 'sourceBlog')
       .leftJoinAndSelect('sourceBlog.feedBlog', 'feedBlog')
-      .where('feedBlog.type = :typeFeed', { typeFeed: feedType })
-      .andWhere('feedBlog.blackList = :blackList', { blackList: false })
+      .where('feedBlog.type = :typeFeed', {typeFeed: feedType})
+      .andWhere('feedBlog.blackList = :blackList', {blackList: false})
       .select(['blog', 'sourceBlog.name', 'sourceBlog.image'])
       .leftJoinAndSelect('blog.tags', 'tag')
       .orderBy('blog.publishDate', 'DESC')
@@ -89,7 +91,7 @@ export class BlogService {
 
     const itemCount = await query.getCount();
     const entities = await query.getMany();
-    const pageMetaDto = new PageMetaDto({ itemCount, pageOptionsDto });
+    const pageMetaDto = new PageMetaDto({itemCount, pageOptionsDto});
     return new PageDto(entities, pageMetaDto);
   }
 
@@ -101,7 +103,7 @@ export class BlogService {
       .createQueryBuilder('blog')
       .leftJoinAndSelect('blog.sourceBlog', 'sourceBlog')
       .leftJoinAndSelect('sourceBlog.feedBlog', 'feedBlog')
-      .where('feedBlog.blackList = :blackList', { blackList: false })
+      .where('feedBlog.blackList = :blackList', {blackList: false})
       .select(['blog', 'sourceBlog.name', 'sourceBlog.image'])
       .leftJoinAndSelect('blog.tags', 'tag')
       .where(`MATCH(blog.title) AGAINST ('(${search})' IN BOOLEAN MODE)`)
@@ -111,7 +113,7 @@ export class BlogService {
 
     const itemCount = await query.getCount();
     const entities = await query.getMany();
-    const pageMetaDto = new PageMetaDto({ itemCount, pageOptionsDto });
+    const pageMetaDto = new PageMetaDto({itemCount, pageOptionsDto});
     return new PageDto(entities, pageMetaDto);
   };
 
@@ -128,11 +130,11 @@ export class BlogService {
       .createQueryBuilder('blog')
       .leftJoinAndSelect('blog.sourceBlog', 'sourceBlog')
       .leftJoinAndSelect('sourceBlog.feedBlog', 'feedBlog')
-      .where('feedBlog.type = :typeFeed', { typeFeed: feedType })
-      .andWhere('feedBlog.blackList = :blackList', { blackList: false })
+      .where('feedBlog.type = :typeFeed', {typeFeed: feedType})
+      .andWhere('feedBlog.blackList = :blackList', {blackList: false})
       .select(['blog', 'sourceBlog.name', 'sourceBlog.image'])
       .leftJoinAndSelect('blog.tags', 'tag')
-      .where('blog.title ILIKE :searchQuery', { searchQuery: `%${search}%` })
+      .where('blog.title ILIKE :searchQuery', {searchQuery: `%${search}%`})
       .orderBy('blog.publishDate', 'DESC')
       .skip((pageOption.page - 1) * pageOption.take)
       .take(pageOption.take);

@@ -6,7 +6,7 @@ import {TypeFeed} from '@/types/api/source_blog';
 import {useDispatch} from 'react-redux';
 import {getAllBlogThunk} from '@/redux/blog/blog.thunk';
 import {useBlogSelector} from '@/redux/blog/blog.selector';
-import {Masonry, useInfiniteLoader} from 'masonic';
+import {Masonry} from 'masonic';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 export interface IBlogListProps {
@@ -84,19 +84,30 @@ function BlogList(props: IBlogListProps) {
         <InfiniteScroll
           next={() => fetchBlogs(false)}
           hasMore={meta.hasNextPage}
-          loader={<div>Loading ...</div>}
+          loader={<div></div>}
           dataLength={blogs.length}
           scrollableTarget={'scrollBlogId'}
-          scrollThreshold={0.8}>
-        <Masonry items={blogs}
-                 columnGutter={15}
-          // Sets the minimum column width to 172px
-                 columnWidth={172}
-          // Pre-renders 5 windows worth of content
-                 overscanBy={3}
-                 columnCount={4}
-                 render={BlogCard}
-        />
+          scrollThreshold={0.8}
+          className={"mx-auto w-full"}>
+          {
+            /*<Masonry items={blogs}
+                    columnGutter={15}
+            // Sets the minimum column width to 172px
+                    columnWidth={172}
+            // Pre-renders 5 windows worth of content
+            //overscanBy={3}
+                    columnCount={4}
+                    render={BlogCard}
+          />*/
+          }
+          <div className={"flex flex-wrap gap-x-2.5 justify-center items-center"}>
+            {
+              blogs.map((blog, index) => {
+                return <BlogCard key={index} blog={blog}></BlogCard>;
+              })
+            }
+          </div>
+
         </InfiniteScroll>
       </div>
     </div>
