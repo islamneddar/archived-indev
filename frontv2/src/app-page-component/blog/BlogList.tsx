@@ -6,7 +6,6 @@ import {TypeFeed} from '@/types/api/source_blog';
 import {useDispatch} from 'react-redux';
 import {getAllBlogThunk} from '@/redux/blog/blog.thunk';
 import {useBlogSelector} from '@/redux/blog/blog.selector';
-import {Masonry} from 'masonic';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 export interface IBlogListProps {
