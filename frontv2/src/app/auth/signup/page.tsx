@@ -64,7 +64,7 @@ export default function SignupPage() {
                   placeholder={'john doe'}
                   isError={errors.username !== undefined}
                   inputClassName={
-                    'border-gray-1 border-1 placeholder:text-gray-d4 placeholder:font-normal placeholder:text-18 w-96'
+                    'border-gray-1 border-1 placeholder:text-gray-d4 placeholder:font-normal placeholder:text-18 w-96 h-10 p-2 text-black'
                   }
                   register={register('username')}
                   errorMessage={errors.username?.message}
@@ -79,7 +79,7 @@ export default function SignupPage() {
                   placeholder={'john.doe@gmail.com'}
                   isError={errors.email !== undefined}
                   inputClassName={
-                    'border-gray-1 border-1 placeholder:text-gray-d4 placeholder:font-normal placeholder:text-18 w-96'
+                    'border-gray-1 border-1 placeholder:text-gray-d4 placeholder:font-normal placeholder:text-18 w-96 h-10 p-2 text-black'
                   }
                   register={register('email')}
                   errorMessage={errors.email?.message}
@@ -99,7 +99,7 @@ export default function SignupPage() {
                   placeholder={'**********'}
                   isError={errors.password !== undefined}
                   inputClassName={
-                    'border-gray-1 border-1 placeholder:text-gray-d4 placeholder:font-normal placeholder:text-18 w-96'
+                    'border-gray-1 border-1 placeholder:text-gray-d4 placeholder:font-normal placeholder:text-18 w-96 h-10 p-2 text-black'
                   }
                   register={register('password')}
                   errorMessage={errors.password?.message}

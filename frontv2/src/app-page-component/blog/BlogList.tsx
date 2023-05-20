@@ -66,7 +66,7 @@ function BlogList(props: IBlogListProps) {
   };
 
   return (
-    <div className={'md:px-5 lg:px-20 w-full'}>
+    <div className={'md:px-5 lg:px-10 w-full'}>
       <div
         id={'scrollBlogId'}
         className={'overflow-y-auto h-[calc(100vh_-_136px)] sm:scrollbar-hide'}>

@@ -21,7 +21,14 @@ function AuthContainer() {
             router.push(routing.auth.login);
           }}
         />
-        <PrimaryButton title={'register'} loading={false} disabled={false} />
+        <PrimaryButton
+          title={'register'}
+          loading={false}
+          disabled={false}
+          onClick={() => {
+            router.push(routing.auth.signup);
+          }}
+        />
       </div>
     );
   }

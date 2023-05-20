@@ -6,6 +6,8 @@ const routing = {
   },
   blog: {
     root: '/blog',
+    home: '/blog/home',
+    followSource: '/blog/follow-sources',
   },
 };
 

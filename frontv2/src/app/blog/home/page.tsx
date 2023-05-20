@@ -10,13 +10,7 @@ interface IBlogBodyTypeProps {
 }
 
 function Page(props: IBlogBodyTypeProps) {
-  return (
-    <Fragment>
-      <div className={' w-full'}>
-        <BlogsBody type={props.params.type as TypeFeed}></BlogsBody>
-      </div>
-    </Fragment>
-  );
+  return <BlogsBody type={props.params.type as TypeFeed}></BlogsBody>;
 }
 
 export default Page;
