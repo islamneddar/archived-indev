@@ -7,8 +7,13 @@ import {useDispatch} from 'react-redux';
 import {getAllBlogThunk} from '@/redux/blog/blog.thunk';
 import {useBlogSelector} from '@/redux/blog/blog.selector';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import {AppDispatch} from '@/redux/store';
 import {ThunkDispatch} from '@reduxjs/toolkit';
+import {
+  BlogAffichageType,
+  GridBlogType,
+} from '@/types/general/blog-general.type';
+import {blogAffichageType, gridBlogType} from '@/types/data/blog-general.data';
+import BlogsCardLists from '@/app-page-component/blog/BlogsCardLists';
 
 export interface IBlogListProps {
   typeFeed: TypeFeed;
@@ -19,6 +24,10 @@ function BlogList(props: IBlogListProps) {
   const {loading, blogs, meta, success, error} = useBlogSelector();
   const [page, setPage] = useState<number>(1);
   const [restart, setRestart] = useState<boolean>(true);
+  const [stateGrid, setStateGrid] = useState<GridBlogType>(GridBlogType.LIST);
+  const [stateAffichage, setStateAffichage] = useState<BlogAffichageType>(
+    BlogAffichageType.LATEST,
+  );
 
   useEffect(() => {
     async function getBlogs() {
@@ -73,11 +82,45 @@ function BlogList(props: IBlogListProps) {
         {
           <div
             className={
-              'w-full flex justify-center items-center py-10 text-center'
+              'w-full flex justify-center items-center py-5 text-center'
             }>
-            <h2 className={'text-3xl text-center'}>
-              The latest Blogs in the Tech Industry for developers
-            </h2>
+            <div
+              className={'w-full flex justify-between border-b-1 border-white'}>
+              <div>
+                {blogAffichageType.map((grid, index) => {
+                  return (
+                    <div
+                      key={index}
+                      className={
+                        `hover:bg-indigo-500 rounded-t-lg hover:cursor-pointer w-20` +
+                        (stateAffichage === grid.value ? ' bg-indigo-500' : '')
+                      }
+                      onClick={() => setStateAffichage(grid.value)}>
+                      <p className={'p-1 text-white font-medium px-2'}>
+                        {grid.content}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+              <div className={'flex flex-row gap-3'}>
+                {gridBlogType.map((grid, index) => {
+                  return (
+                    <div
+                      key={index}
+                      className={
+                        `hover:bg-indigo-500 rounded-t-lg hover:cursor-pointer w-20` +
+                        (stateGrid === grid.value ? ' bg-indigo-500' : '')
+                      }
+                      onClick={() => setStateGrid(grid.value)}>
+                      <p className={'p-1 text-white font-medium px-2'}>
+                        {grid.content}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         }
         <InfiniteScroll
@@ -88,12 +131,9 @@ function BlogList(props: IBlogListProps) {
           scrollableTarget={'scrollBlogId'}
           scrollThreshold={0.8}
           className={'mx-auto w-full'}>
-          <div
-            className={'flex flex-wrap gap-x-2.5 justify-center items-center'}>
-            {blogs.map((blog, index) => {
-              return <BlogCard key={index} blog={blog}></BlogCard>;
-            })}
-          </div>
+          <BlogsCardLists
+            blogs={blogs}
+            gridBlogType={stateGrid}></BlogsCardLists>
         </InfiniteScroll>
       </div>
     </div>
