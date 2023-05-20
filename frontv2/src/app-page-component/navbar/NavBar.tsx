@@ -3,11 +3,16 @@ import Image from 'next/image';
 import {useDispatch} from 'react-redux';
 import {logoInDev} from '../../assets/images';
 import {AiOutlineMenu} from 'react-icons/all';
-
+import PrimaryButton from '@/components/button/PrimaryButton';
+import {useRouter} from 'next/navigation';
+import routing from '@/routes/routing.constant';
+import AuthContainer from '@/app-page-component/navbar/auth/AuthContainer';
+import {useUserSessionSelector} from '@/redux/auth/user/user.slice';
 function NavBar() {
-  const dispatch = useDispatch();
+  const router = useRouter();
+
   return (
-    <div className="h-24 bg-primary px-10">
+    <div className="h-24 bg-primary px-10 flex justify-between">
       {
         // height : 96px
       }
@@ -25,6 +30,7 @@ function NavBar() {
           />
         </div>
       </div>
+      <AuthContainer></AuthContainer>
     </div>
   );
 }

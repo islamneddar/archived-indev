@@ -37,7 +37,6 @@ function BlogList(props: IBlogListProps) {
 
   useEffect(() => {
     if (success) {
-      console.log('set page + 1');
       setPage(page + 1);
     }
   }, [success]);
@@ -59,7 +58,7 @@ function BlogList(props: IBlogListProps) {
     const getAllBlogRequest = {
       paginationRequestMeta: paginationRequest,
     };
-    console.log(page);
+
     dispatchThunk(getAllBlogThunk(getAllBlogRequest));
     if (restart) {
       setRestart(false);

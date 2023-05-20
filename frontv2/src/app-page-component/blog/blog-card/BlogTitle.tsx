@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import {Blog} from '@/types/api/blog';
 
@@ -11,7 +12,7 @@ function BlogTitle(props: IBlogTitleProps) {
       <p
         className="line-clamp-3 font-medium cursor-pointer text-18 text-gray-100 hover:text-gray-300"
         onClick={() => {
-          console.log('blog', props.blog.title);
+          //console.log('blog', props.blog.title);
         }}>
         {props.blog.title}
       </p>

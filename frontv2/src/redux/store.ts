@@ -2,9 +2,11 @@ import {AnyAction, configureStore, ThunkDispatch} from '@reduxjs/toolkit';
 import {useDispatch, useSelector} from 'react-redux';
 import {createLogger} from 'redux-logger';
 import thunk from 'redux-thunk';
-
 import {systemSlice} from './system/system.slice';
 import {blogSlice} from '@/redux/blog/blog.slice';
+import {signupSlice} from '@/redux/auth/signup/signup.slice';
+import {loginSlice} from '@/redux/auth/login/login.slice';
+import {userSessionSlice} from '@/redux/auth/user/user.slice';
 
 const middlewares = [];
 // add thunk
@@ -18,6 +20,9 @@ export const store = configureStore({
   reducer: {
     systemReducer: systemSlice.reducer,
     blogReducer: blogSlice.reducer,
+    signupReducer: signupSlice.reducer,
+    loginReducer: loginSlice.reducer,
+    userSessionReducer: userSessionSlice.reducer,
   },
   devTools: process.env.NODE_ENV !== 'production',
   middleware: middlewares,
