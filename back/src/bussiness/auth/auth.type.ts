@@ -52,7 +52,7 @@ export class ForgotPasswordRequest {
 
 export class ResetPasswordRequest {
   @IsString()
-  @MinLength(4)
+  @MinLength(8)
   /*@Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$/, {
       message:
         'Password must contain at least one uppercase letter, one lowercase letter, and one digit',

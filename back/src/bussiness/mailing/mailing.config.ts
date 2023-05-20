@@ -18,7 +18,7 @@ export const MailingConfig = MailerModule.forRootAsync({
       from: 'devs@inoomify.com',
     },
     template: {
-      dir: join(__dirname, './mailer/templates'),
+      dir: join(__dirname, './templates'),
       adapter: new HandlebarsAdapter(),
       options: {
         strict: true,
