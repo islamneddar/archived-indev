@@ -1,11 +1,14 @@
-import {Injectable} from '@nestjs/common';
+import {Injectable, Logger} from '@nestjs/common';
 import {InjectEntityManager} from '@nestjs/typeorm';
 import {UserService} from '@/bussiness/user/user.service';
 import {EntityManager} from 'typeorm';
 import bcrypt from 'bcrypt';
+import {EmailValidationService} from '@/bussiness/email_validation/email_validation.service';
+import {EmailValidationEntity} from '@/bussiness/email_validation/email_valdation.entity';
 
 @Injectable()
 export class AuthService {
+  private readonly LOG = new Logger(AuthService.name);
   constructor(
     private readonly userService: UserService,
     @InjectEntityManager() private readonly entityManager: EntityManager,
@@ -33,14 +36,12 @@ export class AuthService {
         newPassword,
         Number(process.env.SALT_ROUND),
       );
-      this.LOG.debug(hashedPassword);
-      this.LOG.debug(JSON.stringify(emailValidationEntity));
       this.userService.updatePasswordNotCommit(
         session,
         emailValidationEntity.user,
         hashedPassword,
       );
-      this.emailValidationService.updateValidNotCommit(
+      await this.emailValidationService.updateValidNotCommit(
         session,
         emailValidationEntity,
       );

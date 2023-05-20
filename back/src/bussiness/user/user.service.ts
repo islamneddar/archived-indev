@@ -2,7 +2,7 @@ import {Injectable} from '@nestjs/common';
 import {UserEntity} from '@/bussiness/user/user.entity';
 import {InjectRepository} from '@nestjs/typeorm';
 import {EntityManager, Repository} from 'typeorm';
-
+import bcrypt from 'bcrypt';
 @Injectable()
 export class UserService {
   constructor(
@@ -18,14 +18,18 @@ export class UserService {
     });
   }
 
-  async createUser(signupRequest: SignupRequest) {
+  async createUser(params: {
+    email: string;
+    password: string;
+    username: string;
+  }) {
     const user = new UserEntity();
-    user.email = signupRequest.email;
+    user.email = params.email;
     user.password = await bcrypt.hash(
-      signupRequest.password,
+      params.password,
       Number(process.env.SALT_ROUND),
     );
-    user.username = signupRequest.username;
+    user.username = params.username;
     await this.userRepository.save(user);
   }
 

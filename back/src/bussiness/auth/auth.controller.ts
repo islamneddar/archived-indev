@@ -53,14 +53,16 @@ export class AuthController {
     };
   }
 
-  @Post('/singup')
-  async signup(@Body() body: SignupRequest, @Res() res: Response) {
+  @Post('/signup')
+  async signup(@Body() body: SignupRequest) {
     const user = await this.userService.findOneByEmail(body.email);
     if (user) {
       throw new HttpException('user already exist', HttpStatus.CONFLICT);
     }
     await this.userService.createUser(body);
-    return {};
+    return {
+      message: 'user created',
+    };
   }
 
   @Post('forgot-password')
@@ -72,7 +74,7 @@ export class AuthController {
     const emailCodeValidator: EmailValidationEntity =
       await this.emailValidationService.createNewCodeForResetPassword(user);
 
-    this.mailService.sendForgotPasswordMail(
+    await this.mailService.sendForgotPasswordMail(
       emailCodeValidator.email,
       emailCodeValidator.code,
     );
@@ -91,8 +93,6 @@ export class AuthController {
         HttpStatus.BAD_REQUEST,
       );
     }
-    //get user and update password
-    // update valid of code
     await this.authService.updatePassword(
       emailValidationEntity,
       body.newPassword,

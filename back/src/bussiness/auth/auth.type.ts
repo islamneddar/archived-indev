@@ -13,6 +13,7 @@ export interface UserFromRequest {
 }
 
 // Request/Response types
+
 export class SignupRequest {
   @IsEmail({}, {message: 'Invalid email'})
   email: string;

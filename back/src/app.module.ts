@@ -17,6 +17,11 @@ import {BlogEntity} from './bussiness/blog/blog.entity';
 import {SourceBlogEntity} from './bussiness/source_blog/source_blog.entity';
 import {TagEntity} from './bussiness/tag/tag.entity';
 import {EmailNewsletterModule} from './bussiness/email_newsletter/email_newsletter.module';
+import {EmailValidationModule} from '@/bussiness/email_validation/email_validation.module';
+import {UserModule} from '@/bussiness/user/user.module';
+import {AuthModule} from '@/bussiness/auth/auth.module';
+import {MailingModule} from '@/bussiness/mailing/mailing.module';
+import {MailingConfig} from '@/bussiness/mailing/mailing.config';
 
 const DEFAULT_ADMIN = {
   email: 'lemsijoker',
@@ -39,6 +44,7 @@ AdminJS.registerAdapter({
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    MailingConfig,
     AdminModule.createAdminAsync({
       useFactory: () => ({
         adminJsOptions: {
@@ -69,6 +75,10 @@ AdminJS.registerAdapter({
     BlogPollerModule,
     TagModule,
     EmailNewsletterModule,
+    EmailValidationModule,
+    UserModule,
+    AuthModule,
+    MailingModule,
   ],
   controllers: [],
   providers: [
