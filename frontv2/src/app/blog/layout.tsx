@@ -10,6 +10,7 @@ import routing from '@/routes/routing.constant';
 import {ThunkDispatch} from '@reduxjs/toolkit';
 import {getUserProfileThunk} from '@/redux/auth/user/user.thunk';
 import {EventBusFront, EventBusFrontType} from '@/events/event_bus';
+import {useRouter} from 'next/navigation';
 
 const navigationState = [
   {
@@ -27,7 +28,7 @@ const navigationState = [
 export default function Layout({children}: {children: React.ReactNode}) {
   const dispatch = useDispatch();
   const dispatchThunk = useDispatch<ThunkDispatch<any, any, any>>();
-
+  const router = useRouter();
   const {loading, error, data} = useUserSessionSelector();
 
   const session = useSession({
@@ -46,7 +47,6 @@ export default function Layout({children}: {children: React.ReactNode}) {
     if (session.status === 'authenticated') {
       // @ts-ignore
       dispatchThunk(getUserProfileThunk(session.data?.user?.accessToken));
-      console.log('session', session.data);
     }
   }, [
     dispatch,
@@ -57,7 +57,6 @@ export default function Layout({children}: {children: React.ReactNode}) {
     session.status,
   ]);
 
-  console.log(error);
   if (error) {
     EventBusFront.dispatch(EventBusFrontType.LOGOUT, null);
   }

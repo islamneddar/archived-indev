@@ -2,9 +2,10 @@ import axios from 'axios';
 import {TypeFeed} from '@/types/api/source_blog';
 import {GetAllBlogRequest, GetBlogsResponse} from '@/types/api/blog';
 import {PaginationRequestMetaRequest} from '@/types/api/common';
+import {ROOT_API_URL} from '@/services/config';
 
 export default class BlogService {
-  private endpointBlog = `${process.env.NEXT_PUBLIC_API_URL}/blogs`;
+  private endpointBlog = `${ROOT_API_URL}/blogs`;
 
   private static instance = new BlogService();
 

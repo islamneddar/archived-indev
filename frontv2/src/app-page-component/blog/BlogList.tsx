@@ -29,34 +29,6 @@ function BlogList(props: IBlogListProps) {
     BlogAffichageType.LATEST,
   );
 
-  useEffect(() => {
-    async function getBlogs() {
-      await fetchBlogs(restart);
-    }
-
-    if (restart) {
-      getBlogs();
-    }
-  }, [restart]);
-
-  useEffect(() => {
-    setPage(1);
-    setRestart(true);
-  }, [props.typeFeed]);
-
-  useEffect(() => {
-    if (success) {
-      setPage(page + 1);
-    }
-  }, [success]);
-
-  useEffect(() => {
-    if (error !== undefined) {
-      console.log(error);
-      return;
-    }
-  }, [error]);
-
   const fetchBlogs = async (restart: boolean) => {
     const paginationRequest: PaginationRequestMetaRequest = {
       page: page,
@@ -73,6 +45,29 @@ function BlogList(props: IBlogListProps) {
       setRestart(false);
     }
   };
+
+  useEffect(() => {
+    async function getBlogs() {
+      await fetchBlogs(restart);
+    }
+
+    if (restart) {
+      getBlogs();
+    }
+  }, [restart]);
+
+  useEffect(() => {
+    if (success) {
+      setPage(page + 1);
+    }
+  }, [success]);
+
+  useEffect(() => {
+    if (error !== undefined) {
+      console.log(error);
+      return;
+    }
+  }, [error]);
 
   return (
     <div className={'md:px-5 lg:px-10 w-full'}>
