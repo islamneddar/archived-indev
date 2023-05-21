@@ -1,12 +1,15 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {useAppSelector} from '@/redux/store';
+import {UserSession} from '@/types/general/user-session.type';
 
 export interface UserSessionState {
   isAuthenticated: boolean;
+  user: UserSession | null;
 }
 
 const initialState: UserSessionState = {
   isAuthenticated: false,
+  user: null,
 };
 
 export const userSessionSlice = createSlice({

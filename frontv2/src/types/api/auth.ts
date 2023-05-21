@@ -30,3 +30,9 @@ export interface SignupRequest {
   password: string;
   username: string;
 }
+
+export interface UserProfileResponse {
+  id: number;
+  email: string;
+  username: string;
+}
