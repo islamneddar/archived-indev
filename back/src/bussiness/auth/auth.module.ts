@@ -6,12 +6,14 @@ import {JwtModule} from '@nestjs/jwt';
 import {JWT_SECRET} from '@/config';
 import {AuthController} from '@/bussiness/auth/auth.controller';
 import {AuthService} from '@/bussiness/auth/auth.service';
+import {PassportModule} from '@nestjs/passport';
 
 @Module({
   imports: [
     UserModule,
     MailingModule,
     EmailValidationModule,
+    PassportModule,
     JwtModule.register({
       global: true,
       secret: JWT_SECRET,
