@@ -5,6 +5,7 @@ import {NavigationType} from '@/types/general/sidebar.type';
 import {usePathname, useRouter} from 'next/navigation';
 import SideBarItem from '@/app-page-component/sidebar/SideBarItem';
 import SideBarProfileSection from '@/app-page-component/sidebar/SideBarProfileSection';
+import FooterSideBar from '@/app-page-component/sidebar/FooterSideBar';
 
 interface SideBarDesktopProps {
   navigation: NavigationType[];
@@ -25,6 +26,7 @@ export default function SideBarDesktop(props: SideBarDesktopProps) {
         </div>
       </div>
       <SideBarProfileSection></SideBarProfileSection>
+      <FooterSideBar></FooterSideBar>
     </div>
   );
 }

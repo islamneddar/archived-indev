@@ -1,10 +1,13 @@
 import React from 'react';
-import Image from 'next/image';
 import {PowerIcon} from '@heroicons/react/20/solid';
 import {signOut} from 'next-auth/react';
 import {useUserSessionSelector} from '@/redux/auth/user/user.slice';
+import {UserSession} from '@/types/general/user-session.type';
+import {Avatar} from 'primereact/avatar';
 
 function SideBarProfileSection() {
+  const {data}: {data: UserSession} = useUserSessionSelector();
+
   const {isAuthenticated} = useUserSessionSelector();
   if (isAuthenticated) {
     return (
@@ -14,19 +17,15 @@ function SideBarProfileSection() {
           className="group w-full flex-shrink-0 flex justify-between items-center">
           <div className="flex items-center">
             <div>
-              <Image
-                loader={() => {
-                  return `https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80`;
-                }}
-                className="inline-block h-9 w-9 rounded-full"
-                src=""
-                alt=""
-                width={10}
-                height={10}
+              <Avatar
+                label={data.username.charAt(0)}
+                size="large"
+                style={{backgroundColor: '#2196F3', color: '#ffffff'}}
+                shape="circle"
               />
             </div>
             <div className="ml-3">
-              <p className="text-sm font-medium text-white">Tom Cook</p>
+              <p className="text-sm font-medium text-white">{data.username}</p>
               <p className="text-xs font-medium text-gray-300 group-hover:text-gray-200">
                 View profile
               </p>

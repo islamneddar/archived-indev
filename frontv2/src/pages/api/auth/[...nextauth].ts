@@ -1,6 +1,7 @@
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import AuthService from '@/services/auth.service';
+// @ts-ignore
 import {NextAuthOptions} from 'next-auth';
 
 export const authOptions: NextAuthOptions = {
@@ -36,12 +37,12 @@ export const authOptions: NextAuthOptions = {
   },
   secret: '0_JWT_SECRET',
   callbacks: {
+    // @ts-ignore
     async jwt({token, user}) {
-      console.log('jwt', token, user);
       return {...token, ...user};
     },
+    // @ts-ignore
     async session({session, token}) {
-      console.log('session', session);
       session.user = token as any;
       return session;
     },
