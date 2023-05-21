@@ -1,4 +1,4 @@
-import {Controller, Get, Req, UseGuards} from '@nestjs/common';
+import {Controller, Get, HttpException, Req, UseGuards} from '@nestjs/common';
 import {UserService} from '@/bussiness/user/user.service';
 import {AuthGuard} from '@/bussiness/auth/auth.guard';
 import {UserEntity} from '@/bussiness/user/user.entity';
@@ -11,6 +11,7 @@ export class UserController {
   @Get('profile')
   async getProfile(@Req() req: Request) {
     const user = req.user as UserEntity;
+    //throw new HttpException('not implemented', 500);
     return {
       id: user.userId,
       email: user.email,
