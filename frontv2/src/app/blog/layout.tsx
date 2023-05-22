@@ -2,7 +2,7 @@
 import NavBar from '@/app-page-component/navbar/NavBar';
 import React, {Fragment, useEffect} from 'react';
 import {signOut, useSession} from 'next-auth/react';
-import {updateAuth, useUserSessionSelector} from '@/redux/auth/user/user.slice';
+import {updateAuth} from '@/redux/auth/user/user.slice';
 import {useDispatch} from 'react-redux';
 import SideBarDesktop from '@/app-page-component/sidebar/SideBarDesktop';
 import {HomeIcon, UsersIcon} from '@heroicons/react/20/solid';
@@ -10,7 +10,7 @@ import routing from '@/routes/routing.constant';
 import {ThunkDispatch} from '@reduxjs/toolkit';
 import {getUserProfileThunk} from '@/redux/auth/user/user.thunk';
 import {EventBusFront, EventBusFrontType} from '@/events/event_bus';
-import {useRouter} from 'next/navigation';
+import {useUserSessionSelector} from '@/redux/auth/user/user.selector';
 
 const navigationState = [
   {
@@ -28,8 +28,7 @@ const navigationState = [
 export default function Layout({children}: {children: React.ReactNode}) {
   const dispatch = useDispatch();
   const dispatchThunk = useDispatch<ThunkDispatch<any, any, any>>();
-  const router = useRouter();
-  const {loading, error, data} = useUserSessionSelector();
+  const {loading, error, user} = useUserSessionSelector();
 
   const session = useSession({
     required: false,
@@ -43,10 +42,12 @@ export default function Layout({children}: {children: React.ReactNode}) {
   }, []);
 
   useEffect(() => {
-    dispatch(updateAuth(session.status === 'authenticated'));
+    const isAuth = session.status === 'authenticated';
+    // @ts-ignore
+    const accessToken = session.data?.user?.accessToken;
+    dispatch(updateAuth({isAuthenticated: isAuth, accessToken: accessToken}));
     if (session.status === 'authenticated') {
-      // @ts-ignore
-      dispatchThunk(getUserProfileThunk(session.data?.user?.accessToken));
+      dispatchThunk(getUserProfileThunk(accessToken));
     }
   }, [
     dispatch,
@@ -58,7 +59,8 @@ export default function Layout({children}: {children: React.ReactNode}) {
   ]);
 
   if (error) {
-    EventBusFront.dispatch(EventBusFrontType.LOGOUT, null);
+    console.log('error', error);
+    //EventBusFront.dispatch(EventBusFrontType.LOGOUT, null);
   }
 
   // Rendering
@@ -67,7 +69,7 @@ export default function Layout({children}: {children: React.ReactNode}) {
   }
 
   if (
-    (session.status === 'authenticated' && data) ||
+    (session.status === 'authenticated' && user.email.length > 0) ||
     session.status === 'unauthenticated'
   ) {
     return (

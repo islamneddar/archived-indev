@@ -21,6 +21,8 @@ export interface IBlogListProps {
 
 function BlogList(props: IBlogListProps) {
   const dispatchThunk = useDispatch<ThunkDispatch<any, any, any>>();
+  const dispatch = useDispatch();
+
   const {loading, blogs, meta, success, error} = useBlogSelector();
   const [page, setPage] = useState<number>(1);
   const [restart, setRestart] = useState<boolean>(true);
@@ -68,6 +70,10 @@ function BlogList(props: IBlogListProps) {
       return;
     }
   }, [error]);
+
+  useEffect(() => {
+    console.log('page blog: ', page);
+  }, [page]);
 
   return (
     <div className={'md:px-5 lg:px-10 w-full'}>

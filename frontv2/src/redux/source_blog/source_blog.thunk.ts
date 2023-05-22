@@ -23,7 +23,7 @@ export const getAllSourceBlogThunk = createAsyncThunk<
       console.log(error);
       console.log(error.response.status);
       if (error.response.status === 401) {
-        EventBusFront.dispatch(EventBusFrontType.LOGOUT, {});
+        //EventBusFront.dispatch(EventBusFrontType.LOGOUT, {});
       }
       return rejectWithValue(error.response.data.message);
     }

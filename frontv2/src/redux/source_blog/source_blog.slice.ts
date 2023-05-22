@@ -23,7 +23,11 @@ const initialState: SourceBlogState = {
 export const sourceBlogSlice = createSlice({
   name: 'sourceBlogSlice',
   initialState,
-  reducers: {},
+  reducers: {
+    clearSourceBlogs: state => {
+      state.sourceBlogs = [];
+    },
+  },
   extraReducers: builder => {
     builder.addCase(getAllSourceBlogThunk.pending, state => {
       state.loading = true;
@@ -43,3 +47,5 @@ export const sourceBlogSlice = createSlice({
     });
   },
 });
+
+export const {clearSourceBlogs} = sourceBlogSlice.actions;

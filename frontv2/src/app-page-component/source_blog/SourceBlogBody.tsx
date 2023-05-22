@@ -7,11 +7,16 @@ import {useDispatch} from 'react-redux';
 import {ThunkDispatch} from '@reduxjs/toolkit';
 import {getAllSourceBlogThunk} from '@/redux/source_blog/source_blog.thunk';
 import SourceBlogList from '@/app-page-component/source_blog/SourceBlogList';
+import {useUserSessionSelector} from '@/redux/auth/user/user.selector';
+import {dispatch} from 'react-hot-toast/src/core/store';
+import {clearSourceBlogs} from '@/redux/source_blog/source_blog.slice';
 
 function SourceBlogBody() {
   const {loading, sourceBlogs, meta, success, error} = useSourceBlogSelector();
   const [page, setPage] = useState<number>(1);
   const dispatchThunk = useDispatch<ThunkDispatch<any, any, any>>();
+  const dispatch = useDispatch();
+  const userSession = useUserSessionSelector();
 
   const fetchSourceBlogs = async () => {
     const paginationRequest: PaginationRequestMetaRequest = {
@@ -22,6 +27,7 @@ function SourceBlogBody() {
 
     const getAllBlogRequest = {
       paginationRequestMeta: paginationRequest,
+      accessToken: userSession.user.accessToken,
     };
 
     dispatchThunk(getAllSourceBlogThunk(getAllBlogRequest));
@@ -39,7 +45,7 @@ function SourceBlogBody() {
     if (success) {
       setPage(page + 1);
     }
-  }, [page, success]);
+  }, [success]);
 
   useEffect(() => {
     if (error !== undefined) {
@@ -47,6 +53,13 @@ function SourceBlogBody() {
       return;
     }
   }, [error]);
+
+  useEffect(() => {
+    console.log('page source: ', page);
+    if (page === 1) {
+      //dispatch(clearSourceBlogs());
+    }
+  }, [page]);
 
   return (
     <div>

@@ -22,6 +22,9 @@ export default class SourceBlogService {
         page: getAllSourceBlogRequest.paginationRequestMeta.page,
         take: getAllSourceBlogRequest.paginationRequestMeta.take,
       },
+      headers: {
+        Authorization: `Bearer ${getAllSourceBlogRequest.accessToken}`,
+      },
     });
     const data = await res.data;
     return data as GetAllSourceBlogResponse;

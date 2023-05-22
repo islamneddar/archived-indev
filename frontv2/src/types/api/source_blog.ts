@@ -27,5 +27,6 @@ export interface GetAllSourceBlogResponse {
 }
 
 export interface GetAllSourceBlogRequest {
+  accessToken: string;
   paginationRequestMeta: PaginationRequestMetaRequest;
 }

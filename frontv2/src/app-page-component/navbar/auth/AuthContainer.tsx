@@ -3,8 +3,7 @@ import React from 'react';
 import PrimaryButton from '@/components/button/PrimaryButton';
 import routing from '@/routes/routing.constant';
 import {useRouter} from 'next/navigation';
-import {useUserSessionSelector} from '@/redux/auth/user/user.slice';
-
+import {useUserSessionSelector} from '@/redux/auth/user/user.selector';
 function AuthContainer() {
   const router = useRouter();
   const {isAuthenticated} = useUserSessionSelector();

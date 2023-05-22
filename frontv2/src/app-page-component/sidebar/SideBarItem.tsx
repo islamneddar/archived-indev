@@ -20,7 +20,10 @@ function SideBarItem(props: ISideBarItemProps) {
       )}
       key={item.name}
       onClick={() => {
-        router.push(item.href);
+        //router.push(item.href);
+        if (!pathname?.includes(item.href)) {
+          window.location.href = item.href;
+        }
       }}>
       <item.icon
         className={classNames(

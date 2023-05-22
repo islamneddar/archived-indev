@@ -1,20 +1,23 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {useAppSelector} from '@/redux/store';
 import {UserSession} from '@/types/general/user-session.type';
 import {getUserProfileThunk} from '@/redux/auth/user/user.thunk';
 import {ReduxEntityBase} from '@/types/general/redux.type';
 
 export interface UserSessionState extends ReduxEntityBase<any> {
   isAuthenticated: boolean;
-  user: UserSession | null;
+  user: UserSession;
 }
 
 const initialState: UserSessionState = {
   isAuthenticated: false,
-  user: null,
+  user: {
+    accessToken: '',
+    email: '',
+    username: '',
+    id: 0,
+  },
   loading: false,
   error: undefined,
-  data: null,
   success: false,
 };
 
@@ -23,7 +26,12 @@ export const userSessionSlice = createSlice({
   initialState,
   reducers: {
     updateAuth: (state, action) => {
-      state.isAuthenticated = action.payload;
+      const payload = action.payload as {
+        isAuthenticated: boolean;
+        accessToken: string;
+      };
+      state.isAuthenticated = payload.isAuthenticated;
+      state.user.accessToken = payload.accessToken;
     },
   },
   extraReducers: builder => {
@@ -33,7 +41,10 @@ export const userSessionSlice = createSlice({
     });
     builder.addCase(getUserProfileThunk.fulfilled, (state, action) => {
       state.loading = false;
-      state.data = action.payload;
+      state.user = {
+        accessToken: state.user?.accessToken || '',
+        ...action.payload,
+      };
     });
     builder.addCase(getUserProfileThunk.rejected, (state, action) => {
       state.loading = false;
@@ -43,11 +54,3 @@ export const userSessionSlice = createSlice({
 });
 
 export const {updateAuth} = userSessionSlice.actions;
-
-export const selectUserSession = (state: {
-  userSessionReducer: UserSessionState;
-}) => state.userSessionReducer;
-
-export const useUserSessionSelector = () => {
-  return useAppSelector(selectUserSession);
-};

@@ -1,23 +1,22 @@
 'use client';
 import React from 'react';
 import SourceBlogBody from '@/app-page-component/source_blog/SourceBlogBody';
-import {useSession} from 'next-auth/react';
-import routing from '@/routes/routing.constant';
 import {useRouter} from 'next/navigation';
+import {useUserSessionSelector} from '@/redux/auth/user/user.selector';
 
 function Page() {
   const router = useRouter();
-  useSession({
-    required: true,
-    onUnauthenticated() {
-      router.push(routing.auth.login);
-    },
-  });
-  return (
-    <div className={'p-5 w-full flex'}>
-      <SourceBlogBody></SourceBlogBody>
-    </div>
-  );
+  const userSessionSelector = useUserSessionSelector();
+
+  if (!userSessionSelector.isAuthenticated) {
+    router.push('/auth/login');
+  } else {
+    return (
+      <div className={'p-5 w-full flex'}>
+        <SourceBlogBody></SourceBlogBody>
+      </div>
+    );
+  }
 }
 
 export default Page;
