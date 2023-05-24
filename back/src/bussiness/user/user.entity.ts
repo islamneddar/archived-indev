@@ -1,5 +1,6 @@
-import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
+import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
 import {BaseTable} from '@/database/base-table.entity';
+import {SourceBlogToUserEntity} from '@/bussiness/source-blog-user/source-blog-to-user.entity';
 
 @Entity({name: 'users'})
 export class UserEntity extends BaseTable {
@@ -14,4 +15,10 @@ export class UserEntity extends BaseTable {
 
   @Column()
   username: string;
+
+  @OneToMany(
+    () => SourceBlogToUserEntity,
+    sourceBlogToUser => sourceBlogToUser.user,
+  )
+  sourceBlogToUsers: SourceBlogToUserEntity[];
 }

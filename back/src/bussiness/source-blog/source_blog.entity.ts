@@ -14,7 +14,7 @@ import {
 import {BlogEntity} from '../blog/blog.entity';
 import {FeedBlogEntity, TypeFeed} from '../feed_blog/feed_blog.entity';
 import {BaseTable} from '../../database/base-table.entity';
-import {SourceBlogToUserEntity} from '@/bussiness/source_blog/source-blog-to-user.entity';
+import {SourceBlogToUserEntity} from '@/bussiness/source-blog-user/source-blog-to-user.entity';
 
 @Entity({
   name: 'source_blogs',

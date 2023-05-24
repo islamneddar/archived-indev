@@ -1,6 +1,6 @@
 /* eslint-disable import/no-cycle */
 import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
-import {SourceBlogEntity} from '../source_blog/source_blog.entity';
+import {SourceBlogEntity} from '@/bussiness/source-blog/source_blog.entity';
 import {BaseTable} from '@/database/base-table.entity';
 
 export enum TypeFeed {

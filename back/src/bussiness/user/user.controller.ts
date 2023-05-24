@@ -11,7 +11,6 @@ export class UserController {
   @Get('profile')
   async getProfile(@Req() req: Request) {
     const user = req.user as UserEntity;
-    //throw new HttpException('not implemented', 500);
     return {
       id: user.userId,
       email: user.email,

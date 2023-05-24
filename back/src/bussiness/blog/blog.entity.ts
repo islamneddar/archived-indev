@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
   JoinColumn,
 } from 'typeorm';
-import {SourceBlogEntity} from '../source_blog/source_blog.entity';
+import {SourceBlogEntity} from '@/bussiness/source-blog/source_blog.entity';
 import {TagEntity} from '../tag/tag.entity';
 import {BaseTable} from '@/database/base-table.entity';
 
