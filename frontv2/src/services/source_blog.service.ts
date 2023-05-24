@@ -1,6 +1,8 @@
 import {ROOT_API_URL} from '@/services/config';
 import axios from 'axios';
 import {
+  FollowSourceBlogRequest,
+  FollowSourceBlogResponse,
   GetAllSourceBlogRequest,
   GetAllSourceBlogResponse,
 } from '@/types/api/source_blog';
@@ -28,5 +30,22 @@ export default class SourceBlogService {
     });
     const data = await res.data;
     return data as GetAllSourceBlogResponse;
+  }
+
+  async followSourceBlog(request: FollowSourceBlogRequest) {
+    const res = await axios.post(
+      `${this.endpointSourceBlog}/follow`,
+      {
+        sourceBlogId: request.sourceBlogId,
+        isFollow: request.isFollow,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${request.accessToken}`,
+        },
+      },
+    );
+    const data = await res.data;
+    return data as FollowSourceBlogResponse;
   }
 }

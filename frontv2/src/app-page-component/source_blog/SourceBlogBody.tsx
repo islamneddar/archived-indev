@@ -1,22 +1,38 @@
 'use client';
 import React, {useEffect, useState} from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import {useSourceBlogSelector} from '@/redux/source_blog/soure_blog.selector';
-import {Order, PaginationRequestMetaRequest} from '@/types/api/common';
+import {useSourceBlogSelector} from '@/redux/source_blog/soure-blog.selector';
+import {
+  Order,
+  PageMetaResponse,
+  PaginationRequestMetaRequest,
+} from '@/types/api/common';
 import {useDispatch} from 'react-redux';
 import {ThunkDispatch} from '@reduxjs/toolkit';
-import {getAllSourceBlogThunk} from '@/redux/source_blog/source_blog.thunk';
+import {getAllSourceBlogThunk} from '@/redux/source_blog/source-blog.thunk';
 import SourceBlogList from '@/app-page-component/source_blog/SourceBlogList';
 import {useUserSessionSelector} from '@/redux/auth/user/user.selector';
-import {dispatch} from 'react-hot-toast/src/core/store';
-import {clearSourceBlogs} from '@/redux/source_blog/source_blog.slice';
+import {SourceBlog} from '@/types/api/source_blog';
+import {resetSourceBlogState} from '@/redux/source_blog/source-blog.slice';
+import {useFollowSourceBlogSelector} from '@/redux/source_blog/follow-source-blog/follow-source-blog.selector';
+import {resetFollowSourceBlogState} from '@/redux/source_blog/follow-source-blog/follow-source-blog.slice';
+import {Simulate} from 'react-dom/test-utils';
+import toast from 'react-hot-toast';
 
 function SourceBlogBody() {
-  const {loading, sourceBlogs, meta, success, error} = useSourceBlogSelector();
+  const [sourceBlogs, setSourceBlogs] = useState<SourceBlog[]>([]);
+  const [metaData, setMetaData] = useState<PageMetaResponse>({
+    page: 1,
+    hasPreviousPage: false,
+    hasNextPage: false,
+  });
   const [page, setPage] = useState<number>(1);
-  const dispatchThunk = useDispatch<ThunkDispatch<any, any, any>>();
   const dispatch = useDispatch();
+  const dispatchThunk = useDispatch<ThunkDispatch<any, any, any>>();
+
   const userSession = useUserSessionSelector();
+  const sourceBlogSelector = useSourceBlogSelector();
+  const followSourceBlogSelector = useFollowSourceBlogSelector();
 
   const fetchSourceBlogs = async () => {
     const paginationRequest: PaginationRequestMetaRequest = {
@@ -37,22 +53,33 @@ function SourceBlogBody() {
     async function getSourceBlogs() {
       await fetchSourceBlogs();
     }
-
-    getSourceBlogs();
+    if (page === 1) {
+      getSourceBlogs();
+    }
   }, []);
 
   useEffect(() => {
-    if (success) {
-      setPage(page + 1);
+    if (sourceBlogSelector.success) {
+      if (sourceBlogSelector.data) {
+        const sourceBlogsToAdd = [
+          ...sourceBlogs,
+          ...sourceBlogSelector.data.data,
+        ];
+        console.log('sourceBlogsToAdd: ', sourceBlogsToAdd);
+        setSourceBlogs(sourceBlogsToAdd);
+        setMetaData(sourceBlogSelector.data.meta);
+        setPage(page + 1);
+        dispatch(resetSourceBlogState());
+      }
     }
-  }, [success]);
+  }, [sourceBlogSelector.success]);
 
   useEffect(() => {
-    if (error !== undefined) {
-      console.log(error);
+    if (sourceBlogSelector.error !== undefined) {
+      console.log(sourceBlogSelector.error);
       return;
     }
-  }, [error]);
+  }, [sourceBlogSelector.error]);
 
   useEffect(() => {
     console.log('page source: ', page);
@@ -61,11 +88,35 @@ function SourceBlogBody() {
     }
   }, [page]);
 
+  useEffect(() => {
+    if (followSourceBlogSelector.success) {
+      if (followSourceBlogSelector.data) {
+        const followSourceBlog = followSourceBlogSelector.data;
+        const sourceBlogUpdated = [...sourceBlogs].map(sourceBlog => {
+          if (sourceBlog.sourceBlogId === followSourceBlog.sourceBlogId) {
+            sourceBlog = {
+              ...sourceBlog,
+              isFollow: followSourceBlog.isFollow,
+            };
+          }
+          return sourceBlog;
+        });
+        setSourceBlogs([...sourceBlogUpdated]);
+        dispatch(resetFollowSourceBlogState());
+      }
+    }
+
+    if (followSourceBlogSelector.error) {
+      console.log(followSourceBlogSelector.error);
+      toast.error('Something went wrong, please try again later');
+    }
+  }, [followSourceBlogSelector.success, followSourceBlogSelector.error]);
+
   return (
     <div>
       <InfiniteScroll
         next={() => fetchSourceBlogs()}
-        hasMore={meta.hasNextPage}
+        hasMore={metaData.hasNextPage}
         loader={<div></div>}
         dataLength={sourceBlogs.length}
         scrollableTarget={'scrollSourceBlogId'}

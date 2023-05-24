@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Get,
   HttpCode,
@@ -14,6 +15,7 @@ import {SourceBlogEntity} from './source_blog.entity';
 import LOG from '../../utils/logger';
 import {AuthGuard} from '@/bussiness/auth/auth.guard';
 import {PageOptionsDto} from '@/common/pagination/page_option.dto';
+import {FollowSourceBlogRequest} from '@/bussiness/source_blog/source-blog.type';
 
 @Controller('source-blog')
 export class SourceBlogController {
@@ -30,7 +32,13 @@ export class SourceBlogController {
   @Get('all')
   @UseGuards(AuthGuard)
   async findAllWithPagination(@Query() paginationDto: PageOptionsDto) {
-    console.log(JSON.stringify(paginationDto));
     return await this.sourceBlogSource.findAllWithPagination(paginationDto);
   }
+
+  @Post('follow')
+  @UseGuards(AuthGuard)
+  async follow(
+    @Req() req: Request,
+    @Body() followSourceBlogRequest: FollowSourceBlogRequest,
+  ) {}
 }

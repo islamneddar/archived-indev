@@ -8,7 +8,7 @@ interface ISourceBlogListProps {
 
 function SourceBlogList(props: ISourceBlogListProps) {
   return (
-    <div>
+    <div className={'flex flex-wrap gap-3 justify-center items-center'}>
       {props.sourceBlogs.map((sourceBlog, index) => {
         return <SourceBlogCard key={index} sourceBlog={sourceBlog} />;
       })}

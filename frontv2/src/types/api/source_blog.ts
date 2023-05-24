@@ -18,6 +18,7 @@ export interface SourceBlog {
   sourceBlogId: number;
   name: string;
   image: string;
+  isFollow: boolean;
 }
 
 //Request/Response
@@ -29,4 +30,14 @@ export interface GetAllSourceBlogResponse {
 export interface GetAllSourceBlogRequest {
   accessToken: string;
   paginationRequestMeta: PaginationRequestMetaRequest;
+}
+
+export interface FollowSourceBlogRequest {
+  sourceBlogId: number;
+  accessToken: string;
+  isFollow: boolean;
+}
+export interface FollowSourceBlogResponse {
+  isFollow: boolean;
+  sourceBlogId: number;
 }
