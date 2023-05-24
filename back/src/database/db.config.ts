@@ -10,6 +10,7 @@ import {NewsletterEmailEntity} from '@/bussiness/email_newsletter/email_newslett
 import {UserEntity} from '@/bussiness/user/user.entity';
 import {EmailValidationEntity} from '@/bussiness/email_validation/email_valdation.entity';
 import {SourceBlogToUserEntity} from '@/bussiness/source-blog-user/source-blog-to-user.entity';
+import {BlogToUserEntity} from '@/bussiness/blog-user/blog-user.entity';
 
 const LOG = new Logger('db.config');
 
@@ -27,6 +28,7 @@ const DBModule = TypeOrmModule.forRootAsync({
       UserEntity,
       EmailValidationEntity,
       SourceBlogToUserEntity,
+      BlogToUserEntity,
     ];
     LOG.log(process.env.DB_PORT);
     LOG.log(process.env.DB_USERNAME);

@@ -147,4 +147,12 @@ export class BlogService {
     });
     return new PageDto(entities, pageMetaDto);
   }
+
+  getById(param: {blogId: number}) {
+    return this.blogRepository.findOne({
+      where: {
+        blogId: param.blogId,
+      },
+    });
+  }
 }

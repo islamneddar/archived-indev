@@ -6,10 +6,12 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import {SourceBlogEntity} from '@/bussiness/source-blog/source_blog.entity';
 import {TagEntity} from '../tag/tag.entity';
 import {BaseTable} from '@/database/base-table.entity';
+import {BlogToUserEntity} from '@/bussiness/blog-user/blog-user.entity';
 
 @Entity({name: 'blogs'})
 export class BlogEntity extends BaseTable {
@@ -35,4 +37,7 @@ export class BlogEntity extends BaseTable {
   @ManyToMany(() => TagEntity, tag => tag.blogs)
   @JoinTable({name: 'blog_tags'})
   tags: TagEntity[];
+
+  @OneToMany(() => BlogToUserEntity, blogToUser => blogToUser.user)
+  blogToUser: BlogToUserEntity[];
 }

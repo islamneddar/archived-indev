@@ -23,6 +23,7 @@ import {AuthModule} from '@/bussiness/auth/auth.module';
 import {MailingModule} from '@/bussiness/mailing/mailing.module';
 import {MailingConfig} from '@/bussiness/mailing/mailing.config';
 import {SourceBlogToUserModule} from '@/bussiness/source-blog-user/source-blog-use.module';
+import {BlogToUserModule} from '@/bussiness/blog-user/blog-user.module';
 
 const DEFAULT_ADMIN = {
   email: 'lemsijoker',
@@ -81,6 +82,7 @@ AdminJS.registerAdapter({
     AuthModule,
     MailingModule,
     SourceBlogToUserModule,
+    BlogToUserModule,
   ],
   controllers: [],
   providers: [
