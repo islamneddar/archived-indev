@@ -3,6 +3,7 @@ import {Blog} from '@/types/api/blog';
 import BlogTitle from '@/app-page-component/blog/blog-card/card-content/BlogTitle';
 import SourceAndTimeContainer from '@/app-page-component/blog/blog-card/card-content/SourceAndTimeContainer';
 import TagsContainer from '@/app-page-component/blog/blog-card/card-content/TagsContainer';
+import ReactionGroupButtonCardBlog from '@/app-page-component/blog/blog-card/card-content/ReactionGroupButtonCard';
 
 interface IBlogCardListProps {
   blog: Blog;
@@ -41,6 +42,9 @@ function BlogCardList(props: IBlogCardListProps) {
               </div>
             )}
           </div>
+          <ReactionGroupButtonCardBlog
+            classNameContainer={' border-l-2 rounded-md pt-2 px-2'}
+            blog={blog}></ReactionGroupButtonCardBlog>
         </div>
       </div>
     </div>

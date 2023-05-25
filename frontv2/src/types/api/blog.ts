@@ -13,6 +13,7 @@ export interface Blog {
   publishDate: string;
   sourceBlog: SourceBlog;
   tags: Tag[];
+  isLiked: boolean;
 }
 
 /**
@@ -25,4 +26,15 @@ export interface GetBlogsResponse {
 
 export interface GetAllBlogRequest {
   paginationRequestMeta: PaginationRequestMetaRequest;
+}
+
+export interface LikeBlogRequest {
+  blogId: number;
+  isLiked: boolean;
+  accessToken: string;
+}
+
+export interface LikeBlogResponse {
+  isLiked: boolean;
+  blogId: number;
 }

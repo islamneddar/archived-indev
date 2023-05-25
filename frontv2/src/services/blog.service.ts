@@ -1,6 +1,11 @@
 import axios from 'axios';
 import {TypeFeed} from '@/types/api/source_blog';
-import {GetAllBlogRequest, GetBlogsResponse} from '@/types/api/blog';
+import {
+  GetAllBlogRequest,
+  GetBlogsResponse,
+  LikeBlogRequest,
+  LikeBlogResponse,
+} from '@/types/api/blog';
 import {PaginationRequestMetaRequest} from '@/types/api/common';
 import {ROOT_API_URL} from '@/services/config';
 
@@ -37,5 +42,23 @@ export default class BlogService {
         feedType,
       },
     });
+  }
+
+  async likeBlog(request: LikeBlogRequest) {
+    const res = await axios.post(
+      `${this.endpointBlog}/like`,
+      {
+        blogId: request.blogId,
+        isLiked: request.isLiked,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${request.accessToken}`,
+        },
+      },
+    );
+
+    const data = await res.data;
+    return data as LikeBlogResponse;
   }
 }

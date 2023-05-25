@@ -9,6 +9,7 @@ import {loginSlice} from '@/redux/auth/login/login.slice';
 import {userSessionSlice} from '@/redux/auth/user/user.slice';
 import {sourceBlogSlice} from '@/redux/source_blog/source-blog.slice';
 import {followSourceBlogSlice} from '@/redux/source_blog/follow-source-blog/follow-source-blog.slice';
+import {likeBlogSlice} from '@/redux/blog/like-blog/like-blog.slice';
 
 const middlewares = [];
 // add thunk
@@ -27,6 +28,7 @@ export const store = configureStore({
     userSessionReducer: userSessionSlice.reducer,
     sourceBlogReducer: sourceBlogSlice.reducer,
     sourceBlogFollowReducer: followSourceBlogSlice.reducer,
+    blogLikeReducer: likeBlogSlice.reducer,
   },
   devTools: process.env.NODE_ENV !== 'production',
   middleware: middlewares,

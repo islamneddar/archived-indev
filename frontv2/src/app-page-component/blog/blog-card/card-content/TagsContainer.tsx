@@ -14,8 +14,9 @@ function TagsContainer(props: TagsContainerProps) {
       {props.blog.tags.slice(0, 3).map((tag, index) => (
         <span
           key={index}
-          className="py-1 px-1 mx-1 my-1 flex rounded-xl text-10 whitespace-nowrap text-gray-900 bg-gray-300 ">
-          {tag.title}
+          className="py-1 mx-1 my-1 flex rounded-xl text-10 whitespace-nowrap text-white
+          bg-gray-900 px-2 font-medium">
+          #{tag.title}
         </span>
       ))}
     </ScrollMenu>

@@ -1,7 +1,10 @@
 'use client';
 import React, {useEffect, useState} from 'react';
-import {Order, PaginationRequestMetaRequest} from '@/types/api/common';
-import BlogCard from './blog-card/BlogCard';
+import {
+  Order,
+  PageMetaResponse,
+  PaginationRequestMetaRequest,
+} from '@/types/api/common';
 import {TypeFeed} from '@/types/api/source_blog';
 import {useDispatch} from 'react-redux';
 import {getAllBlogThunk} from '@/redux/blog/blog.thunk';
@@ -14,6 +17,11 @@ import {
 } from '@/types/general/blog-general.type';
 import {blogAffichageType, gridBlogType} from '@/types/data/blog-general.data';
 import BlogsCardLists from '@/app-page-component/blog/BlogsCardLists';
+import {Blog} from '@/types/api/blog';
+import {useLikeBlogSelector} from '@/redux/blog/like-blog/like-blog.selector';
+import {resetBlogState} from '@/redux/blog/blog.slice';
+import {resetLikeBlogState} from '@/redux/blog/like-blog/like-blog.slice';
+import toast from 'react-hot-toast';
 
 export interface IBlogListProps {
   typeFeed: TypeFeed;
@@ -23,10 +31,17 @@ function BlogList(props: IBlogListProps) {
   const dispatchThunk = useDispatch<ThunkDispatch<any, any, any>>();
   const dispatch = useDispatch();
 
-  const {loading, blogs, meta, success, error} = useBlogSelector();
+  const blogSelector = useBlogSelector();
+  const likeBlogSelector = useLikeBlogSelector();
+  const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [metaData, setMetaData] = useState<PageMetaResponse>({
+    page: 1,
+    hasPreviousPage: false,
+    hasNextPage: false,
+  });
   const [page, setPage] = useState<number>(1);
   const [restart, setRestart] = useState<boolean>(true);
-  const [stateGrid, setStateGrid] = useState<GridBlogType>(GridBlogType.LIST);
+  const [stateGrid, setStateGrid] = useState<GridBlogType>(GridBlogType.GRID);
   const [stateAffichage, setStateAffichage] = useState<BlogAffichageType>(
     BlogAffichageType.LATEST,
   );
@@ -53,28 +68,49 @@ function BlogList(props: IBlogListProps) {
       await fetchBlogs(restart);
     }
 
-    if (restart) {
+    if (restart && page === 1) {
       getBlogs();
     }
   }, [restart]);
 
   useEffect(() => {
-    if (success) {
-      setPage(page + 1);
+    if (blogSelector.success) {
+      if (blogSelector.data) {
+        setBlogs([...blogs, ...blogSelector.data.data]);
+        setMetaData(blogSelector.data.meta);
+        setPage(page + 1);
+        dispatch(resetBlogState());
+      }
     }
-  }, [success]);
 
-  useEffect(() => {
-    if (error !== undefined) {
-      console.log(error);
+    if (blogSelector.error !== undefined) {
+      console.log(blogSelector.error);
       return;
     }
-  }, [error]);
+  }, [blogSelector.success, blogSelector.error]);
 
   useEffect(() => {
-    console.log('page blog: ', page);
-  }, [page]);
+    if (likeBlogSelector.success) {
+      if (likeBlogSelector.data) {
+        const blogResult = likeBlogSelector.data;
+        const blogsUpdated = blogs.map(blog => {
+          if (blog.blogId === blogResult.blogId) {
+            blog = {
+              ...blog,
+              isLiked: blogResult.isLiked,
+            };
+          }
+          return blog;
+        });
+        setBlogs(blogsUpdated);
+        dispatch(resetLikeBlogState());
+      }
+    }
 
+    if (likeBlogSelector.error) {
+      toast.error('Something went wrong');
+    }
+  }, [likeBlogSelector.success, likeBlogSelector.error]);
   return (
     <div className={'md:px-5 lg:px-10 w-full'}>
       <div
@@ -126,12 +162,13 @@ function BlogList(props: IBlogListProps) {
         }
         <InfiniteScroll
           next={() => fetchBlogs(false)}
-          hasMore={meta.hasNextPage}
+          hasMore={metaData.hasNextPage}
           loader={<div></div>}
           dataLength={blogs.length}
           scrollableTarget={'scrollBlogId'}
           scrollThreshold={0.8}
-          className={'mx-auto w-full'}>
+          className={'mx-auto w-full overflow-hidden'}
+          style={{overflow: 'hidden'}}>
           <BlogsCardLists
             blogs={blogs}
             gridBlogType={stateGrid}></BlogsCardLists>

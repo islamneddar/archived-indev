@@ -65,7 +65,6 @@ function SourceBlogBody() {
           ...sourceBlogs,
           ...sourceBlogSelector.data.data,
         ];
-        console.log('sourceBlogsToAdd: ', sourceBlogsToAdd);
         setSourceBlogs(sourceBlogsToAdd);
         setMetaData(sourceBlogSelector.data.meta);
         setPage(page + 1);
