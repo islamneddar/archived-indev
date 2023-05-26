@@ -1,8 +1,5 @@
 import React from 'react';
-import Image from 'next/image';
-import classNames from 'classnames';
 import {NavigationType} from '@/types/general/sidebar.type';
-import {usePathname, useRouter} from 'next/navigation';
 import SideBarItem from '@/app-page-component/sidebar/SideBarItem';
 import SideBarProfileSection from '@/app-page-component/sidebar/SideBarProfileSection';
 import FooterSideBar from '@/app-page-component/sidebar/FooterSideBar';
@@ -12,7 +9,6 @@ interface SideBarDesktopProps {
 }
 
 export default function SideBarDesktop(props: SideBarDesktopProps) {
-  const router = useRouter();
   return (
     <div className="hidden lg:fixed lg:bottom-0 lg:top-24 lg:flex lg:w-64 lg:flex-col shadow-xl">
       {/* Sidebar component, swap this element with another sidebar if you like */}

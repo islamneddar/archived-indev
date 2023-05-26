@@ -11,17 +11,20 @@ import {ThunkDispatch} from '@reduxjs/toolkit';
 import {getUserProfileThunk} from '@/redux/auth/user/user.thunk';
 import {EventBusFront, EventBusFrontType} from '@/events/event_bus';
 import {useUserSessionSelector} from '@/redux/auth/user/user.selector';
+import {NavigationType} from '@/types/general/sidebar.type';
 
-const navigationState = [
+const navigationState: NavigationType[] = [
   {
     name: 'home',
     href: routing.blog.home,
     icon: HomeIcon,
+    isAuth: false,
   },
   {
     name: 'follow source',
     href: routing.blog.followSource,
     icon: UsersIcon,
+    isAuth: true,
   },
 ];
 
@@ -42,6 +45,7 @@ export default function Layout({children}: {children: React.ReactNode}) {
   }, []);
 
   useEffect(() => {
+    console.log('session', session.status);
     const isAuth = session.status === 'authenticated';
     // @ts-ignore
     const accessToken = session.data?.user?.accessToken;

@@ -14,6 +14,7 @@ export interface Blog {
   sourceBlog: SourceBlog;
   tags: Tag[];
   isLiked: boolean;
+  totalLike: number;
 }
 
 /**

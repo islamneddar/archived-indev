@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {LightBulbIcon} from '@heroicons/react/24/outline';
 import {LightBulbIcon as LightBulbIconSolid} from '@heroicons/react/24/solid';
 import {Blog, LikeBlogRequest} from '@/types/api/blog';
@@ -7,6 +7,7 @@ import {useUserSessionSelector} from '@/redux/auth/user/user.selector';
 import {ThunkDispatch} from '@reduxjs/toolkit';
 import {useDispatch} from 'react-redux';
 import {likeBlogThunk} from '@/redux/blog/like-blog/like-blog.thunk';
+import toast from 'react-hot-toast';
 
 interface IReactionGroupButtonCardProps {
   classNameContainer: string;
@@ -17,9 +18,19 @@ function ReactionGroupButtonCardBlog(props: IReactionGroupButtonCardProps) {
 
   const blog = props.blog;
   const [isLiked, setIsLiked] = React.useState<boolean>(blog.isLiked);
-
+  const [totalLike, setTotalLikes] = React.useState<number>(blog.totalLike);
   const likeBlogSelector = useLikeBlogSelector();
-  const userSession = useUserSessionSelector();
+  const userSessionSelector = useUserSessionSelector();
+
+  useEffect(() => {
+    if (likeBlogSelector.success) {
+      if (likeBlogSelector.data) {
+        if (likeBlogSelector.data.blogId === blog.blogId) {
+          //setTotalLikes(totalLike + 1);
+        }
+      }
+    }
+  }, [likeBlogSelector.success]);
 
   return (
     <div className={`${props.classNameContainer}`}>
@@ -27,11 +38,17 @@ function ReactionGroupButtonCardBlog(props: IReactionGroupButtonCardProps) {
         <div
           onClick={event => {
             event.stopPropagation();
+            if (!userSessionSelector.isAuthenticated) {
+              toast.error('You need to login first');
+              return;
+            }
+            setTotalLikes(isLiked ? totalLike - 1 : totalLike + 1);
             setIsLiked(!isLiked);
+
             const likeBlogRequest: LikeBlogRequest = {
               blogId: blog.blogId,
               isLiked: !isLiked,
-              accessToken: userSession.user.accessToken,
+              accessToken: userSessionSelector.user.accessToken,
             };
 
             dispatchThunk(likeBlogThunk(likeBlogRequest));
@@ -44,7 +61,7 @@ function ReactionGroupButtonCardBlog(props: IReactionGroupButtonCardProps) {
           )}
         </div>
 
-        <p className={'text-14 font-normal'}>{2}</p>
+        <p className={'text-14 font-normal'}>{totalLike}</p>
       </div>
     </div>
   );
