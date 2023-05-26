@@ -1,12 +1,11 @@
 import {Injectable, Logger} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
-import {Repository} from 'typeorm';
+import {DataSource, Repository} from 'typeorm';
 import {BlogEntity} from './blog.entity';
-import {PageOptionsDto} from '../../common/pagination/page_option.dto';
-import {PageMetaDto} from '../../common/pagination/page_meta.dto';
-import {PageDto} from '../../common/pagination/page.dto';
+import {PageOptionsDto} from '@/common/pagination/page_option.dto';
+import {PageMetaDto} from '@/common/pagination/page_meta.dto';
+import {PageDto} from '@/common/pagination/page.dto';
 import {TypeFeed} from '../feed_blog/feed_blog.entity';
-import logger from '@/utils/logger';
 
 @Injectable()
 export class BlogService {
@@ -15,6 +14,7 @@ export class BlogService {
   constructor(
     @InjectRepository(BlogEntity)
     private blogRepository: Repository<BlogEntity>,
+    private dataSource: DataSource,
   ) {}
 
   async getByTitle(titleFeed: string) {
@@ -59,18 +59,48 @@ export class BlogService {
   async getWithPaginate(pageOptionsDto: PageOptionsDto) {
     const query = this.blogRepository
       .createQueryBuilder('blog')
-      .leftJoinAndSelect('blog.sourceBlog', 'sourceBlog')
-      .select(['blog', 'sourceBlog.name', 'sourceBlog.image'])
-      .leftJoinAndSelect('blog.tags', 'tag')
+      .select([
+        'blog',
+        'sourceBlog.name',
+        'sourceBlog.image',
+        'tag.tagId',
+        'tag.title',
+        'blogToUser.isLiked',
+      ])
+      .leftJoin('blog.sourceBlog', 'sourceBlog')
+      .leftJoin('blog.tags', 'tag')
+      .leftJoin('blog.blogToUser', 'blogToUser')
       .orderBy('blog.publishDate', 'DESC')
       .skip(pageOptionsDto.skip)
       .take(pageOptionsDto.take);
 
     const itemCount = await query.getCount();
     const entities = await query.getMany();
+
+    const blogUpdated = entities.map(blog => {
+      blog.totalLike = blog.blogToUser.reduce((likes, blogToUser) => {
+        if (blogToUser.isLiked) {
+          return likes + 1;
+        }
+        return likes;
+      }, 0);
+      const returnedBlog = new BlogEntity();
+      returnedBlog.blogId = blog.blogId;
+      returnedBlog.title = blog.title;
+      returnedBlog.createdAt = blog.createdAt;
+      returnedBlog.updatedAt = blog.updatedAt;
+      returnedBlog.publishDate = blog.publishDate;
+      returnedBlog.title = blog.title;
+      returnedBlog.thumbnail = blog.thumbnail;
+      returnedBlog.permalink = blog.permalink;
+      returnedBlog.sourceBlog = blog.sourceBlog;
+      returnedBlog.totalLike = blog.totalLike;
+      returnedBlog.tags = blog.tags;
+      return returnedBlog;
+    });
+
     const pageMetaDto = new PageMetaDto({itemCount, pageOptionsDto});
-    this.logger.debug('meta dto' + JSON.stringify(pageMetaDto));
-    return new PageDto(entities, pageMetaDto);
+    return new PageDto(blogUpdated, pageMetaDto);
   }
 
   async getWithPaginateByFeedType(

@@ -37,6 +37,14 @@ export default class BlogController {
     return await this.blogService.getWithPaginate(pageOptionsDto);
   }
 
+  @Get('/test')
+  @HttpCode(HttpStatus.OK)
+  async test() {
+    return {
+      message: 'test',
+    };
+  }
+
   /*@Get('/by-feed-type')
   @HttpCode(HttpStatus.OK)
   async getWithPaginateByFeedType(

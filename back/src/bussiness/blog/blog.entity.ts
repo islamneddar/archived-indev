@@ -35,9 +35,15 @@ export class BlogEntity extends BaseTable {
   publishDate: Date;
 
   @ManyToMany(() => TagEntity, tag => tag.blogs)
-  @JoinTable({name: 'blog_tags'})
+  @JoinTable({
+    name: 'blog_tags',
+    joinColumn: {name: 'blog_id'},
+    inverseJoinColumn: {name: 'tag_id'},
+  })
   tags: TagEntity[];
 
-  @OneToMany(() => BlogToUserEntity, blogToUser => blogToUser.user)
+  @OneToMany(() => BlogToUserEntity, blogToUser => blogToUser.blog)
   blogToUser: BlogToUserEntity[];
+
+  totalLike: number;
 }

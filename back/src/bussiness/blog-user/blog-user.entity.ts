@@ -8,6 +8,7 @@ import {
 import {BaseTable} from '@/database/base-table.entity';
 import {UserEntity} from '@/bussiness/user/user.entity';
 import {BlogEntity} from '@/bussiness/blog/blog.entity';
+import {TinyIntEnum} from '@/database/db.types';
 
 @Entity({name: 'blog_to_user'})
 export class BlogToUserEntity extends BaseTable {
@@ -22,6 +23,6 @@ export class BlogToUserEntity extends BaseTable {
   @JoinColumn({name: 'blog_id'})
   blog: BlogEntity;
 
-  @Column({name: 'is_liked'})
-  isLiked: boolean;
+  @Column({name: 'is_liked', enum: TinyIntEnum, default: TinyIntEnum.FALSE})
+  isLiked: TinyIntEnum;
 }
