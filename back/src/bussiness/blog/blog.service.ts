@@ -147,6 +147,29 @@ export class BlogService {
     return new PageDto(entities, pageMetaDto);
   };
 
+  async getWithPaginateQuery(param: {pageOptionsDto: PageOptionsDto}) {
+    const query = this.dataSource.query(`
+      SELECT blogs.blog_id as blogid,
+             blogs.title as blogtitle,
+             source_blogs.name as sourceblogname, 
+             source_blogs.image as sourceblogimage,
+             STRING_AGG(t.title, ', ') AS tags,
+            likes.totalLikes as totalLikes
+      from blogs
+      left join source_blogs on blogs.source_blog_id = source_blogs.source_blog_id
+      left join blog_tags on blogs.blog_id = blog_tags.blog_id
+      left join tags t on blog_tags.tag_id = t.tag_id
+      left join (
+          select blog_id, SUM(is_liked) as totalLikes from blog_to_user group by blog_id 
+      ) likes on blogs.blog_id = likes.blog_id
+      group by blogs.blog_id, source_blogs.name, source_blogs.image, totalLikes
+    `);
+
+    // TODO adapt the query to be a blog entity
+
+    return query;
+  }
+
   async getAllPaginateWithSearchAndFeedType(
     pageOption: PageOptionsDto,
     search: string,

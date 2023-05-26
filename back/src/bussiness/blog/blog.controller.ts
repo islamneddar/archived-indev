@@ -39,10 +39,10 @@ export default class BlogController {
 
   @Get('/test')
   @HttpCode(HttpStatus.OK)
-  async test() {
-    return {
-      message: 'test',
-    };
+  async test(@Query() pageOptionsDto: PageOptionsDto) {
+    return await this.blogService.getWithPaginateQuery({
+      pageOptionsDto: pageOptionsDto,
+    });
   }
 
   /*@Get('/by-feed-type')
