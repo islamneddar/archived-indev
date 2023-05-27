@@ -39,7 +39,6 @@ export default function SignupPage() {
 
   const signup = () => {
     const onSubmit = (resultInput: SignupInput) => {
-      console.log(resultInput);
       const {acceptConditionAndTerm, ...signupRequest} = resultInput;
       dispatch(signupThunk(signupRequest));
     };

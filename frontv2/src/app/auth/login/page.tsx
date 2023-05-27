@@ -28,7 +28,6 @@ export default function LoginPage() {
         password: resultInput.password,
         redirect: false,
       }).then(value => {
-        console.log(value);
         if (value?.ok) {
           router.push(routing.blog.root);
         } else {

@@ -75,13 +75,11 @@ function SourceBlogBody() {
 
   useEffect(() => {
     if (sourceBlogSelector.error !== undefined) {
-      console.log(sourceBlogSelector.error);
       return;
     }
   }, [sourceBlogSelector.error]);
 
   useEffect(() => {
-    console.log('page source: ', page);
     if (page === 1) {
       //dispatch(clearSourceBlogs());
     }
@@ -106,7 +104,6 @@ function SourceBlogBody() {
     }
 
     if (followSourceBlogSelector.error) {
-      console.log(followSourceBlogSelector.error);
       toast.error('Something went wrong, please try again later');
     }
   }, [followSourceBlogSelector.success, followSourceBlogSelector.error]);

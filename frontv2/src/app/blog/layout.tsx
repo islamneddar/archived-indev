@@ -12,6 +12,7 @@ import {getUserProfileThunk} from '@/redux/auth/user/user.thunk';
 import {EventBusFront, EventBusFrontType} from '@/events/event_bus';
 import {useUserSessionSelector} from '@/redux/auth/user/user.selector';
 import {NavigationType} from '@/types/general/sidebar.type';
+import {Metadata} from 'next';
 
 const navigationState: NavigationType[] = [
   {
@@ -29,7 +30,6 @@ const navigationState: NavigationType[] = [
 ];
 
 export default function Layout({children}: {children: React.ReactNode}) {
-  console.log('blog layout');
   const dispatch = useDispatch();
   const dispatchThunk = useDispatch<ThunkDispatch<any, any, any>>();
   const userSessionSelector = useUserSessionSelector();
@@ -40,7 +40,6 @@ export default function Layout({children}: {children: React.ReactNode}) {
 
   useEffect(() => {
     EventBusFront.on(EventBusFrontType.LOGOUT, async () => {
-      console.log('logout');
       dispatch(updateAuth({isAuthenticated: false, accessToken: null}));
       await signOut();
     });
@@ -59,7 +58,6 @@ export default function Layout({children}: {children: React.ReactNode}) {
   }, [userSessionSelector.success]);
 
   useEffect(() => {
-    console.log('session', session.status);
     if (!userSessionSelector.isAuthenticated) {
       // @ts-ignore
       const accessToken = session.data?.user?.accessToken;
@@ -76,7 +74,6 @@ export default function Layout({children}: {children: React.ReactNode}) {
 
   useEffect(() => {
     if (userSessionSelector.error) {
-      console.log('error in get profile');
       EventBusFront.dispatch(EventBusFrontType.LOGOUT, null);
     }
   }, [userSessionSelector.error]);
