@@ -9,8 +9,6 @@ interface IBlogBodyTypeProps {
   };
 }
 
-function Page(props: IBlogBodyTypeProps) {
-  return <BlogsBody type={props.params.type as TypeFeed}></BlogsBody>;
-}
+function Page(props: IBlogBodyTypeProps) {}
 
 export default Page;

@@ -28,7 +28,7 @@ export interface IBlogListProps {
   typeFeed: TypeFeed;
 }
 
-function BlogList(props: IBlogListProps) {
+function BlogList() {
   const dispatchThunk = useDispatch<ThunkDispatch<any, any, any>>();
   const dispatch = useDispatch();
 
