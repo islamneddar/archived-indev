@@ -1,7 +1,6 @@
 'use client';
 import React from 'react';
 import './globals.css';
-import Script from 'next/script';
 import {Provider} from 'react-redux';
 import {store} from '@/redux/store';
 import ToasterClient from '../components/ToasterClient';
@@ -12,8 +11,6 @@ import 'react-tooltip/dist/react-tooltip.css';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 //core
 import 'primereact/resources/primereact.min.css';
-import Head from 'next/head';
-import ErrorBoundary from '@/app-page-component/errors/ErrorBundaries';
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
@@ -40,10 +37,8 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
       <body>
         <SessionProvider>
           <Provider store={store}>
-            <ErrorBoundary>
-              {children}
-              <ToasterClient />
-            </ErrorBoundary>
+            {children}
+            <ToasterClient />
           </Provider>
         </SessionProvider>
       </body>
