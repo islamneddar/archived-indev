@@ -27,6 +27,7 @@ export interface GetBlogsResponse {
 
 export interface GetAllBlogRequest {
   paginationRequestMeta: PaginationRequestMetaRequest;
+  accessToken: string | null;
 }
 
 export interface LikeBlogRequest {

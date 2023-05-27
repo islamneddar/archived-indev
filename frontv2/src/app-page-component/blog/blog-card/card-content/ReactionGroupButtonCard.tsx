@@ -15,22 +15,20 @@ interface IReactionGroupButtonCardProps {
 }
 function ReactionGroupButtonCardBlog(props: IReactionGroupButtonCardProps) {
   const dispatchThunk = useDispatch<ThunkDispatch<any, any, any>>();
-
-  const blog = props.blog;
-  const [isLiked, setIsLiked] = React.useState<boolean>(blog.isLiked);
-  const [totalLike, setTotalLikes] = React.useState<number>(blog.totalLike);
-  const likeBlogSelector = useLikeBlogSelector();
   const userSessionSelector = useUserSessionSelector();
 
+  const blog = props.blog;
+  const [isLiked, setIsLiked] = React.useState<boolean>(
+    userSessionSelector.isAuthenticated ? blog.isLiked : false,
+  );
+  const [totalLike, setTotalLikes] = React.useState<number>(blog.totalLike);
+  const likeBlogSelector = useLikeBlogSelector();
+
   useEffect(() => {
-    if (likeBlogSelector.success) {
-      if (likeBlogSelector.data) {
-        if (likeBlogSelector.data.blogId === blog.blogId) {
-          //setTotalLikes(totalLike + 1);
-        }
-      }
+    if (likeBlogSelector.error) {
+      toast.error('internal error, we will try to fix it as soon as possible');
     }
-  }, [likeBlogSelector.success]);
+  }, [likeBlogSelector.error]);
 
   return (
     <div className={`${props.classNameContainer}`}>
@@ -53,14 +51,12 @@ function ReactionGroupButtonCardBlog(props: IReactionGroupButtonCardProps) {
 
             dispatchThunk(likeBlogThunk(likeBlogRequest));
           }}>
-          {isLiked && (
+          {isLiked ? (
             <LightBulbIconSolid className="h-5 w-5 text-yellow-400 font-medium hover:scale-125 cursor-pointer" />
-          )}
-          {!isLiked && (
+          ) : (
             <LightBulbIcon className="h-5 w-5 text-white font-medium hover:scale-125 cursor-pointer" />
           )}
         </div>
-
         <p className={'text-14 font-normal'}>{totalLike}</p>
       </div>
     </div>

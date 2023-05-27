@@ -22,6 +22,7 @@ import {useLikeBlogSelector} from '@/redux/blog/like-blog/like-blog.selector';
 import {resetBlogState} from '@/redux/blog/blog.slice';
 import {resetLikeBlogState} from '@/redux/blog/like-blog/like-blog.slice';
 import toast from 'react-hot-toast';
+import {useUserSessionSelector} from '@/redux/auth/user/user.selector';
 
 export interface IBlogListProps {
   typeFeed: TypeFeed;
@@ -30,6 +31,8 @@ export interface IBlogListProps {
 function BlogList(props: IBlogListProps) {
   const dispatchThunk = useDispatch<ThunkDispatch<any, any, any>>();
   const dispatch = useDispatch();
+
+  const userSessionSelector = useUserSessionSelector();
 
   const blogSelector = useBlogSelector();
   const likeBlogSelector = useLikeBlogSelector();
@@ -55,6 +58,11 @@ function BlogList(props: IBlogListProps) {
 
     const getAllBlogRequest = {
       paginationRequestMeta: paginationRequest,
+      accessToken:
+        userSessionSelector.isAuthenticated &&
+        userSessionSelector.user.accessToken
+          ? userSessionSelector.user.accessToken
+          : null,
     };
 
     dispatchThunk(getAllBlogThunk(getAllBlogRequest));

@@ -33,10 +33,3 @@ export const signupSlice = createSlice({
     });
   },
 });
-
-export const selectSignup = (state: {signupReducer: SignupState}) =>
-  state.signupReducer;
-
-export const useSignupSelector = () => {
-  return useAppSelector(selectSignup);
-};

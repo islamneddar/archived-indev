@@ -61,4 +61,19 @@ export default class BlogService {
     const data = await res.data;
     return data as LikeBlogResponse;
   }
+
+  async getAllBlogWithPaginationWithAuth(getAllBlogRequest: GetAllBlogRequest) {
+    const res = await axios.get(`${this.endpointBlog}/all/with-auth`, {
+      params: {
+        page: getAllBlogRequest.paginationRequestMeta.page,
+        take: getAllBlogRequest.paginationRequestMeta.take,
+      },
+      headers: {
+        Authorization: `Bearer ${getAllBlogRequest.accessToken}`,
+      },
+    });
+
+    const data = await res.data;
+    return data as GetBlogsResponse;
+  }
 }

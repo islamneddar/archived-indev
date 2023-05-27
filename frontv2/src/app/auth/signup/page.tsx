@@ -7,12 +7,12 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import {useDispatch} from 'react-redux';
 import toast from 'react-hot-toast';
 import {useRouter} from 'next/navigation';
-import {useSignupSelector} from '@/redux/auth/signup/signup.slice';
 import {signupThunk} from '@/redux/auth/signup/signup.thunk';
 import InputWithValidationError from '@/components/form/InputWithValidationErrorInnoom';
 import {ThunkDispatch} from '@reduxjs/toolkit';
 import CheckBoxWithValidationError from '@/components/form/CheckBoxWithValidationError';
 import routing from '@/routes/routing.constant';
+import {useSignupSelector} from '@/redux/auth/signup/sigup.selector';
 
 export default function SignupPage() {
   const router = useRouter();
