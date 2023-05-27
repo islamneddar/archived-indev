@@ -109,7 +109,7 @@ function SourceBlogBody() {
   }, [followSourceBlogSelector.success, followSourceBlogSelector.error]);
 
   return (
-    <div className={'h-[calc(100vh_-_136px)]'}>
+    <div className={'overflow-y-auto h-[calc(100vh_-_136px)]'}>
       <InfiniteScroll
         next={() => fetchSourceBlogs()}
         hasMore={metaData.hasNextPage}
@@ -117,7 +117,7 @@ function SourceBlogBody() {
         dataLength={sourceBlogs.length}
         scrollableTarget={'scrollSourceBlogId'}
         scrollThreshold={0.8}
-        className={'mx-auto w-full'}>
+        className={'mx-auto w-full '}>
         <SourceBlogList sourceBlogs={sourceBlogs}></SourceBlogList>
       </InfiniteScroll>
     </div>

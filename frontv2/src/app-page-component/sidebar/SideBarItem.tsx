@@ -3,8 +3,6 @@ import classNames from 'classnames';
 import {usePathname, useRouter} from 'next/navigation';
 import {NavigationType} from '@/types/general/sidebar.type';
 import {useUserSessionSelector} from '@/redux/auth/user/user.selector';
-import Link from 'next/link';
-import routing from '@/routes/routing.constant';
 interface ISideBarItemProps {
   item: NavigationType;
 }
@@ -16,23 +14,14 @@ function SideBarItem(props: ISideBarItemProps) {
   const router = useRouter();
 
   return (
-    <Link
+    <button
       className={classNames(
         pathname?.includes(item.href)
           ? 'bg-gray-900 text-white'
           : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-        'group flex items-center rounded-md px-2 py-2 text-sm font-medium cursor-pointer',
+        'group flex items-center rounded-md px-2 py-2 text-sm font-medium cursor-pointer w-full',
       )}
       key={item.name}
-      href={`
-        ${
-          item.isAuth && !userSessionSelector.isAuthenticated
-            ? routing.auth.login
-            : !pathname?.includes(item.href)
-            ? item.href
-            : ''
-        }
-      `}
       onClick={() => {
         if (item.isAuth && !userSessionSelector.isAuthenticated) {
           //window.location.href = routing.auth.login;
@@ -55,7 +44,7 @@ function SideBarItem(props: ISideBarItemProps) {
         aria-hidden="true"
       />
       {item.name}
-    </Link>
+    </button>
   );
 }
 
