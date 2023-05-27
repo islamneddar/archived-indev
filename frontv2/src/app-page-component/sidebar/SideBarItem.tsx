@@ -1,8 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
-import {usePathname, useRouter} from 'next/navigation';
+import {usePathname} from 'next/navigation';
 import {NavigationType} from '@/types/general/sidebar.type';
 import {useUserSessionSelector} from '@/redux/auth/user/user.selector';
+import routing from '@/routes/routing.constant';
+
 interface ISideBarItemProps {
   item: NavigationType;
 }
@@ -11,30 +13,24 @@ function SideBarItem(props: ISideBarItemProps) {
   const pathname = usePathname();
   const item = props.item;
   const userSessionSelector = useUserSessionSelector();
-  const router = useRouter();
 
   return (
-    <button
+    <a
       className={classNames(
         pathname?.includes(item.href)
           ? 'bg-gray-900 text-white'
           : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-        'group flex items-center rounded-md px-2 py-2 text-sm font-medium cursor-pointer w-full',
+        'group flex items-center rounded-md px-2 py-2 text-sm font-medium cursor-pointer',
       )}
       key={item.name}
       onClick={() => {
+        //router.push(item.href);
         if (item.isAuth && !userSessionSelector.isAuthenticated) {
-          //window.location.href = routing.auth.login;
-          //router.push(routing.auth.login);
-          console.debug('go to login');
+          window.location.href = routing.auth.login;
           return;
         }
         if (!pathname?.includes(item.href)) {
-          //window.location.href = item.href;
-          router.push(item.href, {
-            forceOptimisticNavigation: true,
-          });
-          //window.history.pushState(null, '', item.href);
+          window.location.href = item.href;
         }
       }}>
       <item.icon
@@ -47,7 +43,7 @@ function SideBarItem(props: ISideBarItemProps) {
         aria-hidden="true"
       />
       {item.name}
-    </button>
+    </a>
   );
 }
 
