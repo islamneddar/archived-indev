@@ -38,6 +38,7 @@ export const userSessionSlice = createSlice({
     builder.addCase(getUserProfileThunk.pending, state => {
       state.loading = true;
       state.error = undefined;
+      state.success = false;
     });
     builder.addCase(getUserProfileThunk.fulfilled, (state, action) => {
       state.loading = false;
@@ -45,6 +46,7 @@ export const userSessionSlice = createSlice({
         accessToken: state.user?.accessToken || '',
         ...action.payload,
       };
+      state.success = true;
     });
     builder.addCase(getUserProfileThunk.rejected, (state, action) => {
       state.loading = false;

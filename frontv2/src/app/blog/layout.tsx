@@ -29,6 +29,7 @@ const navigationState: NavigationType[] = [
 ];
 
 export default function Layout({children}: {children: React.ReactNode}) {
+  console.log('blog layout');
   const dispatch = useDispatch();
   const dispatchThunk = useDispatch<ThunkDispatch<any, any, any>>();
   const userSessionSelector = useUserSessionSelector();
@@ -40,22 +41,33 @@ export default function Layout({children}: {children: React.ReactNode}) {
   useEffect(() => {
     EventBusFront.on(EventBusFrontType.LOGOUT, async () => {
       console.log('logout');
+      dispatch(updateAuth({isAuthenticated: false, accessToken: null}));
       await signOut();
     });
   }, []);
 
   useEffect(() => {
+    if (userSessionSelector.success) {
+      dispatch(
+        updateAuth({
+          isAuthenticated: true,
+          // @ts-ignore
+          accessToken: session.data?.user?.accessToken,
+        }),
+      );
+    }
+  }, [userSessionSelector.success]);
+
+  useEffect(() => {
     console.log('session', session.status);
-    const isAuth = session.status === 'authenticated';
-    // @ts-ignore
-    const accessToken = session.data?.user?.accessToken;
-    dispatch(updateAuth({isAuthenticated: isAuth, accessToken: accessToken}));
-    if (session.status === 'authenticated') {
-      dispatchThunk(getUserProfileThunk(accessToken));
+    if (!userSessionSelector.isAuthenticated) {
+      // @ts-ignore
+      const accessToken = session.data?.user?.accessToken;
+      if (session.status === 'authenticated') {
+        dispatchThunk(getUserProfileThunk(accessToken));
+      }
     }
   }, [
-    dispatch,
-    dispatchThunk,
     session.data,
     // @ts-ignore
     session.data?.user?.accessToken,

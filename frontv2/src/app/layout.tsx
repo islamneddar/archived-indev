@@ -14,6 +14,7 @@ import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
+  console.log('root layout');
   return (
     <html lang="en">
       <Script strategy="lazyOnload" id={'script launcher'}>
