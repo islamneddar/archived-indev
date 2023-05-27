@@ -40,7 +40,9 @@ function ReactionGroupButtonCardBlog(props: IReactionGroupButtonCardProps) {
               toast.error('You need to login first');
               return;
             }
-            setTotalLikes(isLiked ? totalLike - 1 : totalLike + 1);
+            setTotalLikes(
+              isLiked ? Number(totalLike) - 1 : Number(totalLike) + 1,
+            );
             setIsLiked(!isLiked);
 
             const likeBlogRequest: LikeBlogRequest = {

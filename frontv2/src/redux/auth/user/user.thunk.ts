@@ -9,10 +9,16 @@ export const getUserProfileThunk = createAsyncThunk<UserProfileResponse, any>(
     try {
       return await UserService.getInstance().getProfileUser(accessToken);
     } catch (error: any) {
+      if (error.response === undefined) {
+        return rejectWithValue('internal error');
+      }
+      console.log(error.response.status);
       if (error.response.status === 401) {
         EventBusFront.dispatch(EventBusFrontType.LOGOUT, {});
       }
-      return rejectWithValue(error.response.data.message);
+
+      console.log(error.response.status);
+      return rejectWithValue(error.response.status);
     }
   },
 );

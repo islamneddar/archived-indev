@@ -31,7 +31,7 @@ const navigationState: NavigationType[] = [
 export default function Layout({children}: {children: React.ReactNode}) {
   const dispatch = useDispatch();
   const dispatchThunk = useDispatch<ThunkDispatch<any, any, any>>();
-  const {loading, error, user} = useUserSessionSelector();
+  const userSessionSelector = useUserSessionSelector();
 
   const session = useSession({
     required: false,
@@ -62,18 +62,21 @@ export default function Layout({children}: {children: React.ReactNode}) {
     session.status,
   ]);
 
-  if (error) {
-    console.log('error', error);
-    //EventBusFront.dispatch(EventBusFrontType.LOGOUT, null);
-  }
+  useEffect(() => {
+    if (userSessionSelector.error) {
+      console.log('error in get profile');
+      EventBusFront.dispatch(EventBusFrontType.LOGOUT, null);
+    }
+  }, [userSessionSelector.error]);
 
   // Rendering
-  if (session.status === 'loading' || loading) {
+  if (session.status === 'loading' || userSessionSelector.loading) {
     return <></>;
   }
 
   if (
-    (session.status === 'authenticated' && user.email.length > 0) ||
+    (session.status === 'authenticated' &&
+      userSessionSelector.user.email.length > 0) ||
     session.status === 'unauthenticated'
   ) {
     return (
