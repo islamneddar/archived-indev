@@ -1,8 +1,13 @@
 'use client';
 import React from 'react';
+import routing from '@/routes/routing.constant';
+import BlogsBody from '@/app-page-component/blog/BlogsBody';
+import SourceBlogBody from '@/app-page-component/source_blog/SourceBlogBody';
+import {useUserSessionSelector} from '@/redux/auth/user/user.selector';
 
 function SectionPage({params}: {params: {section: string}}) {
-  /*if (routing.blog.home.includes(params.section)) {
+  const userSessionSelector = useUserSessionSelector();
+  if (routing.blog.home.includes(params.section)) {
     return <BlogsBody></BlogsBody>;
   }
 
@@ -17,8 +22,7 @@ function SectionPage({params}: {params: {section: string}}) {
         </div>
       );
     }
-  }*/
-  return <div>{params.section}</div>;
+  }
 }
 
 export default SectionPage;
