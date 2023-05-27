@@ -12,12 +12,10 @@ export const getUserProfileThunk = createAsyncThunk<UserProfileResponse, any>(
       if (error.response === undefined) {
         return rejectWithValue('internal error');
       }
-      console.log(error.response.status);
       if (error.response.status === 401) {
         EventBusFront.dispatch(EventBusFrontType.LOGOUT, {});
       }
 
-      console.log(error.response.status);
       return rejectWithValue(error.response.status);
     }
   },

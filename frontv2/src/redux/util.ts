@@ -11,12 +11,9 @@ export async function templateThinkCall<Request, Response>(param: {
     if (error.response === undefined) {
       return param.rejectWithValue('internal error');
     }
-    console.log(error.response.status);
     if (error.response.status === 401) {
       EventBusFront.dispatch(EventBusFrontType.LOGOUT, {});
     }
-
-    console.log(error.response.status);
     return param.rejectWithValue(error.response.data.message);
   }
 }

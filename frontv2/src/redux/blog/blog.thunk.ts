@@ -19,7 +19,6 @@ export const getAllBlogThunk = createAsyncThunk<
         );
       }
     } catch (error: any) {
-      console.log(error);
       return rejectWithValue(error.response.data.message);
     }
   },

@@ -92,7 +92,6 @@ function BlogList(props: IBlogListProps) {
     }
 
     if (blogSelector.error !== undefined) {
-      console.log(blogSelector.error);
       return;
     }
   }, [blogSelector.success, blogSelector.error]);

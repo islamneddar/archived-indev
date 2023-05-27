@@ -20,8 +20,6 @@ export const getAllSourceBlogThunk = createAsyncThunk<
         getAllSourceBlogRequest,
       );
     } catch (error: any) {
-      console.log(error);
-      console.log(error.response.status);
       if (error.response.status === 401) {
         EventBusFront.dispatch(EventBusFrontType.LOGOUT, {});
       }
