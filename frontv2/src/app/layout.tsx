@@ -13,6 +13,7 @@ import 'primereact/resources/themes/lara-light-indigo/theme.css';
 //core
 import 'primereact/resources/primereact.min.css';
 import Head from 'next/head';
+import ErrorBoundary from '@/app-page-component/errors/ErrorBundaries';
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
@@ -39,8 +40,10 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
       <body>
         <SessionProvider>
           <Provider store={store}>
-            {children}
-            <ToasterClient />
+            <ErrorBoundary>
+              {children}
+              <ToasterClient />
+            </ErrorBoundary>
           </Provider>
         </SessionProvider>
       </body>
