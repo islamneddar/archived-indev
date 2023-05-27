@@ -26,7 +26,8 @@ function SideBarItem(props: ISideBarItemProps) {
       key={item.name}
       onClick={() => {
         if (item.isAuth && !userSessionSelector.isAuthenticated) {
-          window.location.href = routing.auth.login;
+          console.log('go to login');
+          //window.location.href = routing.auth.login;
           //router.push(routing.auth.login);
           return;
         }
