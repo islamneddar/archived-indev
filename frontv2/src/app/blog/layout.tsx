@@ -41,7 +41,8 @@ export default function Layout({children}: {children: React.ReactNode}) {
   useEffect(() => {
     EventBusFront.on(EventBusFrontType.LOGOUT, async () => {
       dispatch(updateAuth({isAuthenticated: false, accessToken: null}));
-      await signOut();
+      //await signOut();
+      console.debug('logout');
     });
   }, []);
 

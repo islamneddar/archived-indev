@@ -9,7 +9,8 @@ function Page() {
   const userSessionSelector = useUserSessionSelector();
 
   if (!userSessionSelector.isAuthenticated) {
-    router.push('/auth/login');
+    //router.push('/auth/login');
+    console.debug('go to login');
   } else {
     return (
       <div className={'p-5 w-full flex'}>
