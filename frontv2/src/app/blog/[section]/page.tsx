@@ -7,7 +7,7 @@ import {useUserSessionSelector} from '@/redux/auth/user/user.selector';
 
 function Page({params}: {params: {section: string}}) {
   const userSessionSelector = useUserSessionSelector();
-  if (routing.blog.home.includes(params.section)) {
+  /*if (routing.blog.home.includes(params.section)) {
     return <BlogsBody></BlogsBody>;
   }
 
@@ -22,7 +22,7 @@ function Page({params}: {params: {section: string}}) {
         </div>
       );
     }
-  }
+  }*/
   return <div>{params.section}</div>;
 }
 
