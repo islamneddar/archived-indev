@@ -3,9 +3,15 @@ import React from 'react';
 import './globals.css';
 import Script from 'next/script';
 import {Provider} from 'react-redux';
-import NavBar from '../app-page-component/navbar/NavBar';
 import {store} from '@/redux/store';
 import ToasterClient from '../components/ToasterClient';
+import {SessionProvider} from 'next-auth/react';
+
+import 'react-tooltip/dist/react-tooltip.css';
+//theme
+import 'primereact/resources/themes/lara-light-indigo/theme.css';
+//core
+import 'primereact/resources/primereact.min.css';
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
@@ -24,11 +30,12 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         <title>blog for community</title>
       </head>
       <body>
-        <Provider store={store}>
-          <NavBar />
-          {children}
-          <ToasterClient />
-        </Provider>
+        <SessionProvider>
+          <Provider store={store}>
+            {children}
+            <ToasterClient />
+          </Provider>
+        </SessionProvider>
       </body>
     </html>
   );

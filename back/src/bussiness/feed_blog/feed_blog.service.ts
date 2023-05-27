@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { FeedBlogEntity } from './feed_blog.entity';
-import { CreateFeedBlogRequest } from './interface';
+import {Injectable} from '@nestjs/common';
+import {InjectRepository} from '@nestjs/typeorm';
+import {Repository} from 'typeorm';
+import {FeedBlogEntity} from './feed_blog.entity';
+import {CreateFeedBlogRequest} from './interface';
 
 @Injectable()
 export class FeedBlogService {

@@ -1,20 +1,17 @@
-/* eslint-disable import/no-cycle */
 import {
-  BaseEntity,
   Column,
-  CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   JoinTable,
   ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
-import {SourceBlogEntity} from '../source_blog/source_blog.entity';
+import {SourceBlogEntity} from '@/bussiness/source-blog/source_blog.entity';
 import {TagEntity} from '../tag/tag.entity';
-import {BaseTable} from '../../database/base-table.entity';
+import {BaseTable} from '@/database/base-table.entity';
+import {BlogToUserEntity} from '@/bussiness/blog-user/blog-user.entity';
 
 @Entity({name: 'blogs'})
 export class BlogEntity extends BaseTable {
@@ -38,6 +35,17 @@ export class BlogEntity extends BaseTable {
   publishDate: Date;
 
   @ManyToMany(() => TagEntity, tag => tag.blogs)
-  @JoinTable({name: 'blog_tags'})
+  @JoinTable({
+    name: 'blog_tags',
+    joinColumn: {name: 'blog_id'},
+    inverseJoinColumn: {name: 'tag_id'},
+  })
   tags: TagEntity[];
+
+  @OneToMany(() => BlogToUserEntity, blogToUser => blogToUser.blog)
+  blogToUser: BlogToUserEntity[];
+
+  totalLike: number;
+
+  isLiked: boolean;
 }

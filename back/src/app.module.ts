@@ -6,7 +6,7 @@ import AdminJS from 'adminjs';
 import * as AdminJSTypeorm from '@adminjs/typeorm';
 import {ThrottlerGuard, ThrottlerModule} from '@nestjs/throttler';
 import {APP_GUARD} from '@nestjs/core';
-import {SourceBlogModule} from './bussiness/source_blog/source_blog.module';
+import {SourceBlogModule} from '@/bussiness/source-blog/source_blog.module';
 import {BlogModule} from './bussiness/blog/blog.module';
 import {FeedBlogModule} from './bussiness/feed_blog/feed_blog.module';
 import {BlogPollerModule} from '@/jobs/blog_poller/blog_poller.module';
@@ -14,9 +14,16 @@ import {TagModule} from './bussiness/tag/tag.module';
 import DBModule from './database/db.config';
 import {FeedBlogEntity} from './bussiness/feed_blog/feed_blog.entity';
 import {BlogEntity} from './bussiness/blog/blog.entity';
-import {SourceBlogEntity} from './bussiness/source_blog/source_blog.entity';
+import {SourceBlogEntity} from '@/bussiness/source-blog/source_blog.entity';
 import {TagEntity} from './bussiness/tag/tag.entity';
 import {EmailNewsletterModule} from './bussiness/email_newsletter/email_newsletter.module';
+import {EmailValidationModule} from '@/bussiness/email_validation/email_validation.module';
+import {UserModule} from '@/bussiness/user/user.module';
+import {AuthModule} from '@/bussiness/auth/auth.module';
+import {MailingModule} from '@/bussiness/mailing/mailing.module';
+import {MailingConfig} from '@/bussiness/mailing/mailing.config';
+import {SourceBlogToUserModule} from '@/bussiness/source-blog-user/source-blog-use.module';
+import {BlogToUserModule} from '@/bussiness/blog-user/blog-user.module';
 
 const DEFAULT_ADMIN = {
   email: 'lemsijoker',
@@ -39,6 +46,7 @@ AdminJS.registerAdapter({
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    MailingConfig,
     AdminModule.createAdminAsync({
       useFactory: () => ({
         adminJsOptions: {
@@ -59,16 +67,22 @@ AdminJS.registerAdapter({
     }),
     ThrottlerModule.forRoot({
       ttl: 60,
-      limit: 85,
+      limit: 25,
     }),
     ScheduleModule.forRoot(),
     DBModule,
+    UserModule,
     SourceBlogModule,
     BlogModule,
     FeedBlogModule,
     BlogPollerModule,
     TagModule,
     EmailNewsletterModule,
+    EmailValidationModule,
+    AuthModule,
+    MailingModule,
+    SourceBlogToUserModule,
+    BlogToUserModule,
   ],
   controllers: [],
   providers: [

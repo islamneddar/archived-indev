@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.7.14",
+    "@heroicons/react": "^2.0.18",
+    "@hookform/resolvers": "^3.1.0",
     "@reduxjs/toolkit": "^1.9.5",
     "@tailwindcss/line-clamp": "^0.4.4",
     "@types/node": "20.1.4",
@@ -22,25 +24,31 @@
     "eslint-config-next": "13.4.2",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
+    "heroicons": "^2.0.18",
     "masonic": "^3.7.0",
     "next": "13.4.2",
+    "next-auth": "^4.22.1",
     "next-seo": "^6.0.0",
     "postcss": "8.4.23",
     "prettier": "^2.8.8",
+    "primereact": "^9.4.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.43.9",
     "react-horizontal-scrolling-menu": "^4.0.4",
     "react-hot-toast": "^2.4.1",
     "react-icons": "^4.8.0",
     "react-infinite-scroll-component": "^6.1.0",
     "react-redux": "^8.0.5",
-    "react-tooltip": "^5.11.2",
+    "react-tooltip": "^5.13.1",
     "redux-logger": "^3.0.6",
     "tailwind-scrollbar-hide": "^1.1.7",
     "tailwindcss": "3.3.2",
-    "typescript": "5.0.4"
+    "typescript": "5.0.4",
+    "yup": "^1.1.1"
   },
   "devDependencies": {
-    "@types/redux-logger": "^3.0.9"
+    "@types/redux-logger": "^3.0.9",
+    "next-on-pages-vercel-cli": "^29.3.0-next-on-pages-fix-3"
   }
 }

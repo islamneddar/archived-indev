@@ -1,44 +1,35 @@
-import {Blog} from '@/types/api/blog';
-import {PageMetaResponse} from '@/types/api/common';
 import {createSlice} from '@reduxjs/toolkit';
 import {getAllBlogThunk as getAllBlog} from '@/redux/blog/blog.thunk';
+import {ReduxEntityBase} from '@/types/general/redux.type';
+import {GetBlogsResponse} from '@/types/api/blog';
 
-export interface BlogState {
-  loading: boolean;
-  error: string | undefined;
-  success: boolean;
-  blogs: Blog[];
-  meta: PageMetaResponse;
-}
+export type BlogState = ReduxEntityBase<GetBlogsResponse>;
 
 const initialState: BlogState = {
   loading: false,
   error: undefined,
   success: false,
-  blogs: [],
-  meta: {
-    page: 1,
-    hasPreviousPage: false,
-    hasNextPage: false,
-  },
+  data: undefined,
 };
 
 export const blogSlice = createSlice({
   name: 'blogSlice',
   initialState,
-  reducers: {},
+  reducers: {
+    resetBlogState: () => initialState,
+  },
   extraReducers: builder => {
     // getAllBlog
     builder.addCase(getAllBlog.pending, state => {
       state.loading = true;
       state.error = undefined;
       state.success = false;
+      state.data = undefined;
     });
     builder.addCase(getAllBlog.fulfilled, (state, action) => {
       state.loading = false;
       state.success = true;
-      state.blogs = [...state.blogs, ...action.payload.data];
-      state.meta = action.payload.meta;
+      state.data = action.payload;
     });
     builder.addCase(getAllBlog.rejected, (state, action) => {
       state.loading = false;
@@ -47,3 +38,5 @@ export const blogSlice = createSlice({
     });
   },
 });
+
+export const {resetBlogState} = blogSlice.actions;

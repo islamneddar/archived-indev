@@ -9,9 +9,15 @@ export const getAllBlogThunk = createAsyncThunk<
   'blog/getAllBlog',
   async (getAllBlogRequest: GetAllBlogRequest, {rejectWithValue}) => {
     try {
-      return await BlogService.getInstance().getAllBlogWithPagination(
-        getAllBlogRequest,
-      );
+      if (getAllBlogRequest.accessToken === null) {
+        return await BlogService.getInstance().getAllBlogWithPagination(
+          getAllBlogRequest,
+        );
+      } else {
+        return await BlogService.getInstance().getAllBlogWithPaginationWithAuth(
+          getAllBlogRequest,
+        );
+      }
     } catch (error: any) {
       console.log(error);
       return rejectWithValue(error.response.data.message);

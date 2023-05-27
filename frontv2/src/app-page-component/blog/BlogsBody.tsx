@@ -9,7 +9,7 @@ export interface IBlogBodyProps {
 
 function BlogsBody(props: IBlogBodyProps) {
   return (
-    <div className={'px-10 tn:px-2 sm:px-3 h-full flex flex-1 '}>
+    <div className={'px-5 tn:px-2 sm:px-3 h-full flex flex-1 '}>
       <div className={'flex h-full flex-1 flex-col pt-5 justify-center'}>
         {<BlogList typeFeed={props.type}></BlogList>}
       </div>
