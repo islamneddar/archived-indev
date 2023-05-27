@@ -31,7 +31,10 @@ function SideBarItem(props: ISideBarItemProps) {
         }
         if (!pathname?.includes(item.href)) {
           //window.location.href = item.href;
-          router.push(item.href);
+          router.push(item.href, {
+            forceOptimisticNavigation: true,
+          });
+          //window.history.pushState(null, '', item.href);
         }
       }}>
       <item.icon
