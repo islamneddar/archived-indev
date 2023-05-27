@@ -49,6 +49,7 @@
   },
   "devDependencies": {
     "@types/redux-logger": "^3.0.9",
-    "next-on-pages-vercel-cli": "^29.3.0-next-on-pages-fix-3"
+    "next-on-pages-vercel-cli": "^29.3.0-next-on-pages-fix-3",
+    "vercel": "^30.0.0"
   }
 }

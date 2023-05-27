@@ -37,7 +37,7 @@ function SourceBlogBody() {
   const fetchSourceBlogs = async () => {
     const paginationRequest: PaginationRequestMetaRequest = {
       page: page,
-      take: 12,
+      take: 50,
       order: Order.DESC,
     };
 
