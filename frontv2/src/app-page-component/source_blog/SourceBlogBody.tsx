@@ -109,7 +109,7 @@ function SourceBlogBody() {
   }, [followSourceBlogSelector.success, followSourceBlogSelector.error]);
 
   return (
-    <div>
+    <div className={'h-[calc(100vh_-_136px)]'}>
       <InfiniteScroll
         next={() => fetchSourceBlogs()}
         hasMore={metaData.hasNextPage}

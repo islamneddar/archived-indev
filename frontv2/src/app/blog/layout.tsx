@@ -1,7 +1,7 @@
 'use client';
 import NavBar from '@/app-page-component/navbar/NavBar';
 import React, {Fragment, useEffect} from 'react';
-import {signOut, useSession} from 'next-auth/react';
+import {useSession} from 'next-auth/react';
 import {updateAuth} from '@/redux/auth/user/user.slice';
 import {useDispatch} from 'react-redux';
 import SideBarDesktop from '@/app-page-component/sidebar/SideBarDesktop';
@@ -12,7 +12,6 @@ import {getUserProfileThunk} from '@/redux/auth/user/user.thunk';
 import {EventBusFront, EventBusFrontType} from '@/events/event_bus';
 import {useUserSessionSelector} from '@/redux/auth/user/user.selector';
 import {NavigationType} from '@/types/general/sidebar.type';
-import {Metadata} from 'next';
 
 const navigationState: NavigationType[] = [
   {
