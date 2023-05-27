@@ -1,7 +1,7 @@
-import { Type } from 'class-transformer';
-import { IsEnum, IsInt, IsOptional, Max, Min } from 'class-validator';
-import { Logger } from '@nestjs/common';
-import { Order } from './constant/order.constant';
+import {Type} from 'class-transformer';
+import {IsEnum, IsInt, IsOptional, Max, Min} from 'class-validator';
+import {Logger} from '@nestjs/common';
+import {Order} from './constant/order.constant';
 
 export class PageOptionsDto {
   private readonly logger = new Logger(PageOptionsDto.name);

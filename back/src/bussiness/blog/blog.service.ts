@@ -5,7 +5,10 @@ import {BlogEntity} from './blog.entity';
 import {PageOptionsDto} from '@/common/pagination/page_option.dto';
 import {PageMetaDto} from '@/common/pagination/page_meta.dto';
 import {PageDto} from '@/common/pagination/page.dto';
-import {TypeFeed} from '../feed_blog/feed_blog.entity';
+import {BlogToUserService} from '@/bussiness/blog-user/blog-user.service';
+import {SourceBlogEntity} from '@/bussiness/source-blog/source_blog.entity';
+import {TagEntity} from '@/bussiness/tag/tag.entity';
+import {UserEntity} from '@/bussiness/user/user.entity';
 
 @Injectable()
 export class BlogService {
@@ -15,6 +18,7 @@ export class BlogService {
     @InjectRepository(BlogEntity)
     private blogRepository: Repository<BlogEntity>,
     private dataSource: DataSource,
+    private blogToUserService: BlogToUserService,
   ) {}
 
   async getByTitle(titleFeed: string) {
@@ -56,73 +60,62 @@ export class BlogService {
     });
   }
 
-  async getWithPaginate(pageOptionsDto: PageOptionsDto) {
-    const query = this.blogRepository
-      .createQueryBuilder('blog')
-      .select([
-        'blog',
-        'sourceBlog.name',
-        'sourceBlog.image',
-        'tag.tagId',
-        'tag.title',
-        'blogToUser.isLiked',
-      ])
-      .leftJoin('blog.sourceBlog', 'sourceBlog')
-      .leftJoin('blog.tags', 'tag')
-      .leftJoin('blog.blogToUser', 'blogToUser')
-      .orderBy('blog.publishDate', 'DESC')
-      .skip(pageOptionsDto.skip)
-      .take(pageOptionsDto.take);
+  async getAllWithPaginate(pageOptionsDto: PageOptionsDto) {
+    const query = (await this.dataSource.query(`
+      SELECT blogs.blog_id as blogid,
+             blogs.title as blogtitle,
+              blogs.publish_date as publishdate,
+              blogs.thumbnail as thumbnail,
+              blogs.permalink as permalink,
+             source_blogs.name as sourceblogname, 
+             source_blogs.image as sourceblogimage,
+             STRING_AGG(t.title, ', ') AS tags,
+             likes.totalLikes as totalLikes
+      from blogs
+      left join source_blogs on blogs.source_blog_id = source_blogs.source_blog_id
+      left join blog_tags on blogs.blog_id = blog_tags.blog_id
+      left join tags t on blog_tags.tag_id = t.tag_id
+      left join (
+          select blog_id, SUM(is_liked) as totalLikes from blog_to_user group by blog_id 
+      ) likes on blogs.blog_id = likes.blog_id
+      group by blogs.blog_id, source_blogs.name, source_blogs.image, totalLikes
+      order by blogs.publish_date desc
+      offset ${pageOptionsDto.skip} 
+          limit ${pageOptionsDto.take}
+    `)) as any[];
 
-    const itemCount = await query.getCount();
-    const entities = await query.getMany();
-
-    const blogUpdated = entities.map(blog => {
-      blog.totalLike = blog.blogToUser.reduce((likes, blogToUser) => {
-        if (blogToUser.isLiked) {
-          return likes + 1;
-        }
-        return likes;
-      }, 0);
-      const returnedBlog = new BlogEntity();
-      returnedBlog.blogId = blog.blogId;
-      returnedBlog.title = blog.title;
-      returnedBlog.createdAt = blog.createdAt;
-      returnedBlog.updatedAt = blog.updatedAt;
-      returnedBlog.publishDate = blog.publishDate;
-      returnedBlog.title = blog.title;
-      returnedBlog.thumbnail = blog.thumbnail;
-      returnedBlog.permalink = blog.permalink;
-      returnedBlog.sourceBlog = blog.sourceBlog;
-      returnedBlog.totalLike = blog.totalLike;
-      returnedBlog.tags = blog.tags;
-      return returnedBlog;
+    const listBlog = query.map(blogFromDb => {
+      return this.fromDbToBlogEntity({blogFromDb: blogFromDb, user: null});
     });
+    const itemCount = await this.blogRepository.count();
 
     const pageMetaDto = new PageMetaDto({itemCount, pageOptionsDto});
-    return new PageDto(blogUpdated, pageMetaDto);
+    return new PageDto(listBlog, pageMetaDto);
   }
 
-  async getWithPaginateByFeedType(
-    pageOptionsDto: PageOptionsDto,
-    feedType: TypeFeed,
-  ) {
-    const query = this.blogRepository
-      .createQueryBuilder('blog')
-      .leftJoinAndSelect('blog.sourceBlog', 'sourceBlog')
-      .leftJoinAndSelect('sourceBlog.feedBlog', 'feedBlog')
-      .where('feedBlog.type = :typeFeed', {typeFeed: feedType})
-      .andWhere('feedBlog.blackList = :blackList', {blackList: false})
-      .select(['blog', 'sourceBlog.name', 'sourceBlog.image'])
-      .leftJoinAndSelect('blog.tags', 'tag')
-      .orderBy('blog.publishDate', 'DESC')
-      .skip((pageOptionsDto.page - 1) * pageOptionsDto.take)
-      .take(pageOptionsDto.take);
-
-    const itemCount = await query.getCount();
-    const entities = await query.getMany();
-    const pageMetaDto = new PageMetaDto({itemCount, pageOptionsDto});
-    return new PageDto(entities, pageMetaDto);
+  fromDbToBlogEntity(param: {blogFromDb: any; user: UserEntity | null}) {
+    const blogFromDb = param.blogFromDb;
+    const blog = new BlogEntity();
+    blog.blogId = blogFromDb.blogid;
+    blog.title = blogFromDb.blogtitle;
+    blog.publishDate = blogFromDb.publishdate;
+    blog.thumbnail = blogFromDb.thumbnail;
+    blog.permalink = blogFromDb.permalink;
+    blog.sourceBlog = new SourceBlogEntity();
+    blog.sourceBlog.name = blogFromDb.sourceblogname;
+    blog.sourceBlog.image = blogFromDb.sourceblogimage;
+    blog.tags = blogFromDb.tags
+      ? blogFromDb.tags.split(',').map(tag => {
+          const tagEntity = new TagEntity();
+          tagEntity.title = tag;
+          return tagEntity;
+        })
+      : [];
+    blog.totalLike = blogFromDb.totallikes ? blogFromDb.totallikes : 0;
+    if (param.user) {
+      blog.isLiked = blogFromDb.isliked && blogFromDb.isliked === 1;
+    }
+    return blog;
   }
 
   getWithPaginateBySearch = async (
@@ -147,14 +140,29 @@ export class BlogService {
     return new PageDto(entities, pageMetaDto);
   };
 
-  async getWithPaginateQuery(param: {pageOptionsDto: PageOptionsDto}) {
-    const query = this.dataSource.query(`
-      SELECT blogs.blog_id as blogid,
+  getById(param: {blogId: number}) {
+    return this.blogRepository.findOne({
+      where: {
+        blogId: param.blogId,
+      },
+    });
+  }
+
+  async getAllWithPaginateWithAuth(param: {
+    pageOptionsDto: PageOptionsDto;
+    user: UserEntity;
+  }) {
+    const query = (await this.dataSource.query(`
+    SELECT blogs.blog_id as blogid,
              blogs.title as blogtitle,
+              blogs.publish_date as publishdate,
+              blogs.thumbnail as thumbnail,
+              blogs.permalink as permalink,
              source_blogs.name as sourceblogname, 
              source_blogs.image as sourceblogimage,
              STRING_AGG(t.title, ', ') AS tags,
-            likes.totalLikes as totalLikes
+             likes.totalLikes as totalLikes
+      ${param.user ? ', blog_to_user.is_liked as isliked' : ''}
       from blogs
       left join source_blogs on blogs.source_blog_id = source_blogs.source_blog_id
       left join blog_tags on blogs.blog_id = blog_tags.blog_id
@@ -162,50 +170,32 @@ export class BlogService {
       left join (
           select blog_id, SUM(is_liked) as totalLikes from blog_to_user group by blog_id 
       ) likes on blogs.blog_id = likes.blog_id
+      ${
+        param.user
+          ? 'left join blog_to_user on blogs.blog_id = blog_to_user.blog_id and blog_to_user.user_id = ' +
+            param.user.userId
+          : ''
+      }
       group by blogs.blog_id, source_blogs.name, source_blogs.image, totalLikes
-    `);
+      ${param.user ? ', blog_to_user.is_liked' : ''}
+      order by blogs.publish_date desc
+      offset ${param.pageOptionsDto.skip} 
+      limit ${param.pageOptionsDto.take}
+    `)) as any[];
 
-    // TODO adapt the query to be a blog entity
+    const listBlog = query.map(blogFromDb => {
+      return this.fromDbToBlogEntity({
+        blogFromDb: blogFromDb,
+        user: param.user,
+      });
+    });
 
-    return query;
-  }
+    const itemCount = await this.blogRepository.count();
 
-  async getAllPaginateWithSearchAndFeedType(
-    pageOption: PageOptionsDto,
-    search: string,
-    feedType: TypeFeed,
-  ) {
-    this.logger.debug('get all paginate with search and feed type');
-    this.logger.debug(pageOption);
-    this.logger.debug(pageOption.page);
-    this.logger.debug(pageOption.take);
-    const query = this.blogRepository
-      .createQueryBuilder('blog')
-      .leftJoinAndSelect('blog.sourceBlog', 'sourceBlog')
-      .leftJoinAndSelect('sourceBlog.feedBlog', 'feedBlog')
-      .where('feedBlog.type = :typeFeed', {typeFeed: feedType})
-      .andWhere('feedBlog.blackList = :blackList', {blackList: false})
-      .select(['blog', 'sourceBlog.name', 'sourceBlog.image'])
-      .leftJoinAndSelect('blog.tags', 'tag')
-      .where('blog.title ILIKE :searchQuery', {searchQuery: `%${search}%`})
-      .orderBy('blog.publishDate', 'DESC')
-      .skip((pageOption.page - 1) * pageOption.take)
-      .take(pageOption.take);
-
-    const itemCount = await query.getCount();
-    const entities = await query.getMany();
     const pageMetaDto = new PageMetaDto({
       itemCount,
-      pageOptionsDto: pageOption,
+      pageOptionsDto: param.pageOptionsDto,
     });
-    return new PageDto(entities, pageMetaDto);
-  }
-
-  getById(param: {blogId: number}) {
-    return this.blogRepository.findOne({
-      where: {
-        blogId: param.blogId,
-      },
-    });
+    return new PageDto(listBlog, pageMetaDto);
   }
 }

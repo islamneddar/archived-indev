@@ -39,4 +39,12 @@ export class BlogToUserService {
       : TinyIntEnum.FALSE;
     return this.blogUserRepository.save(param.blogToUser);
   }
+
+  queryTotalLikes() {
+    return this.blogUserRepository
+      .createQueryBuilder('blogUser')
+      .select('blogUser.blogId', 'blogId')
+      .addSelect('SUM(blogUser.isLiked)', 'totalLikes')
+      .groupBy('blogUser.blogId');
+  }
 }

@@ -16,7 +16,6 @@ import {BlogService} from './blog.service';
 import {PageOptionsDto} from '@/common/pagination/page_option.dto';
 import {
   GetBlogBySearchAndFeedTypeRequest,
-  GetBlogBySearchRequest,
   UpdateLikeToBlogRequest,
 } from './blog.proto';
 import {AuthGuard} from '@/bussiness/auth/auth.guard';
@@ -31,40 +30,32 @@ export default class BlogController {
     private blogToUserService: BlogToUserService,
   ) {}
 
-  @Get('')
-  @HttpCode(HttpStatus.OK)
-  async getWithPaginate(@Query() pageOptionsDto: PageOptionsDto) {
-    return await this.blogService.getWithPaginate(pageOptionsDto);
-  }
-
   @Get('/test')
   @HttpCode(HttpStatus.OK)
   async test(@Query() pageOptionsDto: PageOptionsDto) {
-    return await this.blogService.getWithPaginateQuery({
-      pageOptionsDto: pageOptionsDto,
+    return {
+      message: 'test',
+    };
+  }
+
+  @Get('')
+  @HttpCode(HttpStatus.OK)
+  async getWithPaginate(@Query() pageOptionsDto: PageOptionsDto) {
+    return await this.blogService.getAllWithPaginate(pageOptionsDto);
+  }
+
+  @Get('all/with-auth')
+  @UseGuards(AuthGuard)
+  async getWithPaginateWithAuth(
+    @Req() req: Request,
+    @Query() pageOptionsDto: PageOptionsDto,
+  ) {
+    const user = req.user;
+    return await this.blogService.getAllWithPaginateWithAuth({
+      pageOptionsDto,
+      user,
     });
   }
-
-  /*@Get('/by-feed-type')
-  @HttpCode(HttpStatus.OK)
-  async getWithPaginateByFeedType(
-    @Query() getBlogsByFeedTypeRequest: BlogByFeedTypeRequest,
-  ) {
-    const {pageOption, feedType} = getBlogsByFeedTypeRequest;
-    return this.blogService.getWithPaginateByFeedType(pageOption, feedType);
-  }*/
-
-  /**
-   * @deprecated
-   */
-  @Get('/deprecated/search')
-  async getBlogsWithSearch(@Query() getBlogBySearch: GetBlogBySearchRequest) {
-    this.LOG.debug(getBlogBySearch.search);
-    const {pageOption} = getBlogBySearch;
-    const {search} = getBlogBySearch;
-    return this.blogService.getWithPaginateBySearch(pageOption, search);
-  }
-
   @Get('/search')
   async getBlogWithSearchAndType(
     @Query() getBlogRequest: GetBlogBySearchAndFeedTypeRequest,
@@ -87,11 +78,9 @@ export default class BlogController {
       );
     }
 
-    return this.blogService.getAllPaginateWithSearchAndFeedType(
-      pageOption,
-      search,
-      feedType,
-    );
+    return {
+      message: 'to implement',
+    };
   }
 
   @Post('like')

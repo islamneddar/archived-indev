@@ -46,4 +46,6 @@ export class BlogEntity extends BaseTable {
   blogToUser: BlogToUserEntity[];
 
   totalLike: number;
+
+  isLiked: boolean;
 }
