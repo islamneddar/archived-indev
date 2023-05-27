@@ -89,8 +89,5 @@ module.exports = {
       // => @media (min-width: 1440px) { ... }
     },
   },
-  plugins: [
-    require('tailwind-scrollbar-hide'),
-    require('@tailwindcss/line-clamp'),
-  ],
+  plugins: [require('tailwind-scrollbar-hide')],
 };
