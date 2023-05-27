@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 
-function Page({params}: {params: {section: string}}) {
+function SectionPage({params}: {params: {section: string}}) {
   /*if (routing.blog.home.includes(params.section)) {
     return <BlogsBody></BlogsBody>;
   }
@@ -21,4 +21,4 @@ function Page({params}: {params: {section: string}}) {
   return <div>{params.section}</div>;
 }
 
-export default Page;
+export default SectionPage;
