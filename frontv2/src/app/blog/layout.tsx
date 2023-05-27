@@ -58,12 +58,13 @@ export default function Layout({children}: {children: React.ReactNode}) {
   }, [userSessionSelector.success]);
 
   useEffect(() => {
-    if (!userSessionSelector.isAuthenticated) {
+    if (
+      !userSessionSelector.isAuthenticated &&
+      session.status === 'authenticated'
+    ) {
       // @ts-ignore
       const accessToken = session.data?.user?.accessToken;
-      if (session.status === 'authenticated') {
-        dispatchThunk(getUserProfileThunk(accessToken));
-      }
+      dispatchThunk(getUserProfileThunk(accessToken));
     }
   }, [
     session.data,

@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import {usePathname} from 'next/navigation';
+import {usePathname, useRouter} from 'next/navigation';
 import {NavigationType} from '@/types/general/sidebar.type';
 import {useUserSessionSelector} from '@/redux/auth/user/user.selector';
 import routing from '@/routes/routing.constant';
@@ -13,6 +13,7 @@ function SideBarItem(props: ISideBarItemProps) {
   const pathname = usePathname();
   const item = props.item;
   const userSessionSelector = useUserSessionSelector();
+  const router = useRouter();
 
   return (
     <a
@@ -24,13 +25,14 @@ function SideBarItem(props: ISideBarItemProps) {
       )}
       key={item.name}
       onClick={() => {
-        //router.push(item.href);
         if (item.isAuth && !userSessionSelector.isAuthenticated) {
           window.location.href = routing.auth.login;
+          //router.push(routing.auth.login);
           return;
         }
         if (!pathname?.includes(item.href)) {
-          window.location.href = item.href;
+          //window.location.href = item.href;
+          router.push(item.href);
         }
       }}>
       <item.icon
