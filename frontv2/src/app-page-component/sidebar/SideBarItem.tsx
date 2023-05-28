@@ -30,6 +30,7 @@ function SideBarItem(props: ISideBarItemProps) {
           return;
         }
         if (!pathname?.includes(item.href)) {
+          //window.location.href = item.href;
           router.push(item.href);
         }
       }}>
