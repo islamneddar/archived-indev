@@ -13,5 +13,6 @@ export const likeBlogThunk = createAsyncThunk<
       return await BlogService.getInstance().likeBlog(request);
     },
     rejectWithValue,
+    isProtected: true,
   });
 });

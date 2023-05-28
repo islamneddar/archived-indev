@@ -26,6 +26,8 @@ function ReactionGroupButtonCardBlog(props: IReactionGroupButtonCardProps) {
 
   useEffect(() => {
     if (likeBlogSelector.error) {
+      setTotalLikes(isLiked ? Number(totalLike) - 1 : Number(totalLike) + 1);
+      setIsLiked(!isLiked);
       toast.error('internal error, we will try to fix it as soon as possible');
     }
   }, [likeBlogSelector.error]);

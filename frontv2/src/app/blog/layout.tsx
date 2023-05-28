@@ -72,12 +72,6 @@ export default function Layout({children}: {children: React.ReactNode}) {
     session.status,
   ]);
 
-  useEffect(() => {
-    if (userSessionSelector.error) {
-      EventBusFront.dispatch(EventBusFrontType.LOGOUT, null);
-    }
-  }, [userSessionSelector.error]);
-
   // Rendering
 
   if (

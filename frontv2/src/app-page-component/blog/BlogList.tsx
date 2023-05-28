@@ -167,19 +167,25 @@ function BlogList() {
             </div>
           </div>
         }
-        <InfiniteScroll
-          next={() => fetchBlogs(false)}
-          hasMore={metaData.hasNextPage}
-          loader={<div></div>}
-          dataLength={blogs.length}
-          scrollableTarget={'scrollBlogId'}
-          scrollThreshold={0.8}
-          className={'mx-auto w-full overflow-hidden'}
-          style={{overflow: 'hidden'}}>
-          <BlogsCardLists
-            blogs={blogs}
-            gridBlogType={stateGrid}></BlogsCardLists>
-        </InfiniteScroll>
+        {blogs.length === 0 ? (
+          <div className={'flex justify-center items-center h-full'}>
+            We are trying to get you the best blogs from the net
+          </div>
+        ) : (
+          <InfiniteScroll
+            next={() => fetchBlogs(false)}
+            hasMore={metaData.hasNextPage}
+            loader={<div></div>}
+            dataLength={blogs.length}
+            scrollableTarget={'scrollBlogId'}
+            scrollThreshold={0.8}
+            className={'mx-auto w-full overflow-hidden'}
+            style={{overflow: 'hidden'}}>
+            <BlogsCardLists
+              blogs={blogs}
+              gridBlogType={stateGrid}></BlogsCardLists>
+          </InfiniteScroll>
+        )}
       </div>
     </div>
   );
