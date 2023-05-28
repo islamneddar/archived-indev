@@ -9,7 +9,7 @@ export interface UserSessionState extends ReduxEntityBase<any> {
 }
 
 const initialState: UserSessionState = {
-  isAuthenticated: false,
+  isAuthenticated: false, // means that we fetched the user from backend
   user: {
     accessToken: '',
     email: '',

@@ -1,7 +1,7 @@
 'use client';
 import NavBar from '@/app-page-component/navbar/NavBar';
 import React, {Fragment, useEffect} from 'react';
-import {useSession} from 'next-auth/react';
+import {signOut, useSession} from 'next-auth/react';
 import {updateAuth} from '@/redux/auth/user/user.slice';
 import {useDispatch} from 'react-redux';
 import SideBarDesktop from '@/app-page-component/sidebar/SideBarDesktop';
@@ -40,8 +40,7 @@ export default function Layout({children}: {children: React.ReactNode}) {
   useEffect(() => {
     EventBusFront.on(EventBusFrontType.LOGOUT, async () => {
       dispatch(updateAuth({isAuthenticated: false, accessToken: null}));
-      //await signOut();
-      console.debug('logout');
+      await signOut();
     });
   }, []);
 
@@ -49,7 +48,7 @@ export default function Layout({children}: {children: React.ReactNode}) {
     if (userSessionSelector.success) {
       dispatch(
         updateAuth({
-          isAuthenticated: true,
+          isAuthenticated: true, // we fetched the data of a user
           // @ts-ignore
           accessToken: session.data?.user?.accessToken,
         }),
@@ -58,12 +57,13 @@ export default function Layout({children}: {children: React.ReactNode}) {
   }, [userSessionSelector.success]);
 
   useEffect(() => {
-    if (!userSessionSelector.isAuthenticated) {
+    if (
+      !userSessionSelector.isAuthenticated &&
+      session.status === 'authenticated'
+    ) {
       // @ts-ignore
       const accessToken = session.data?.user?.accessToken;
-      if (session.status === 'authenticated') {
-        dispatchThunk(getUserProfileThunk(accessToken));
-      }
+      dispatchThunk(getUserProfileThunk(accessToken));
     }
   }, [
     session.data,
@@ -79,13 +79,10 @@ export default function Layout({children}: {children: React.ReactNode}) {
   }, [userSessionSelector.error]);
 
   // Rendering
-  if (session.status === 'loading' || userSessionSelector.loading) {
-    return <></>;
-  }
 
   if (
     (session.status === 'authenticated' &&
-      userSessionSelector.user.email.length > 0) ||
+      userSessionSelector.isAuthenticated) ||
     session.status === 'unauthenticated'
   ) {
     return (
@@ -99,6 +96,8 @@ export default function Layout({children}: {children: React.ReactNode}) {
         </div>
       </>
     );
+  } else {
+    return <div className={'h-screen bg-secondary'}></div>;
   }
 
   return null;

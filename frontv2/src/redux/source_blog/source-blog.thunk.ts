@@ -20,6 +20,9 @@ export const getAllSourceBlogThunk = createAsyncThunk<
         getAllSourceBlogRequest,
       );
     } catch (error: any) {
+      if (error.response === undefined) {
+        return rejectWithValue('internal error');
+      }
       if (error.response.status === 401) {
         EventBusFront.dispatch(EventBusFrontType.LOGOUT, {});
       }
