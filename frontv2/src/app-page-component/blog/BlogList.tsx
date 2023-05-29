@@ -119,7 +119,7 @@ function BlogList() {
     }
   }, [likeBlogSelector.success, likeBlogSelector.error]);
   return (
-    <div className={'md:px-5 lg:px-10 w-full'}>
+    <div className={'md:px-5 px-10 w-full'}>
       <div
         id={'scrollBlogId'}
         className={'overflow-y-auto h-[calc(100vh_-_136px)] sm:scrollbar-hide'}>

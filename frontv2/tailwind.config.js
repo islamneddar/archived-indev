@@ -73,8 +73,7 @@ module.exports = {
     screens: {
       tn: '0px',
 
-      sm: '425px',
-      // => @media (min-width: 425px) { ... }
+      sm: '426px',
 
       md: '769px',
       // => @media (min-width: 768px) { ... }

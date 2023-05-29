@@ -10,7 +10,7 @@ interface SideBarDesktopProps {
 
 export default function SideBarDesktop(props: SideBarDesktopProps) {
   return (
-    <div className="hidden lg:fixed lg:bottom-0 lg:top-24 lg:flex lg:w-64 lg:flex-col shadow-xl">
+    <div className="hidden md:fixed md:bottom-0 md:top-24 md:flex md:w-64 md:flex-col shadow-xl">
       {/* Sidebar component, swap this element with another sidebar if you like */}
       <div className="flex min-h-0 flex-1 flex-col ">
         <div className="flex flex-1 flex-col overflow-y-auto  pb-4">
