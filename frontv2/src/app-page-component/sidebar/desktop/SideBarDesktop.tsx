@@ -1,12 +1,8 @@
 import React from 'react';
-import {NavigationType} from '@/types/general/sidebar.type';
-import SideBarItem from '@/app-page-component/sidebar/SideBarItem';
-import SideBarProfileSection from '@/app-page-component/sidebar/SideBarProfileSection';
-import FooterSideBar from '@/app-page-component/sidebar/FooterSideBar';
-
-interface SideBarDesktopProps {
-  navigation: NavigationType[];
-}
+import SideBarItem from '@/app-page-component/sidebar/desktop/SideBarItem';
+import SideBarProfileSection from '@/app-page-component/sidebar/desktop/SideBarProfileSection';
+import FooterSideBar from '@/app-page-component/sidebar/desktop/FooterSideBar';
+import {SideBarDesktopProps} from '@/app-page-component/sidebar/SideBarMain';
 
 export default function SideBarDesktop(props: SideBarDesktopProps) {
   return (

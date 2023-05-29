@@ -1,34 +1,21 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {useAppDispatch, useAppSelector} from '../store';
+import {createSlice} from '@reduxjs/toolkit';
 
 export interface SystemState {
-  sideBarTopics: boolean; // the side bar where there is categories
-  searchEnabled: boolean;
+  sideBarMobileEnabled: boolean; // the side bar for mobile
 }
 
 const initialState: SystemState = {
-  sideBarTopics: false,
-  searchEnabled: false,
+  sideBarMobileEnabled: false,
 };
 
 export const systemSlice = createSlice({
   name: 'system',
   initialState,
   reducers: {
-    toggleSideBarTopic: state => {
-      state.sideBarTopics = !state.sideBarTopics;
-    },
-    toggleSearch: (state, action: PayloadAction<boolean>) => {
-      state.searchEnabled = action.payload;
+    toggleSideBarMobile: (state, action) => {
+      state.sideBarMobileEnabled = action.payload;
     },
   },
 });
 
-export const {toggleSideBarTopic, toggleSearch} = systemSlice.actions;
-
-export const selectSystem = (state: {systemReducer: SystemState}) =>
-  state.systemReducer;
-
-export const useSystemSelector = () => useAppSelector(selectSystem);
-
-export const useSystemDispatch = () => useAppDispatch();
+export const {toggleSideBarMobile} = systemSlice.actions;
