@@ -13,7 +13,8 @@ interface IBlogsCardListsProps {
 function BlogsCardLists(props: IBlogsCardListsProps) {
   if (props.gridBlogType === GridBlogType.GRID) {
     return (
-      <div className={'flex flex-wrap gap-x-2.5 justify-center items-center'}>
+      <div
+        className={`flex flex-wrap gap-x-2.5 gap-y-2 justify-center items-center`}>
         {props.blogs.map((blog, index) => {
           return <BlogCard key={index} blog={blog}></BlogCard>;
         })}

@@ -18,7 +18,7 @@ function BlogCard(props: IBlogCardProps) {
 
   return (
     <div
-      className="bg-gray-700 h-300 rounded-xl  shadow-xl float-left w-260 my-1 mx-1 break-inside-avoid"
+      className="bg-gray-700 sm:h-300 rounded-xl shadow-xl float-left w-full sm:w-260 my-1 mx-1 break-inside-avoid"
       onClick={event => {
         event.stopPropagation();
         window.open(blog.permalink, '_blank', 'noopener,noreferrer');
@@ -29,7 +29,7 @@ function BlogCard(props: IBlogCardProps) {
           <BlogTitle blog={blog}></BlogTitle>
         </div>
         <div className="flex flex-col flex-1 h-full justify-between px-5">
-          <div className={'h-16 mt-3'}>
+          <div className={'sm:h-16 mt-3'}>
             {blog.thumbnail && (
               <img
                 src={blog.thumbnail}

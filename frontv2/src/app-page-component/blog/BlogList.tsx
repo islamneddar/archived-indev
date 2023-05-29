@@ -23,6 +23,7 @@ import {resetBlogState} from '@/redux/blog/blog.slice';
 import {resetLikeBlogState} from '@/redux/blog/like-blog/like-blog.slice';
 import toast from 'react-hot-toast';
 import {useUserSessionSelector} from '@/redux/auth/user/user.selector';
+import useResponsive from '@/hooks/useResponsive';
 
 export interface IBlogListProps {
   typeFeed: TypeFeed;
@@ -31,7 +32,6 @@ export interface IBlogListProps {
 function BlogList() {
   const dispatchThunk = useDispatch<ThunkDispatch<any, any, any>>();
   const dispatch = useDispatch();
-
   const userSessionSelector = useUserSessionSelector();
 
   const blogSelector = useBlogSelector();
@@ -118,11 +118,12 @@ function BlogList() {
       toast.error('Something went wrong');
     }
   }, [likeBlogSelector.success, likeBlogSelector.error]);
+
   return (
-    <div className={'md:px-5 px-10 w-full'}>
+    <div className={'sm:px-10 w-full'}>
       <div
         id={'scrollBlogId'}
-        className={'overflow-y-auto h-[calc(100vh_-_136px)] sm:scrollbar-hide'}>
+        className={'overflow-y-auto h-[calc(100vh_-_136px)] scrollbar-hide'}>
         {
           <div
             className={
@@ -140,14 +141,17 @@ function BlogList() {
                         (stateAffichage === grid.value ? ' bg-indigo-500' : '')
                       }
                       onClick={() => setStateAffichage(grid.value)}>
-                      <p className={'p-1 text-white font-medium px-2'}>
+                      <p
+                        className={
+                          'p-1 text-white font-medium px-2 tn:text-mobile'
+                        }>
                         {grid.content}
                       </p>
                     </div>
                   );
                 })}
               </div>
-              <div className={'flex flex-row gap-3'}>
+              <div className={'hidden sm:flex flex-row gap-3'}>
                 {gridBlogType.map((grid, index) => {
                   return (
                     <div
@@ -179,7 +183,7 @@ function BlogList() {
             dataLength={blogs.length}
             scrollableTarget={'scrollBlogId'}
             scrollThreshold={0.8}
-            className={'mx-auto w-full overflow-hidden'}
+            className={'mx-auto w-full overflow-hidden scrollbar-hide'}
             style={{overflow: 'hidden'}}>
             <BlogsCardLists
               blogs={blogs}
