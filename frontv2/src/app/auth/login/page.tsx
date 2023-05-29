@@ -40,11 +40,11 @@ export default function LoginPage() {
   };
 
   return (
-    <div className=" bg-primary fixed inset-0 overflow-y-scroll">
-      <div className="flex flex-1 justify-center items-center h-full">
-        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+    <div className="bg-primary overflow-y-scroll w-screen h-screen scrollbar-hide">
+      <div className="flex justify-center items-center h-full w-full">
+        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700 tn:mx-2">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+            <h1 className="tn:text-18 text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Sign in to your account
             </h1>
             <form className="space-y-4 md:space-y-6" action="#">

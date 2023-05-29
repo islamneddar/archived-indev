@@ -4,7 +4,7 @@ import React, {Fragment, useEffect} from 'react';
 import {signOut, useSession} from 'next-auth/react';
 import {updateAuth} from '@/redux/auth/user/user.slice';
 import {useDispatch} from 'react-redux';
-import SideBarDesktop from '@/app-page-component/sidebar/SideBarDesktop';
+import SideBarDesktop from '@/app-page-component/sidebar/desktop/SideBarDesktop';
 import {HomeIcon, UsersIcon} from '@heroicons/react/20/solid';
 import routing from '@/routes/routing.constant';
 import {ThunkDispatch} from '@reduxjs/toolkit';
@@ -12,6 +12,7 @@ import {getUserProfileThunk} from '@/redux/auth/user/user.thunk';
 import {EventBusFront, EventBusFrontType} from '@/events/event_bus';
 import {useUserSessionSelector} from '@/redux/auth/user/user.selector';
 import {NavigationType} from '@/types/general/sidebar.type';
+import SideBarMain from '@/app-page-component/sidebar/SideBarMain';
 
 const navigationState: NavigationType[] = [
   {
@@ -83,9 +84,9 @@ export default function Layout({children}: {children: React.ReactNode}) {
       <>
         <NavBar />
         <div className="bg-secondary h-[calc(100vh_-_96px)]">
-          <SideBarDesktop navigation={navigationState} />
+          <SideBarMain navigation={navigationState} />
           <Fragment>
-            <div className={' w-full pl-64'}>{children}</div>
+            <div className={' w-full md:pl-64'}>{children}</div>
           </Fragment>
         </div>
       </>

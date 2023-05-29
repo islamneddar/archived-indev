@@ -1,16 +1,12 @@
 import React from 'react';
-import {NavigationType} from '@/types/general/sidebar.type';
-import SideBarItem from '@/app-page-component/sidebar/SideBarItem';
-import SideBarProfileSection from '@/app-page-component/sidebar/SideBarProfileSection';
-import FooterSideBar from '@/app-page-component/sidebar/FooterSideBar';
-
-interface SideBarDesktopProps {
-  navigation: NavigationType[];
-}
+import SideBarItem from '@/app-page-component/sidebar/desktop/SideBarItem';
+import SideBarProfileSection from '@/app-page-component/sidebar/desktop/SideBarProfileSection';
+import FooterSideBar from '@/app-page-component/sidebar/desktop/FooterSideBar';
+import {SideBarDesktopProps} from '@/app-page-component/sidebar/SideBarMain';
 
 export default function SideBarDesktop(props: SideBarDesktopProps) {
   return (
-    <div className="hidden lg:fixed lg:bottom-0 lg:top-24 lg:flex lg:w-64 lg:flex-col shadow-xl">
+    <div className="hidden md:fixed md:bottom-0 md:top-24 md:flex md:w-64 md:flex-col shadow-xl">
       {/* Sidebar component, swap this element with another sidebar if you like */}
       <div className="flex min-h-0 flex-1 flex-col ">
         <div className="flex flex-1 flex-col overflow-y-auto  pb-4">

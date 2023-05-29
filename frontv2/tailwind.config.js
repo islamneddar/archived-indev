@@ -28,6 +28,7 @@ module.exports = {
         10: '10px',
         12: '12px',
         14: '14px',
+        mobile: '14px',
         16: '16px',
         18: '18px',
         20: '20px',
@@ -36,10 +37,12 @@ module.exports = {
         40: '40px',
       },
       minWidth: {
+        300: '300px',
         827: '827px',
       },
       maxWidth: {
         150: '150px',
+        300: '300px',
         510: '510px',
       },
       width: {
@@ -73,8 +76,7 @@ module.exports = {
     screens: {
       tn: '0px',
 
-      sm: '425px',
-      // => @media (min-width: 425px) { ... }
+      sm: '426px',
 
       md: '769px',
       // => @media (min-width: 768px) { ... }
