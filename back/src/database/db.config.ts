@@ -42,7 +42,7 @@ const DBModule = TypeOrmModule.forRootAsync({
         password: process.env.DB_PASSWORD || '',
         database: process.env.DB_NAME || 'indev-local',
         entities: listEntities,
-        synchronize: false,
+        synchronize: true,
         logging: false,
       };
       return configToReturn;
@@ -55,7 +55,7 @@ const DBModule = TypeOrmModule.forRootAsync({
       password: process.env.DB_PASSWORD || '',
       database: process.env.DB_NAME || 'indev-local',
       entities: listEntities,
-      synchronize: false,
+      synchronize: true,
       logging: false,
       ssl: {
         rejectUnauthorized: false,

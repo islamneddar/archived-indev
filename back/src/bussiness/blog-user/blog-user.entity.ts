@@ -25,4 +25,18 @@ export class BlogToUserEntity extends BaseTable {
 
   @Column({name: 'is_liked', enum: TinyIntEnum, default: TinyIntEnum.FALSE})
   isLiked: TinyIntEnum;
+
+  @Column({
+    name: 'is_bookmarked',
+    enum: TinyIntEnum,
+    default: TinyIntEnum.FALSE,
+  })
+  isBookmarked: TinyIntEnum;
+
+  @Column({
+    name: 'bookmark_time',
+    default: null,
+    nullable: true,
+  })
+  bookmarkTime: string;
 }

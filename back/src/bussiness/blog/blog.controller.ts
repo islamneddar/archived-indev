@@ -15,7 +15,9 @@ import {Request} from 'express';
 import {BlogService} from './blog.service';
 import {PageOptionsDto} from '@/common/pagination/page_option.dto';
 import {
+  GetAllBookmarksWithPaginationQuery,
   GetBlogBySearchAndFeedTypeRequest,
+  UpdateBookmarkToBlogRequest,
   UpdateLikeToBlogRequest,
 } from './blog.proto';
 import {AuthGuard} from '@/bussiness/auth/auth.guard';
@@ -120,5 +122,63 @@ export default class BlogController {
       blogId: blogId,
       isLiked: isLiked,
     };
+  }
+
+  @Post('bookmark')
+  @UseGuards(AuthGuard)
+  async bookmarkBlog(
+    @Req() req: Request,
+    @Body() body: UpdateBookmarkToBlogRequest,
+  ) {
+    const blogId = body.blogId;
+    const blogExist = await this.blogService.getById({
+      blogId: blogId,
+    });
+
+    if (!blogExist) {
+      throw new HttpException('blog not found', HttpStatus.NOT_FOUND);
+    }
+
+    const user = req.user;
+
+    const blogToUserExist = await this.blogToUserService.getByBlogIdAndUserId({
+      blogId: blogId,
+      userId: user.userId,
+    });
+
+    const isBookmarked = body.isBookmarked;
+    if (blogToUserExist) {
+      await this.blogToUserService.updateBookmark({
+        blogToUser: blogToUserExist,
+        isBookmarked: isBookmarked,
+      });
+    } else {
+      await this.blogToUserService.create({
+        blog: blogExist,
+        user: user,
+        isBookmarked: isBookmarked,
+      });
+    }
+
+    return {
+      blogId: blogId,
+      isBookmarked: isBookmarked,
+    };
+  }
+
+  // sort by date of bookmarked
+  @Get('bookmark/all')
+  @UseGuards(AuthGuard)
+  async getAllBookmarkBlog(
+    @Req() req: Request,
+    @Query() query: GetAllBookmarksWithPaginationQuery,
+  ) {
+    const bookmarkedList = await this.blogService.getBookmarkedBlogWithPaginate(
+      {
+        page: query.page,
+        user: req.user,
+      },
+    );
+    return bookmarkedList;
   }
 }

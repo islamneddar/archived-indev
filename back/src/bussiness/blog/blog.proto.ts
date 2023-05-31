@@ -1,6 +1,7 @@
 import {PageOptionsDto} from '@/common/pagination/page_option.dto';
 import {TypeFeed} from '../feed_blog/feed_blog.entity';
-import {IsBoolean, IsNumber} from 'class-validator';
+import {IsBoolean, IsDate, IsInt, IsNumber, Min} from 'class-validator';
+import {Type} from 'class-transformer';
 
 export interface BlogByFeedTypeRequest {
   pageOption: PageOptionsDto;
@@ -24,4 +25,19 @@ export class UpdateLikeToBlogRequest {
 
   @IsBoolean()
   isLiked: boolean;
+}
+
+export class UpdateBookmarkToBlogRequest {
+  @IsNumber()
+  blogId: number;
+
+  @IsBoolean()
+  isBookmarked: boolean;
+}
+
+export class GetAllBookmarksWithPaginationQuery {
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  page: number;
 }

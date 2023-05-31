@@ -25,11 +25,22 @@ export class BlogToUserService {
     });
   }
 
-  async create(param: {blog: BlogEntity; user: UserEntity; isLiked: boolean}) {
+  async create(param: {
+    blog: BlogEntity;
+    user: UserEntity;
+    isLiked?: boolean;
+    isBookmarked?: boolean;
+  }) {
     const blogUser = new BlogToUserEntity();
     blogUser.blog = param.blog;
     blogUser.user = param.user;
     blogUser.isLiked = param.isLiked ? TinyIntEnum.TRUE : TinyIntEnum.FALSE;
+    blogUser.isBookmarked = param.isBookmarked
+      ? TinyIntEnum.TRUE
+      : TinyIntEnum.FALSE;
+    blogUser.bookmarkTime = param.isBookmarked
+      ? new Date().toISOString()
+      : null;
     return this.blogUserRepository.save(blogUser);
   }
 
@@ -37,6 +48,7 @@ export class BlogToUserService {
     param.blogToUser.isLiked = param.isLiked
       ? TinyIntEnum.TRUE
       : TinyIntEnum.FALSE;
+    param.blogToUser.updatedAt = new Date();
     return this.blogUserRepository.save(param.blogToUser);
   }
 
@@ -46,5 +58,19 @@ export class BlogToUserService {
       .select('blogUser.blogId', 'blogId')
       .addSelect('SUM(blogUser.isLiked)', 'totalLikes')
       .groupBy('blogUser.blogId');
+  }
+
+  async updateBookmark(param: {
+    isBookmarked: boolean;
+    blogToUser: BlogToUserEntity;
+  }) {
+    param.blogToUser.isBookmarked = param.isBookmarked
+      ? TinyIntEnum.TRUE
+      : TinyIntEnum.FALSE;
+    param.blogToUser.bookmarkTime = param.isBookmarked
+      ? new Date().toISOString()
+      : null;
+    param.blogToUser.updatedAt = new Date();
+    return this.blogUserRepository.save(param.blogToUser);
   }
 }

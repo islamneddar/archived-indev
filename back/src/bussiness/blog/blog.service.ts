@@ -6,9 +6,8 @@ import {PageOptionsDto} from '@/common/pagination/page_option.dto';
 import {PageMetaDto} from '@/common/pagination/page_meta.dto';
 import {PageDto} from '@/common/pagination/page.dto';
 import {BlogToUserService} from '@/bussiness/blog-user/blog-user.service';
-import {SourceBlogEntity} from '@/bussiness/source-blog/source_blog.entity';
-import {TagEntity} from '@/bussiness/tag/tag.entity';
 import {UserEntity} from '@/bussiness/user/user.entity';
+import {BlogServiceUtil} from '@/bussiness/blog/blog.service.util';
 
 @Injectable()
 export class BlogService {
@@ -85,37 +84,15 @@ export class BlogService {
     `)) as any[];
 
     const listBlog = query.map(blogFromDb => {
-      return this.fromDbToBlogEntity({blogFromDb: blogFromDb, user: null});
+      return BlogServiceUtil.fromDbToBlogEntity({
+        blogFromDb: blogFromDb,
+        user: null,
+      });
     });
     const itemCount = await this.blogRepository.count();
 
     const pageMetaDto = new PageMetaDto({itemCount, pageOptionsDto});
     return new PageDto(listBlog, pageMetaDto);
-  }
-
-  fromDbToBlogEntity(param: {blogFromDb: any; user: UserEntity | null}) {
-    const blogFromDb = param.blogFromDb;
-    const blog = new BlogEntity();
-    blog.blogId = blogFromDb.blogid;
-    blog.title = blogFromDb.blogtitle;
-    blog.publishDate = blogFromDb.publishdate;
-    blog.thumbnail = blogFromDb.thumbnail;
-    blog.permalink = blogFromDb.permalink;
-    blog.sourceBlog = new SourceBlogEntity();
-    blog.sourceBlog.name = blogFromDb.sourceblogname;
-    blog.sourceBlog.image = blogFromDb.sourceblogimage;
-    blog.tags = blogFromDb.tags
-      ? blogFromDb.tags.split(',').map(tag => {
-          const tagEntity = new TagEntity();
-          tagEntity.title = tag;
-          return tagEntity;
-        })
-      : [];
-    blog.totalLike = blogFromDb.totallikes ? blogFromDb.totallikes : 0;
-    if (param.user) {
-      blog.isLiked = blogFromDb.isliked && blogFromDb.isliked === 1;
-    }
-    return blog;
   }
 
   getWithPaginateBySearch = async (
@@ -184,7 +161,7 @@ export class BlogService {
     `)) as any[];
 
     const listBlog = query.map(blogFromDb => {
-      return this.fromDbToBlogEntity({
+      return BlogServiceUtil.fromDbToBlogEntity({
         blogFromDb: blogFromDb,
         user: param.user,
       });
@@ -197,5 +174,45 @@ export class BlogService {
       pageOptionsDto: param.pageOptionsDto,
     });
     return new PageDto(listBlog, pageMetaDto);
+  }
+
+  async getBookmarkedBlogWithPaginate(param: {page: number; user: UserEntity}) {
+    const TAKE = 1;
+    const pageOptionsDto = new PageOptionsDto();
+    pageOptionsDto.page = param.page;
+    pageOptionsDto.take = TAKE;
+    const queryitems = await BlogServiceUtil.generateQueryForGettingBlogs({
+      dataSource: this.dataSource,
+      user: param.user,
+      typeOfGet: {
+        all: false,
+        ofUserOnly: true,
+      },
+      pagination: {
+        pageOptionsDto: pageOptionsDto,
+        applyPagination: true,
+      },
+      likes: {
+        getIsLiked: true,
+        getLikes: true,
+      },
+      getTags: true,
+      bookmarkInfo: {
+        getIsBookmarked: true,
+        isOrderedByBlogBookmarkDate: true,
+      },
+      isOrderedByBlogPublishDate: false,
+    });
+
+    //const itemCount = await query.getCount();
+
+    //const entities = await query.getMany();
+
+    /*const pageMetaDto = new PageMetaDto({
+      itemCount,
+      pageOptionsDto: pageOptionsDto,
+    });*/
+    //return new PageDto(entities, pageMetaDto);
+    return queryitems;
   }
 }
