@@ -176,10 +176,14 @@ export class BlogService {
     return new PageDto(listBlog, pageMetaDto);
   }
 
-  async getBookmarkedBlogWithPaginate(param: {page: number; user: UserEntity}) {
-    const TAKE = 1;
+  async getBookmarkedBlogWithPaginate(param: {
+    page: number;
+    user: UserEntity;
+    dateBookmarkLastBlog?: string;
+  }) {
+    const TAKE = 15;
     const pageOptionsDto = new PageOptionsDto();
-    pageOptionsDto.page = param.page;
+    pageOptionsDto.page = param.page; // in reality we dont need it
     pageOptionsDto.take = TAKE;
     const queryitems = await BlogServiceUtil.generateQueryForGettingBlogs({
       dataSource: this.dataSource,
@@ -198,21 +202,18 @@ export class BlogService {
       },
       getTags: true,
       bookmarkInfo: {
+        dateToCompareInBookmark: param.dateBookmarkLastBlog,
         getIsBookmarked: true,
         isOrderedByBlogBookmarkDate: true,
       },
       isOrderedByBlogPublishDate: false,
     });
 
-    //const itemCount = await query.getCount();
-
-    //const entities = await query.getMany();
-
-    /*const pageMetaDto = new PageMetaDto({
-      itemCount,
-      pageOptionsDto: pageOptionsDto,
-    });*/
-    //return new PageDto(entities, pageMetaDto);
-    return queryitems;
+    return queryitems.map(blogFromDb => {
+      return BlogServiceUtil.fromDbToBlogEntity({
+        blogFromDb: blogFromDb,
+        user: param.user,
+      });
+    });
   }
 }

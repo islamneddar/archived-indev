@@ -48,4 +48,8 @@ export class BlogEntity extends BaseTable {
   totalLike: number;
 
   isLiked: boolean;
+
+  isBookmarked: boolean;
+
+  bookmarkTime: string;
 }

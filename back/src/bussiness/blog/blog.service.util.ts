@@ -29,6 +29,9 @@ const fromDbToBlogEntity = (param: {
   blog.totalLike = blogFromDb.totallikes ? blogFromDb.totallikes : 0;
   if (param.user) {
     blog.isLiked = blogFromDb.isliked && blogFromDb.isliked === 1;
+    blog.isBookmarked =
+      blogFromDb.isbookmarked && blogFromDb.isbookmarked === 1;
+    blog.bookmarkTime = blogFromDb.bookmarktime;
   }
   return blog;
 };
@@ -50,6 +53,7 @@ const generateQueryForGettingBlogs = async (param: {
   };
   getTags: boolean | null;
   bookmarkInfo: {
+    dateToCompareInBookmark: string | null;
     isOrderedByBlogBookmarkDate: boolean | null;
     getIsBookmarked: boolean | null;
   };
@@ -105,7 +109,12 @@ const generateQueryForGettingBlogs = async (param: {
         param.typeOfGet.ofUserOnly
           ? 'where blog_to_user.user_id = ' +
             param.user?.userId +
-            ' and blog_to_user.is_bookmarked = 1 '
+            ' and blog_to_user.is_bookmarked = 1 ' +
+            (param.bookmarkInfo.dateToCompareInBookmark
+              ? "and blog_to_user.bookmark_time < '" +
+                param.bookmarkInfo.dateToCompareInBookmark +
+                "' "
+              : '')
           : ''
       }
       group by blogs.blog_id, source_blogs.name, source_blogs.image
@@ -132,8 +141,7 @@ const generateQueryForGettingBlogs = async (param: {
       }
       ${
         param.pagination.applyPagination
-          ? `offset ${param.pagination.pageOptionsDto.skip} 
-            limit ${param.pagination.pageOptionsDto.take}`
+          ? `limit ${param.pagination.pageOptionsDto.take}`
           : ''
       }
   `)) as any[];
