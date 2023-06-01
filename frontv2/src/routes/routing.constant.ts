@@ -8,6 +8,7 @@ const routing = {
     root: '/blog',
     home: '/blog/home',
     followSource: '/blog/follow-sources',
+    bookmark: '/blog/bookmark',
   },
 };
 

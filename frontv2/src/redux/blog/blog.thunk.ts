@@ -6,7 +6,7 @@ export const getAllBlogThunk = createAsyncThunk<
   GetBlogsResponse,
   GetAllBlogRequest
 >(
-  'blog/getAllBlog',
+  'blog-section/getAllBlog',
   async (getAllBlogRequest: GetAllBlogRequest, {rejectWithValue}) => {
     try {
       if (getAllBlogRequest.accessToken === null) {

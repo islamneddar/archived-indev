@@ -26,11 +26,10 @@ const fromDbToBlogEntity = (param: {
         return tagEntity;
       })
     : [];
-  blog.totalLike = blogFromDb.totallikes ? blogFromDb.totallikes : 0;
+  blog.totalLike = blogFromDb.totallikes ? Number(blogFromDb.totallikes) : 0;
   if (param.user) {
-    blog.isLiked = blogFromDb.isliked && blogFromDb.isliked === 1;
-    blog.isBookmarked =
-      blogFromDb.isbookmarked && blogFromDb.isbookmarked === 1;
+    blog.isLiked = blogFromDb.isliked === 1;
+    blog.isBookmarked = blogFromDb.isbookmarked === 1;
     blog.bookmarkTime = blogFromDb.bookmarktime;
   }
   return blog;

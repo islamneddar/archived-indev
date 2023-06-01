@@ -1,8 +1,12 @@
 import axios from 'axios';
 import {TypeFeed} from '@/types/api/source_blog';
 import {
+  BookmarkBlogRequest,
+  BookmarkBlogResponse,
   GetAllBlogRequest,
   GetBlogsResponse,
+  GetBookmarksParams,
+  GetBookmarksResponse,
   LikeBlogRequest,
   LikeBlogResponse,
 } from '@/types/api/blog';
@@ -75,5 +79,38 @@ export default class BlogService {
 
     const data = await res.data;
     return data as GetBlogsResponse;
+  }
+
+  async bookmarkBlog(request: BookmarkBlogRequest) {
+    const res = await axios.post(
+      `${this.endpointBlog}/bookmark`,
+      {
+        blogId: request.blogId,
+        isBookmarked: request.isBookmarked,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${request.accessToken}`,
+        },
+      },
+    );
+
+    const data = await res.data;
+    return data as BookmarkBlogResponse;
+  }
+
+  async getBookmarks(request: GetBookmarksParams) {
+    const res = await axios.get(`${this.endpointBlog}/bookmark/all`, {
+      params: {
+        dateLastBlogList: request.dateLastBlogList,
+        page: 1, // just to bleufe
+      },
+      headers: {
+        Authorization: `Bearer ${request.accessToken}`,
+      },
+    });
+
+    const data = await res.data;
+    return data as GetBookmarksResponse;
   }
 }

@@ -4,8 +4,7 @@ import React, {Fragment, useEffect} from 'react';
 import {signOut, useSession} from 'next-auth/react';
 import {updateAuth} from '@/redux/auth/user/user.slice';
 import {useDispatch} from 'react-redux';
-import SideBarDesktop from '@/app-page-component/sidebar/desktop/SideBarDesktop';
-import {HomeIcon, UsersIcon} from '@heroicons/react/20/solid';
+import {HomeIcon, RssIcon, BookOpenIcon} from '@heroicons/react/20/solid';
 import routing from '@/routes/routing.constant';
 import {ThunkDispatch} from '@reduxjs/toolkit';
 import {getUserProfileThunk} from '@/redux/auth/user/user.thunk';
@@ -16,15 +15,21 @@ import SideBarMain from '@/app-page-component/sidebar/SideBarMain';
 
 const navigationState: NavigationType[] = [
   {
-    name: 'home',
+    name: 'Home',
     href: routing.blog.home,
     icon: HomeIcon,
     isAuth: false,
   },
   {
-    name: 'follow source',
+    name: 'Sources',
     href: routing.blog.followSource,
-    icon: UsersIcon,
+    icon: RssIcon,
+    isAuth: true,
+  },
+  {
+    name: 'Bookmarks',
+    href: routing.blog.bookmark,
+    icon: BookOpenIcon,
     isAuth: true,
   },
 ];

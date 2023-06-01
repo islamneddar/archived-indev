@@ -7,11 +7,11 @@ import {
   Req,
   Res,
 } from '@nestjs/common';
-import { Request, Response } from 'express';
-import { FeedBlogService } from './feed_blog.service';
-import { CreateFeedBlogRequest } from './interface';
+import {Request, Response} from 'express';
+import {FeedBlogService} from './feed_blog.service';
+import {CreateFeedBlogRequest} from './interface';
 
-@Controller('feed-blog')
+@Controller('feed-blog-section')
 export class FeedBlogController {
   constructor(private readonly feedBlogService: FeedBlogService) {}
 

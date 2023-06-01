@@ -10,13 +10,12 @@ import {
 import {useDispatch} from 'react-redux';
 import {ThunkDispatch} from '@reduxjs/toolkit';
 import {getAllSourceBlogThunk} from '@/redux/source_blog/source-blog.thunk';
-import SourceBlogList from '@/app-page-component/source_blog/SourceBlogList';
+import SourceBlogList from '@/app-page-component/blog-section/source_blog/SourceBlogList';
 import {useUserSessionSelector} from '@/redux/auth/user/user.selector';
 import {SourceBlog} from '@/types/api/source_blog';
 import {resetSourceBlogState} from '@/redux/source_blog/source-blog.slice';
 import {useFollowSourceBlogSelector} from '@/redux/source_blog/follow-source-blog/follow-source-blog.selector';
 import {resetFollowSourceBlogState} from '@/redux/source_blog/follow-source-blog/follow-source-blog.slice';
-import {Simulate} from 'react-dom/test-utils';
 import toast from 'react-hot-toast';
 
 function SourceBlogBody() {

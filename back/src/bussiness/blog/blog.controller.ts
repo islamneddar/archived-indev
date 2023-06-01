@@ -63,7 +63,7 @@ export default class BlogController {
   async getBlogWithSearchAndType(
     @Query() getBlogRequest: GetBlogBySearchAndFeedTypeRequest,
   ) {
-    this.LOG.debug('get blog with search and type');
+    this.LOG.debug('get blog-section with search and type');
     const {pageOption} = getBlogRequest;
     const {search} = getBlogRequest;
     const {feedType} = getBlogRequest;
@@ -95,7 +95,7 @@ export default class BlogController {
     });
 
     if (!blogExist) {
-      throw new HttpException('blog not found', HttpStatus.NOT_FOUND);
+      throw new HttpException('blog-section not found', HttpStatus.NOT_FOUND);
     }
 
     const user = req.user;
@@ -137,7 +137,7 @@ export default class BlogController {
     });
 
     if (!blogExist) {
-      throw new HttpException('blog not found', HttpStatus.NOT_FOUND);
+      throw new HttpException('blog-section not found', HttpStatus.NOT_FOUND);
     }
 
     const user = req.user;
