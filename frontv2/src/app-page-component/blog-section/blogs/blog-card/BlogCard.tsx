@@ -4,10 +4,10 @@ import React from 'react';
 import {Blog} from '@/types/api/blog';
 import './BlogCard.css';
 import 'react-tooltip/dist/react-tooltip.css';
-import SourceAndTimeContainer from '@/app-page-component/blog/blog-card/card-content/SourceAndTimeContainer';
-import BlogTitle from '@/app-page-component/blog/blog-card/card-content/BlogTitle';
-import TagsContainer from '@/app-page-component/blog/blog-card/card-content/TagsContainer';
-import ReactionGroupButtonCardBlog from '@/app-page-component/blog/blog-card/card-content/ReactionGroupButtonCard';
+import SourceAndTimeContainer from '@/app-page-component/blog-section/blogs/blog-card/card-content/SourceAndTimeContainer';
+import BlogTitle from '@/app-page-component/blog-section/blogs/blog-card/card-content/BlogTitle';
+import TagsContainer from '@/app-page-component/blog-section/blogs/blog-card/card-content/TagsContainer';
+import ReactionGroupButtonCardBlog from '@/app-page-component/blog-section/blogs/blog-card/card-content/ReactionGroupButtonCard';
 
 export interface IBlogCardProps {
   blog: Blog;
@@ -34,7 +34,7 @@ function BlogCard(props: IBlogCardProps) {
               <img
                 src={blog.thumbnail}
                 className={'w-full h-full rounded-xl object-cover'}
-                alt={'img blog'}
+                alt={'img blog-section'}
               />
             </div>
           )}

@@ -10,6 +10,8 @@ import {userSessionSlice} from '@/redux/auth/user/user.slice';
 import {sourceBlogSlice} from '@/redux/source_blog/source-blog.slice';
 import {followSourceBlogSlice} from '@/redux/source_blog/follow-source-blog/follow-source-blog.slice';
 import {likeBlogSlice} from '@/redux/blog/like-blog/like-blog.slice';
+import {bookMarkBlogSlice} from '@/redux/blog/bookmark-blog/bookmark-blog.slice';
+import {getBookmarkBlogSlice} from '@/redux/blog/get-all-bookmarks/get-all-bookmarks.slice';
 
 const middlewares = [];
 // add thunk
@@ -29,6 +31,8 @@ export const store = configureStore({
     sourceBlogReducer: sourceBlogSlice.reducer,
     sourceBlogFollowReducer: followSourceBlogSlice.reducer,
     blogLikeReducer: likeBlogSlice.reducer,
+    bookmarkBlogReducer: bookMarkBlogSlice.reducer,
+    getAllBookmarksReducer: getBookmarkBlogSlice.reducer,
   },
   devTools: process.env.NODE_ENV !== 'production',
   middleware: middlewares,

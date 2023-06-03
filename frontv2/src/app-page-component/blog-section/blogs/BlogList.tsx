@@ -16,14 +16,15 @@ import {
   GridBlogType,
 } from '@/types/general/blog-general.type';
 import {blogAffichageType, gridBlogType} from '@/types/data/blog-general.data';
-import BlogsCardLists from '@/app-page-component/blog/BlogsCardLists';
+import BlogsCardLists from '@/app-page-component/blog-section/blogs/BlogsCardLists';
 import {Blog} from '@/types/api/blog';
 import {useLikeBlogSelector} from '@/redux/blog/like-blog/like-blog.selector';
 import {resetBlogState} from '@/redux/blog/blog.slice';
 import {resetLikeBlogState} from '@/redux/blog/like-blog/like-blog.slice';
 import toast from 'react-hot-toast';
 import {useUserSessionSelector} from '@/redux/auth/user/user.selector';
-import useResponsive from '@/hooks/useResponsive';
+import {useBookmarkBlogSelector} from '@/redux/blog/bookmark-blog/bookmark-blog.selector';
+import {resetBookmarkBlogState} from '@/redux/blog/bookmark-blog/bookmark-blog.slice';
 
 export interface IBlogListProps {
   typeFeed: TypeFeed;
@@ -36,6 +37,8 @@ function BlogList() {
 
   const blogSelector = useBlogSelector();
   const likeBlogSelector = useLikeBlogSelector();
+  const bookmarkBlogSelector = useBookmarkBlogSelector();
+
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [metaData, setMetaData] = useState<PageMetaResponse>({
     page: 1,
@@ -92,6 +95,7 @@ function BlogList() {
     }
 
     if (blogSelector.error !== undefined) {
+      dispatch(resetBlogState());
       return;
     }
   }, [blogSelector.success, blogSelector.error]);
@@ -116,8 +120,33 @@ function BlogList() {
 
     if (likeBlogSelector.error) {
       toast.error('Something went wrong');
+      dispatch(resetLikeBlogState());
     }
   }, [likeBlogSelector.success, likeBlogSelector.error]);
+
+  useEffect(() => {
+    if (bookmarkBlogSelector.success) {
+      if (bookmarkBlogSelector.data) {
+        const blogResult = bookmarkBlogSelector.data;
+        const blogsUpdated = blogs.map(blog => {
+          if (blog.blogId === blogResult.blogId) {
+            blog = {
+              ...blog,
+              isBookmarked: blogResult.isBookmarked,
+            };
+          }
+          return blog;
+        });
+        setBlogs(blogsUpdated);
+        dispatch(resetBookmarkBlogState());
+      }
+    }
+
+    if (bookmarkBlogSelector.error) {
+      toast.error('Something went wrong');
+      dispatch(resetBookmarkBlogState());
+    }
+  }, [bookmarkBlogSelector.success, bookmarkBlogSelector.error]);
 
   return (
     <div className={'sm:px-10 w-full'}>

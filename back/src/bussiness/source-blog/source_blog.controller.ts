@@ -61,7 +61,10 @@ export class SourceBlogController {
     );
 
     if (!sourceBlogExist) {
-      throw new HttpException('source blog not found', HttpStatus.NOT_FOUND);
+      throw new HttpException(
+        'source blog-section not found',
+        HttpStatus.NOT_FOUND,
+      );
     }
 
     const sourceBlogToUserExit =

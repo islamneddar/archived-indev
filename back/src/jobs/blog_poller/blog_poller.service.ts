@@ -98,7 +98,7 @@ export default class BlogPollerService {
       if (blogCheck !== null) {
         continue;
       }
-      this.LOG.log('blog to add : ', item.title);
+      this.LOG.log('blog-section to add : ', item.title);
       const blog = new BlogEntity();
       blog.title = item.title;
       blog.publishDate = new Date(item.pubDate);
@@ -107,10 +107,10 @@ export default class BlogPollerService {
       blog.sourceBlog = sourceBlog;
       blog.tags = await this.retrieveBlogTags(item);
       // TODO to enable later but find a way how to save in data base or put content snippet
-      // blog.content = "";//item.content
+      // blog-section.content = "";//item.content
       await this.dataSource.transaction(async () => {
         const blogCreated = await this.blogService.getOrCreate(blog);
-        this.LOG.debug('blog created : ' + blogCreated.title);
+        this.LOG.debug('blog-section created : ' + blogCreated.title);
       });
     }
   }
