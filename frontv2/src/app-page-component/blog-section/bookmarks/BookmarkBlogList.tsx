@@ -63,25 +63,37 @@ function BookmarkBlogList() {
   }, [getAllBookmarksSelector.success, getAllBookmarksSelector.error]);
 
   if (blogs.length === 0) {
-    return <div>no bookmarked blogs</div>;
+    return (
+      <div className={'w-full h-full flex justify-center items'}>
+        <p>no bookmarked blogs found</p>
+      </div>
+    );
   }
 
   return (
-    <div className={'flex w-full justify-center flex-col items-center'}>
+    <div className={'flex w-full flex-col'}>
       <div
-        className={`flex flex-wrap gap-x-2.5 gap-y-2 justify-center items-center`}>
+        className={`flex grid tn:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-2.5 gap-y-2 justify-center items-center`}>
         {blogs.map((blog, index) => {
-          return <BlogCard key={index} blog={blog}></BlogCard>;
+          return (
+            <div
+              key={index}
+              className={'flex justify-center items-center w-full'}>
+              <BlogCard blog={blog}></BlogCard>
+            </div>
+          );
         })}
       </div>
       {allBookmarkedBlogsSeen ? (
-        <p>all bookmared was seen</p>
+        <div className={'py-3 flex w-full justify-center items-center'}>
+          <p>all bookmarked blogs was seen</p>
+        </div>
       ) : (
-        <div>
+        <div className={'py-3 w-full flex justify-center items-center'}>
           <PrimaryButton
             title={'LoadMore'}
-            loading={false}
-            disabled={false}
+            loading={getAllBookmarksSelector.loading}
+            disabled={getAllBookmarksSelector.loading}
             onClick={() => {
               fetchBookmarkedBlogs(dateLastBlogFetch);
             }}
