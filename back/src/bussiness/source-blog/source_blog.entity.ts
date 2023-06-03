@@ -41,12 +41,4 @@ export class SourceBlogEntity extends BaseTable {
     sourceBlogToUser => sourceBlogToUser.sourceBlog,
   )
   sourceBlogToUsers: SourceBlogToUserEntity[];
-
-  @Column({
-    type: 'enum',
-    nullable: false,
-    enum: TypeFeed,
-    default: TypeFeed.ORIGINAL,
-  })
-  type: TypeFeed;
 }

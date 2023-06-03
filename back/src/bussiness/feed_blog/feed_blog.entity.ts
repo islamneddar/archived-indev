@@ -32,4 +32,12 @@ export class FeedBlogEntity extends BaseTable {
 
   @OneToMany(() => SourceBlogEntity, sourceBlog => sourceBlog.feedBlog)
   sourceBlogs: SourceBlogEntity[];
+
+  @Column({
+    type: 'enum',
+    nullable: false,
+    enum: TypeFeed,
+    default: TypeFeed.ORIGINAL,
+  })
+  type: TypeFeed;
 }
