@@ -15,6 +15,9 @@ export enum TypeFeed {
   IOT = 'iot',
   MACHINE_LEARNING = 'machine_learning',
   SOFTWARE_ENGINEERING = 'software_engineering',
+  FRONT_END_DEVELOPMENT = 'front_end_development',
+  BACK_END_DEVELOPMENT = 'back_end_development',
+  MOBILE_DEVELOPMENT = 'mobile_development',
 }
 
 @Entity({
