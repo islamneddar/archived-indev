@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
 import {SourceBlogEntity} from '@/bussiness/source-blog/source_blog.entity';
 import {BaseTable} from '@/database/base-table.entity';
@@ -8,8 +7,14 @@ export enum TypeFeed {
   ORIGINAL = 'original',
   NEWS = 'news',
   DESIGN = 'design',
-  DATA_SCIENCE = 'data science',
+  DATA_SCIENCE = 'data_science',
   DEVOPS = 'devops',
+  CYBER_SECURITY = 'cyber_security',
+  MIXED_REALITY = 'mixed_reality',
+  CRYPTO_CURRENCY = 'crypto_currency',
+  IOT = 'iot',
+  MACHINE_LEARNING = 'machine_learning',
+  SOFTWARE_ENGINEERING = 'software_engineering',
 }
 
 @Entity({
@@ -28,11 +33,11 @@ export class FeedBlogEntity extends BaseTable {
   @OneToMany(() => SourceBlogEntity, sourceBlog => sourceBlog.feedBlog)
   sourceBlogs: SourceBlogEntity[];
 
-  /*@Column({
+  @Column({
     type: 'enum',
     nullable: false,
     enum: TypeFeed,
     default: TypeFeed.ORIGINAL,
   })
-  type: TypeFeed;*/
+  type: TypeFeed;
 }
