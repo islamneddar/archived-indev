@@ -1,19 +1,14 @@
-/* eslint-disable import/no-cycle */
 import {
-  BaseEntity,
   Column,
-  CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 import {BlogEntity} from '../blog/blog.entity';
 import {FeedBlogEntity, TypeFeed} from '../feed_blog/feed_blog.entity';
-import {BaseTable} from '../../database/base-table.entity';
+import {BaseTable} from '@/database/base-table.entity';
 import {SourceBlogToUserEntity} from '@/bussiness/source-blog-user/source-blog-to-user.entity';
 
 @Entity({
@@ -46,4 +41,12 @@ export class SourceBlogEntity extends BaseTable {
     sourceBlogToUser => sourceBlogToUser.sourceBlog,
   )
   sourceBlogToUsers: SourceBlogToUserEntity[];
+
+  @Column({
+    type: 'enum',
+    nullable: false,
+    enum: TypeFeed,
+    default: TypeFeed.ORIGINAL,
+  })
+  type: TypeFeed;
 }
