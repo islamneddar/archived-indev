@@ -12,10 +12,12 @@ import {BookmarkIcon} from '@heroicons/react/24/outline';
 import {BookmarkIcon as BookmarkIconSolid} from '@heroicons/react/24/solid';
 import {bookmarkBlogThunk} from '@/redux/blog/bookmark-blog/bookmark-blog.thunk';
 import {useBookmarkBlogSelector} from '@/redux/blog/bookmark-blog/bookmark-blog.selector';
+import {GridBlogType} from '@/types/general/blog-general.type';
 
 interface IReactionGroupButtonCardProps {
   classNameContainer: string;
   blog: Blog;
+  gridBlogType?: GridBlogType;
 }
 function ReactionGroupButtonCardBlog(props: IReactionGroupButtonCardProps) {
   const dispatchThunk = useDispatch<ThunkDispatch<any, any, any>>();
@@ -88,7 +90,12 @@ function ReactionGroupButtonCardBlog(props: IReactionGroupButtonCardProps) {
 
   return (
     <div className={`${props.classNameContainer}`}>
-      <div className={'flex flex-row justify-between items-center gap-1'}>
+      <div
+        className={`flex  ${
+          props.gridBlogType === GridBlogType.LIST
+            ? 'flex-col h-full pb-2'
+            : 'flex-row'
+        } justify-between items-center gap-1 `}>
         <div className={'flex flex-row items-center gap-1'}>
           <div
             onClick={event => {

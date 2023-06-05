@@ -27,7 +27,12 @@ function BlogsCardLists(props: IBlogsCardListsProps) {
       <div
         className={'flex flex-col gap-x-2.5 justify-center items-start flex-3'}>
         {props.blogs.map((blog, index) => {
-          return <BlogCardList key={index} blog={blog}></BlogCardList>;
+          return (
+            <BlogCardList
+              key={index}
+              blog={blog}
+              gridBlogType={props.gridBlogType}></BlogCardList>
+          );
         })}
       </div>
       <div className={'flex flex-1'}>

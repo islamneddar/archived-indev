@@ -22,7 +22,7 @@ const navigationState: NavigationType[] = [
   },
   {
     name: 'Sources',
-    href: routing.blog.followSource,
+    href: routing.blog.followSource.home,
     icon: RssIcon,
     isAuth: true,
   },

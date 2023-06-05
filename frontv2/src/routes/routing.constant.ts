@@ -7,7 +7,10 @@ const routing = {
   blog: {
     root: '/blog',
     home: '/blog/home',
-    followSource: '/blog/follow-sources',
+    followSource: {
+      home: '/blog/follow-sources',
+      feeds: (type: string) => `/blog/follow-sources/${type}`,
+    },
     bookmark: '/blog/bookmark',
   },
 };

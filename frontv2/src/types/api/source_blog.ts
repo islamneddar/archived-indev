@@ -4,14 +4,31 @@ import {
 } from '@/types/api/common';
 
 export enum TypeFeed {
-  UNKOWN = 'unkown',
   COMMUNITY = 'community',
   ORIGINAL = 'original',
   NEWS = 'news',
   DESIGN = 'design',
-  DATASCIENCE = 'datascience',
+  DATA_SCIENCE = 'data_science',
   DEVOPS = 'devops',
-  ALL = 'all',
+  CYBER_SECURITY = 'cyber_security',
+  MIXED_REALITY = 'mixed_reality',
+  CRYPTO_CURRENCY = 'crypto_currency',
+  IOT = 'iot',
+  MACHINE_LEARNING = 'machine_learning',
+  SOFTWARE_ENGINEERING = 'software_engineering',
+  FRONT_END_DEVELOPMENT = 'front_end_development',
+  BACK_END_DEVELOPMENT = 'back_end_development',
+  MOBILE_DEVELOPMENT = 'mobile_development',
+}
+
+export interface SourceBlogTypeItemType {
+  value: TypeFeed;
+  content: string;
+  nbBlogs: number;
+  featuredBlog: {
+    sourceBlogName: string;
+    sourceBlogImage: string;
+  };
 }
 
 export interface SourceBlog {
