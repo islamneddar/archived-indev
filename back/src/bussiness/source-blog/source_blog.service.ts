@@ -1,17 +1,19 @@
 import {Injectable} from '@nestjs/common';
-import {Repository} from 'typeorm';
+import {DataSource, Repository} from 'typeorm';
 import {InjectRepository} from '@nestjs/typeorm';
 import {SourceBlogEntity} from './source_blog.entity';
 import {PageOptionsDto} from '@/common/pagination/page_option.dto';
 import {PageMetaDto} from '@/common/pagination/page_meta.dto';
 import {PageDto} from '@/common/pagination/page.dto';
 import {UserEntity} from '@/bussiness/user/user.entity';
+import {contentTypeSourceBlog} from '@/bussiness/feed_blog/feed-blog.proto';
 
 @Injectable()
 export class SourceBlogService {
   constructor(
     @InjectRepository(SourceBlogEntity)
     private sourceBlogRepository: Repository<SourceBlogEntity>,
+    private dataSource: DataSource,
   ) {}
 
   async save(sourceBlog: SourceBlogEntity): Promise<SourceBlogEntity> {
@@ -79,6 +81,44 @@ export class SourceBlogService {
       where: {
         sourceBlogId,
       },
+    });
+  }
+
+  async findAllTypes() {
+    const query2 = await this.dataSource.query(
+      `
+        select fb.type, 
+               count(fb.type) as numberFeedInType, 
+               sourcemaxblogs.number_blogs as numberBlogs, 
+               sourcemaxblogs.sourceBlogName  as SourceBlogName,
+               sourcemaxblogs.sourceBlogImage as SourceBlogImage
+        from source_blogs sb
+        left join feed_blogs fb on sb.feed_blog_id = fb.feed_blog_id
+        left join (
+            select sb.name as sourceBlogName, sb.image as sourceBlogImage, count(b.blog_id) as number_blogs, fb.type as type from blogs b
+            left join source_blogs sb on b.source_blog_id = sb.source_blog_id
+            left join feed_blogs fb on sb.feed_blog_id = fb.feed_blog_id
+            where sb.black_list = false
+            group by fb.type, sb.name, sourceBlogImage
+            order by number_blogs desc
+            limit 1
+        ) sourcemaxblogs on sourcemaxblogs.type = fb.type
+        where sb.black_list = false
+        group by fb.type, numberBlogs, sourcemaxblogs.sourceBlogName, SourceBlogImage
+      `,
+    );
+
+    return query2.map((result: any) => {
+      console.log(result);
+      return {
+        value: result.type,
+        content: contentTypeSourceBlog[result.type],
+        nbBlogs: result.numberblogs,
+        featuredBlog: {
+          sourceBlogName: result.sourceblogname,
+          sourceBlogImage: result.sourceblogimage,
+        },
+      };
     });
   }
 }

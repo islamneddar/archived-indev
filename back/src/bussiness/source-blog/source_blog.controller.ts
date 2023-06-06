@@ -16,7 +16,10 @@ import {SourceBlogEntity} from './source_blog.entity';
 import LOG from '../../utils/logger';
 import {AuthGuard} from '@/bussiness/auth/auth.guard';
 import {PageOptionsDto} from '@/common/pagination/page_option.dto';
-import {FollowSourceBlogRequest} from '@/bussiness/source-blog/source-blog.type';
+import {
+  FollowSourceBlogRequest,
+  SourceBlogTypeItemTypeResponse,
+} from '@/bussiness/source-blog/source-blog.type';
 import {SourceBlogToUserService} from '@/bussiness/source-blog-user/source-blog-user.service';
 
 @Controller('source-blog')
@@ -92,6 +95,16 @@ export class SourceBlogController {
     return {
       sourceBlogId: sourceBlogId,
       isFollow: isFollow,
+    };
+  }
+
+  @Get('all-types')
+  @UseGuards(AuthGuard)
+  async findAllTypes() {
+    const allSourceBlogItemTypes: SourceBlogTypeItemTypeResponse[] =
+      await this.sourceBlogService.findAllTypes();
+    return {
+      data: allSourceBlogItemTypes,
     };
   }
 }

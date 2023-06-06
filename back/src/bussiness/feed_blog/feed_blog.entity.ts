@@ -1,24 +1,7 @@
 import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
 import {SourceBlogEntity} from '@/bussiness/source-blog/source_blog.entity';
 import {BaseTable} from '@/database/base-table.entity';
-
-export enum TypeFeed {
-  COMMUNITY = 'community',
-  ORIGINAL = 'original',
-  NEWS = 'news',
-  DESIGN = 'design',
-  DATA_SCIENCE = 'data_science',
-  DEVOPS = 'devops',
-  CYBER_SECURITY = 'cyber_security',
-  MIXED_REALITY = 'mixed_reality',
-  CRYPTO_CURRENCY = 'crypto_currency',
-  IOT = 'iot',
-  MACHINE_LEARNING = 'machine_learning',
-  SOFTWARE_ENGINEERING = 'software_engineering',
-  FRONT_END_DEVELOPMENT = 'front_end_development',
-  BACK_END_DEVELOPMENT = 'back_end_development',
-  MOBILE_DEVELOPMENT = 'mobile_development',
-}
+import {TypeFeed} from '@/bussiness/feed_blog/feed-blog.proto';
 
 @Entity({
   name: 'feed_blogs',

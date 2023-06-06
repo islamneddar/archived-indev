@@ -1,16 +1,8 @@
 import {PageOptionsDto} from '@/common/pagination/page_option.dto';
-import {TypeFeed} from '../feed_blog/feed_blog.entity';
-import {
-  IsBoolean,
-  IsDate,
-  IsInt,
-  IsNumber,
-  IsOptional,
-  IsString,
-  Min,
-} from 'class-validator';
+import {IsBoolean, IsInt, IsNumber, IsOptional, Min} from 'class-validator';
 import {Type} from 'class-transformer';
 import {IsIsoString} from '@/common/validators/is-iso-string';
+import {TypeFeed} from '@/bussiness/feed_blog/feed-blog.proto';
 
 export interface BlogByFeedTypeRequest {
   pageOption: PageOptionsDto;
