@@ -6,7 +6,10 @@ import {PageOptionsDto} from '@/common/pagination/page_option.dto';
 import {PageMetaDto} from '@/common/pagination/page_meta.dto';
 import {PageDto} from '@/common/pagination/page.dto';
 import {UserEntity} from '@/bussiness/user/user.entity';
-import {contentTypeSourceBlog} from '@/bussiness/feed_blog/feed-blog.proto';
+import {
+  contentTypeSourceBlog,
+  TypeFeed,
+} from '@/bussiness/feed_blog/feed-blog.proto';
 
 @Injectable()
 export class SourceBlogService {
@@ -31,50 +34,6 @@ export class SourceBlogService {
       },
     });
   }
-  async findAllWithPagination(param: {
-    paginationDto: PageOptionsDto;
-    user: UserEntity;
-  }) {
-    const query = this.sourceBlogRepository
-      .createQueryBuilder('sourceBlog')
-      .leftJoin('sourceBlog.sourceBlogToUsers', 'sourceBlogToUsers')
-      .leftJoin('sourceBlogToUsers.user', 'user', 'user.userId = :userId', {
-        userId: param.user.userId,
-      })
-      .select('sourceBlog.name')
-      .addSelect('sourceBlog.sourceBlogId')
-      .addSelect('sourceBlog.image')
-      .addSelect('sourceBlogToUsers.isFollow')
-      .orderBy('sourceBlog.name', 'ASC')
-      .where('sourceBlog.blackList = false')
-      .skip(param.paginationDto.skip)
-      .take(param.paginationDto.take);
-
-    const itemCount = await query.getCount();
-    const entities = await query.getMany();
-    const entitiesToReturn = entities.map(sourceBlog => {
-      if (sourceBlog.sourceBlogToUsers.length === 0) {
-        return {
-          sourceBlogId: sourceBlog.sourceBlogId,
-          name: sourceBlog.name,
-          image: sourceBlog.image,
-          isFollow: false,
-        };
-      } else {
-        return {
-          sourceBlogId: sourceBlog.sourceBlogId,
-          name: sourceBlog.name,
-          image: sourceBlog.image,
-          isFollow: sourceBlog.sourceBlogToUsers[0].isFollow,
-        };
-      }
-    });
-    const pageMetaDto = new PageMetaDto({
-      itemCount,
-      pageOptionsDto: param.paginationDto,
-    });
-    return new PageDto(entitiesToReturn, pageMetaDto);
-  }
 
   findById(sourceBlogId: number) {
     return this.sourceBlogRepository.findOne({
@@ -89,7 +48,7 @@ export class SourceBlogService {
       `
         select fb.type, 
                count(fb.type) as numberFeedInType, 
-               sourcemaxblogs.number_blogs as numberBlogs, 
+               sourceBlogNumberTable.numberSourceBlogs as numberBlogs, 
                sourcemaxblogs.sourceBlogName  as SourceBlogName,
                sourcemaxblogs.sourceBlogImage as SourceBlogImage
         from source_blogs sb
@@ -101,15 +60,21 @@ export class SourceBlogService {
             where sb.black_list = false
             group by fb.type, sb.name, sourceBlogImage
             order by number_blogs desc
-            limit 1
         ) sourcemaxblogs on sourcemaxblogs.type = fb.type
+        left join (
+            select count(sb.name) as numberSourceBlogs, fb.type as type from source_blogs sb
+            left join feed_blogs fb on sb.feed_blog_id = fb.feed_blog_id
+            where sb.black_list = false
+            group by fb.type
+            
+        ) sourceBlogNumberTable on sourceBlogNumberTable.type = fb.type
         where sb.black_list = false
         group by fb.type, numberBlogs, sourcemaxblogs.sourceBlogName, SourceBlogImage
+        order by SourceBlogName desc
       `,
     );
 
     return query2.map((result: any) => {
-      console.log(result);
       return {
         value: result.type,
         content: contentTypeSourceBlog[result.type],
@@ -120,5 +85,66 @@ export class SourceBlogService {
         },
       };
     });
+  }
+
+  async findAllByType(param: {
+    pagePaginationDto: PageOptionsDto;
+    typeSource: TypeFeed;
+    user: UserEntity;
+  }) {
+    const query = await this.dataSource.query(`
+      select sb.source_blog_id as sourceBlogId,
+              sb.name as sourceblogname,
+              sb.image as sourceblogimage,
+              ufsb.isFollow as isFollow,
+              numberFollowers.numberFollowers as numberFollowers
+      from source_blogs sb
+      left join (
+          select is_follow as isFollow, source_blog_id
+          from source_blog_to_user sbtu
+          where sbtu.user_id = ${param.user.userId} 
+      ) ufsb on ufsb.source_blog_id = sb.source_blog_id
+      left join (
+          select count(source_blog_to_user_id) as numberFollowers, source_blog_id
+          from source_blog_to_user sbtu
+          where sbtu.is_follow = true
+          group by source_blog_id
+      ) numberFollowers on numberFollowers.source_blog_id = sb.source_blog_id
+      where sb.black_list = false
+      and sb.feed_blog_id in (  
+          select fb.feed_blog_id
+          from feed_blogs fb
+          where fb.type = '${param.typeSource}'
+      )
+      offset ${param.pagePaginationDto.skip}
+      limit ${param.pagePaginationDto.take}
+    `);
+
+    const queryCount = await this.dataSource.query(`
+      select count(sb.source_blog_id) as numberSourceBlogs
+      from source_blogs sb
+      where sb.black_list = false
+      and sb.feed_blog_id in (
+          select fb.feed_blog_id
+          from feed_blogs fb
+          where fb.type = '${param.typeSource}'
+      )
+    `);
+
+    const listSourceBlog = query.map((result: any) => {
+      return {
+        sourceBlogId: result.sourceblogid,
+        name: result.sourceblogname,
+        image: result.sourceblogimage,
+        isFollow: result.isfollow,
+        numberFollowers: result.numberfollowers,
+      };
+    });
+
+    const pageMetaDto = new PageMetaDto({
+      itemCount: queryCount[0].numbersourceblogs as number,
+      pageOptionsDto: param.pagePaginationDto,
+    });
+    return new PageDto(listSourceBlog, pageMetaDto);
   }
 }

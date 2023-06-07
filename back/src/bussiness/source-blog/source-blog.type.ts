@@ -1,5 +1,6 @@
-import {IsBoolean, IsNumber} from 'class-validator';
+import {IsBoolean, IsEnum, IsNumber} from 'class-validator';
 import {TypeFeed} from '@/bussiness/feed_blog/feed-blog.proto';
+import {PageOptionsDto} from '@/common/pagination/page_option.dto';
 
 export class FollowSourceBlogRequest {
   @IsNumber()
@@ -17,4 +18,9 @@ export class SourceBlogTypeItemTypeResponse {
     sourceBlogName: string;
     sourceBlogImage: string;
   };
+}
+
+export class GetAllByTypeQueryRequest {
+  @IsEnum(TypeFeed)
+  typeSource: TypeFeed;
 }
