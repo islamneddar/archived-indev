@@ -1,5 +1,5 @@
 import {useAppSelector} from '@/redux/store';
-import {GetBookmarkBlogState} from '@/redux/blog/get-all-bookmarks/get-all-bookmarks.slice';
+import {GetBookmarkBlogState} from '@/redux/slices/blog/get-all-bookmarks/get-all-bookmarks.slice';
 
 export const selectGetAllBookmarkBlog = (state: {
   getAllBookmarksReducer: GetBookmarkBlogState;

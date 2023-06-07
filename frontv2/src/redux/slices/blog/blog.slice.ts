@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {getAllBlogThunk as getAllBlog} from '@/redux/blog/blog.thunk';
+import {getAllBlogThunk as getAllBlog} from '@/redux/slices/blog/blog.thunk';
 import {ReduxEntityBase} from '@/types/general/redux.type';
 import {GetBlogsResponse} from '@/types/api/blog';
 

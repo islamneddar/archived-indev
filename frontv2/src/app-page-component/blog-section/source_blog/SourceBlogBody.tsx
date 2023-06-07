@@ -1,7 +1,7 @@
 'use client';
 import React, {useEffect, useState} from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import {useSourceBlogSelector} from '@/redux/source_blog/soure-blog.selector';
+import {useSourceBlogSelector} from '@/redux/slices/source_blog/get-all-source-blog/soure-blog.selector';
 import {
   Order,
   PageMetaResponse,
@@ -9,16 +9,24 @@ import {
 } from '@/types/api/common';
 import {useDispatch} from 'react-redux';
 import {ThunkDispatch} from '@reduxjs/toolkit';
-import {getAllSourceBlogThunk} from '@/redux/source_blog/source-blog.thunk';
+import {getAllSourceBlogThunk} from '@/redux/slices/source_blog/get-all-source-blog/source-blog.thunk';
 import SourceBlogList from '@/app-page-component/blog-section/source_blog/SourceBlogList';
-import {useUserSessionSelector} from '@/redux/auth/user/user.selector';
-import {SourceBlog} from '@/types/api/source_blog';
-import {resetSourceBlogState} from '@/redux/source_blog/source-blog.slice';
-import {useFollowSourceBlogSelector} from '@/redux/source_blog/follow-source-blog/follow-source-blog.selector';
-import {resetFollowSourceBlogState} from '@/redux/source_blog/follow-source-blog/follow-source-blog.slice';
+import {useUserSessionSelector} from '@/redux/slices/auth/user/user.selector';
+import {
+  GetAllSourceBlogRequest,
+  SourceBlog,
+  TypeFeed,
+} from '@/types/api/source_blog';
+import {resetSourceBlogState} from '@/redux/slices/source_blog/get-all-source-blog/source-blog.slice';
+import {useFollowSourceBlogSelector} from '@/redux/slices/source_blog/follow-source-blog/follow-source-blog.selector';
+import {resetFollowSourceBlogState} from '@/redux/slices/source_blog/follow-source-blog/follow-source-blog.slice';
 import toast from 'react-hot-toast';
 
-function SourceBlogBody() {
+export interface SourceBlogBodyProps {
+  typeSourceBlog: string;
+}
+
+function SourceBlogBody(props: SourceBlogBodyProps) {
   const [sourceBlogs, setSourceBlogs] = useState<SourceBlog[]>([]);
   const [metaData, setMetaData] = useState<PageMetaResponse>({
     page: 1,
@@ -40,12 +48,13 @@ function SourceBlogBody() {
       order: Order.DESC,
     };
 
-    const getAllBlogRequest = {
+    const getAllSourceBlogByType: GetAllSourceBlogRequest = {
       paginationRequestMeta: paginationRequest,
+      sourceBlogType: props.typeSourceBlog as TypeFeed,
       accessToken: userSession.user.accessToken,
     };
 
-    dispatchThunk(getAllSourceBlogThunk(getAllBlogRequest));
+    dispatchThunk(getAllSourceBlogThunk(getAllSourceBlogByType));
   };
 
   useEffect(() => {
@@ -108,7 +117,7 @@ function SourceBlogBody() {
   }, [followSourceBlogSelector.success, followSourceBlogSelector.error]);
 
   return (
-    <div className={'overflow-y-auto h-[calc(100vh_-_136px)]'}>
+    <div className={'flex w-full pt-4'}>
       <InfiniteScroll
         next={() => fetchSourceBlogs()}
         hasMore={metaData.hasNextPage}
@@ -116,7 +125,7 @@ function SourceBlogBody() {
         dataLength={sourceBlogs.length}
         scrollableTarget={'scrollSourceBlogId'}
         scrollThreshold={0.8}
-        className={'mx-auto w-full '}>
+        className={'mx-auto w-full'}>
         <SourceBlogList sourceBlogs={sourceBlogs}></SourceBlogList>
       </InfiniteScroll>
     </div>

@@ -1,5 +1,5 @@
 import {useAppSelector} from '@/redux/store';
-import {UserSessionState} from '@/redux/auth/user/user.slice';
+import {UserSessionState} from '@/redux/slices/auth/user/user.slice';
 
 export const selectUserSession = (state: {
   userSessionReducer: UserSessionState;

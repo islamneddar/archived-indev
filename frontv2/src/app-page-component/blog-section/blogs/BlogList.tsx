@@ -7,8 +7,8 @@ import {
 } from '@/types/api/common';
 import {TypeFeed} from '@/types/api/source_blog';
 import {useDispatch} from 'react-redux';
-import {getAllBlogThunk} from '@/redux/blog/blog.thunk';
-import {useBlogSelector} from '@/redux/blog/blog.selector';
+import {getAllBlogThunk} from '@/redux/slices/blog/blog.thunk';
+import {useBlogSelector} from '@/redux/slices/blog/blog.selector';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import {ThunkDispatch} from '@reduxjs/toolkit';
 import {
@@ -18,13 +18,13 @@ import {
 import {blogAffichageType, gridBlogType} from '@/types/data/blog-general.data';
 import BlogsCardLists from '@/app-page-component/blog-section/blogs/BlogsCardLists';
 import {Blog} from '@/types/api/blog';
-import {useLikeBlogSelector} from '@/redux/blog/like-blog/like-blog.selector';
-import {resetBlogState} from '@/redux/blog/blog.slice';
-import {resetLikeBlogState} from '@/redux/blog/like-blog/like-blog.slice';
+import {useLikeBlogSelector} from '@/redux/slices/blog/like-blog/like-blog.selector';
+import {resetBlogState} from '@/redux/slices/blog/blog.slice';
+import {resetLikeBlogState} from '@/redux/slices/blog/like-blog/like-blog.slice';
 import toast from 'react-hot-toast';
-import {useUserSessionSelector} from '@/redux/auth/user/user.selector';
-import {useBookmarkBlogSelector} from '@/redux/blog/bookmark-blog/bookmark-blog.selector';
-import {resetBookmarkBlogState} from '@/redux/blog/bookmark-blog/bookmark-blog.slice';
+import {useUserSessionSelector} from '@/redux/slices/auth/user/user.selector';
+import {useBookmarkBlogSelector} from '@/redux/slices/blog/bookmark-blog/bookmark-blog.selector';
+import {resetBookmarkBlogState} from '@/redux/slices/blog/bookmark-blog/bookmark-blog.slice';
 
 export interface IBlogListProps {
   typeFeed: TypeFeed;

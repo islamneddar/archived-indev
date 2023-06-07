@@ -1,22 +1,17 @@
 'use client';
 import React from 'react';
-import BookmarkBlogBody from '@/app-page-component/blog-section/bookmarks/BookmarkBlogBody';
 import {useRouter} from 'next/navigation';
 import {useUserSessionSelector} from '@/redux/slices/auth/user/user.selector';
 
-function Page() {
+function Layout({children}: {children: React.ReactNode}) {
   const router = useRouter();
   const userSessionSelector = useUserSessionSelector();
 
   if (!userSessionSelector.isAuthenticated) {
     router.push('/auth/login');
   } else {
-    return (
-      <div className={'p-5 w-full flex'}>
-        <BookmarkBlogBody></BookmarkBlogBody>
-      </div>
-    );
+    return <div className={'p-5 w-full flex'}>{children}</div>;
   }
 }
 
-export default Page;
+export default Layout;

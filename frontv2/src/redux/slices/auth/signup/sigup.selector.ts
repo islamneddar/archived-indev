@@ -1,5 +1,5 @@
 import {useAppSelector} from '@/redux/store';
-import {SignupState} from '@/redux/auth/signup/signup.slice';
+import {SignupState} from '@/redux/slices/auth/signup/signup.slice';
 
 export const selectSignup = (state: {signupReducer: SignupState}) =>
   state.signupReducer;

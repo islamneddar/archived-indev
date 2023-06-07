@@ -23,7 +23,7 @@ function SourceBlogTypeItem(props: SourceBlogTypeItemProps) {
       <div className={'flex w-full px-4 py-2 flex-col h-full justify-between'}>
         <div className={'flex flex-row justify-between items-center'}>
           <div>
-            <h1 className={'font-bold text-18'}>{sourceBlogType.value}</h1>
+            <h1 className={'font-bold text-18'}>{sourceBlogType.content}</h1>
           </div>
           <div>
             <PrimaryButton

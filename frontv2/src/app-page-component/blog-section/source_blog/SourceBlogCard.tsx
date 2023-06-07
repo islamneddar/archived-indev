@@ -2,11 +2,13 @@
 import React, {useEffect} from 'react';
 import {FollowSourceBlogRequest, SourceBlog} from '@/types/api/source_blog';
 import {StarIcon} from '@heroicons/react/20/solid';
-import {useUserSessionSelector} from '@/redux/auth/user/user.selector';
+import {useUserSessionSelector} from '@/redux/slices/auth/user/user.selector';
 import {ThunkDispatch} from '@reduxjs/toolkit';
 import {useDispatch} from 'react-redux';
-import {followSourceBlogThunk} from '@/redux/source_blog/follow-source-blog/follow-source-blog.thunk';
-import {useFollowSourceBlogSelector} from '@/redux/source_blog/follow-source-blog/follow-source-blog.selector';
+import {followSourceBlogThunk} from '@/redux/slices/source_blog/follow-source-blog/follow-source-blog.thunk';
+import {useFollowSourceBlogSelector} from '@/redux/slices/source_blog/follow-source-blog/follow-source-blog.selector';
+import PrimaryButton from '@/components/button/PrimaryButton';
+import {formatCompactNumber} from '@/utils/general';
 
 interface ISourceBlogCardProps {
   sourceBlog: SourceBlog;
@@ -25,33 +27,53 @@ function SourceBlogCard(props: ISourceBlogCardProps) {
     }
   }, [followSourceBlogSelector.error]);
 
+  const follow = () => {
+    setFollowed(!followed);
+    const followSourceBlogRequest: FollowSourceBlogRequest = {
+      accessToken: userSession.user.accessToken,
+      sourceBlogId: sourceBlog.sourceBlogId,
+      isFollow: !followed,
+    };
+    dispatchThunk(followSourceBlogThunk(followSourceBlogRequest));
+  };
+
   return (
-    <div className={'bg-gray-700 rounded-xl p-3 w-354'}>
-      <div className={'flex justify-between'}>
-        <div className={'flex flex-row items-center justify-start gap-3'}>
-          <div>
-            <img src={sourceBlog.image} className={'w-8 h-8 rounded-md'} />
-          </div>
-          <div>
-            <p>{sourceBlog.name}</p>
-          </div>
+    <div className={'bg-gray-700 rounded-xl p-5 flex w-full'}>
+      <div className={'flex flex-row w-full w-full'}>
+        <div className={'flex justify-center mr-6'}>
+          <img src={sourceBlog.image} className={'w-12 h-12 rounded-md'} />
         </div>
-        <div className={'flex justify-center items-center'}>
-          <StarIcon
-            className={`h-6 w-6 ${
-              followed ? 'text-yellow-400' : 'text-gray-400'
-            } hover:cursor-pointer`}
-            onClick={() => {
-              setFollowed(!followed);
-              //dispatch follow or unfollow
-              const followSourceBlogRequest: FollowSourceBlogRequest = {
-                accessToken: userSession.user.accessToken,
-                sourceBlogId: sourceBlog.sourceBlogId,
-                isFollow: !followed,
-              };
-              dispatchThunk(followSourceBlogThunk(followSourceBlogRequest));
-            }}
-          />
+        <div className={'flex flex-col w-full'}>
+          <div className={'flex flex-row justify-between w-full'}>
+            <div className={'flex flex-row items-center justify-start gap-3'}>
+              <div>
+                <p className={'text-18 font-medium'}>{sourceBlog.name}</p>
+              </div>
+            </div>
+            <div className={'flex justify-center items-center'}>
+              <PrimaryButton
+                title={'Follow'}
+                loading={false}
+                disabled={false}
+                buttonClassName={'p-1'}
+              />
+            </div>
+          </div>
+          <div className={'h-5 flex'}></div>
+          <div className={'flex'}>
+            <div className={'mr-10'}>
+              <p className={'text-14'}>
+                {formatCompactNumber(sourceBlog.numberFollowers)}
+              </p>
+              <p className={'text-12 text-gray-400'}>Followers</p>
+            </div>
+            {/*<div>
+                <p className={'text-14'}>
+                  {formatCompactNumber(sourceBlog.numberBlogs)}
+                </p>
+                <p className={'text-12 text-gray-400'}>Blogs</p>
+              </div>*/}
+          </div>
         </div>
       </div>
     </div>

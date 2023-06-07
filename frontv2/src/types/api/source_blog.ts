@@ -36,6 +36,8 @@ export interface SourceBlog {
   name: string;
   image: string;
   isFollow: boolean;
+  numberFollowers: number;
+  //numberBlogs: number;
 }
 
 //Request/Response
@@ -46,6 +48,7 @@ export interface GetAllSourceBlogResponse {
 
 export interface GetAllSourceBlogRequest {
   accessToken: string;
+  sourceBlogType: TypeFeed;
   paginationRequestMeta: PaginationRequestMetaRequest;
 }
 
@@ -57,4 +60,12 @@ export interface FollowSourceBlogRequest {
 export interface FollowSourceBlogResponse {
   isFollow: boolean;
   sourceBlogId: number;
+}
+
+export interface GetAllTypeSourceBlogResponse {
+  data: SourceBlogTypeItemType[];
+}
+
+export interface GetAllTypeSourceBlogRequest {
+  accessToken: string;
 }

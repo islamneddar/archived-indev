@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {UserSession} from '@/types/general/user-session.type';
-import {getUserProfileThunk} from '@/redux/auth/user/user.thunk';
+import {getUserProfileThunk} from '@/redux/slices/auth/user/user.thunk';
 import {ReduxEntityBase} from '@/types/general/redux.type';
 
 export interface UserSessionState extends ReduxEntityBase<any> {

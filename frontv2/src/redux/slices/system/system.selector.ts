@@ -1,5 +1,5 @@
 import {useAppDispatch, useAppSelector} from '@/redux/store';
-import {SystemState} from '@/redux/system/system.slice';
+import {SystemState} from '@/redux/slices/system/system.slice';
 
 export const selectSystem = (state: {systemReducer: SystemState}) =>
   state.systemReducer;

@@ -1,9 +1,9 @@
 import React, {Fragment} from 'react';
 import {SideBarDesktopProps} from '@/app-page-component/sidebar/SideBarMain';
 import {useDispatch} from 'react-redux';
-import {useSystemSelector} from '@/redux/system/system.selector';
+import {useSystemSelector} from '@/redux/slices/system/system.selector';
 import {Dialog, Menu, Transition} from '@headlessui/react';
-import {toggleSideBarMobile} from '@/redux/system/system.slice';
+import {toggleSideBarMobile} from '@/redux/slices/system/system.slice';
 import {XMarkIcon} from '@heroicons/react/24/solid';
 import SideBarItem from '@/app-page-component/sidebar/desktop/SideBarItem';
 import LogoContainer from '@/app-page-component/navbar/LogoContainer';

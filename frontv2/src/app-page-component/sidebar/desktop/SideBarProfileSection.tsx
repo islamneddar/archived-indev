@@ -2,7 +2,7 @@ import React from 'react';
 import {PowerIcon} from '@heroicons/react/20/solid';
 import {signOut} from 'next-auth/react';
 import {Avatar} from 'primereact/avatar';
-import {useUserSessionSelector} from '@/redux/auth/user/user.selector';
+import {useUserSessionSelector} from '@/redux/slices/auth/user/user.selector';
 
 function SideBarProfileSection() {
   const {user} = useUserSessionSelector();
