@@ -46,30 +46,41 @@ export class SourceBlogService {
   async findAllTypes() {
     const query2 = await this.dataSource.query(
       `
-        select fb.type, 
-               count(fb.type) as numberFeedInType, 
-               sourceBlogNumberTable.numberSourceBlogs as numberBlogs, 
-               sourcemaxblogs.sourceBlogName  as SourceBlogName,
-               sourcemaxblogs.sourceBlogImage as SourceBlogImage
+        select distinct (fb.type), 
+               count(fb.type) as numberblogs, 
+               featuredBlog.sourceName as sourceBlogName,
+                featuredBlog.sourceImage as sourceBlogImage
         from source_blogs sb
         left join feed_blogs fb on sb.feed_blog_id = fb.feed_blog_id
-        left join (
-            select sb.name as sourceBlogName, sb.image as sourceBlogImage, count(b.blog_id) as number_blogs, fb.type as type from blogs b
-            left join source_blogs sb on b.source_blog_id = sb.source_blog_id
-            left join feed_blogs fb on sb.feed_blog_id = fb.feed_blog_id
-            where sb.black_list = false
-            group by fb.type, sb.name, sourceBlogImage
-            order by number_blogs desc
-        ) sourcemaxblogs on sourcemaxblogs.type = fb.type
-        left join (
-            select count(sb.name) as numberSourceBlogs, fb.type as type from source_blogs sb
-            left join feed_blogs fb on sb.feed_blog_id = fb.feed_blog_id
-            where sb.black_list = false
-            group by fb.type
             
-        ) sourceBlogNumberTable on sourceBlogNumberTable.type = fb.type
+        left join (
+          select
+            fb.type as feedType,
+            sb.name as sourceName,
+            sb.image as sourceImage,
+            count(b.blog_id) as blogsCount
+          from blogs b
+                 left join source_blogs sb on b.source_blog_id = sb.source_blog_id
+                 left join feed_blogs fb on sb.feed_blog_id = fb.feed_blog_id
+          group by
+            fb.type,
+            sb.name,
+            sb.image
+          HAVING COUNT(b.blog_id) = (
+            SELECT MAX(blog_count)
+            FROM (
+                   SELECT COUNT(b2.blog_id) AS blog_count, fb2.type
+                   FROM blogs b2
+                          LEFT JOIN source_blogs sb2 ON b2.source_blog_id = sb2.source_blog_id
+                          LEFT JOIN feed_blogs fb2 ON sb2.feed_blog_id = fb2.feed_blog_id
+                   GROUP BY fb2.type, sb2.source_blog_id
+                 ) AS blog_counts
+            WHERE blog_counts.type = fb.type
+          )
+        ) as featuredBlog on featuredBlog.feedType = fb.type
+        
         where sb.black_list = false
-        group by fb.type, numberBlogs, sourcemaxblogs.sourceBlogName, SourceBlogImage
+        group by fb.type, sourceBlogName, sourceBlogImage
         order by SourceBlogName desc
       `,
     );

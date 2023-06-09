@@ -76,7 +76,8 @@ export class BlogService {
       left join (
           select blog_id, SUM(is_liked) as totalLikes from blog_to_user group by blog_id 
       ) likes on blogs.blog_id = likes.blog_id
-      group by blogs.blog_id, source_blogs.name, source_blogs.image, totalLikes
+      where source_blogs.black_list = false
+      group by blogs.blog_id, source_blogs.name, source_blogs.image, totalLikes, blogs.publish_date
       order by blogs.publish_date desc
       offset ${pageOptionsDto.skip} 
           limit ${pageOptionsDto.take}
@@ -153,10 +154,12 @@ export class BlogService {
             param.user.userId
           : ''
       }
+     where source_blogs.black_list = false
       group by blogs.blog_id, source_blogs.name, source_blogs.image, totalLikes
       ${
         param.user ? ', blog_to_user.is_liked, blog_to_user.is_bookmarked ' : ''
       }
+      
       order by blogs.publish_date desc
       offset ${param.pageOptionsDto.skip} 
       limit ${param.pageOptionsDto.take}
