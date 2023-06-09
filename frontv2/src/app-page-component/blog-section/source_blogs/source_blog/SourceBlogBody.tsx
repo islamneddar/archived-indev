@@ -10,7 +10,7 @@ import {
 import {useDispatch} from 'react-redux';
 import {ThunkDispatch} from '@reduxjs/toolkit';
 import {getAllSourceBlogThunk} from '@/redux/slices/source_blog/get-all-source-blog/source-blog.thunk';
-import SourceBlogList from '@/app-page-component/blog-section/source_blog/SourceBlogList';
+import SourceBlogList from '@/app-page-component/blog-section/source_blogs/source_blog/SourceBlogList';
 import {useUserSessionSelector} from '@/redux/slices/auth/user/user.selector';
 import {
   GetAllSourceBlogRequest,
@@ -21,6 +21,7 @@ import {resetSourceBlogState} from '@/redux/slices/source_blog/get-all-source-bl
 import {useFollowSourceBlogSelector} from '@/redux/slices/source_blog/follow-source-blog/follow-source-blog.selector';
 import {resetFollowSourceBlogState} from '@/redux/slices/source_blog/follow-source-blog/follow-source-blog.slice';
 import toast from 'react-hot-toast';
+import SideOverGetBlogs from '@/app-page-component/blog-section/source_blogs/slide-over-get-blogs/SideOverGetBlogs';
 
 export interface SourceBlogBodyProps {
   typeSourceBlog: string;
@@ -118,6 +119,7 @@ function SourceBlogBody(props: SourceBlogBodyProps) {
 
   return (
     <div className={'flex w-full pt-4'}>
+      <SideOverGetBlogs></SideOverGetBlogs>
       <InfiniteScroll
         next={() => fetchSourceBlogs()}
         hasMore={metaData.hasNextPage}

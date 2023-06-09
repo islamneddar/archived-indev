@@ -2,7 +2,7 @@
 import React from 'react';
 import {ArrowLeftIcon} from '@heroicons/react/24/solid';
 import {useRouter} from 'next/navigation';
-import SourceBlogBody from '@/app-page-component/blog-section/source_blog/SourceBlogBody';
+import SourceBlogBody from '@/app-page-component/blog-section/source_blogs/source_blog/SourceBlogBody';
 function Page({params}: {params: {type_source: string}}) {
   const router = useRouter();
   return (

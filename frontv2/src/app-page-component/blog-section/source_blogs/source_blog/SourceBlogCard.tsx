@@ -20,15 +20,24 @@ function SourceBlogCard(props: ISourceBlogCardProps) {
   const [followed, setFollowed] = React.useState(sourceBlog.isFollow);
   const userSession = useUserSessionSelector();
   const followSourceBlogSelector = useFollowSourceBlogSelector();
+  const [followerCount, setFollowerCount] = React.useState<number>(
+    sourceBlog.numberFollowers,
+  );
 
   useEffect(() => {
     if (followSourceBlogSelector.error) {
       setFollowed(!followed);
+      setFollowerCount(
+        followed ? Number(followerCount) - 1 : Number(followerCount) + 1,
+      );
     }
   }, [followSourceBlogSelector.error]);
 
   const follow = () => {
     setFollowed(!followed);
+    setFollowerCount(
+      followed ? Number(followerCount) - 1 : Number(followerCount) + 1,
+    );
     const followSourceBlogRequest: FollowSourceBlogRequest = {
       accessToken: userSession.user.accessToken,
       sourceBlogId: sourceBlog.sourceBlogId,
@@ -47,15 +56,22 @@ function SourceBlogCard(props: ISourceBlogCardProps) {
           <div className={'flex flex-row justify-between w-full'}>
             <div className={'flex flex-row items-center justify-start gap-3'}>
               <div>
-                <p className={'text-18 font-medium'}>{sourceBlog.name}</p>
+                <p className={'text-18 font-medium line-clamp-1'}>
+                  {sourceBlog.name}
+                </p>
               </div>
             </div>
             <div className={'flex justify-center items-center'}>
               <PrimaryButton
-                title={'Follow'}
+                title={followed ? 'Following' : 'Follow'}
                 loading={false}
                 disabled={false}
-                buttonClassName={'p-1'}
+                buttonClassName={`p-1 ${
+                  followed ? 'text-indigo-500 bg-white hover:bg-gray-200' : ''
+                }`}
+                onClick={() => {
+                  follow();
+                }}
               />
             </div>
           </div>
@@ -63,7 +79,7 @@ function SourceBlogCard(props: ISourceBlogCardProps) {
           <div className={'flex'}>
             <div className={'mr-10'}>
               <p className={'text-14'}>
-                {formatCompactNumber(sourceBlog.numberFollowers)}
+                {formatCompactNumber(followerCount) || 0}
               </p>
               <p className={'text-12 text-gray-400'}>Followers</p>
             </div>

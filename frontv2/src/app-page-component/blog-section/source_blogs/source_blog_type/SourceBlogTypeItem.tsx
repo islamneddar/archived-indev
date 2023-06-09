@@ -25,14 +25,14 @@ function SourceBlogTypeItem(props: SourceBlogTypeItemProps) {
           <div>
             <h1 className={'font-bold text-18'}>{sourceBlogType.content}</h1>
           </div>
-          <div>
+          {/*<div>
             <PrimaryButton
               title={'Follow All'}
               loading={false}
               disabled={false}
               buttonClassName={'text-12'}
             />
-          </div>
+          </div>*/}
         </div>
         <div className={'my-3'}>
           <div className={''}>
@@ -42,7 +42,7 @@ function SourceBlogTypeItem(props: SourceBlogTypeItemProps) {
             </p>
           </div>
         </div>
-        <div className={'flex flex-row justify-start items-center'}>
+        <div className={'flex flex-row justify-end items-center w-full '}>
           <div className={''}>
             <img
               src={sourceBlogType.featuredBlog.sourceBlogImage}
