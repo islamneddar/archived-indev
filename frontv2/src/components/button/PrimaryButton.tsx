@@ -14,7 +14,9 @@ export default function PrimaryButton(props: PrimaryButtonProps) {
       disabled={props.disabled || false}
       type="button"
       onClick={props.onClick}
-      className={`${props.buttonClassName} cursor-pointer rounded-md bg-indigo-600 py-2.5 px-3.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}>
+      className={`cursor-pointer rounded-md bg-indigo-600 py-2.5 px-3.5 text-sm 
+      font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 
+      focus-visible:outline-offset-2 focus-visible:outline-indigo-600  ${props.buttonClassName} `}>
       {props.loading && (
         <svg
           aria-hidden="true"

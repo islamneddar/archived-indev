@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import {BlogEntity} from '../blog/blog.entity';
-import {FeedBlogEntity, TypeFeed} from '../feed_blog/feed_blog.entity';
+import {FeedBlogEntity} from '../feed_blog/feed_blog.entity';
 import {BaseTable} from '@/database/base-table.entity';
 import {SourceBlogToUserEntity} from '@/bussiness/source-blog-user/source-blog-to-user.entity';
 
@@ -33,7 +33,7 @@ export class SourceBlogEntity extends BaseTable {
   @JoinColumn({name: 'feed_blog_id'})
   feedBlog: FeedBlogEntity;
 
-  @Column({name: 'blackList', default: false})
+  @Column({name: 'black_list', default: false})
   blackList: boolean;
 
   @OneToMany(

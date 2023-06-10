@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import PrimaryButton from '@/components/button/PrimaryButton';
 import routing from '@/routes/routing.constant';
 import {useRouter} from 'next/navigation';
-import {useUserSessionSelector} from '@/redux/auth/user/user.selector';
+import {useUserSessionSelector} from '@/redux/slices/auth/user/user.selector';
 import {UserCircleIcon} from '@heroicons/react/24/solid';
 import PrimeReact from 'primereact/api';
 

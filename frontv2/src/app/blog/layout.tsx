@@ -2,14 +2,14 @@
 import NavBar from '@/app-page-component/navbar/NavBar';
 import React, {Fragment, useEffect} from 'react';
 import {signOut, useSession} from 'next-auth/react';
-import {updateAuth} from '@/redux/auth/user/user.slice';
+import {updateAuth} from '@/redux/slices/auth/user/user.slice';
 import {useDispatch} from 'react-redux';
 import {HomeIcon, RssIcon, BookOpenIcon} from '@heroicons/react/20/solid';
 import routing from '@/routes/routing.constant';
 import {ThunkDispatch} from '@reduxjs/toolkit';
-import {getUserProfileThunk} from '@/redux/auth/user/user.thunk';
+import {getUserProfileThunk} from '@/redux/slices/auth/user/user.thunk';
 import {EventBusFront, EventBusFrontType} from '@/events/event_bus';
-import {useUserSessionSelector} from '@/redux/auth/user/user.selector';
+import {useUserSessionSelector} from '@/redux/slices/auth/user/user.selector';
 import {NavigationType} from '@/types/general/sidebar.type';
 import SideBarMain from '@/app-page-component/sidebar/SideBarMain';
 
@@ -22,7 +22,7 @@ const navigationState: NavigationType[] = [
   },
   {
     name: 'Sources',
-    href: routing.blog.followSource,
+    href: routing.blog.followSource.home,
     icon: RssIcon,
     isAuth: true,
   },

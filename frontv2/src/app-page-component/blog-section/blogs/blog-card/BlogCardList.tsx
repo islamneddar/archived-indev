@@ -4,9 +4,11 @@ import BlogTitle from '@/app-page-component/blog-section/blogs/blog-card/card-co
 import SourceAndTimeContainer from '@/app-page-component/blog-section/blogs/blog-card/card-content/SourceAndTimeContainer';
 import TagsContainer from '@/app-page-component/blog-section/blogs/blog-card/card-content/TagsContainer';
 import ReactionGroupButtonCardBlog from '@/app-page-component/blog-section/blogs/blog-card/card-content/ReactionGroupButtonCard';
+import {GridBlogType} from '@/types/general/blog-general.type';
 
 interface IBlogCardListProps {
   blog: Blog;
+  gridBlogType: GridBlogType;
 }
 
 function BlogCardList(props: IBlogCardListProps) {
@@ -44,7 +46,8 @@ function BlogCardList(props: IBlogCardListProps) {
           </div>
           <ReactionGroupButtonCardBlog
             classNameContainer={' border-l-2 rounded-md pt-2 px-2'}
-            blog={blog}></ReactionGroupButtonCardBlog>
+            blog={blog}
+            gridBlogType={props.gridBlogType}></ReactionGroupButtonCardBlog>
         </div>
       </div>
     </div>

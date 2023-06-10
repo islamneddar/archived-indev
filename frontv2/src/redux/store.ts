@@ -2,16 +2,15 @@ import {AnyAction, configureStore, ThunkDispatch} from '@reduxjs/toolkit';
 import {useDispatch, useSelector} from 'react-redux';
 import {createLogger} from 'redux-logger';
 import thunk from 'redux-thunk';
-import {systemSlice} from './system/system.slice';
-import {blogSlice} from '@/redux/blog/blog.slice';
-import {signupSlice} from '@/redux/auth/signup/signup.slice';
-import {loginSlice} from '@/redux/auth/login/login.slice';
-import {userSessionSlice} from '@/redux/auth/user/user.slice';
-import {sourceBlogSlice} from '@/redux/source_blog/source-blog.slice';
-import {followSourceBlogSlice} from '@/redux/source_blog/follow-source-blog/follow-source-blog.slice';
-import {likeBlogSlice} from '@/redux/blog/like-blog/like-blog.slice';
-import {bookMarkBlogSlice} from '@/redux/blog/bookmark-blog/bookmark-blog.slice';
-import {getBookmarkBlogSlice} from '@/redux/blog/get-all-bookmarks/get-all-bookmarks.slice';
+import {systemSlice} from '@/redux/slices/system/system.slice';
+import {blogSlice} from '@/redux/slices/blog/api/get-all-blog/blog.slice';
+import {signupSlice} from '@/redux/slices/auth/signup/signup.slice';
+import {loginSlice} from '@/redux/slices/auth/login/login.slice';
+import {userSessionSlice} from '@/redux/slices/auth/user/user.slice';
+import {likeBlogSlice} from '@/redux/slices/blog/api/like-blog/like-blog.slice';
+import {bookMarkBlogSlice} from '@/redux/slices/blog/api/bookmark-blog/bookmark-blog.slice';
+import {getBookmarkBlogSlice} from '@/redux/slices/blog/api/get-all-bookmarks/get-all-bookmarks.slice';
+import {sourceBlogReducers} from '@/redux/reducers/source-blog-reducers';
 
 const middlewares = [];
 // add thunk
@@ -28,11 +27,10 @@ export const store = configureStore({
     signupReducer: signupSlice.reducer,
     loginReducer: loginSlice.reducer,
     userSessionReducer: userSessionSlice.reducer,
-    sourceBlogReducer: sourceBlogSlice.reducer,
-    sourceBlogFollowReducer: followSourceBlogSlice.reducer,
     blogLikeReducer: likeBlogSlice.reducer,
     bookmarkBlogReducer: bookMarkBlogSlice.reducer,
     getAllBookmarksReducer: getBookmarkBlogSlice.reducer,
+    ...sourceBlogReducers,
   },
   devTools: process.env.NODE_ENV !== 'production',
   middleware: middlewares,

@@ -5,6 +5,8 @@ import {
   FollowSourceBlogResponse,
   GetAllSourceBlogRequest,
   GetAllSourceBlogResponse,
+  GetAllTypeSourceBlogRequest,
+  GetAllTypeSourceBlogResponse,
 } from '@/types/api/source_blog';
 
 export default class SourceBlogService {
@@ -19,10 +21,11 @@ export default class SourceBlogService {
   async getAllSourceBlogWithPagination(
     getAllSourceBlogRequest: GetAllSourceBlogRequest,
   ) {
-    const res = await axios.get(this.endpointSourceBlog + '/all', {
+    const res = await axios.get(this.endpointSourceBlog + '/all_by_type', {
       params: {
         page: getAllSourceBlogRequest.paginationRequestMeta.page,
         take: getAllSourceBlogRequest.paginationRequestMeta.take,
+        typeSource: getAllSourceBlogRequest.sourceBlogType,
       },
       headers: {
         Authorization: `Bearer ${getAllSourceBlogRequest.accessToken}`,
@@ -47,5 +50,15 @@ export default class SourceBlogService {
     );
     const data = await res.data;
     return data as FollowSourceBlogResponse;
+  }
+
+  async getAllTypesSourceBlog(request: GetAllTypeSourceBlogRequest) {
+    const res = await axios.get(`${this.endpointSourceBlog}/all-types`, {
+      headers: {
+        Authorization: `Bearer ${request.accessToken}`,
+      },
+    });
+    const data = await res.data;
+    return data as GetAllTypeSourceBlogResponse;
   }
 }

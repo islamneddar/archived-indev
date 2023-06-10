@@ -16,8 +16,13 @@ import {SourceBlogEntity} from './source_blog.entity';
 import LOG from '../../utils/logger';
 import {AuthGuard} from '@/bussiness/auth/auth.guard';
 import {PageOptionsDto} from '@/common/pagination/page_option.dto';
-import {FollowSourceBlogRequest} from '@/bussiness/source-blog/source-blog.type';
+import {
+  FollowSourceBlogRequest,
+  GetAllByTypeQueryRequest,
+  SourceBlogTypeItemTypeResponse,
+} from '@/bussiness/source-blog/source-blog.type';
 import {SourceBlogToUserService} from '@/bussiness/source-blog-user/source-blog-user.service';
+import {TypeFeed} from '@/bussiness/feed_blog/feed-blog.proto';
 
 @Controller('source-blog')
 export class SourceBlogController {
@@ -32,19 +37,6 @@ export class SourceBlogController {
     const sourceBlog = req.body as SourceBlogEntity;
     LOG.info(sourceBlog);
     await this.sourceBlogService.save(sourceBlog);
-  }
-
-  @Get('all')
-  @UseGuards(AuthGuard)
-  async findAllWithPagination(
-    @Req() req: Request,
-    @Query() paginationDto: PageOptionsDto,
-  ) {
-    const user = req.user;
-    return await this.sourceBlogService.findAllWithPagination({
-      paginationDto: paginationDto,
-      user: user,
-    });
   }
 
   @Post('follow')
@@ -92,6 +84,34 @@ export class SourceBlogController {
     return {
       sourceBlogId: sourceBlogId,
       isFollow: isFollow,
+    };
+  }
+
+  @Get('all-types')
+  @UseGuards(AuthGuard)
+  async findAllTypes() {
+    const allSourceBlogItemTypes: SourceBlogTypeItemTypeResponse[] =
+      await this.sourceBlogService.findAllTypes();
+    return {
+      data: allSourceBlogItemTypes,
+    };
+  }
+
+  @Get('all_by_type')
+  @UseGuards(AuthGuard)
+  async findAllByType(
+    @Req() req: Request,
+    @Query() pagePaginationDto: PageOptionsDto,
+    @Query() getAllByTypeQuery: GetAllByTypeQueryRequest,
+  ) {
+    const user = req.user;
+    const listSourceBlog = await this.sourceBlogService.findAllByType({
+      pagePaginationDto: pagePaginationDto,
+      typeSource: getAllByTypeQuery.typeSource,
+      user: user,
+    });
+    return {
+      ...listSourceBlog,
     };
   }
 }

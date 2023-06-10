@@ -4,7 +4,7 @@ import {logoInDev} from '../../assets/images';
 import {AiOutlineMenu} from 'react-icons/all';
 import {useRouter} from 'next/navigation';
 import AuthContainer from '@/app-page-component/navbar/auth/AuthContainer';
-import {toggleSideBarMobile} from '@/redux/system/system.slice';
+import {toggleSideBarMobile} from '@/redux/slices/system/system.slice';
 import {useDispatch} from 'react-redux';
 import LogoContainer from '@/app-page-component/navbar/LogoContainer';
 function NavBar() {

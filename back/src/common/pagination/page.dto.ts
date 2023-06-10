@@ -1,5 +1,5 @@
-import { IsArray } from 'class-validator';
-import { PageMetaDto } from './page_meta.dto';
+import {IsArray} from 'class-validator';
+import {PageMetaDto} from './page_meta.dto';
 
 export class PageDto<T> {
   @IsArray()

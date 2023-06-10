@@ -8,9 +8,11 @@ import SourceAndTimeContainer from '@/app-page-component/blog-section/blogs/blog
 import BlogTitle from '@/app-page-component/blog-section/blogs/blog-card/card-content/BlogTitle';
 import TagsContainer from '@/app-page-component/blog-section/blogs/blog-card/card-content/TagsContainer';
 import ReactionGroupButtonCardBlog from '@/app-page-component/blog-section/blogs/blog-card/card-content/ReactionGroupButtonCard';
+import {GridBlogType} from '@/types/general/blog-general.type';
 
 export interface IBlogCardProps {
   blog: Blog;
+  gridBlogType?: GridBlogType;
 }
 
 function BlogCard(props: IBlogCardProps) {

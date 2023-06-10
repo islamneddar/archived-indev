@@ -104,9 +104,10 @@ const generateQueryForGettingBlogs = async (param: {
                      ' '
                    : ''
                }
+      where source_blogs.black_list = false
       ${
         param.typeOfGet.ofUserOnly
-          ? 'where blog_to_user.user_id = ' +
+          ? 'and blog_to_user.user_id = ' +
             param.user?.userId +
             ' and blog_to_user.is_bookmarked = 1 ' +
             (param.bookmarkInfo.dateToCompareInBookmark
