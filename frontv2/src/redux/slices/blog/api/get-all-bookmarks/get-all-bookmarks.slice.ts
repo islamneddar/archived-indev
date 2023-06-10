@@ -1,7 +1,7 @@
 import {ReduxEntityBase} from '@/types/general/redux.type';
 import {createSlice} from '@reduxjs/toolkit';
 import {GetBookmarksResponse} from '@/types/api/blog';
-import {getAllBookmarksThunk} from '@/redux/slices/blog/get-all-bookmarks/get-all-bookmarks.thunk';
+import {getAllBookmarksThunk} from '@/redux/slices/blog/api/get-all-bookmarks/get-all-bookmarks.thunk';
 
 export type GetBookmarkBlogState = ReduxEntityBase<GetBookmarksResponse>;
 

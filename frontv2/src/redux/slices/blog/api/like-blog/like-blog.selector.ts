@@ -1,4 +1,4 @@
-import {LikeBlogSliceState} from '@/redux/slices/blog/like-blog/like-blog.slice';
+import {LikeBlogSliceState} from '@/redux/slices/blog/api/like-blog/like-blog.slice';
 import {useAppSelector} from '@/redux/store';
 
 export const selectLikeBlog = (state: {blogLikeReducer: LikeBlogSliceState}) =>

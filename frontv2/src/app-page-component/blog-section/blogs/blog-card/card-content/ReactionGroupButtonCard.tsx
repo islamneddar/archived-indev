@@ -2,16 +2,16 @@ import React, {useEffect} from 'react';
 import {LightBulbIcon} from '@heroicons/react/24/outline';
 import {LightBulbIcon as LightBulbIconSolid} from '@heroicons/react/24/solid';
 import {Blog, BookmarkBlogRequest, LikeBlogRequest} from '@/types/api/blog';
-import {useLikeBlogSelector} from '@/redux/slices/blog/like-blog/like-blog.selector';
+import {useLikeBlogSelector} from '@/redux/slices/blog/api/like-blog/like-blog.selector';
 import {useUserSessionSelector} from '@/redux/slices/auth/user/user.selector';
 import {ThunkDispatch} from '@reduxjs/toolkit';
 import {useDispatch} from 'react-redux';
-import {likeBlogThunk} from '@/redux/slices/blog/like-blog/like-blog.thunk';
+import {likeBlogThunk} from '@/redux/slices/blog/api/like-blog/like-blog.thunk';
 import toast from 'react-hot-toast';
 import {BookmarkIcon} from '@heroicons/react/24/outline';
 import {BookmarkIcon as BookmarkIconSolid} from '@heroicons/react/24/solid';
-import {bookmarkBlogThunk} from '@/redux/slices/blog/bookmark-blog/bookmark-blog.thunk';
-import {useBookmarkBlogSelector} from '@/redux/slices/blog/bookmark-blog/bookmark-blog.selector';
+import {bookmarkBlogThunk} from '@/redux/slices/blog/api/bookmark-blog/bookmark-blog.thunk';
+import {useBookmarkBlogSelector} from '@/redux/slices/blog/api/bookmark-blog/bookmark-blog.selector';
 import {GridBlogType} from '@/types/general/blog-general.type';
 
 interface IReactionGroupButtonCardProps {

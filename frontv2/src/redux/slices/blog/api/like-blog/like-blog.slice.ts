@@ -1,7 +1,7 @@
 import {LikeBlogResponse} from '@/types/api/blog';
 import {ReduxEntityBase} from '@/types/general/redux.type';
 import {createSlice} from '@reduxjs/toolkit';
-import {likeBlogThunk} from '@/redux/slices/blog/like-blog/like-blog.thunk';
+import {likeBlogThunk} from '@/redux/slices/blog/api/like-blog/like-blog.thunk';
 
 export type LikeBlogSliceState = ReduxEntityBase<LikeBlogResponse>;
 

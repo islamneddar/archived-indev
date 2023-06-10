@@ -1,20 +1,25 @@
 'use client';
 import React, {useEffect} from 'react';
 import {FollowSourceBlogRequest, SourceBlog} from '@/types/api/source_blog';
-import {StarIcon} from '@heroicons/react/20/solid';
 import {useUserSessionSelector} from '@/redux/slices/auth/user/user.selector';
 import {ThunkDispatch} from '@reduxjs/toolkit';
 import {useDispatch} from 'react-redux';
-import {followSourceBlogThunk} from '@/redux/slices/source_blog/follow-source-blog/follow-source-blog.thunk';
-import {useFollowSourceBlogSelector} from '@/redux/slices/source_blog/follow-source-blog/follow-source-blog.selector';
+import {followSourceBlogThunk} from '@/redux/slices/source_blog/api/follow-source-blog/follow-source-blog.thunk';
+import {useFollowSourceBlogSelector} from '@/redux/slices/source_blog/api/follow-source-blog/follow-source-blog.selector';
 import PrimaryButton from '@/components/button/PrimaryButton';
 import {formatCompactNumber} from '@/utils/general';
+import {usePathname, useRouter} from 'next/navigation';
+import {toggleSideOverForGetBlogsBySourceBlog} from '@/redux/slices/system/system.slice';
+import {setSourceBlog} from '@/redux/slices/source_blog/source-blog-state/source-blog-state.slice';
 
 interface ISourceBlogCardProps {
   sourceBlog: SourceBlog;
 }
 function SourceBlogCard(props: ISourceBlogCardProps) {
+  const router = useRouter();
+  const pathname = usePathname();
   const dispatchThunk = useDispatch<ThunkDispatch<any, any, any>>();
+  const dispatch = useDispatch();
 
   const sourceBlog = props.sourceBlog;
   const [followed, setFollowed] = React.useState(sourceBlog.isFollow);
@@ -33,7 +38,9 @@ function SourceBlogCard(props: ISourceBlogCardProps) {
     }
   }, [followSourceBlogSelector.error]);
 
-  const follow = () => {
+  const follow = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
     setFollowed(!followed);
     setFollowerCount(
       followed ? Number(followerCount) - 1 : Number(followerCount) + 1,
@@ -46,9 +53,20 @@ function SourceBlogCard(props: ISourceBlogCardProps) {
     dispatchThunk(followSourceBlogThunk(followSourceBlogRequest));
   };
 
+  const openBlogsOfType = () => {
+    console.log(pathname);
+    router.replace(pathname + '?type_source=' + sourceBlog.sourceBlogId);
+    dispatch(setSourceBlog(sourceBlog));
+    dispatch(toggleSideOverForGetBlogsBySourceBlog(true));
+  };
+
   return (
-    <div className={'bg-gray-700 rounded-xl p-5 flex w-full'}>
-      <div className={'flex flex-row w-full w-full'}>
+    <div
+      className={'bg-gray-700 rounded-xl p-5 flex w-full cursor-pointer'}
+      onClick={() => {
+        openBlogsOfType();
+      }}>
+      <div className={'flex flex-row w-full'}>
         <div className={'flex justify-center mr-6'}>
           <img src={sourceBlog.image} className={'w-12 h-12 rounded-md'} />
         </div>
@@ -67,10 +85,10 @@ function SourceBlogCard(props: ISourceBlogCardProps) {
                 loading={false}
                 disabled={false}
                 buttonClassName={`p-1 ${
-                  followed ? 'text-indigo-500 bg-white hover:bg-gray-200' : ''
+                  followed ? ' text-indigo-500 bg-white hover:bg-gray-100' : ''
                 }`}
-                onClick={() => {
-                  follow();
+                onClick={event => {
+                  follow(event);
                 }}
               />
             </div>

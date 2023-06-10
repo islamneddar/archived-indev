@@ -1,5 +1,5 @@
 import {useAppSelector} from '@/redux/store';
-import {FollowSourceBlogSliceState} from '@/redux/slices/source_blog/follow-source-blog/follow-source-blog.slice';
+import {FollowSourceBlogSliceState} from '@/redux/slices/source_blog/api/follow-source-blog/follow-source-blog.slice';
 
 export const selectFollowSourceBlog = (state: {
   sourceBlogFollowReducer: FollowSourceBlogSliceState;

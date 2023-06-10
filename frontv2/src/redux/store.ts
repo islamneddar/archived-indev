@@ -3,13 +3,13 @@ import {useDispatch, useSelector} from 'react-redux';
 import {createLogger} from 'redux-logger';
 import thunk from 'redux-thunk';
 import {systemSlice} from '@/redux/slices/system/system.slice';
-import {blogSlice} from '@/redux/slices/blog/blog.slice';
+import {blogSlice} from '@/redux/slices/blog/api/get-all-blog/blog.slice';
 import {signupSlice} from '@/redux/slices/auth/signup/signup.slice';
 import {loginSlice} from '@/redux/slices/auth/login/login.slice';
 import {userSessionSlice} from '@/redux/slices/auth/user/user.slice';
-import {likeBlogSlice} from '@/redux/slices/blog/like-blog/like-blog.slice';
-import {bookMarkBlogSlice} from '@/redux/slices/blog/bookmark-blog/bookmark-blog.slice';
-import {getBookmarkBlogSlice} from '@/redux/slices/blog/get-all-bookmarks/get-all-bookmarks.slice';
+import {likeBlogSlice} from '@/redux/slices/blog/api/like-blog/like-blog.slice';
+import {bookMarkBlogSlice} from '@/redux/slices/blog/api/bookmark-blog/bookmark-blog.slice';
+import {getBookmarkBlogSlice} from '@/redux/slices/blog/api/get-all-bookmarks/get-all-bookmarks.slice';
 import {sourceBlogReducers} from '@/redux/reducers/source-blog-reducers';
 
 const middlewares = [];

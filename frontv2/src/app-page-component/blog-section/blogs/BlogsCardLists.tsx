@@ -8,6 +8,7 @@ import AdContainer from '@/app-page-component/ad-container/AdContainer';
 interface IBlogsCardListsProps {
   gridBlogType: GridBlogType;
   blogs: Blog[];
+  showAd?: boolean;
 }
 
 function BlogsCardLists(props: IBlogsCardListsProps) {
@@ -25,7 +26,9 @@ function BlogsCardLists(props: IBlogsCardListsProps) {
   return (
     <div className={'flex flex-row flex-4'}>
       <div
-        className={'flex flex-col gap-x-2.5 justify-center items-start flex-3'}>
+        className={`flex flex-col sm:gap-x-2.5 justify-center items-start ${
+          props.showAd ? 'flex-3' : ''
+        }`}>
         {props.blogs.map((blog, index) => {
           return (
             <BlogCardList
@@ -35,11 +38,13 @@ function BlogsCardLists(props: IBlogsCardListsProps) {
           );
         })}
       </div>
-      <div className={'flex flex-1'}>
-        <div className={'p-2'}>
-          <AdContainer></AdContainer>
+      {props.showAd && (
+        <div className={'flex flex-1'}>
+          <div className={'p-2'}>
+            <AdContainer></AdContainer>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

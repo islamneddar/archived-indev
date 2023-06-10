@@ -7,8 +7,8 @@ import {
 } from '@/types/api/common';
 import {TypeFeed} from '@/types/api/source_blog';
 import {useDispatch} from 'react-redux';
-import {getAllBlogThunk} from '@/redux/slices/blog/blog.thunk';
-import {useBlogSelector} from '@/redux/slices/blog/blog.selector';
+import {getAllBlogThunk} from '@/redux/slices/blog/api/get-all-blog/blog.thunk';
+import {useBlogSelector} from '@/redux/slices/blog/api/get-all-blog/blog.selector';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import {ThunkDispatch} from '@reduxjs/toolkit';
 import {
@@ -18,19 +18,24 @@ import {
 import {blogAffichageType, gridBlogType} from '@/types/data/blog-general.data';
 import BlogsCardLists from '@/app-page-component/blog-section/blogs/BlogsCardLists';
 import {Blog} from '@/types/api/blog';
-import {useLikeBlogSelector} from '@/redux/slices/blog/like-blog/like-blog.selector';
-import {resetBlogState} from '@/redux/slices/blog/blog.slice';
-import {resetLikeBlogState} from '@/redux/slices/blog/like-blog/like-blog.slice';
+import {useLikeBlogSelector} from '@/redux/slices/blog/api/like-blog/like-blog.selector';
+import {resetBlogState} from '@/redux/slices/blog/api/get-all-blog/blog.slice';
+import {resetLikeBlogState} from '@/redux/slices/blog/api/like-blog/like-blog.slice';
 import toast from 'react-hot-toast';
 import {useUserSessionSelector} from '@/redux/slices/auth/user/user.selector';
-import {useBookmarkBlogSelector} from '@/redux/slices/blog/bookmark-blog/bookmark-blog.selector';
-import {resetBookmarkBlogState} from '@/redux/slices/blog/bookmark-blog/bookmark-blog.slice';
+import {useBookmarkBlogSelector} from '@/redux/slices/blog/api/bookmark-blog/bookmark-blog.selector';
+import {resetBookmarkBlogState} from '@/redux/slices/blog/api/bookmark-blog/bookmark-blog.slice';
+import ContainerForFilterGetDataAndGridType from '@/app-page-component/blog-section/blogs/ContainerForFilterGetDataAndGridType';
+import {bool} from 'yup';
 
 export interface IBlogListProps {
-  typeFeed: TypeFeed;
+  typeFeed?: TypeFeed;
+  showContainerOfGridAndFilter: boolean;
+  gridToShow: GridBlogType;
+  showAd: boolean;
 }
 
-function BlogList() {
+function BlogList(props: IBlogListProps) {
   const dispatchThunk = useDispatch<ThunkDispatch<any, any, any>>();
   const dispatch = useDispatch();
   const userSessionSelector = useUserSessionSelector();
@@ -47,7 +52,7 @@ function BlogList() {
   });
   const [page, setPage] = useState<number>(1);
   const [restart, setRestart] = useState<boolean>(true);
-  const [stateGrid, setStateGrid] = useState<GridBlogType>(GridBlogType.GRID);
+  const [stateGrid, setStateGrid] = useState<GridBlogType>(props.gridToShow);
   const [stateAffichage, setStateAffichage] = useState<BlogAffichageType>(
     BlogAffichageType.LATEST,
   );
@@ -153,53 +158,14 @@ function BlogList() {
       <div
         id={'scrollBlogId'}
         className={'overflow-y-auto h-[calc(100vh_-_136px)] scrollbar-hide'}>
-        {
-          <div
-            className={
-              'w-full flex justify-center items-center py-5 text-center'
-            }>
-            <div
-              className={'w-full flex justify-between border-b-1 border-white'}>
-              <div>
-                {blogAffichageType.map((grid, index) => {
-                  return (
-                    <div
-                      key={index}
-                      className={
-                        `hover:bg-indigo-500 rounded-t-lg hover:cursor-pointer w-20` +
-                        (stateAffichage === grid.value ? ' bg-indigo-500' : '')
-                      }
-                      onClick={() => setStateAffichage(grid.value)}>
-                      <p
-                        className={
-                          'p-1 text-white font-medium px-2 tn:text-mobile'
-                        }>
-                        {grid.content}
-                      </p>
-                    </div>
-                  );
-                })}
-              </div>
-              <div className={'hidden sm:flex flex-row gap-3'}>
-                {gridBlogType.map((grid, index) => {
-                  return (
-                    <div
-                      key={index}
-                      className={
-                        `hover:bg-indigo-500 rounded-t-lg hover:cursor-pointer w-20` +
-                        (stateGrid === grid.value ? ' bg-indigo-500' : '')
-                      }
-                      onClick={() => setStateGrid(grid.value)}>
-                      <p className={'p-1 text-white font-medium px-2'}>
-                        {grid.content}
-                      </p>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        }
+        {props.showContainerOfGridAndFilter && (
+          <ContainerForFilterGetDataAndGridType
+            stateAffichage={stateAffichage}
+            setStateAffichage={setStateAffichage}
+            stateGrid={stateGrid}
+            setStateGrid={setStateGrid}
+          />
+        )}
         {blogs.length === 0 ? (
           <div className={'flex justify-center items-center h-full'}>
             We are trying to get you the best blogs from the net
@@ -216,7 +182,8 @@ function BlogList() {
             style={{overflow: 'hidden'}}>
             <BlogsCardLists
               blogs={blogs}
-              gridBlogType={stateGrid}></BlogsCardLists>
+              gridBlogType={stateGrid}
+              showAd={props.showAd}></BlogsCardLists>
           </InfiniteScroll>
         )}
       </div>

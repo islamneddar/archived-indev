@@ -1,5 +1,5 @@
 import {useAppSelector} from '@/redux/store';
-import {BookmarkBlogState} from '@/redux/slices/blog/bookmark-blog/bookmark-blog.slice';
+import {BookmarkBlogState} from '@/redux/slices/blog/api/bookmark-blog/bookmark-blog.slice';
 
 export const selectBookmarkBlog = (state: {
   bookmarkBlogReducer: BookmarkBlogState;

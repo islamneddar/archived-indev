@@ -1,15 +1,15 @@
 'use client';
 import React, {useEffect} from 'react';
 import SourceBlogTypeItem from '@/app-page-component/blog-section/source_blogs/source_blog_type/SourceBlogTypeItem';
-import {useGetAllSourceBlogTypesSelector} from '@/redux/slices/source_blog/get-all-source-blog-types/get-all-source-blog-types.selector';
+import {useGetAllSourceBlogTypesSelector} from '@/redux/slices/source_blog/api/get-all-source-blog-types/get-all-source-blog-types.selector';
 import {
   GetAllTypeSourceBlogRequest,
   SourceBlogTypeItemType,
 } from '@/types/api/source_blog';
 import {useUserSessionSelector} from '@/redux/slices/auth/user/user.selector';
-import {getAllSourceBlogTypesThunk} from '@/redux/slices/source_blog/get-all-source-blog-types/get-all-source-blog-types.thunk';
+import {getAllSourceBlogTypesThunk} from '@/redux/slices/source_blog/api/get-all-source-blog-types/get-all-source-blog-types.thunk';
 import toast from 'react-hot-toast';
-import {resetGetAllSourceBlogTypes} from '@/redux/slices/source_blog/get-all-source-blog-types/get-all-source-blog-types.slice';
+import {resetGetAllSourceBlogTypes} from '@/redux/slices/source_blog/api/get-all-source-blog-types/get-all-source-blog-types.slice';
 import {useDispatch} from 'react-redux';
 import {ThunkDispatch} from '@reduxjs/toolkit';
 

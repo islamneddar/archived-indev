@@ -1,5 +1,5 @@
 import {useAppSelector} from '@/redux/store';
-import {BlogState} from '@/redux/slices/blog/blog.slice';
+import {BlogState} from '@/redux/slices/blog/api/get-all-blog/blog.slice';
 
 export const selectBlog = (state: {blogReducer: BlogState}) =>
   state.blogReducer;

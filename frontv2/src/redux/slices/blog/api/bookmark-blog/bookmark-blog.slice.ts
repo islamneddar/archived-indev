@@ -1,7 +1,7 @@
 import {ReduxEntityBase} from '@/types/general/redux.type';
 import {createSlice} from '@reduxjs/toolkit';
 import {BookmarkBlogResponse} from '@/types/api/blog';
-import {bookmarkBlogThunk} from '@/redux/slices/blog/bookmark-blog/bookmark-blog.thunk';
+import {bookmarkBlogThunk} from '@/redux/slices/blog/api/bookmark-blog/bookmark-blog.thunk';
 
 export type BookmarkBlogState = ReduxEntityBase<BookmarkBlogResponse>;
 
