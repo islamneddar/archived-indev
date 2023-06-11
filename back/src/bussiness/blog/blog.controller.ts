@@ -17,6 +17,7 @@ import {PageOptionsDto} from '@/common/pagination/page_option.dto';
 import {
   GetAllBookmarksWithPaginationQuery,
   GetBlogBySearchAndFeedTypeRequest,
+  GetBlogsForSourceBlogRequest,
   UpdateBookmarkToBlogRequest,
   UpdateLikeToBlogRequest,
 } from './blog.proto';
@@ -181,5 +182,20 @@ export default class BlogController {
       },
     );
     return {data: bookmarkedList};
+  }
+
+  @Get('all/sourceblog')
+  @UseGuards(AuthGuard)
+  async getAllSourceBlog(
+    @Req() req: Request,
+    @Query() query: GetBlogsForSourceBlogRequest,
+  ) {
+    console.log(query);
+    console.log(query.pageOption);
+    return await this.blogService.getAllWithPaginateWithAuth({
+      pageOptionsDto: query.pageOption,
+      user: req.user,
+      sourceBlogId: query.sourceBlogId,
+    });
   }
 }

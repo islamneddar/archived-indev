@@ -47,3 +47,12 @@ export class GetAllBookmarksWithPaginationQuery {
   @IsOptional()
   dateLastBlogList?: string;
 }
+
+export class GetBlogsForSourceBlogRequest {
+  @Type(() => PageOptionsDto)
+  pageOption: PageOptionsDto;
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  sourceBlogId: number;
+}
