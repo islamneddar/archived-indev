@@ -1,25 +1,34 @@
-import {GetAllBlogRequest, GetBlogsResponse} from '@/types/api/blog';
-import {createAsyncThunk} from '@reduxjs/toolkit';
 import BlogService from '@/services/blog.service';
-
-export const getAllBlogThunk = createAsyncThunk<
+import {createAsyncThunk} from '@reduxjs/toolkit';
+import {templateThinkCall} from '@/redux/util';
+import {
+  GetAllBlogByPaginationForSourceBlogIdRequest,
   GetBlogsResponse,
-  GetAllBlogRequest
+} from '@/types/api/blog';
+
+export const getAllBlogBySourceBlogRequestThunk = createAsyncThunk<
+  GetBlogsResponse,
+  GetAllBlogByPaginationForSourceBlogIdRequest
 >(
-  'blog-section/getAllBlog',
-  async (getAllBlogRequest: GetAllBlogRequest, {rejectWithValue}) => {
-    try {
-      if (getAllBlogRequest.accessToken === null) {
-        return await BlogService.getInstance().getAllBlogWithPagination(
-          getAllBlogRequest,
+  'getAllBlogsBySourceThunk',
+  async (
+    request: GetAllBlogByPaginationForSourceBlogIdRequest,
+    {rejectWithValue},
+  ) => {
+    return await templateThinkCall<
+      GetAllBlogByPaginationForSourceBlogIdRequest,
+      GetBlogsResponse
+    >({
+      request,
+      callback: async (
+        request: GetAllBlogByPaginationForSourceBlogIdRequest,
+      ) => {
+        return await BlogService.getInstance().getAllBlogWithPaginationAndSourceBlog(
+          request,
         );
-      } else {
-        return await BlogService.getInstance().getAllBlogWithPaginationWithAuth(
-          getAllBlogRequest,
-        );
-      }
-    } catch (error: any) {
-      return rejectWithValue(error.response.data.message);
-    }
+      },
+      rejectWithValue,
+      isProtected: true,
+    });
   },
 );

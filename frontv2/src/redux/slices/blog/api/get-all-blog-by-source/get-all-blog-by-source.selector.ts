@@ -1,9 +1,11 @@
 import {useAppSelector} from '@/redux/store';
 import {BlogState} from '@/redux/slices/blog/api/get-all-blog/blog.slice';
+import {BlogBySourceBlogState} from '@/redux/slices/blog/api/get-all-blog-by-source/get-all-blog-by-source.slice';
 
-export const selectBlog = (state: {blogReducer: BlogState}) =>
-  state.blogReducer;
+export const selectBlogBySourceBlog = (state: {
+  getBlogsBySourceBlog: BlogState;
+}) => state.getBlogsBySourceBlog;
 
-export const useBlogSelector = (): BlogState => {
-  return useAppSelector(selectBlog);
+export const useGetBlogsBySourceBlogSelector = (): BlogBySourceBlogState => {
+  return useAppSelector(selectBlogBySourceBlog);
 };

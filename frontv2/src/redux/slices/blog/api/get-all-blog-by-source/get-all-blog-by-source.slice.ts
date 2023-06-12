@@ -1,42 +1,48 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {getAllBlogThunk as getAllBlog} from '@/redux/slices/blog/api/get-all-blog/blog.thunk';
 import {ReduxEntityBase} from '@/types/general/redux.type';
 import {GetBlogsResponse} from '@/types/api/blog';
+import {getAllBlogBySourceBlogRequestThunk} from '@/redux/slices/blog/api/get-all-blog-by-source/get-all-blog-by-source.thunk';
 
-export type BlogState = ReduxEntityBase<GetBlogsResponse>;
+export type BlogBySourceBlogState = ReduxEntityBase<GetBlogsResponse>;
 
-const initialState: BlogState = {
+const initialState: BlogBySourceBlogState = {
   loading: false,
   error: undefined,
   success: false,
   data: undefined,
 };
 
-export const blogSlice = createSlice({
-  name: 'blogSlice',
+export const blogBySourceBlogSlice = createSlice({
+  name: 'blogBySourceBlogSlice',
   initialState,
   reducers: {
-    resetBlogState: () => initialState,
+    resetBlogBySourceBlogState: () => initialState,
   },
   extraReducers: builder => {
     // getAllBlog
-    builder.addCase(getAllBlog.pending, state => {
+    builder.addCase(getAllBlogBySourceBlogRequestThunk.pending, state => {
       state.loading = true;
       state.error = undefined;
       state.success = false;
       state.data = undefined;
     });
-    builder.addCase(getAllBlog.fulfilled, (state, action) => {
-      state.loading = false;
-      state.success = true;
-      state.data = action.payload;
-    });
-    builder.addCase(getAllBlog.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.payload as string;
-      state.success = false;
-    });
+    builder.addCase(
+      getAllBlogBySourceBlogRequestThunk.fulfilled,
+      (state, action) => {
+        state.loading = false;
+        state.success = true;
+        state.data = action.payload;
+      },
+    );
+    builder.addCase(
+      getAllBlogBySourceBlogRequestThunk.rejected,
+      (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+        state.success = false;
+      },
+    );
   },
 });
 
-export const {resetBlogState} = blogSlice.actions;
+export const {resetBlogBySourceBlogState} = blogBySourceBlogSlice.actions;

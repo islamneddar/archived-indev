@@ -15,9 +15,11 @@ import {
   BlogAffichageType,
   GridBlogType,
 } from '@/types/general/blog-general.type';
-import {blogAffichageType, gridBlogType} from '@/types/data/blog-general.data';
 import BlogsCardLists from '@/app-page-component/blog-section/blogs/BlogsCardLists';
-import {Blog} from '@/types/api/blog';
+import {
+  Blog,
+  GetAllBlogByPaginationForSourceBlogIdRequest,
+} from '@/types/api/blog';
 import {useLikeBlogSelector} from '@/redux/slices/blog/api/like-blog/like-blog.selector';
 import {resetBlogState} from '@/redux/slices/blog/api/get-all-blog/blog.slice';
 import {resetLikeBlogState} from '@/redux/slices/blog/api/like-blog/like-blog.slice';
@@ -26,13 +28,16 @@ import {useUserSessionSelector} from '@/redux/slices/auth/user/user.selector';
 import {useBookmarkBlogSelector} from '@/redux/slices/blog/api/bookmark-blog/bookmark-blog.selector';
 import {resetBookmarkBlogState} from '@/redux/slices/blog/api/bookmark-blog/bookmark-blog.slice';
 import ContainerForFilterGetDataAndGridType from '@/app-page-component/blog-section/blogs/ContainerForFilterGetDataAndGridType';
-import {bool} from 'yup';
+import {getAllBlogBySourceBlogRequestThunk} from '@/redux/slices/blog/api/get-all-blog-by-source/get-all-blog-by-source.thunk';
+import {useGetBlogsBySourceBlogSelector} from '@/redux/slices/blog/api/get-all-blog-by-source/get-all-blog-by-source.selector';
+import {resetBlogBySourceBlogState} from '@/redux/slices/blog/api/get-all-blog-by-source/get-all-blog-by-source.slice';
 
 export interface IBlogListProps {
   typeFeed?: TypeFeed;
   showContainerOfGridAndFilter: boolean;
   gridToShow: GridBlogType;
   showAd: boolean;
+  ForSpecificSourceBlog: number | null; // sourceblog id
 }
 
 function BlogList(props: IBlogListProps) {
@@ -43,6 +48,7 @@ function BlogList(props: IBlogListProps) {
   const blogSelector = useBlogSelector();
   const likeBlogSelector = useLikeBlogSelector();
   const bookmarkBlogSelector = useBookmarkBlogSelector();
+  const blogsBySourceBlogSelector = useGetBlogsBySourceBlogSelector();
 
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [metaData, setMetaData] = useState<PageMetaResponse>({
@@ -79,9 +85,45 @@ function BlogList(props: IBlogListProps) {
     }
   };
 
+  async function fetchBlogsForSpecificSourceBlog(param: {
+    restart: boolean;
+    sourceBlogId: number;
+  }) {
+    const paginationRequest: PaginationRequestMetaRequest = {
+      page: page,
+      take: 12,
+      order: Order.DESC,
+    };
+
+    const getAllBlogBySourceBlogRequest: GetAllBlogByPaginationForSourceBlogIdRequest =
+      {
+        paginationRequestMeta: paginationRequest,
+        accessToken:
+          userSessionSelector.isAuthenticated &&
+          userSessionSelector.user.accessToken
+            ? userSessionSelector.user.accessToken
+            : null,
+        sourceBlogId: param.sourceBlogId,
+      };
+
+    dispatchThunk(
+      getAllBlogBySourceBlogRequestThunk(getAllBlogBySourceBlogRequest),
+    );
+    if (param.restart) {
+      setRestart(false);
+    }
+  }
+
   useEffect(() => {
     async function getBlogs() {
-      await fetchBlogs(restart);
+      if (props.ForSpecificSourceBlog) {
+        await fetchBlogsForSpecificSourceBlog({
+          sourceBlogId: props.ForSpecificSourceBlog,
+          restart,
+        });
+      } else {
+        await fetchBlogs(restart);
+      }
     }
 
     if (restart && page === 1) {
@@ -104,6 +146,23 @@ function BlogList(props: IBlogListProps) {
       return;
     }
   }, [blogSelector.success, blogSelector.error]);
+
+  useEffect(() => {
+    console.log('blogsBySourceBlogSelector', blogsBySourceBlogSelector.success);
+    if (blogsBySourceBlogSelector.success) {
+      if (blogsBySourceBlogSelector.data) {
+        setBlogs([...blogs, ...blogsBySourceBlogSelector.data.data]);
+        setMetaData(blogsBySourceBlogSelector.data.meta);
+        setPage(page + 1);
+        dispatch(resetBlogBySourceBlogState());
+      }
+    }
+
+    if (blogsBySourceBlogSelector.error !== undefined) {
+      dispatch(resetBlogBySourceBlogState());
+      return;
+    }
+  }, [blogsBySourceBlogSelector.success, blogsBySourceBlogSelector.error]);
 
   useEffect(() => {
     if (likeBlogSelector.success) {

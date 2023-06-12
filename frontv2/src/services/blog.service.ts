@@ -3,6 +3,7 @@ import {TypeFeed} from '@/types/api/source_blog';
 import {
   BookmarkBlogRequest,
   BookmarkBlogResponse,
+  GetAllBlogByPaginationForSourceBlogIdRequest,
   GetAllBlogRequest,
   GetBlogsResponse,
   GetBookmarksParams,
@@ -112,5 +113,25 @@ export default class BlogService {
 
     const data = await res.data;
     return data as GetBookmarksResponse;
+  }
+
+  async getAllBlogWithPaginationAndSourceBlog(
+    request: GetAllBlogByPaginationForSourceBlogIdRequest,
+  ) {
+    const response = await axios.get(`${this.endpointBlog}/all/sourceblog`, {
+      params: {
+        pageOption: {
+          page: request.paginationRequestMeta.page,
+          take: request.paginationRequestMeta.take,
+        },
+        sourceBlogId: request.sourceBlogId,
+      },
+      headers: {
+        Authorization: `Bearer ${request.accessToken}`,
+      },
+    });
+
+    const data = await response.data;
+    return data as GetBlogsResponse;
   }
 }
