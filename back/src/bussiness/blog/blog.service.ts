@@ -130,8 +130,6 @@ export class BlogService {
     user: UserEntity;
     sourceBlogId?: number;
   }) {
-    console.log(param.pageOptionsDto);
-    console.log(param.sourceBlogId);
     const query = (await this.dataSource.query(`
         SELECT blogs.blog_id             as blogid,
                blogs.title               as blogtitle,
@@ -181,11 +179,9 @@ export class BlogService {
         user: param.user,
       });
     });
-    console.log('list blog');
     const itemCount = await this.getCountOfBlogsBasedOnFilters({
       sourceBlogId: param.sourceBlogId,
     });
-    console.log('itemCount', itemCount);
     const pageMetaDto = new PageMetaDto({
       itemCount,
       pageOptionsDto: param.pageOptionsDto,

@@ -58,8 +58,6 @@ const generateQueryForGettingBlogs = async (param: {
   };
   isOrderedByBlogPublishDate: boolean | null;
 }) => {
-  console.log(new Date());
-  console.log('dataTime', new Date().toISOString());
   const query = (await param.dataSource.query(`
       SELECT blogs.blog_id             as blogid,
              blogs.title               as blogtitle,

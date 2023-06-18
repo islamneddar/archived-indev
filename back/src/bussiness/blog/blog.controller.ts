@@ -190,8 +190,6 @@ export default class BlogController {
     @Req() req: Request,
     @Query() query: GetBlogsForSourceBlogRequest,
   ) {
-    console.log(query);
-    console.log(query.pageOption);
     return await this.blogService.getAllWithPaginateWithAuth({
       pageOptionsDto: query.pageOption,
       user: req.user,
