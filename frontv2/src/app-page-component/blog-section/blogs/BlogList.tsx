@@ -31,6 +31,8 @@ import ContainerForFilterGetDataAndGridType from '@/app-page-component/blog-sect
 import {getAllBlogBySourceBlogRequestThunk} from '@/redux/slices/blog/api/get-all-blog-by-source/get-all-blog-by-source.thunk';
 import {useGetBlogsBySourceBlogSelector} from '@/redux/slices/blog/api/get-all-blog-by-source/get-all-blog-by-source.selector';
 import {resetBlogBySourceBlogState} from '@/redux/slices/blog/api/get-all-blog-by-source/get-all-blog-by-source.slice';
+import SearchBlogInput from '@/app-page-component/blog-section/blogs/searchBlogInput';
+import {MagnifyingGlassCircleIcon} from '@heroicons/react/24/solid';
 
 export interface IBlogListProps {
   typeFeed?: TypeFeed;
@@ -211,11 +213,28 @@ function BlogList(props: IBlogListProps) {
     }
   }, [bookmarkBlogSelector.success, bookmarkBlogSelector.error]);
 
+  function search() {
+    console.log('search');
+  }
+
   return (
     <div className={'sm:px-10 w-full'}>
+      <div className={'flex w-full h-10 my-3'}>
+        <div className={'flex flex-1'}>
+          <SearchBlogInput />
+          <div className={'flex justify-center items-center'}>
+            <MagnifyingGlassCircleIcon
+              className={'h-10 w-10 text-gray-500'}
+              onClick={() => {
+                search();
+              }}
+            />
+          </div>
+        </div>
+      </div>
       <div
         id={'scrollBlogId'}
-        className={'overflow-y-auto h-[calc(100vh_-_136px)] scrollbar-hide'}>
+        className={'overflow-y-auto h-[calc(100vh_-_200px)] scrollbar-hide'}>
         {props.showContainerOfGridAndFilter && (
           <ContainerForFilterGetDataAndGridType
             stateAffichage={stateAffichage}
