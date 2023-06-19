@@ -104,6 +104,9 @@ function SourceBlogBody(props: SourceBlogBodyProps) {
             sourceBlog = {
               ...sourceBlog,
               isFollow: followSourceBlog.isFollow,
+              numberFollowers: followSourceBlog.isFollow
+                ? sourceBlog.numberFollowers + 1
+                : sourceBlog.numberFollowers - 1,
             };
           }
           return sourceBlog;

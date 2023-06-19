@@ -32,12 +32,6 @@ function SideOverGetBlogs() {
     setOpen(systemSelector.sideOverForGetBlogsBySourceBlog);
   }, [systemSelector.sideOverForGetBlogsBySourceBlog]);
 
-  useEffect(() => {
-    console.log('sideover get blogs');
-    console.log(pathname);
-    console.log(searchParams?.get('type_source'));
-  }, [pathname]);
-
   const close = () => {
     if (pathname !== null && pathname !== undefined) {
       router.replace(pathname);
@@ -46,7 +40,6 @@ function SideOverGetBlogs() {
     dispatch(toggleSideOverForGetBlogsBySourceBlog(false));
   };
   if (sourceBlog === null) {
-    console.log('source blog is null');
     dispatch(toggleSideOverForGetBlogsBySourceBlog(false));
     return null;
   } else {

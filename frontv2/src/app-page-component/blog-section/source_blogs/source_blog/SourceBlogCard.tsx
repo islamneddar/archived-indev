@@ -20,14 +20,21 @@ function SourceBlogCard(props: ISourceBlogCardProps) {
   const pathname = usePathname();
   const dispatchThunk = useDispatch<ThunkDispatch<any, any, any>>();
   const dispatch = useDispatch();
-
   const sourceBlog = props.sourceBlog;
-  const [followed, setFollowed] = React.useState(sourceBlog.isFollow);
+  const [followed, setFollowed] = React.useState<boolean>(sourceBlog.isFollow);
   const userSession = useUserSessionSelector();
   const followSourceBlogSelector = useFollowSourceBlogSelector();
   const [followerCount, setFollowerCount] = React.useState<number>(
     sourceBlog.numberFollowers,
   );
+
+  useEffect(() => {
+    setFollowed(sourceBlog.isFollow);
+  }, [sourceBlog.isFollow]);
+
+  useEffect(() => {
+    setFollowerCount(sourceBlog.numberFollowers);
+  }, [sourceBlog.numberFollowers]);
 
   useEffect(() => {
     if (followSourceBlogSelector.error) {
@@ -54,7 +61,6 @@ function SourceBlogCard(props: ISourceBlogCardProps) {
   };
 
   const openBlogsOfType = () => {
-    console.log(pathname);
     router.replace(pathname + '?type_source=' + sourceBlog.sourceBlogId);
     dispatch(setSourceBlog(sourceBlog));
     dispatch(toggleSideOverForGetBlogsBySourceBlog(true));

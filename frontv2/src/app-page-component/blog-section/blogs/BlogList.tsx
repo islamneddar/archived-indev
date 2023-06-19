@@ -148,7 +148,6 @@ function BlogList(props: IBlogListProps) {
   }, [blogSelector.success, blogSelector.error]);
 
   useEffect(() => {
-    console.log('blogsBySourceBlogSelector', blogsBySourceBlogSelector.success);
     if (blogsBySourceBlogSelector.success) {
       if (blogsBySourceBlogSelector.data) {
         setBlogs([...blogs, ...blogsBySourceBlogSelector.data.data]);
