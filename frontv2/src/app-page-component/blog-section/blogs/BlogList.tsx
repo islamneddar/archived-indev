@@ -78,6 +78,7 @@ function BlogList(props: IBlogListProps) {
   );
   const [searchPhrase, setSearchPhrase] = useState<string>('');
   const [searchLaunched, setSearchLaunched] = useState<boolean>(false);
+  const [lastSearchPhrase, setLastSearchPhrase] = useState<string>('');
 
   // useEffect
   useEffect(() => {
@@ -281,6 +282,7 @@ function BlogList(props: IBlogListProps) {
       return;
       return;
     }
+    setLastSearchPhrase(searchPhrase);
     setPage(1);
     if (searchPhrase === '') {
       setSearchLaunched(false);
@@ -304,7 +306,13 @@ function BlogList(props: IBlogListProps) {
     <div className={'sm:px-10 w-full'}>
       {props.forSpecificSourceBlog === null ? (
         <div className={'flex w-full h-10 my-3'}>
-          <div className={'flex flex-1'}>
+          <div
+            className={'flex flex-1'}
+            onKeyPress={e => {
+              if (lastSearchPhrase !== searchPhrase && e.key === 'Enter') {
+                search();
+              }
+            }}>
             <SearchBlogInput
               onChange={e => {
                 setSearchPhrase(e.target.value);
@@ -314,7 +322,9 @@ function BlogList(props: IBlogListProps) {
               <MagnifyingGlassCircleIcon
                 className={'h-10 w-10 text-gray-500 cursor-pointer'}
                 onClick={() => {
-                  search();
+                  if (searchPhrase !== lastSearchPhrase) {
+                    search();
+                  }
                 }}
               />
             </div>
