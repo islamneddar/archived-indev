@@ -1,5 +1,5 @@
 'use client';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   Order,
   PageMetaResponse,
@@ -39,19 +39,25 @@ export interface IBlogListProps {
   showContainerOfGridAndFilter: boolean;
   gridToShow: GridBlogType;
   showAd: boolean;
-  ForSpecificSourceBlog: number | null; // sourceblog id
+  forSpecificSourceBlog: number | null; // sourceblog id
 }
 
 function BlogList(props: IBlogListProps) {
+  // refs
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  // dispatch
   const dispatchThunk = useDispatch<ThunkDispatch<any, any, any>>();
   const dispatch = useDispatch();
-  const userSessionSelector = useUserSessionSelector();
 
+  // selectors
+  const userSessionSelector = useUserSessionSelector();
   const blogSelector = useBlogSelector();
   const likeBlogSelector = useLikeBlogSelector();
   const bookmarkBlogSelector = useBookmarkBlogSelector();
   const blogsBySourceBlogSelector = useGetBlogsBySourceBlogSelector();
 
+  // states
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [metaData, setMetaData] = useState<PageMetaResponse>({
     page: 1,
@@ -64,63 +70,14 @@ function BlogList(props: IBlogListProps) {
   const [stateAffichage, setStateAffichage] = useState<BlogAffichageType>(
     BlogAffichageType.LATEST,
   );
+  const [searchPhrase, setSearchPhrase] = useState<string>('');
 
-  const fetchBlogs = async (restart: boolean) => {
-    const paginationRequest: PaginationRequestMetaRequest = {
-      page: page,
-      take: 12,
-      order: Order.DESC,
-    };
-
-    const getAllBlogRequest = {
-      paginationRequestMeta: paginationRequest,
-      accessToken:
-        userSessionSelector.isAuthenticated &&
-        userSessionSelector.user.accessToken
-          ? userSessionSelector.user.accessToken
-          : null,
-    };
-
-    dispatchThunk(getAllBlogThunk(getAllBlogRequest));
-    if (restart) {
-      setRestart(false);
-    }
-  };
-
-  async function fetchBlogsForSpecificSourceBlog(param: {
-    restart: boolean;
-    sourceBlogId: number;
-  }) {
-    const paginationRequest: PaginationRequestMetaRequest = {
-      page: page,
-      take: 12,
-      order: Order.DESC,
-    };
-
-    const getAllBlogBySourceBlogRequest: GetAllBlogByPaginationForSourceBlogIdRequest =
-      {
-        paginationRequestMeta: paginationRequest,
-        accessToken:
-          userSessionSelector.isAuthenticated &&
-          userSessionSelector.user.accessToken
-            ? userSessionSelector.user.accessToken
-            : null,
-        sourceBlogId: param.sourceBlogId,
-      };
-
-    dispatchThunk(
-      getAllBlogBySourceBlogRequestThunk(getAllBlogBySourceBlogRequest),
-    );
-    if (param.restart) {
-      setRestart(false);
-    }
-  }
-
+  // useEffect
   useEffect(() => {
     async function getBlogs() {
-      if (props.ForSpecificSourceBlog) {
+      if (props.forSpecificSourceBlog) {
         await fetchBlogsForSpecificSourceBlog({
-          sourceBlogId: props.ForSpecificSourceBlog,
+          sourceBlogId: props.forSpecificSourceBlog,
           restart,
         });
       } else {
@@ -213,25 +170,84 @@ function BlogList(props: IBlogListProps) {
     }
   }, [bookmarkBlogSelector.success, bookmarkBlogSelector.error]);
 
+  // functions
+  const fetchBlogs = async (restart: boolean) => {
+    const paginationRequest: PaginationRequestMetaRequest = {
+      page: page,
+      take: 12,
+      order: Order.DESC,
+    };
+
+    const getAllBlogRequest = {
+      paginationRequestMeta: paginationRequest,
+      accessToken:
+        userSessionSelector.isAuthenticated &&
+        userSessionSelector.user.accessToken
+          ? userSessionSelector.user.accessToken
+          : null,
+    };
+
+    dispatchThunk(getAllBlogThunk(getAllBlogRequest));
+    if (restart) {
+      setRestart(false);
+    }
+  };
+
+  async function fetchBlogsForSpecificSourceBlog(param: {
+    restart: boolean;
+    sourceBlogId: number;
+  }) {
+    const paginationRequest: PaginationRequestMetaRequest = {
+      page: page,
+      take: 12,
+      order: Order.DESC,
+    };
+
+    const getAllBlogBySourceBlogRequest: GetAllBlogByPaginationForSourceBlogIdRequest =
+      {
+        paginationRequestMeta: paginationRequest,
+        accessToken:
+          userSessionSelector.isAuthenticated &&
+          userSessionSelector.user.accessToken
+            ? userSessionSelector.user.accessToken
+            : null,
+        sourceBlogId: param.sourceBlogId,
+      };
+
+    dispatchThunk(
+      getAllBlogBySourceBlogRequestThunk(getAllBlogBySourceBlogRequest),
+    );
+    if (param.restart) {
+      setRestart(false);
+    }
+  }
+
   function search() {
     console.log('search');
+    //dispatchThunk()
   }
 
   return (
     <div className={'sm:px-10 w-full'}>
-      <div className={'flex w-full h-10 my-3'}>
-        <div className={'flex flex-1'}>
-          <SearchBlogInput />
-          <div className={'flex justify-center items-center'}>
-            <MagnifyingGlassCircleIcon
-              className={'h-10 w-10 text-gray-500'}
-              onClick={() => {
-                search();
+      {props.forSpecificSourceBlog === null ? (
+        <div className={'flex w-full h-10 my-3'}>
+          <div className={'flex flex-1'}>
+            <SearchBlogInput
+              onChange={e => {
+                setSearchPhrase(e.target.value);
               }}
             />
+            <div className={'flex justify-center items-center'}>
+              <MagnifyingGlassCircleIcon
+                className={'h-10 w-10 text-gray-500 cursor-pointer'}
+                onClick={() => {
+                  search();
+                }}
+              />
+            </div>
           </div>
         </div>
-      </div>
+      ) : null}
       <div
         id={'scrollBlogId'}
         className={'overflow-y-auto h-[calc(100vh_-_200px)] scrollbar-hide'}>

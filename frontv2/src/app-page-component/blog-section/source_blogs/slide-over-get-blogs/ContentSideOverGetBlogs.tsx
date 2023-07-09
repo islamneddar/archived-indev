@@ -30,7 +30,7 @@ function ContentSideOverGetBlogs(props: IContentSideOverGetBlogsProps) {
                 responsive.isMobile ? GridBlogType.GRID : GridBlogType.LIST
               }
               showAd={false}
-              ForSpecificSourceBlog={sourceBlog.sourceBlogId}
+              forSpecificSourceBlog={sourceBlog.sourceBlogId}
             />
           </div>
         </div>

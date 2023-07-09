@@ -12,7 +12,7 @@ function BlogsBody() {
             gridToShow={GridBlogType.GRID}
             showAd={true}
             showContainerOfGridAndFilter={true}
-            ForSpecificSourceBlog={null}
+            forSpecificSourceBlog={null}
           />
         }
       </div>
