@@ -37,6 +37,7 @@ import {MagnifyingGlassCircleIcon} from '@heroicons/react/24/solid';
 import {useGetAllBlogBySearchSelector} from '@/redux/slices/blog/api/get-blogs-by-search/get-blog-by-search.selector';
 import {getAllBlogBySearchThunk} from '@/redux/slices/blog/api/get-blogs-by-search/get-blog-by-search.thunk';
 import {resetGetAllBlogBySearchSlice} from '@/redux/slices/blog/api/get-blogs-by-search/get-blog-by-search.slice';
+import SearchAndTagContainer from '@/app-page-component/blog-section/blogs/search/SearchAndTagContainer';
 
 const MAX_FETCHED_BLOGS_PAGE = 20;
 export interface IBlogListProps {
@@ -305,31 +306,11 @@ function BlogList(props: IBlogListProps) {
   return (
     <div className={'sm:px-10 w-full'}>
       {props.forSpecificSourceBlog === null ? (
-        <div className={'flex w-full h-10 my-3'}>
-          <div
-            className={'flex flex-1'}
-            onKeyPress={e => {
-              if (lastSearchPhrase !== searchPhrase && e.key === 'Enter') {
-                search();
-              }
-            }}>
-            <SearchBlogInput
-              onChange={e => {
-                setSearchPhrase(e.target.value);
-              }}
-            />
-            <div className={'flex justify-center items-center'}>
-              <MagnifyingGlassCircleIcon
-                className={'h-10 w-10 text-gray-500 cursor-pointer'}
-                onClick={() => {
-                  if (searchPhrase !== lastSearchPhrase) {
-                    search();
-                  }
-                }}
-              />
-            </div>
-          </div>
-        </div>
+        <SearchAndTagContainer
+          searchPhrase={searchPhrase}
+          setSearchPhrase={setSearchPhrase}
+          search={search}
+          lastSearchPhrase={lastSearchPhrase}></SearchAndTagContainer>
       ) : null}
       <div
         id={'scrollBlogId'}
