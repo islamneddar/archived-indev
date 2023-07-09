@@ -101,15 +101,23 @@ export class BlogService {
   ) => {
     const query = this.blogRepository
       .createQueryBuilder('blog')
-      .leftJoinAndSelect('blog-section.sourceBlog', 'sourceBlog')
+      .leftJoinAndSelect('blog.sourceBlog', 'sourceBlog')
       .leftJoinAndSelect('sourceBlog.feedBlog', 'feedBlog')
       .where('feedBlog.blackList = :blackList', {blackList: false})
       .select(['blog', 'sourceBlog.name', 'sourceBlog.image'])
-      .leftJoinAndSelect('blog-section.tags', 'tag')
-      .where(`MATCH(blog.title) AGAINST ('(${search})' IN BOOLEAN MODE)`)
-      .orderBy('blog-section.publishDate', 'DESC')
+      .leftJoinAndSelect('blog.tags', 'tag')
+      .where('to_tsvector(blog.title) @@ to_tsquery(:query)', {
+        query: `${search
+          .trim()
+          .split(' ')
+          .map(word => `${word}:*`)
+          .join(' & ')}`,
+      })
+      .orderBy('blog.publishDate', 'DESC')
       .skip((pageOptionsDto.page - 1) * pageOptionsDto.take)
       .take(pageOptionsDto.take);
+
+    console.log(query.getSql());
 
     const itemCount = await query.getCount();
     const entities = await query.getMany();

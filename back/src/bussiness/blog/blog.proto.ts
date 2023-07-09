@@ -56,3 +56,8 @@ export class GetBlogsForSourceBlogRequest {
   @Min(1)
   sourceBlogId: number;
 }
+
+export class GetAllBlogBySearchTitleRequest {
+  @Type(() => String)
+  text?: string;
+}

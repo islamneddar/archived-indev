@@ -15,6 +15,7 @@ import {Request} from 'express';
 import {BlogService} from './blog.service';
 import {PageOptionsDto} from '@/common/pagination/page_option.dto';
 import {
+  GetAllBlogBySearchTitleRequest,
   GetAllBookmarksWithPaginationQuery,
   GetBlogBySearchAndFeedTypeRequest,
   GetBlogsForSourceBlogRequest,
@@ -195,5 +196,17 @@ export default class BlogController {
       user: req.user,
       sourceBlogId: query.sourceBlogId,
     });
+  }
+
+  @Post('search')
+  async getAllBlogBySearchTitle(@Body() body: GetAllBlogBySearchTitleRequest) {
+    console.log(body);
+    const pageOptionsDto = new PageOptionsDto();
+    pageOptionsDto.page = 1;
+    pageOptionsDto.take = 12;
+    return await this.blogService.getWithPaginateBySearch(
+      pageOptionsDto,
+      body.text,
+    );
   }
 }
