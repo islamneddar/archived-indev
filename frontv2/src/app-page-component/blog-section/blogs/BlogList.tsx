@@ -19,6 +19,7 @@ import BlogsCardLists from '@/app-page-component/blog-section/blogs/BlogsCardLis
 import {
   Blog,
   GetAllBlogByPaginationForSourceBlogIdRequest,
+  GetBlogsBySearchRequest,
 } from '@/types/api/blog';
 import {useLikeBlogSelector} from '@/redux/slices/blog/api/like-blog/like-blog.selector';
 import {resetBlogState} from '@/redux/slices/blog/api/get-all-blog/blog.slice';
@@ -33,7 +34,11 @@ import {useGetBlogsBySourceBlogSelector} from '@/redux/slices/blog/api/get-all-b
 import {resetBlogBySourceBlogState} from '@/redux/slices/blog/api/get-all-blog-by-source/get-all-blog-by-source.slice';
 import SearchBlogInput from '@/app-page-component/blog-section/blogs/searchBlogInput';
 import {MagnifyingGlassCircleIcon} from '@heroicons/react/24/solid';
+import {useGetAllBlogBySearchSelector} from '@/redux/slices/blog/api/get-blogs-by-search/get-blog-by-search.selector';
+import {getAllBlogBySearchThunk} from '@/redux/slices/blog/api/get-blogs-by-search/get-blog-by-search.thunk';
+import {resetGetAllBlogBySearchSlice} from '@/redux/slices/blog/api/get-blogs-by-search/get-blog-by-search.slice';
 
+const MAX_FETCHED_BLOGS_PAGE = 20;
 export interface IBlogListProps {
   typeFeed?: TypeFeed;
   showContainerOfGridAndFilter: boolean;
@@ -56,6 +61,7 @@ function BlogList(props: IBlogListProps) {
   const likeBlogSelector = useLikeBlogSelector();
   const bookmarkBlogSelector = useBookmarkBlogSelector();
   const blogsBySourceBlogSelector = useGetBlogsBySourceBlogSelector();
+  const getAllBlogsBySearchSelector = useGetAllBlogBySearchSelector();
 
   // states
   const [blogs, setBlogs] = useState<Blog[]>([]);
@@ -71,10 +77,12 @@ function BlogList(props: IBlogListProps) {
     BlogAffichageType.LATEST,
   );
   const [searchPhrase, setSearchPhrase] = useState<string>('');
+  const [searchLaunched, setSearchLaunched] = useState<boolean>(false);
 
   // useEffect
   useEffect(() => {
     async function getBlogs() {
+      if (searchLaunched) return;
       if (props.forSpecificSourceBlog) {
         await fetchBlogsForSpecificSourceBlog({
           sourceBlogId: props.forSpecificSourceBlog,
@@ -86,6 +94,7 @@ function BlogList(props: IBlogListProps) {
     }
 
     if (restart && page === 1) {
+      setBlogs([]);
       getBlogs();
     }
   }, [restart]);
@@ -170,11 +179,31 @@ function BlogList(props: IBlogListProps) {
     }
   }, [bookmarkBlogSelector.success, bookmarkBlogSelector.error]);
 
+  useEffect(() => {
+    if (getAllBlogsBySearchSelector.success) {
+      if (getAllBlogsBySearchSelector.data) {
+        if (page === 1) {
+          setBlogs(getAllBlogsBySearchSelector.data.data);
+        } else {
+          setBlogs([...blogs, ...getAllBlogsBySearchSelector.data.data]);
+        }
+        setMetaData(getAllBlogsBySearchSelector.data.meta);
+        setPage(page + 1);
+        dispatch(resetGetAllBlogBySearchSlice());
+      }
+    }
+
+    if (blogsBySourceBlogSelector.error !== undefined) {
+      dispatch(resetGetAllBlogBySearchSlice());
+      return;
+    }
+  }, [getAllBlogsBySearchSelector.success, getAllBlogsBySearchSelector.error]);
+
   // functions
   const fetchBlogs = async (restart: boolean) => {
     const paginationRequest: PaginationRequestMetaRequest = {
       page: page,
-      take: 12,
+      take: MAX_FETCHED_BLOGS_PAGE,
       order: Order.DESC,
     };
 
@@ -199,7 +228,7 @@ function BlogList(props: IBlogListProps) {
   }) {
     const paginationRequest: PaginationRequestMetaRequest = {
       page: page,
-      take: 12,
+      take: MAX_FETCHED_BLOGS_PAGE,
       order: Order.DESC,
     };
 
@@ -222,10 +251,49 @@ function BlogList(props: IBlogListProps) {
     }
   }
 
+  const fetchBlogBySearchText = (param: {
+    textSearch: string;
+    restart: boolean;
+  }) => {
+    const paginationRequest: PaginationRequestMetaRequest = {
+      page: param.restart ? 1 : page,
+      take: MAX_FETCHED_BLOGS_PAGE,
+      order: Order.DESC,
+    };
+
+    const getAllBlogBySearchRequest: GetBlogsBySearchRequest = {
+      paginationRequestMeta: paginationRequest,
+      accessToken:
+        userSessionSelector.isAuthenticated &&
+        userSessionSelector.user.accessToken
+          ? userSessionSelector.user.accessToken
+          : null,
+      text: param.textSearch,
+    };
+    dispatchThunk(getAllBlogBySearchThunk(getAllBlogBySearchRequest));
+    if (param.restart) {
+      setRestart(false);
+    }
+  };
   function search() {
-    console.log('search');
-    //dispatchThunk()
+    setPage(1);
+    if (searchPhrase === '') {
+      setSearchLaunched(false);
+      setPage(1);
+      setRestart(true);
+      return;
+    }
+    setSearchLaunched(true);
+    fetchBlogBySearchText({textSearch: searchPhrase, restart: true});
   }
+
+  const fetchNextBlogs = () => {
+    if (searchLaunched) {
+      fetchBlogBySearchText({textSearch: searchPhrase, restart: false});
+      return;
+    }
+    fetchBlogs(false);
+  };
 
   return (
     <div className={'sm:px-10 w-full'}>
@@ -265,7 +333,9 @@ function BlogList(props: IBlogListProps) {
           </div>
         ) : (
           <InfiniteScroll
-            next={() => fetchBlogs(false)}
+            next={() => {
+              fetchNextBlogs();
+            }}
             hasMore={metaData.hasNextPage}
             loader={<div></div>}
             dataLength={blogs.length}

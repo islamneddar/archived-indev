@@ -69,3 +69,9 @@ export interface GetAllBlogByPaginationForSourceBlogIdRequest {
   accessToken: string | null;
   sourceBlogId: number;
 }
+
+export interface GetBlogsBySearchRequest {
+  paginationRequestMeta: PaginationRequestMetaRequest;
+  accessToken: string | null;
+  text: string;
+}

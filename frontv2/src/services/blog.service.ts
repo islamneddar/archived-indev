@@ -5,6 +5,7 @@ import {
   BookmarkBlogResponse,
   GetAllBlogByPaginationForSourceBlogIdRequest,
   GetAllBlogRequest,
+  GetBlogsBySearchRequest,
   GetBlogsResponse,
   GetBookmarksParams,
   GetBookmarksResponse,
@@ -131,6 +132,27 @@ export default class BlogService {
       },
     });
 
+    const data = await response.data;
+    return data as GetBlogsResponse;
+  }
+
+  async getAllBySearch(request: GetBlogsBySearchRequest) {
+    const response = await axios.post(
+      `${this.endpointBlog}/search`,
+      {},
+      {
+        params: {
+          pageOption: {
+            page: request.paginationRequestMeta.page,
+            take: request.paginationRequestMeta.take,
+          },
+          text: request.text,
+        },
+        headers: {
+          Authorization: `Bearer ${request.accessToken}`,
+        },
+      },
+    );
     const data = await response.data;
     return data as GetBlogsResponse;
   }

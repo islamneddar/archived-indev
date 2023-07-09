@@ -43,7 +43,6 @@ function SourceBlogTypeBody() {
     }
 
     if (getAllSourceBlogTypesSelector.error) {
-      console.log(getAllSourceBlogTypesSelector.error);
       toast.error('Error when fetching source blog types, try later');
       dispatch(resetGetAllSourceBlogTypes());
     }
