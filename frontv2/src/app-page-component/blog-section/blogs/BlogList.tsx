@@ -276,6 +276,11 @@ function BlogList(props: IBlogListProps) {
     }
   };
   function search() {
+    if (!userSessionSelector.isAuthenticated) {
+      toast.error('Please login to search from more than 100k blogs');
+      return;
+      return;
+    }
     setPage(1);
     if (searchPhrase === '') {
       setSearchLaunched(false);
