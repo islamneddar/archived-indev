@@ -38,7 +38,10 @@ export default class BlogController {
   @HttpCode(HttpStatus.OK)
   async test(@Query() pageOptionsDto: PageOptionsDto) {
     return {
-      message: 'test',
+      message: await this.blogService.getWithPaginateBySearch(
+        pageOptionsDto,
+        'vue',
+      ),
     };
   }
 
@@ -59,32 +62,6 @@ export default class BlogController {
       pageOptionsDto,
       user,
     });
-  }
-  @Get('/search')
-  async getBlogWithSearchAndType(
-    @Query() getBlogRequest: GetBlogBySearchAndFeedTypeRequest,
-  ) {
-    this.LOG.debug('get blog-section with search and type');
-    const {pageOption} = getBlogRequest;
-    const {search} = getBlogRequest;
-    const {feedType} = getBlogRequest;
-    if (pageOption === undefined) {
-      throw new HttpException(
-        'Argument Failed',
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
-    }
-
-    if (search === undefined || search === null || search.length === 0) {
-      throw new HttpException(
-        'search query is empty',
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
-    }
-
-    return {
-      message: 'to implement',
-    };
   }
 
   @Post('like')
@@ -199,14 +176,14 @@ export default class BlogController {
   }
 
   @Post('search')
-  async getAllBlogBySearchTitle(@Body() body: GetAllBlogBySearchTitleRequest) {
-    console.log(body);
-    const pageOptionsDto = new PageOptionsDto();
-    pageOptionsDto.page = 1;
-    pageOptionsDto.take = 12;
-    return await this.blogService.getWithPaginateBySearch(
-      pageOptionsDto,
-      body.text,
-    );
+  async getAllBlogBySearchTitle(
+    @Req() req: Request,
+    @Query() query: GetAllBlogBySearchTitleRequest,
+  ) {
+    return await this.blogService.getAllWithPaginateWithAuth({
+      pageOptionsDto: query.pageOption,
+      user: req.user,
+      textSearch: query.text,
+    });
   }
 }

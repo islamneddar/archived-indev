@@ -137,6 +137,7 @@ export class BlogService {
     pageOptionsDto: PageOptionsDto;
     user: UserEntity;
     sourceBlogId?: number;
+    textSearch?: string;
   }) {
     const query = (await this.dataSource.query(`
         SELECT blogs.blog_id             as blogid,
@@ -163,12 +164,22 @@ export class BlogService {
                                    : ''
                                }
         where source_blogs.black_list = false
-        
             ${
               param.sourceBlogId
                 ? 'and source_blogs.source_blog_id = ' +
                   param.sourceBlogId +
                   ' '
+                : ''
+            }
+            ${
+              param.textSearch
+                ? "and to_tsvector(blogs.title) @@ to_tsquery( '" +
+                  param.textSearch
+                    .trim()
+                    .split(' ')
+                    .map(word => `${word}:* `)
+                    .join(' & ') +
+                  "')"
                 : ''
             }
         group by blogs.blog_id, source_blogs.name, source_blogs.image, totalLikes, blogs.publish_date ${

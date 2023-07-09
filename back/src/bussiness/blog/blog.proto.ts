@@ -58,6 +58,8 @@ export class GetBlogsForSourceBlogRequest {
 }
 
 export class GetAllBlogBySearchTitleRequest {
+  @Type(() => PageOptionsDto)
+  pageOption: PageOptionsDto;
   @Type(() => String)
   text?: string;
 }
