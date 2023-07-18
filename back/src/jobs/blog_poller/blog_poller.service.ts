@@ -165,7 +165,9 @@ export default class BlogPollerService {
           const blogTag = await this.tagService.getByTitleOrCreate(
             categoryInfo,
           );
-          blogTags.push(blogTag);
+          if (blogTag !== null) {
+            blogTags.push(blogTag);
+          }
         } catch (err) {
           this.LOG.error(`error to create tag ${categoryInfo}`);
           this.LOG.error(err);
