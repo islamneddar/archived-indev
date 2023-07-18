@@ -12,6 +12,11 @@ const nextConfig = {
         destination: '/blog/explore',
         permanent: true,
       },
+      {
+        source: '/blog/home',
+        destination: '/blog/explore',
+        permanent: true,
+      },
     ];
   },
 };

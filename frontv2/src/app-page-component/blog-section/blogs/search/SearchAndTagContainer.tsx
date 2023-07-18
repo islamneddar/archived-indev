@@ -67,7 +67,9 @@ function SearchAndTagContainer(props: SearchAndTagContainerProps) {
           <div className={'flex justify-center items-center'}>
             <MagnifyingGlassCircleIcon
               className={'h-10 w-10 text-gray-500 cursor-pointer'}
-              onClick={() => {}}
+              onClick={() => {
+                console.log('search by tag');
+              }}
             />
           </div>
         </div>
@@ -103,17 +105,17 @@ function SearchAndTagContainer(props: SearchAndTagContainerProps) {
           />
         </div>
       </div>
-      <div className={'flex'}>
-        <div className={'flex justify-center items-center'}>
-          <p
-            className={'cursor-pointer bg-indigo-500 p-2 rounded-xl'}
-            onClick={() => {
-              setTypeOfSearch('tag');
-            }}>
-            By Tags
-          </p>
-        </div>
-      </div>
+      {/*<div className={'flex'}>
+          <div className={'flex justify-center items-center'}>
+            <p
+              className={'cursor-pointer bg-indigo-500 p-2 rounded-xl'}
+              onClick={() => {
+                setTypeOfSearch('tag');
+              }}>
+              By Tags
+            </p>
+          </div>
+        </div>*/}
     </div>
   );
 }
