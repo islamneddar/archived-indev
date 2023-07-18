@@ -56,6 +56,13 @@ function SearchAndTagContainer(props: SearchAndTagContainerProps) {
             onChange={e => {
               console.log(e);
             }}
+            styles={{
+              control: (provided, state) => ({
+                ...provided,
+                maxHeight: '36px',
+                overflowY: 'scroll',
+              }),
+            }}
           />
           <div className={'flex justify-center items-center'}>
             <MagnifyingGlassCircleIcon
