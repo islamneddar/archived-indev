@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, {useEffect} from 'react';
 import './globals.css';
 import {Provider} from 'react-redux';
 import {store} from '@/redux/store';
@@ -13,6 +13,9 @@ import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
+  useEffect(() => {
+    const tags = localStorage.getItem('tags');
+  }, []);
   return (
     <html lang="en">
       <head>
