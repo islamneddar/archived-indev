@@ -20,7 +20,8 @@ export class TagService {
     if (!tagFound) {
       const tag = new TagEntity();
       tag.title = category;
-      return this.createTag(tag);
+      //return this.createTag(tag);
+      return null;
     }
     return tagFound;
   }

@@ -14,8 +14,6 @@ import {BlogToUserEntity} from '@/bussiness/blog-user/blog-user.entity';
 
 const LOG = new Logger('db.config');
 
-// const rdsCa = fs.readFileSync(`${__dirname}/../../ca-certificate.crt`);
-
 const DBModule = TypeOrmModule.forRootAsync({
   imports: [ConfigModule],
   useFactory: () => {

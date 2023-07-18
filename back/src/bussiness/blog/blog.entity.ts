@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
   JoinColumn,
   OneToMany,
+  Index,
 } from 'typeorm';
 import {SourceBlogEntity} from '@/bussiness/source-blog/source_blog.entity';
 import {TagEntity} from '../tag/tag.entity';
@@ -18,6 +19,7 @@ export class BlogEntity extends BaseTable {
   @PrimaryGeneratedColumn({name: 'blog_id'})
   blogId: number;
 
+  @Index({fulltext: true})
   @Column({unique: true})
   title: string;
 

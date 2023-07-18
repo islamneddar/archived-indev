@@ -4,7 +4,12 @@ import React, {Fragment, useEffect} from 'react';
 import {signOut, useSession} from 'next-auth/react';
 import {updateAuth} from '@/redux/slices/auth/user/user.slice';
 import {useDispatch} from 'react-redux';
-import {HomeIcon, RssIcon, BookOpenIcon} from '@heroicons/react/20/solid';
+import {
+  HomeIcon,
+  RssIcon,
+  BookOpenIcon,
+  AdjustmentsHorizontalIcon,
+} from '@heroicons/react/20/solid';
 import routing from '@/routes/routing.constant';
 import {ThunkDispatch} from '@reduxjs/toolkit';
 import {getUserProfileThunk} from '@/redux/slices/auth/user/user.thunk';
@@ -12,13 +17,20 @@ import {EventBusFront, EventBusFrontType} from '@/events/event_bus';
 import {useUserSessionSelector} from '@/redux/slices/auth/user/user.selector';
 import {NavigationType} from '@/types/general/sidebar.type';
 import SideBarMain from '@/app-page-component/sidebar/SideBarMain';
+import {GlobeEuropeAfricaIcon} from '@heroicons/react/24/solid';
 
 const navigationState: NavigationType[] = [
   {
-    name: 'Home',
-    href: routing.blog.home,
-    icon: HomeIcon,
+    name: 'Explore',
+    href: routing.blog.explore,
+    icon: GlobeEuropeAfricaIcon,
     isAuth: false,
+  },
+  {
+    name: 'My Feed',
+    href: routing.blog.myFeed,
+    icon: AdjustmentsHorizontalIcon,
+    isAuth: true,
   },
   {
     name: 'Sources',

@@ -23,7 +23,6 @@ function BookmarkBlogList() {
   const getAllBookmarksSelector = useGetAllBookmarksSelector();
 
   useEffect(() => {
-    console.log('useEffect BookmarkBlogList');
     async function getBookmarkedBlogs() {
       await fetchBookmarkedBlogs(undefined);
     }
@@ -44,10 +43,8 @@ function BookmarkBlogList() {
   };
 
   useEffect(() => {
-    console.log('useEffect BookmarkBlogList 2');
     if (getAllBookmarksSelector.success) {
       if (getAllBookmarksSelector.data) {
-        console.log('useEffect BookmarkBlogList 3');
         const blogsBookmarked = getAllBookmarksSelector.data.data;
         if (blogsBookmarked.length === 0) {
           setAllBookmarkedBlogsSeen(true);

@@ -1,7 +1,12 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import FollowButton from '@/app-page-component/components/FollowButton';
 import {formatCompactNumber} from '@/utils/general';
-import {SourceBlog} from '@/types/api/source_blog';
+import {FollowSourceBlogRequest, SourceBlog} from '@/types/api/source_blog';
+import {followSourceBlogThunk} from '@/redux/slices/source_blog/api/follow-source-blog/follow-source-blog.thunk';
+import {useUserSessionSelector} from '@/redux/slices/auth/user/user.selector';
+import {useDispatch} from 'react-redux';
+import {ThunkDispatch} from '@reduxjs/toolkit';
+import {useFollowSourceBlogSelector} from '@/redux/slices/source_blog/api/follow-source-blog/follow-source-blog.selector';
 
 interface IHeaderContentSideOverGetBlogsSourceBlogProps {
   sourceBlog: SourceBlog;
@@ -9,15 +14,41 @@ interface IHeaderContentSideOverGetBlogsSourceBlogProps {
 function HeaderContentSideOverGetBlogsSourceBlog(
   props: IHeaderContentSideOverGetBlogsSourceBlogProps,
 ) {
+  const dispatchThunk = useDispatch<ThunkDispatch<any, any, any>>();
+
   const sourceBlog = props.sourceBlog;
 
+  const [followed, setFollowed] = React.useState<boolean>(sourceBlog.isFollow);
   const [followerCount, setFollowerCount] = React.useState<number>(
     Number(sourceBlog.numberFollowers),
   );
 
-  function follow() {
-    console.log('follow');
-  }
+  const userSession = useUserSessionSelector();
+  const followSourceBlogSelector = useFollowSourceBlogSelector();
+
+  const follow = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setFollowed(!followed);
+    setFollowerCount(
+      followed ? Number(followerCount) - 1 : Number(followerCount) + 1,
+    );
+    const followSourceBlogRequest: FollowSourceBlogRequest = {
+      accessToken: userSession.user.accessToken,
+      sourceBlogId: sourceBlog.sourceBlogId,
+      isFollow: !followed,
+    };
+    dispatchThunk(followSourceBlogThunk(followSourceBlogRequest));
+  };
+
+  useEffect(() => {
+    if (followSourceBlogSelector.error) {
+      setFollowed(!followed);
+      setFollowerCount(
+        followed ? Number(followerCount) - 1 : Number(followerCount) + 1,
+      );
+    }
+  }, [followSourceBlogSelector.error]);
 
   return (
     <div className={'flex flex-row w-full'}>
@@ -33,7 +64,7 @@ function HeaderContentSideOverGetBlogsSourceBlog(
             <p className={'line-clamp-1'}>{sourceBlog.name}</p>
           </div>
           <div className={'flex justify-center items-center'}>
-            {<FollowButton followed={sourceBlog.isFollow} follow={follow} />}
+            {<FollowButton followed={followed} follow={follow} />}
           </div>
         </div>
         <div className={'h-3'}></div>

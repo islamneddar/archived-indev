@@ -15,8 +15,10 @@ import {Request} from 'express';
 import {BlogService} from './blog.service';
 import {PageOptionsDto} from '@/common/pagination/page_option.dto';
 import {
+  GetAllBlogBySearchTitleRequest,
   GetAllBookmarksWithPaginationQuery,
   GetBlogBySearchAndFeedTypeRequest,
+  GetBlogsForSourceBlogRequest,
   UpdateBookmarkToBlogRequest,
   UpdateLikeToBlogRequest,
 } from './blog.proto';
@@ -36,7 +38,10 @@ export default class BlogController {
   @HttpCode(HttpStatus.OK)
   async test(@Query() pageOptionsDto: PageOptionsDto) {
     return {
-      message: 'test',
+      message: await this.blogService.getWithPaginateBySearch(
+        pageOptionsDto,
+        'vue',
+      ),
     };
   }
 
@@ -57,32 +62,6 @@ export default class BlogController {
       pageOptionsDto,
       user,
     });
-  }
-  @Get('/search')
-  async getBlogWithSearchAndType(
-    @Query() getBlogRequest: GetBlogBySearchAndFeedTypeRequest,
-  ) {
-    this.LOG.debug('get blog-section with search and type');
-    const {pageOption} = getBlogRequest;
-    const {search} = getBlogRequest;
-    const {feedType} = getBlogRequest;
-    if (pageOption === undefined) {
-      throw new HttpException(
-        'Argument Failed',
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
-    }
-
-    if (search === undefined || search === null || search.length === 0) {
-      throw new HttpException(
-        'search query is empty',
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
-    }
-
-    return {
-      message: 'to implement',
-    };
   }
 
   @Post('like')
@@ -181,5 +160,30 @@ export default class BlogController {
       },
     );
     return {data: bookmarkedList};
+  }
+
+  @Get('all/sourceblog')
+  @UseGuards(AuthGuard)
+  async getAllSourceBlog(
+    @Req() req: Request,
+    @Query() query: GetBlogsForSourceBlogRequest,
+  ) {
+    return await this.blogService.getAllWithPaginateWithAuth({
+      pageOptionsDto: query.pageOption,
+      user: req.user,
+      sourceBlogId: query.sourceBlogId,
+    });
+  }
+
+  @Post('search')
+  async getAllBlogBySearchTitle(
+    @Req() req: Request,
+    @Query() query: GetAllBlogBySearchTitleRequest,
+  ) {
+    return await this.blogService.getAllWithPaginateWithAuth({
+      pageOptionsDto: query.pageOption,
+      user: req.user,
+      textSearch: query.text,
+    });
   }
 }

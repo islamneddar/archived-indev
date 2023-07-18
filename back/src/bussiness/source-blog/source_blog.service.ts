@@ -23,10 +23,6 @@ export class SourceBlogService {
     return this.sourceBlogRepository.save(sourceBlog);
   }
 
-  findAll(): Promise<SourceBlogEntity[]> {
-    return this.sourceBlogRepository.find();
-  }
-
   async getByTitle(titleFeed: string) {
     return this.sourceBlogRepository.findOne({
       where: {

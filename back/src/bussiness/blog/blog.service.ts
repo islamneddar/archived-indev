@@ -101,15 +101,23 @@ export class BlogService {
   ) => {
     const query = this.blogRepository
       .createQueryBuilder('blog')
-      .leftJoinAndSelect('blog-section.sourceBlog', 'sourceBlog')
+      .leftJoinAndSelect('blog.sourceBlog', 'sourceBlog')
       .leftJoinAndSelect('sourceBlog.feedBlog', 'feedBlog')
       .where('feedBlog.blackList = :blackList', {blackList: false})
       .select(['blog', 'sourceBlog.name', 'sourceBlog.image'])
-      .leftJoinAndSelect('blog-section.tags', 'tag')
-      .where(`MATCH(blog.title) AGAINST ('(${search})' IN BOOLEAN MODE)`)
-      .orderBy('blog-section.publishDate', 'DESC')
+      .leftJoinAndSelect('blog.tags', 'tag')
+      .where('to_tsvector(blog.title) @@ to_tsquery(:query)', {
+        query: `${search
+          .trim()
+          .split(' ')
+          .map(word => `${word}:*`)
+          .join(' & ')}`,
+      })
+      .orderBy('blog.publishDate', 'DESC')
       .skip((pageOptionsDto.page - 1) * pageOptionsDto.take)
       .take(pageOptionsDto.take);
+
+    console.log(query.getSql());
 
     const itemCount = await query.getCount();
     const entities = await query.getMany();
@@ -128,41 +136,60 @@ export class BlogService {
   async getAllWithPaginateWithAuth(param: {
     pageOptionsDto: PageOptionsDto;
     user: UserEntity;
+    sourceBlogId?: number;
+    textSearch?: string;
   }) {
     const query = (await this.dataSource.query(`
-    SELECT blogs.blog_id as blogid,
-             blogs.title as blogtitle,
-              blogs.publish_date as publishdate,
-              blogs.thumbnail as thumbnail,
-              blogs.permalink as permalink,
-             source_blogs.name as sourceblogname, 
-             source_blogs.image as sourceblogimage,
-             STRING_AGG(t.title, ', ') AS tags,
-             likes.totalLikes as totalLikes
-      ${param.user ? ', blog_to_user.is_liked as isliked ' : ''}
+        SELECT blogs.blog_id             as blogid,
+               blogs.title               as blogtitle,
+               blogs.publish_date        as publishdate,
+               blogs.thumbnail           as thumbnail,
+               blogs.permalink           as permalink,
+               source_blogs.name         as sourceblogname,
+               source_blogs.image        as sourceblogimage,
+               STRING_AGG(t.title, ', ') AS tags,
+               likes.totalLikes          as totalLikes
+            ${param.user ? ', blog_to_user.is_liked as isliked ' : ''}
       ${param.user ? ', blog_to_user.is_bookmarked as isbookmarked ' : ''}
-      from blogs
-      left join source_blogs on blogs.source_blog_id = source_blogs.source_blog_id
-      left join blog_tags on blogs.blog_id = blog_tags.blog_id
-      left join tags t on blog_tags.tag_id = t.tag_id
-      left join (
-          select blog_id, SUM(is_liked) as totalLikes from blog_to_user group by blog_id 
-      ) likes on blogs.blog_id = likes.blog_id
-      ${
-        param.user
-          ? 'left join blog_to_user on blogs.blog_id = blog_to_user.blog_id and blog_to_user.user_id = ' +
-            param.user.userId
-          : ''
-      }
-     where source_blogs.black_list = false
-      group by blogs.blog_id, source_blogs.name, source_blogs.image, totalLikes
-      ${
-        param.user ? ', blog_to_user.is_liked, blog_to_user.is_bookmarked ' : ''
-      }
-      
-      order by blogs.publish_date desc
-      offset ${param.pageOptionsDto.skip} 
-      limit ${param.pageOptionsDto.take}
+        from blogs
+                 left join source_blogs on blogs.source_blog_id = source_blogs.source_blog_id
+                 left join blog_tags on blogs.blog_id = blog_tags.blog_id
+                 left join tags t on blog_tags.tag_id = t.tag_id
+                 left join (select blog_id, SUM(is_liked) as totalLikes from blog_to_user group by blog_id) likes
+                           on blogs.blog_id = likes.blog_id
+                               ${
+                                 param.user
+                                   ? 'left join blog_to_user on blogs.blog_id = blog_to_user.blog_id and blog_to_user.user_id = ' +
+                                     param.user.userId
+                                   : ''
+                               }
+        where source_blogs.black_list = false
+            ${
+              param.sourceBlogId
+                ? 'and source_blogs.source_blog_id = ' +
+                  param.sourceBlogId +
+                  ' '
+                : ''
+            }
+            ${
+              param.textSearch
+                ? "and to_tsvector(blogs.title) @@ to_tsquery( '" +
+                  param.textSearch
+                    .trim()
+                    .split(' ')
+                    .map(word => `${word}:* `)
+                    .join(' & ') +
+                  "')"
+                : ''
+            }
+        group by blogs.blog_id, source_blogs.name, source_blogs.image, totalLikes, blogs.publish_date ${
+          param.user
+            ? ', blog_to_user.is_liked, blog_to_user.is_bookmarked '
+            : ''
+        }
+
+        order by blogs.publish_date desc
+        offset ${param.pageOptionsDto.skip} limit ${param.pageOptionsDto.take}
     `)) as any[];
 
     const listBlog = query.map(blogFromDb => {
@@ -171,9 +198,9 @@ export class BlogService {
         user: param.user,
       });
     });
-
-    const itemCount = await this.blogRepository.count();
-
+    const itemCount = await this.getCountOfBlogsBasedOnFilters({
+      sourceBlogId: param.sourceBlogId,
+    });
     const pageMetaDto = new PageMetaDto({
       itemCount,
       pageOptionsDto: param.pageOptionsDto,
@@ -221,4 +248,24 @@ export class BlogService {
       });
     });
   }
+
+  getCountOfBlogsBasedOnFilters = async (param: {sourceBlogId?: number}) => {
+    const query = await this.dataSource.query(
+      `
+          select count(*) as count
+          from blogs
+                   left join source_blogs on blogs.source_blog_id = source_blogs.source_blog_id
+          where source_blogs.black_list = false
+              ${
+                param.sourceBlogId
+                  ? 'and source_blogs.source_blog_id = ' +
+                    param.sourceBlogId +
+                    ' '
+                  : ''
+              }
+
+      `,
+    );
+    return query[0].count as number;
+  };
 }

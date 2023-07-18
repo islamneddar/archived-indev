@@ -63,3 +63,15 @@ export interface GetBookmarksParams {
 export interface GetBookmarksResponse {
   data: Blog[];
 }
+
+export interface GetAllBlogByPaginationForSourceBlogIdRequest {
+  paginationRequestMeta: PaginationRequestMetaRequest;
+  accessToken: string | null;
+  sourceBlogId: number;
+}
+
+export interface GetBlogsBySearchRequest {
+  paginationRequestMeta: PaginationRequestMetaRequest;
+  accessToken: string | null;
+  text: string;
+}

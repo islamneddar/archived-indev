@@ -1,5 +1,5 @@
 'use client';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   Order,
   PageMetaResponse,
@@ -15,9 +15,12 @@ import {
   BlogAffichageType,
   GridBlogType,
 } from '@/types/general/blog-general.type';
-import {blogAffichageType, gridBlogType} from '@/types/data/blog-general.data';
 import BlogsCardLists from '@/app-page-component/blog-section/blogs/BlogsCardLists';
-import {Blog} from '@/types/api/blog';
+import {
+  Blog,
+  GetAllBlogByPaginationForSourceBlogIdRequest,
+  GetBlogsBySearchRequest,
+} from '@/types/api/blog';
 import {useLikeBlogSelector} from '@/redux/slices/blog/api/like-blog/like-blog.selector';
 import {resetBlogState} from '@/redux/slices/blog/api/get-all-blog/blog.slice';
 import {resetLikeBlogState} from '@/redux/slices/blog/api/like-blog/like-blog.slice';
@@ -26,24 +29,42 @@ import {useUserSessionSelector} from '@/redux/slices/auth/user/user.selector';
 import {useBookmarkBlogSelector} from '@/redux/slices/blog/api/bookmark-blog/bookmark-blog.selector';
 import {resetBookmarkBlogState} from '@/redux/slices/blog/api/bookmark-blog/bookmark-blog.slice';
 import ContainerForFilterGetDataAndGridType from '@/app-page-component/blog-section/blogs/ContainerForFilterGetDataAndGridType';
-import {bool} from 'yup';
+import {getAllBlogBySourceBlogRequestThunk} from '@/redux/slices/blog/api/get-all-blog-by-source/get-all-blog-by-source.thunk';
+import {useGetBlogsBySourceBlogSelector} from '@/redux/slices/blog/api/get-all-blog-by-source/get-all-blog-by-source.selector';
+import {resetBlogBySourceBlogState} from '@/redux/slices/blog/api/get-all-blog-by-source/get-all-blog-by-source.slice';
+import SearchBlogInput from '@/app-page-component/blog-section/blogs/searchBlogInput';
+import {MagnifyingGlassCircleIcon} from '@heroicons/react/24/solid';
+import {useGetAllBlogBySearchSelector} from '@/redux/slices/blog/api/get-blogs-by-search/get-blog-by-search.selector';
+import {getAllBlogBySearchThunk} from '@/redux/slices/blog/api/get-blogs-by-search/get-blog-by-search.thunk';
+import {resetGetAllBlogBySearchSlice} from '@/redux/slices/blog/api/get-blogs-by-search/get-blog-by-search.slice';
+import SearchAndTagContainer from '@/app-page-component/blog-section/blogs/search/SearchAndTagContainer';
 
+const MAX_FETCHED_BLOGS_PAGE = 20;
 export interface IBlogListProps {
   typeFeed?: TypeFeed;
   showContainerOfGridAndFilter: boolean;
   gridToShow: GridBlogType;
   showAd: boolean;
+  forSpecificSourceBlog: number | null; // sourceblog id
 }
 
 function BlogList(props: IBlogListProps) {
+  // refs
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  // dispatch
   const dispatchThunk = useDispatch<ThunkDispatch<any, any, any>>();
   const dispatch = useDispatch();
-  const userSessionSelector = useUserSessionSelector();
 
+  // selectors
+  const userSessionSelector = useUserSessionSelector();
   const blogSelector = useBlogSelector();
   const likeBlogSelector = useLikeBlogSelector();
   const bookmarkBlogSelector = useBookmarkBlogSelector();
+  const blogsBySourceBlogSelector = useGetBlogsBySourceBlogSelector();
+  const getAllBlogsBySearchSelector = useGetAllBlogBySearchSelector();
 
+  // states
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [metaData, setMetaData] = useState<PageMetaResponse>({
     page: 1,
@@ -56,35 +77,26 @@ function BlogList(props: IBlogListProps) {
   const [stateAffichage, setStateAffichage] = useState<BlogAffichageType>(
     BlogAffichageType.LATEST,
   );
+  const [searchPhrase, setSearchPhrase] = useState<string>('');
+  const [searchLaunched, setSearchLaunched] = useState<boolean>(false);
+  const [lastSearchPhrase, setLastSearchPhrase] = useState<string>('');
 
-  const fetchBlogs = async (restart: boolean) => {
-    const paginationRequest: PaginationRequestMetaRequest = {
-      page: page,
-      take: 12,
-      order: Order.DESC,
-    };
-
-    const getAllBlogRequest = {
-      paginationRequestMeta: paginationRequest,
-      accessToken:
-        userSessionSelector.isAuthenticated &&
-        userSessionSelector.user.accessToken
-          ? userSessionSelector.user.accessToken
-          : null,
-    };
-
-    dispatchThunk(getAllBlogThunk(getAllBlogRequest));
-    if (restart) {
-      setRestart(false);
-    }
-  };
-
+  // useEffect
   useEffect(() => {
     async function getBlogs() {
-      await fetchBlogs(restart);
+      if (searchLaunched) return;
+      if (props.forSpecificSourceBlog) {
+        await fetchBlogsForSpecificSourceBlog({
+          sourceBlogId: props.forSpecificSourceBlog,
+          restart,
+        });
+      } else {
+        await fetchBlogs(restart);
+      }
     }
 
     if (restart && page === 1) {
+      setBlogs([]);
       getBlogs();
     }
   }, [restart]);
@@ -104,6 +116,22 @@ function BlogList(props: IBlogListProps) {
       return;
     }
   }, [blogSelector.success, blogSelector.error]);
+
+  useEffect(() => {
+    if (blogsBySourceBlogSelector.success) {
+      if (blogsBySourceBlogSelector.data) {
+        setBlogs([...blogs, ...blogsBySourceBlogSelector.data.data]);
+        setMetaData(blogsBySourceBlogSelector.data.meta);
+        setPage(page + 1);
+        dispatch(resetBlogBySourceBlogState());
+      }
+    }
+
+    if (blogsBySourceBlogSelector.error !== undefined) {
+      dispatch(resetBlogBySourceBlogState());
+      return;
+    }
+  }, [blogsBySourceBlogSelector.success, blogsBySourceBlogSelector.error]);
 
   useEffect(() => {
     if (likeBlogSelector.success) {
@@ -153,11 +181,140 @@ function BlogList(props: IBlogListProps) {
     }
   }, [bookmarkBlogSelector.success, bookmarkBlogSelector.error]);
 
+  useEffect(() => {
+    if (getAllBlogsBySearchSelector.success) {
+      if (getAllBlogsBySearchSelector.data) {
+        if (page === 1) {
+          setBlogs(getAllBlogsBySearchSelector.data.data);
+        } else {
+          setBlogs([...blogs, ...getAllBlogsBySearchSelector.data.data]);
+        }
+        setMetaData(getAllBlogsBySearchSelector.data.meta);
+        setPage(page + 1);
+        dispatch(resetGetAllBlogBySearchSlice());
+      }
+    }
+
+    if (blogsBySourceBlogSelector.error !== undefined) {
+      dispatch(resetGetAllBlogBySearchSlice());
+      return;
+    }
+  }, [getAllBlogsBySearchSelector.success, getAllBlogsBySearchSelector.error]);
+
+  // functions
+  const fetchBlogs = async (restart: boolean) => {
+    const paginationRequest: PaginationRequestMetaRequest = {
+      page: page,
+      take: MAX_FETCHED_BLOGS_PAGE,
+      order: Order.DESC,
+    };
+
+    const getAllBlogRequest = {
+      paginationRequestMeta: paginationRequest,
+      accessToken:
+        userSessionSelector.isAuthenticated &&
+        userSessionSelector.user.accessToken
+          ? userSessionSelector.user.accessToken
+          : null,
+    };
+
+    dispatchThunk(getAllBlogThunk(getAllBlogRequest));
+    if (restart) {
+      setRestart(false);
+    }
+  };
+
+  async function fetchBlogsForSpecificSourceBlog(param: {
+    restart: boolean;
+    sourceBlogId: number;
+  }) {
+    const paginationRequest: PaginationRequestMetaRequest = {
+      page: page,
+      take: MAX_FETCHED_BLOGS_PAGE,
+      order: Order.DESC,
+    };
+
+    const getAllBlogBySourceBlogRequest: GetAllBlogByPaginationForSourceBlogIdRequest =
+      {
+        paginationRequestMeta: paginationRequest,
+        accessToken:
+          userSessionSelector.isAuthenticated &&
+          userSessionSelector.user.accessToken
+            ? userSessionSelector.user.accessToken
+            : null,
+        sourceBlogId: param.sourceBlogId,
+      };
+
+    dispatchThunk(
+      getAllBlogBySourceBlogRequestThunk(getAllBlogBySourceBlogRequest),
+    );
+    if (param.restart) {
+      setRestart(false);
+    }
+  }
+
+  const fetchBlogBySearchText = (param: {
+    textSearch: string;
+    restart: boolean;
+  }) => {
+    const paginationRequest: PaginationRequestMetaRequest = {
+      page: param.restart ? 1 : page,
+      take: MAX_FETCHED_BLOGS_PAGE,
+      order: Order.DESC,
+    };
+
+    const getAllBlogBySearchRequest: GetBlogsBySearchRequest = {
+      paginationRequestMeta: paginationRequest,
+      accessToken:
+        userSessionSelector.isAuthenticated &&
+        userSessionSelector.user.accessToken
+          ? userSessionSelector.user.accessToken
+          : null,
+      text: param.textSearch,
+    };
+    dispatchThunk(getAllBlogBySearchThunk(getAllBlogBySearchRequest));
+    if (param.restart) {
+      setRestart(false);
+    }
+  };
+  function search() {
+    if (!userSessionSelector.isAuthenticated) {
+      toast.error('Please login to search from more than 100k blogs');
+      return;
+      return;
+    }
+    setLastSearchPhrase(searchPhrase);
+    setPage(1);
+    if (searchPhrase === '') {
+      setSearchLaunched(false);
+      setPage(1);
+      setRestart(true);
+      return;
+    }
+    setSearchLaunched(true);
+    fetchBlogBySearchText({textSearch: searchPhrase, restart: true});
+  }
+
+  const fetchNextBlogs = () => {
+    if (searchLaunched) {
+      fetchBlogBySearchText({textSearch: searchPhrase, restart: false});
+      return;
+    }
+    fetchBlogs(false);
+  };
+
   return (
     <div className={'sm:px-10 w-full'}>
+      {props.forSpecificSourceBlog === null ? (
+        <SearchAndTagContainer
+          searchPhrase={searchPhrase}
+          setSearchPhrase={setSearchPhrase}
+          search={search}
+          lastSearchPhrase={lastSearchPhrase}></SearchAndTagContainer>
+      ) : null}
       <div
         id={'scrollBlogId'}
-        className={'overflow-y-auto h-[calc(100vh_-_136px)] scrollbar-hide'}>
+        className={'overflow-y-auto h-[calc(100vh_-_200px)] scrollbar-hide'}>
         {props.showContainerOfGridAndFilter && (
           <ContainerForFilterGetDataAndGridType
             stateAffichage={stateAffichage}
@@ -172,7 +329,9 @@ function BlogList(props: IBlogListProps) {
           </div>
         ) : (
           <InfiniteScroll
-            next={() => fetchBlogs(false)}
+            next={() => {
+              fetchNextBlogs();
+            }}
             hasMore={metaData.hasNextPage}
             loader={<div></div>}
             dataLength={blogs.length}
