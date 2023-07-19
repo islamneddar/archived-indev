@@ -96,6 +96,16 @@ export class SourceBlogController {
     };
   }
 
+  @Get('all-types-v2')
+  @UseGuards(AuthGuard)
+  async findAllTypesV2() {
+    const allSourceBlogItemTypes: SourceBlogTypeItemTypeResponse[] =
+      await this.sourceBlogService.findAllTypesV2();
+    return {
+      data: allSourceBlogItemTypes,
+    };
+  }
+
   @Get('all_by_type')
   @UseGuards(AuthGuard)
   async findAllByType(
