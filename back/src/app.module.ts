@@ -8,11 +8,11 @@ import {ThrottlerGuard, ThrottlerModule} from '@nestjs/throttler';
 import {APP_GUARD} from '@nestjs/core';
 import {SourceBlogModule} from '@/bussiness/source-blog/source_blog.module';
 import {BlogModule} from './bussiness/blog/blog.module';
-import {FeedBlogModule} from './bussiness/feed_blog/feed_blog.module';
+import {FeedBlogModule} from '@/bussiness/feed-blog/feed_blog/feed_blog.module';
 import {BlogPollerModule} from '@/jobs/blog_poller/blog_poller.module';
 import {TagModule} from './bussiness/tag/tag.module';
 import DBModule from './database/db.config';
-import {FeedBlogEntity} from './bussiness/feed_blog/feed_blog.entity';
+import {FeedBlogEntity} from '@/bussiness/feed-blog/feed_blog/feed_blog.entity';
 import {BlogEntity} from './bussiness/blog/blog.entity';
 import {SourceBlogEntity} from '@/bussiness/source-blog/source_blog.entity';
 import {TagEntity} from './bussiness/tag/tag.entity';
@@ -24,6 +24,8 @@ import {MailingModule} from '@/bussiness/mailing/mailing.module';
 import {MailingConfig} from '@/bussiness/mailing/mailing.config';
 import {SourceBlogToUserModule} from '@/bussiness/source-blog-user/source-blog-use.module';
 import {BlogToUserModule} from '@/bussiness/blog-user/blog-user.module';
+import {FeedBlogTypeStatsModule} from '@/bussiness/feed-blog/feed-blog-type-stats/feed-blog-type-stats.module';
+import {StatsCalculatorModule} from '@/jobs/stats-calculator/stats-calculator.module';
 
 const DEFAULT_ADMIN = {
   email: 'lemsijoker',
@@ -83,6 +85,8 @@ AdminJS.registerAdapter({
     MailingModule,
     SourceBlogToUserModule,
     BlogToUserModule,
+    FeedBlogTypeStatsModule,
+    StatsCalculatorModule,
   ],
   controllers: [],
   providers: [

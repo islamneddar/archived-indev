@@ -9,7 +9,7 @@ import {UserEntity} from '@/bussiness/user/user.entity';
 import {
   contentTypeSourceBlog,
   TypeFeed,
-} from '@/bussiness/feed_blog/feed-blog.proto';
+} from '@/bussiness/feed-blog/feed_blog/feed-blog.proto';
 
 @Injectable()
 export class SourceBlogService {
@@ -48,7 +48,6 @@ export class SourceBlogService {
                 featuredBlog.sourceImage as sourceBlogImage
         from source_blogs sb
         left join feed_blogs fb on sb.feed_blog_id = fb.feed_blog_id
-            
         left join (
           select
             fb.type as feedType,

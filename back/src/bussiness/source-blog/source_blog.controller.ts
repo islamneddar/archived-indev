@@ -22,7 +22,6 @@ import {
   SourceBlogTypeItemTypeResponse,
 } from '@/bussiness/source-blog/source-blog.type';
 import {SourceBlogToUserService} from '@/bussiness/source-blog-user/source-blog-user.service';
-import {TypeFeed} from '@/bussiness/feed_blog/feed-blog.proto';
 
 @Controller('source-blog')
 export class SourceBlogController {
