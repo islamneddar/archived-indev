@@ -17,7 +17,6 @@ import {PageOptionsDto} from '@/common/pagination/page_option.dto';
 import {
   GetAllBlogBySearchTitleRequest,
   GetAllBookmarksWithPaginationQuery,
-  GetBlogBySearchAndFeedTypeRequest,
   GetBlogsForSourceBlogRequest,
   UpdateBookmarkToBlogRequest,
   UpdateLikeToBlogRequest,

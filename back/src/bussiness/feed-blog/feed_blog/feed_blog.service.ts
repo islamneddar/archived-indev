@@ -16,7 +16,11 @@ export class FeedBlogService {
   }
 
   async getAll(): Promise<FeedBlogEntity[]> {
-    return this.feedBlogRepository.find({});
+    return this.feedBlogRepository.find({
+      where: {
+        softDelete: false,
+      },
+    });
   }
 
   async findOne(createFeedBlogRequest: CreateFeedBlogRequest) {

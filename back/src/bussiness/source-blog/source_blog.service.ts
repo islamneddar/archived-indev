@@ -9,7 +9,7 @@ import {UserEntity} from '@/bussiness/user/user.entity';
 import {
   contentTypeSourceBlog,
   TypeFeed,
-} from '@/bussiness/feed_blog/feed-blog.proto';
+} from '@/bussiness/feed-blog/feed_blog/feed-blog.proto';
 
 @Injectable()
 export class SourceBlogService {
@@ -39,6 +39,9 @@ export class SourceBlogService {
     });
   }
 
+  /**
+   * @deprecated remove after the migraiton
+   */
   async findAllTypes() {
     const query2 = await this.dataSource.query(
       `
@@ -48,7 +51,6 @@ export class SourceBlogService {
                 featuredBlog.sourceImage as sourceBlogImage
         from source_blogs sb
         left join feed_blogs fb on sb.feed_blog_id = fb.feed_blog_id
-            
         left join (
           select
             fb.type as feedType,
@@ -75,6 +77,35 @@ export class SourceBlogService {
           )
         ) as featuredBlog on featuredBlog.feedType = fb.type
         
+        where sb.black_list = false
+        group by fb.type, sourceBlogName, sourceBlogImage
+        order by SourceBlogName desc
+      `,
+    );
+
+    return query2.map((result: any) => {
+      return {
+        value: result.type,
+        content: contentTypeSourceBlog[result.type],
+        nbBlogs: result.numberblogs,
+        featuredBlog: {
+          sourceBlogName: result.sourceblogname,
+          sourceBlogImage: result.sourceblogimage,
+        },
+      };
+    });
+  }
+
+  async findAllTypesV2() {
+    const query2 = await this.dataSource.query(
+      `
+        select distinct (fb.type), 
+               count(fb.type) as numberblogs, 
+               fbs.source_blog_name as sourceBlogName,
+                fbs.source_blog_image as sourceBlogImage
+        from source_blogs sb
+        left join feed_blogs fb on sb.feed_blog_id = fb.feed_blog_id
+        left join feed_blogs_stats fbs on fbs.type::text = fb.type::text
         where sb.black_list = false
         group by fb.type, sourceBlogName, sourceBlogImage
         order by SourceBlogName desc

@@ -22,7 +22,6 @@ import {
   SourceBlogTypeItemTypeResponse,
 } from '@/bussiness/source-blog/source-blog.type';
 import {SourceBlogToUserService} from '@/bussiness/source-blog-user/source-blog-user.service';
-import {TypeFeed} from '@/bussiness/feed_blog/feed-blog.proto';
 
 @Controller('source-blog')
 export class SourceBlogController {
@@ -92,6 +91,16 @@ export class SourceBlogController {
   async findAllTypes() {
     const allSourceBlogItemTypes: SourceBlogTypeItemTypeResponse[] =
       await this.sourceBlogService.findAllTypes();
+    return {
+      data: allSourceBlogItemTypes,
+    };
+  }
+
+  @Get('all-types-v2')
+  @UseGuards(AuthGuard)
+  async findAllTypesV2() {
+    const allSourceBlogItemTypes: SourceBlogTypeItemTypeResponse[] =
+      await this.sourceBlogService.findAllTypesV2();
     return {
       data: allSourceBlogItemTypes,
     };
