@@ -23,7 +23,7 @@ export class FeedBlogEntity extends BaseTable {
     type: 'enum',
     nullable: false,
     enum: TypeFeed,
-    default: TypeFeed.ORIGINAL,
+    default: TypeFeed.AI,
   })
   type: TypeFeed;
 }
