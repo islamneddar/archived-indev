@@ -1,5 +1,6 @@
 import {
   Controller,
+  Get,
   HttpCode,
   HttpException,
   HttpStatus,
@@ -32,6 +33,15 @@ export class FeedBlogController {
     await this.feedBlogService.save(createFeedBlogRequest);
     res.status(HttpStatus.CREATED).json({
       message: 'feed created',
+    });
+  }
+
+  @Get('/all')
+  @HttpCode(HttpStatus.OK)
+  async getAll(@Res() res: Response) {
+    const feeds = await this.feedBlogService.getAll();
+    res.status(HttpStatus.OK).json({
+      feeds,
     });
   }
 }
