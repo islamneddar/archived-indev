@@ -14,7 +14,7 @@ export class FeedBlogStatsEntity {
     type: 'enum',
     nullable: false,
     enum: TypeFeed,
-    default: TypeFeed.ORIGINAL,
+    default: TypeFeed.AI,
     unique: true,
   })
   type: TypeFeed;
