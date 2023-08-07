@@ -138,6 +138,7 @@ export class BlogService {
     user: UserEntity;
     sourceBlogId?: number;
     textSearch?: string;
+    isFollowingBlogs?: boolean;
   }) {
     const query = (await this.dataSource.query(`
         SELECT blogs.blog_id             as blogid,
@@ -161,15 +162,20 @@ export class BlogService {
                                  param.user
                                    ? 'left join blog_to_user on blogs.blog_id = blog_to_user.blog_id and blog_to_user.user_id = ' +
                                      param.user.userId
-                                   : ''
+                                   : ' '
                                }
+                 ${
+                   param.isFollowingBlogs
+                     ? 'left join source_blog_to_user on source_blog_to_user.source_blog_id = source_blogs.source_blog_id '
+                     : ''
+                 }
         where source_blogs.black_list = false
             ${
               param.sourceBlogId
                 ? 'and source_blogs.source_blog_id = ' +
                   param.sourceBlogId +
                   ' '
-                : ''
+                : ' '
             }
             ${
               param.textSearch
@@ -179,15 +185,21 @@ export class BlogService {
                     .split(' ')
                     .map(word => `${word}:* `)
                     .join(' & ') +
-                  "')"
-                : ''
+                  "') "
+                : ' '
+            }
+            ${
+              param.isFollowingBlogs
+                ? ' and source_blog_to_user.user_id = ' +
+                  param.user.userId +
+                  ' and source_blog_to_user.is_follow = true '
+                : ' '
             }
         group by blogs.blog_id, source_blogs.name, source_blogs.image, totalLikes, blogs.publish_date ${
           param.user
-            ? ', blog_to_user.is_liked, blog_to_user.is_bookmarked '
-            : ''
+            ? ' , blog_to_user.is_liked, blog_to_user.is_bookmarked '
+            : ' '
         }
-
         order by blogs.publish_date desc
         offset ${param.pageOptionsDto.skip} limit ${param.pageOptionsDto.take}
     `)) as any[];

@@ -63,3 +63,10 @@ export class GetAllBlogBySearchTitleRequest {
   @Type(() => String)
   text?: string;
 }
+
+export class GetAllBlogByFollowedBlogs {
+  @Type(() => PageOptionsDto)
+  pageOption: PageOptionsDto;
+  @Type(() => Boolean)
+  followedBlogs?: boolean;
+}
