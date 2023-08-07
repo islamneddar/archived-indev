@@ -10,8 +10,9 @@ function PersonalizedFeedBlogBody() {
           <BlogList
             gridToShow={GridBlogType.GRID}
             showAd={true}
-            showContainerOfGridAndFilter={true}
+            showContainerOfGridAndFilter={false}
             forSpecificSourceBlog={null}
+            followedBlogs={true}
           />
         }
       </div>
