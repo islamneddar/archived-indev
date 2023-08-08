@@ -72,8 +72,6 @@ export default class BlogController {
     @Req() req: Request,
     @Query() query: GetAllBlogByFollowedBlogs,
   ) {
-    this.LOG.debug('getAllByFollowedSourceBlog');
-    this.LOG.debug(query.followedBlogs);
     const user = req.user;
     if (query.followedBlogs && query.pageOption) {
       return await this.blogService.getAllWithPaginateWithAuth({
@@ -204,14 +202,17 @@ export default class BlogController {
   }
 
   @Post('search')
+  @UseGuards(AuthGuard)
   async getAllBlogBySearchTitle(
     @Req() req: Request,
     @Query() query: GetAllBlogBySearchTitleRequest,
   ) {
+    const user = req.user;
     return await this.blogService.getAllWithPaginateWithAuth({
       pageOptionsDto: query.pageOption,
-      user: req.user,
       textSearch: query.text,
+      user: user,
+      isFollowingBlogs: query.withFollowedSourceBlog,
     });
   }
 }
