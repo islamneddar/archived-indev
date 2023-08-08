@@ -170,6 +170,9 @@ export default class BlogService {
             take: request.paginationRequestMeta.take,
           },
           text: request.text,
+          withFollowedSourceBlog: request.followedBlogs
+            ? request.followedBlogs
+            : false,
         },
         headers: {
           Authorization: `Bearer ${request.accessToken}`,

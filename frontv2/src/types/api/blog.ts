@@ -76,4 +76,5 @@ export interface GetBlogsBySearchRequest {
   paginationRequestMeta: PaginationRequestMetaRequest;
   accessToken: string | null;
   text: string;
+  followedBlogs?: boolean;
 }
