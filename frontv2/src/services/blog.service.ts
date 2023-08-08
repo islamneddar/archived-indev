@@ -83,6 +83,29 @@ export default class BlogService {
     return data as GetBlogsResponse;
   }
 
+  async getAllBlogWithPaginationAndFollowedOnly(
+    getAllBlogRequest: GetAllBlogRequest,
+  ) {
+    const res = await axios.get(
+      `${this.endpointBlog}/all/with-auth/by-followed-source-blog`,
+      {
+        params: {
+          pageOption: {
+            page: getAllBlogRequest.paginationRequestMeta.page,
+            take: getAllBlogRequest.paginationRequestMeta.take,
+          },
+          followedBlogs: getAllBlogRequest.followedBlogs,
+        },
+        headers: {
+          Authorization: `Bearer ${getAllBlogRequest.accessToken}`,
+        },
+      },
+    );
+
+    const data = await res.data;
+    return data as GetBlogsResponse;
+  }
+
   async bookmarkBlog(request: BookmarkBlogRequest) {
     const res = await axios.post(
       `${this.endpointBlog}/bookmark`,
@@ -147,6 +170,9 @@ export default class BlogService {
             take: request.paginationRequestMeta.take,
           },
           text: request.text,
+          withFollowedSourceBlog: request.followedBlogs
+            ? request.followedBlogs
+            : false,
         },
         headers: {
           Authorization: `Bearer ${request.accessToken}`,

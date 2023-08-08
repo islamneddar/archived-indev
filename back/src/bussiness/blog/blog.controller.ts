@@ -15,6 +15,7 @@ import {Request} from 'express';
 import {BlogService} from './blog.service';
 import {PageOptionsDto} from '@/common/pagination/page_option.dto';
 import {
+  GetAllBlogByFollowedBlogs,
   GetAllBlogBySearchTitleRequest,
   GetAllBookmarksWithPaginationQuery,
   GetBlogsForSourceBlogRequest,
@@ -23,6 +24,8 @@ import {
 } from './blog.proto';
 import {AuthGuard} from '@/bussiness/auth/auth.guard';
 import {BlogToUserService} from '@/bussiness/blog-user/blog-user.service';
+import {PageDto} from '@/common/pagination/page.dto';
+import {PageMetaDto} from '@/common/pagination/page_meta.dto';
 
 @Controller('blogs')
 export default class BlogController {
@@ -61,6 +64,30 @@ export default class BlogController {
       pageOptionsDto,
       user,
     });
+  }
+
+  @Get('all/with-auth/by-followed-source-blog')
+  @UseGuards(AuthGuard)
+  async getAllByFollowedSourceBlog(
+    @Req() req: Request,
+    @Query() query: GetAllBlogByFollowedBlogs,
+  ) {
+    const user = req.user;
+    if (query.followedBlogs && query.pageOption) {
+      return await this.blogService.getAllWithPaginateWithAuth({
+        user,
+        pageOptionsDto: query.pageOption,
+        isFollowingBlogs: query.followedBlogs,
+      });
+    }
+
+    return new PageDto(
+      [],
+      new PageMetaDto({
+        itemCount: 0,
+        pageOptionsDto: query.pageOption,
+      }),
+    );
   }
 
   @Post('like')
@@ -175,14 +202,17 @@ export default class BlogController {
   }
 
   @Post('search')
+  @UseGuards(AuthGuard)
   async getAllBlogBySearchTitle(
     @Req() req: Request,
     @Query() query: GetAllBlogBySearchTitleRequest,
   ) {
+    const user = req.user;
     return await this.blogService.getAllWithPaginateWithAuth({
       pageOptionsDto: query.pageOption,
-      user: req.user,
       textSearch: query.text,
+      user: user,
+      isFollowingBlogs: query.withFollowedSourceBlog,
     });
   }
 }

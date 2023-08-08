@@ -46,12 +46,10 @@ export interface IBlogListProps {
   gridToShow: GridBlogType;
   showAd: boolean;
   forSpecificSourceBlog: number | null; // sourceblog id
+  followedBlogs?: boolean;
 }
 
 function BlogList(props: IBlogListProps) {
-  // refs
-  const searchInputRef = useRef<HTMLInputElement>(null);
-
   // dispatch
   const dispatchThunk = useDispatch<ThunkDispatch<any, any, any>>();
   const dispatch = useDispatch();
@@ -82,6 +80,8 @@ function BlogList(props: IBlogListProps) {
   const [lastSearchPhrase, setLastSearchPhrase] = useState<string>('');
 
   // useEffect
+
+  // useEffect to call the fetch blogs
   useEffect(() => {
     async function getBlogs() {
       if (searchLaunched) return;
@@ -101,6 +101,7 @@ function BlogList(props: IBlogListProps) {
     }
   }, [restart]);
 
+  // use effect for result of all blogs
   useEffect(() => {
     if (blogSelector.success) {
       if (blogSelector.data) {
@@ -117,6 +118,7 @@ function BlogList(props: IBlogListProps) {
     }
   }, [blogSelector.success, blogSelector.error]);
 
+  // use effect for result of all blogs by source blog
   useEffect(() => {
     if (blogsBySourceBlogSelector.success) {
       if (blogsBySourceBlogSelector.data) {
@@ -133,6 +135,7 @@ function BlogList(props: IBlogListProps) {
     }
   }, [blogsBySourceBlogSelector.success, blogsBySourceBlogSelector.error]);
 
+  // use effect for liked blog response
   useEffect(() => {
     if (likeBlogSelector.success) {
       if (likeBlogSelector.data) {
@@ -157,6 +160,7 @@ function BlogList(props: IBlogListProps) {
     }
   }, [likeBlogSelector.success, likeBlogSelector.error]);
 
+  // use effect for bookmark blog response
   useEffect(() => {
     if (bookmarkBlogSelector.success) {
       if (bookmarkBlogSelector.data) {
@@ -181,6 +185,7 @@ function BlogList(props: IBlogListProps) {
     }
   }, [bookmarkBlogSelector.success, bookmarkBlogSelector.error]);
 
+  // use effect for search blog response
   useEffect(() => {
     if (getAllBlogsBySearchSelector.success) {
       if (getAllBlogsBySearchSelector.data) {
@@ -211,6 +216,7 @@ function BlogList(props: IBlogListProps) {
 
     const getAllBlogRequest = {
       paginationRequestMeta: paginationRequest,
+      followedBlogs: props.followedBlogs ? props.followedBlogs : false,
       accessToken:
         userSessionSelector.isAuthenticated &&
         userSessionSelector.user.accessToken

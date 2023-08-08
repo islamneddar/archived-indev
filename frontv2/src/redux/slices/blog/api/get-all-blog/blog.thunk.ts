@@ -13,11 +13,16 @@ export const getAllBlogThunk = createAsyncThunk<
         return await BlogService.getInstance().getAllBlogWithPagination(
           getAllBlogRequest,
         );
-      } else {
-        return await BlogService.getInstance().getAllBlogWithPaginationWithAuth(
+      }
+      if (getAllBlogRequest.followedBlogs) {
+        return await BlogService.getInstance().getAllBlogWithPaginationAndFollowedOnly(
           getAllBlogRequest,
         );
       }
+
+      return await BlogService.getInstance().getAllBlogWithPaginationWithAuth(
+        getAllBlogRequest,
+      );
     } catch (error: any) {
       return rejectWithValue(error.response.data.message);
     }
