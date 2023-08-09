@@ -26,6 +26,7 @@ import {SourceBlogToUserModule} from '@/bussiness/source-blog-user/source-blog-u
 import {BlogToUserModule} from '@/bussiness/blog-user/blog-user.module';
 import {FeedBlogTypeStatsModule} from '@/bussiness/feed-blog/feed-blog-type-stats/feed-blog-type-stats.module';
 import {StatsCalculatorModule} from '@/jobs/stats-calculator/stats-calculator.module';
+import {UserEntity} from '@/bussiness/user/user.entity';
 
 const DEFAULT_ADMIN = {
   email: 'lemsijoker',
@@ -53,7 +54,13 @@ AdminJS.registerAdapter({
       useFactory: () => ({
         adminJsOptions: {
           rootPath: '/admin',
-          resources: [FeedBlogEntity, BlogEntity, SourceBlogEntity, TagEntity],
+          resources: [
+            FeedBlogEntity,
+            BlogEntity,
+            SourceBlogEntity,
+            TagEntity,
+            UserEntity,
+          ],
         },
         auth: {
           authenticate,
