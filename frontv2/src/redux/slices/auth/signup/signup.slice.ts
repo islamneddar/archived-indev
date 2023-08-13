@@ -1,6 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {signupThunk} from './signup.thunk';
-import {useAppSelector} from '@/redux/store';
 
 export interface SignupState {
   loading: boolean;
@@ -23,7 +22,7 @@ export const signupSlice = createSlice({
       state.loading = true;
       state.error = undefined;
     });
-    builder.addCase(signupThunk.fulfilled, (state, action) => {
+    builder.addCase(signupThunk.fulfilled, state => {
       state.loading = false;
       state.success = true;
     });

@@ -40,6 +40,7 @@ function BlogCard(props: IBlogCardProps) {
               />
             </div>
           )}
+          <div className={'flex flex-1'}></div>
           <SourceAndTimeContainer blog={blog}></SourceAndTimeContainer>
           <TagsContainer blog={blog}></TagsContainer>
         </div>

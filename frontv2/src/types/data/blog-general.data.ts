@@ -2,7 +2,6 @@ import {
   BlogAffichageType,
   GridBlogType,
 } from '@/types/general/blog-general.type';
-import {TypeFeed} from '@/types/api/source_blog';
 export const gridBlogType = [
   {
     value: GridBlogType.GRID,
