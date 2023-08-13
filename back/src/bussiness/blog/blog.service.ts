@@ -5,7 +5,6 @@ import {BlogEntity} from './blog.entity';
 import {PageOptionsDto} from '@/common/pagination/page_option.dto';
 import {PageMetaDto} from '@/common/pagination/page_meta.dto';
 import {PageDto} from '@/common/pagination/page.dto';
-import {BlogToUserService} from '@/bussiness/blog-user/blog-user.service';
 import {UserEntity} from '@/bussiness/user/user.entity';
 import {BlogServiceUtil} from '@/bussiness/blog/blog.service.util';
 
@@ -140,10 +139,6 @@ export class BlogService {
     textSearch?: string;
     isFollowingBlogs?: boolean;
   }) {
-    this.logger.debug(param.isFollowingBlogs);
-    this.logger.debug(param.textSearch);
-    this.logger.debug(param.pageOptionsDto);
-
     const queryText = `
         SELECT blogs.blog_id             as blogid,
                blogs.title               as blogtitle,
