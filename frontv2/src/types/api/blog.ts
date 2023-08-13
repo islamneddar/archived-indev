@@ -1,7 +1,6 @@
 import {PageMetaResponse, PaginationRequestMetaRequest} from './common';
 import {SourceBlog} from './source_blog';
 import {Tag} from './tag';
-import {bool} from 'yup';
 
 /**
  * types
