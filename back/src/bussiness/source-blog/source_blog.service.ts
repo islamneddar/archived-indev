@@ -154,8 +154,6 @@ export class SourceBlogService {
           from feed_blogs fb
           where fb.type = '${param.typeSource}'
       )
-      offset ${param.pagePaginationDto.skip}
-      limit ${param.pagePaginationDto.take}
     `);
 
     const queryCount = await this.dataSource.query(`
