@@ -140,7 +140,11 @@ export class BlogService {
     textSearch?: string;
     isFollowingBlogs?: boolean;
   }) {
-    const query = (await this.dataSource.query(`
+    this.logger.debug(param.isFollowingBlogs);
+    this.logger.debug(param.textSearch);
+    this.logger.debug(param.pageOptionsDto);
+
+    const queryText = `
         SELECT blogs.blog_id             as blogid,
                blogs.title               as blogtitle,
                blogs.publish_date        as publishdate,
@@ -165,7 +169,7 @@ export class BlogService {
                                    : ' '
                                }
                  ${
-                   param.isFollowingBlogs
+                   param.isFollowingBlogs === true
                      ? 'left join source_blog_to_user on source_blog_to_user.source_blog_id = source_blogs.source_blog_id '
                      : ''
                  }
@@ -189,7 +193,7 @@ export class BlogService {
                 : ' '
             }
             ${
-              param.isFollowingBlogs
+              param.isFollowingBlogs === true
                 ? ' and source_blog_to_user.user_id = ' +
                   param.user.userId +
                   ' and source_blog_to_user.is_follow = true '
@@ -202,7 +206,10 @@ export class BlogService {
         }
         order by blogs.publish_date desc
         offset ${param.pageOptionsDto.skip} limit ${param.pageOptionsDto.take}
-    `)) as any[];
+    `;
+
+    console.log(queryText);
+    const query = (await this.dataSource.query(queryText)) as any[];
 
     const listBlog = query.map(blogFromDb => {
       return BlogServiceUtil.fromDbToBlogEntity({
