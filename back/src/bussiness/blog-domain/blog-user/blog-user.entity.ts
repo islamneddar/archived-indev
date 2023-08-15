@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import {BaseTable} from '@/database/base-table.entity';
 import {UserEntity} from '@/bussiness/user/user.entity';
-import {BlogEntity} from '@/bussiness/blog/blog.entity';
+import {BlogEntity} from '@/bussiness/blog-domain/blog/blog.entity';
 import {TinyIntEnum} from '@/database/db.types';
 
 @Entity({name: 'blog_to_user'})

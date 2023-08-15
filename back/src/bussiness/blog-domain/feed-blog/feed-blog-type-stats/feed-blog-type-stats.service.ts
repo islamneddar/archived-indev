@@ -1,11 +1,11 @@
 import {Injectable} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
 import {DataSource, Repository} from 'typeorm';
-import {FeedBlogStatsEntity} from '@/bussiness/feed-blog/feed-blog-type-stats/feed-blog-type-stats-entity';
+import {FeedBlogStatsEntity} from '@/bussiness/blog-domain/feed-blog/feed-blog-type-stats/feed-blog-type-stats-entity';
 import {
   contentTypeSourceBlog,
   TypeFeed,
-} from '@/bussiness/feed-blog/feed_blog/feed-blog.proto';
+} from '@/bussiness/blog-domain/feed-blog/feed_blog/feed-blog.proto';
 
 @Injectable()
 export class FeedBlogTypeStatsService {

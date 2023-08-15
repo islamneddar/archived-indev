@@ -1,5 +1,5 @@
 import {Injectable} from '@nestjs/common';
-import {FeedBlogTypeStatsService} from '@/bussiness/feed-blog/feed-blog-type-stats/feed-blog-type-stats.service';
+import {FeedBlogTypeStatsService} from '@/bussiness/blog-domain/feed-blog/feed-blog-type-stats/feed-blog-type-stats.service';
 import {Cron, CronExpression} from '@nestjs/schedule';
 import * as process from 'process';
 

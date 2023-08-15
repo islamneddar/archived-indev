@@ -1,7 +1,7 @@
 import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
-import {SourceBlogEntity} from '@/bussiness/source-blog/source_blog.entity';
+import {SourceBlogEntity} from '@/bussiness/blog-domain/source-blog/source_blog.entity';
 import {BaseTable} from '@/database/base-table.entity';
-import {TypeFeed} from '@/bussiness/feed-blog/feed_blog/feed-blog.proto';
+import {TypeFeed} from '@/bussiness/blog-domain/feed-blog/feed_blog/feed-blog.proto';
 
 @Entity({
   name: 'feed_blogs',

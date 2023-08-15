@@ -1,6 +1,6 @@
 import {Module} from '@nestjs/common';
-import {BlogToUserService} from '@/bussiness/blog-user/blog-user.service';
-import {BlogToUserEntity} from '@/bussiness/blog-user/blog-user.entity';
+import {BlogToUserService} from '@/bussiness/blog-domain/blog-user/blog-user.service';
+import {BlogToUserEntity} from '@/bussiness/blog-domain/blog-user/blog-user.entity';
 import {TypeOrmModule} from '@nestjs/typeorm';
 
 @Module({
