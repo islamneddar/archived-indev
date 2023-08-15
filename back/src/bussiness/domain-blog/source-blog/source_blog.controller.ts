@@ -34,7 +34,6 @@ export class SourceBlogController {
   @HttpCode(HttpStatus.CREATED)
   async create(@Req() req: Request) {
     const sourceBlog = req.body as SourceBlogEntity;
-    LOG.info(sourceBlog);
     await this.sourceBlogService.save(sourceBlog);
   }
 

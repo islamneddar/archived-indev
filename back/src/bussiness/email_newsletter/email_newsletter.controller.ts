@@ -1,6 +1,6 @@
-import { Body, Controller, Logger, Post } from '@nestjs/common';
-import { AddEmailNewsletter } from './email_newsletter.proto';
-import { EmailNewsletterService } from './email_newsletter.service';
+import {Body, Controller, Logger, Post} from '@nestjs/common';
+import {AddEmailNewsletter} from './email_newsletter.proto';
+import {EmailNewsletterService} from './email_newsletter.service';
 
 @Controller('email-newsletter')
 export class EmailNewsletterController {
@@ -10,7 +10,6 @@ export class EmailNewsletterController {
 
   @Post('/add')
   async addEmail(@Body() addEmailNewsletter: AddEmailNewsletter) {
-    this.LOG.log(addEmailNewsletter);
     return {
       message: 'ok',
       email: addEmailNewsletter.email,

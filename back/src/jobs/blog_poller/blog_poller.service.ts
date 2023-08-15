@@ -43,7 +43,6 @@ export default class BlogPollerService {
       const feedBlogs = await this.feedBlogService.getAll();
       for (const feedBlog of feedBlogs) {
         try {
-          this.LOG.debug(`feed blog ${feedBlog.urlFeed}`);
           this.currentUrl = feedBlog.urlFeed;
           await this.readAndCreateBlogs(feedBlog);
         } catch (err) {
@@ -59,7 +58,6 @@ export default class BlogPollerService {
       const feedBlogs = await this.feedBlogService.getAll();
       for (const feedBlog of feedBlogs) {
         try {
-          this.LOG.debug(`feed blog ${feedBlog.urlFeed}`);
           this.currentUrl = feedBlog.urlFeed;
           await this.readAndCreateBlogs(feedBlog);
         } catch (err) {
@@ -86,11 +84,9 @@ export default class BlogPollerService {
     }
     const sourceBlog = await this.getInfoSourceBlog(feedBlog);
     if (sourceBlog.blackList) {
-      this.LOG.log(`source blog ${sourceBlog.name} is black listed`);
       return;
     }
 
-    this.LOG.debug('feed titles number : ' + this.feed.items.length);
     for (const item of this.feed.items) {
       const blogCheck: BlogEntity = await this.blogService.getByTitle(
         item.title,
@@ -98,7 +94,6 @@ export default class BlogPollerService {
       if (blogCheck !== null) {
         continue;
       }
-      this.LOG.log('blog-section to add : ', item.title);
       const blog = new BlogEntity();
       blog.title = item.title;
       blog.publishDate = new Date(item.pubDate);
@@ -110,7 +105,6 @@ export default class BlogPollerService {
       // blog-section.content = "";//item.content
       await this.dataSource.transaction(async () => {
         const blogCreated = await this.blogService.getOrCreate(blog);
-        this.LOG.debug('blog-section created : ' + blogCreated.title);
       });
     }
   }

@@ -30,9 +30,6 @@ const DBModule = TypeOrmModule.forRootAsync({
       BlogToUserEntity,
       FeedBlogStatsEntity,
     ];
-    LOG.log(process.env.DB_PORT);
-    LOG.log(process.env.DB_USERNAME);
-    LOG.log(process.env.DB_PASSWORD);
     if (process.env.NODE_ENV === 'development') {
       const configToReturn: TypeOrmModuleOptions = {
         type: 'postgres',
