@@ -11,16 +11,24 @@ interface ISideBarItemProps {
 
 function SideBarItem(props: ISideBarItemProps) {
   const pathname = usePathname();
+  const pathnameSplited = pathname?.split('/');
+  const secondPathname = pathnameSplited && pathnameSplited[2];
+  console.log(secondPathname);
+
   const item = props.item;
+  const itemHrefSplited = item.href.split('/');
+  const secondItemHref = itemHrefSplited && itemHrefSplited[2];
+  console.log(secondItemHref);
+
   const userSessionSelector = useUserSessionSelector();
   const router = useRouter();
-  console.log(pathname);
-  console.log(item.href);
-  console.log(pathname?.includes(item.href));
+
+  const isCurrentPath = secondPathname === secondItemHref;
+
   return (
     <a
       className={classNames(
-        pathname?.includes(item.href)
+        isCurrentPath
           ? 'bg-gray-900 text-white'
           : 'text-gray-300 hover:bg-gray-700 hover:text-white',
         'group flex items-center rounded-md px-2 py-2 text-sm font-medium cursor-pointer',
@@ -31,7 +39,7 @@ function SideBarItem(props: ISideBarItemProps) {
           window.location.href = routing.auth.login;
           return;
         }
-        if (!pathname?.includes(item.href)) {
+        if (!isCurrentPath) {
           //window.location.href = item.href;
           router.push(item.href);
         }
@@ -39,7 +47,7 @@ function SideBarItem(props: ISideBarItemProps) {
       {item.icon && (
         <item.icon
           className={classNames(
-            pathname?.includes(item.href)
+            isCurrentPath
               ? 'text-gray-300'
               : 'text-gray-400 group-hover:text-gray-300',
             'mr-3 h-6 w-6 flex-shrink-0',

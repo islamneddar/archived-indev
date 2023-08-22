@@ -84,7 +84,7 @@ function Layout({children}: {children: React.ReactNode}) {
     <>
       <NavBar />
       <div className="bg-secondary h-[calc(100vh_-_96px)]">
-        <SideBarMainAiTool navigation={navigationState} />
+        <SideBarMain navigation={navigationState} />
         <Fragment>
           <div className={' w-full md:pl-64'}>{children}</div>
         </Fragment>
