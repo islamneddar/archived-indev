@@ -1,16 +1,19 @@
 'use client';
 import React, {useEffect} from 'react';
-import {FollowSourceBlogRequest, SourceBlog} from '@/types/api/source_blog';
+import {
+  FollowSourceBlogRequest,
+  SourceBlog,
+} from '@/types/api/blogs/source_blog';
 import {useUserSessionSelector} from '@/redux/slices/auth/user/user.selector';
 import {ThunkDispatch} from '@reduxjs/toolkit';
 import {useDispatch} from 'react-redux';
-import {followSourceBlogThunk} from '@/redux/slices/source_blog/api/follow-source-blog/follow-source-blog.thunk';
-import {useFollowSourceBlogSelector} from '@/redux/slices/source_blog/api/follow-source-blog/follow-source-blog.selector';
+import {followSourceBlogThunk} from '@/redux/slices/blogs/source_blog/api/follow-source-blog/follow-source-blog.thunk';
+import {useFollowSourceBlogSelector} from '@/redux/slices/blogs/source_blog/api/follow-source-blog/follow-source-blog.selector';
 import PrimaryButton from '@/components/button/PrimaryButton';
 import {formatCompactNumber} from '@/utils/general';
 import {usePathname, useRouter} from 'next/navigation';
 import {toggleSideOverForGetBlogsBySourceBlog} from '@/redux/slices/system/system.slice';
-import {setSourceBlog} from '@/redux/slices/source_blog/source-blog-state/source-blog-state.slice';
+import {setSourceBlog} from '@/redux/slices/blogs/source_blog/source-blog-state/source-blog-state.slice';
 
 interface ISourceBlogCardProps {
   sourceBlog: SourceBlog;

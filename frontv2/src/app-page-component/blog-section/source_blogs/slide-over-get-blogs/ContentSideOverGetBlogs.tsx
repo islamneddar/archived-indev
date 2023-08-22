@@ -1,5 +1,5 @@
 import React from 'react';
-import {SourceBlog} from '@/types/api/source_blog';
+import {SourceBlog} from '@/types/api/blogs/source_blog';
 import HeaderContentSideOverGetBlogsSourceBlog from '@/app-page-component/blog-section/source_blogs/slide-over-get-blogs/content/HeaderContentSideOverGetBlogsSourceBlog';
 import {Divider} from 'primereact/divider';
 import BlogList from '@/app-page-component/blog-section/blogs/BlogList';

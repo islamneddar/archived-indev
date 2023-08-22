@@ -8,6 +8,8 @@ export class AiToolCategoryController {
 
   @Get('/all')
   async getAll() {
-    return await this.aiToolCategoryService.getAll();
+    return {
+      data: await this.aiToolCategoryService.getAll(),
+    };
   }
 }

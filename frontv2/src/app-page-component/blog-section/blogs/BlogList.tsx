@@ -5,10 +5,10 @@ import {
   PageMetaResponse,
   PaginationRequestMetaRequest,
 } from '@/types/api/common';
-import {TypeFeed} from '@/types/api/source_blog';
+import {TypeFeed} from '@/types/api/blogs/source_blog';
 import {useDispatch} from 'react-redux';
-import {getAllBlogThunk} from '@/redux/slices/blog/api/get-all-blog/blog.thunk';
-import {useBlogSelector} from '@/redux/slices/blog/api/get-all-blog/blog.selector';
+import {getAllBlogThunk} from '@/redux/slices/blogs/blog/api/get-all-blog/blog.thunk';
+import {useBlogSelector} from '@/redux/slices/blogs/blog/api/get-all-blog/blog.selector';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import {ThunkDispatch} from '@reduxjs/toolkit';
 import {
@@ -20,23 +20,23 @@ import {
   Blog,
   GetAllBlogByPaginationForSourceBlogIdRequest,
   GetBlogsBySearchRequest,
-} from '@/types/api/blog';
-import {useLikeBlogSelector} from '@/redux/slices/blog/api/like-blog/like-blog.selector';
-import {resetBlogState} from '@/redux/slices/blog/api/get-all-blog/blog.slice';
-import {resetLikeBlogState} from '@/redux/slices/blog/api/like-blog/like-blog.slice';
+} from '@/types/api/blogs/blog';
+import {useLikeBlogSelector} from '@/redux/slices/blogs/blog/api/like-blog/like-blog.selector';
+import {resetBlogState} from '@/redux/slices/blogs/blog/api/get-all-blog/blog.slice';
+import {resetLikeBlogState} from '@/redux/slices/blogs/blog/api/like-blog/like-blog.slice';
 import toast from 'react-hot-toast';
 import {useUserSessionSelector} from '@/redux/slices/auth/user/user.selector';
-import {useBookmarkBlogSelector} from '@/redux/slices/blog/api/bookmark-blog/bookmark-blog.selector';
-import {resetBookmarkBlogState} from '@/redux/slices/blog/api/bookmark-blog/bookmark-blog.slice';
+import {useBookmarkBlogSelector} from '@/redux/slices/blogs/blog/api/bookmark-blog/bookmark-blog.selector';
+import {resetBookmarkBlogState} from '@/redux/slices/blogs/blog/api/bookmark-blog/bookmark-blog.slice';
 import ContainerForFilterGetDataAndGridType from '@/app-page-component/blog-section/blogs/ContainerForFilterGetDataAndGridType';
-import {getAllBlogBySourceBlogRequestThunk} from '@/redux/slices/blog/api/get-all-blog-by-source/get-all-blog-by-source.thunk';
-import {useGetBlogsBySourceBlogSelector} from '@/redux/slices/blog/api/get-all-blog-by-source/get-all-blog-by-source.selector';
-import {resetBlogBySourceBlogState} from '@/redux/slices/blog/api/get-all-blog-by-source/get-all-blog-by-source.slice';
+import {getAllBlogBySourceBlogRequestThunk} from '@/redux/slices/blogs/blog/api/get-all-blog-by-source/get-all-blog-by-source.thunk';
+import {useGetBlogsBySourceBlogSelector} from '@/redux/slices/blogs/blog/api/get-all-blog-by-source/get-all-blog-by-source.selector';
+import {resetBlogBySourceBlogState} from '@/redux/slices/blogs/blog/api/get-all-blog-by-source/get-all-blog-by-source.slice';
 import SearchBlogInput from '@/app-page-component/blog-section/blogs/searchBlogInput';
 import {MagnifyingGlassCircleIcon} from '@heroicons/react/24/solid';
-import {useGetAllBlogBySearchSelector} from '@/redux/slices/blog/api/get-blogs-by-search/get-blog-by-search.selector';
-import {getAllBlogBySearchThunk} from '@/redux/slices/blog/api/get-blogs-by-search/get-blog-by-search.thunk';
-import {resetGetAllBlogBySearchSlice} from '@/redux/slices/blog/api/get-blogs-by-search/get-blog-by-search.slice';
+import {useGetAllBlogBySearchSelector} from '@/redux/slices/blogs/blog/api/get-blogs-by-search/get-blog-by-search.selector';
+import {getAllBlogBySearchThunk} from '@/redux/slices/blogs/blog/api/get-blogs-by-search/get-blog-by-search.thunk';
+import {resetGetAllBlogBySearchSlice} from '@/redux/slices/blogs/blog/api/get-blogs-by-search/get-blog-by-search.slice';
 import SearchAndTagContainer from '@/app-page-component/blog-section/blogs/search/SearchAndTagContainer';
 
 const MAX_FETCHED_BLOGS_PAGE = 20;

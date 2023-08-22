@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import {Blog} from '@/types/api/blog';
+import {Blog} from '@/types/api/blogs/blog';
 import './BlogCard.css';
 import 'react-tooltip/dist/react-tooltip.css';
 import SourceAndTimeContainer from '@/app-page-component/blog-section/blogs/blog-card/card-content/SourceAndTimeContainer';

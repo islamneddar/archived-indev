@@ -1,7 +1,7 @@
 'use client';
 import React, {useEffect, useState} from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import {useSourceBlogSelector} from '@/redux/slices/source_blog/api/get-all-source-blog/soure-blog.selector';
+import {useSourceBlogSelector} from '@/redux/slices/blogs/source_blog/api/get-all-source-blog/soure-blog.selector';
 import {
   Order,
   PageMetaResponse,
@@ -9,17 +9,17 @@ import {
 } from '@/types/api/common';
 import {useDispatch} from 'react-redux';
 import {ThunkDispatch} from '@reduxjs/toolkit';
-import {getAllSourceBlogThunk} from '@/redux/slices/source_blog/api/get-all-source-blog/source-blog.thunk';
+import {getAllSourceBlogThunk} from '@/redux/slices/blogs/source_blog/api/get-all-source-blog/source-blog.thunk';
 import SourceBlogList from '@/app-page-component/blog-section/source_blogs/source_blog/SourceBlogList';
 import {useUserSessionSelector} from '@/redux/slices/auth/user/user.selector';
 import {
   GetAllSourceBlogRequest,
   SourceBlog,
   TypeFeed,
-} from '@/types/api/source_blog';
-import {resetSourceBlogState} from '@/redux/slices/source_blog/api/get-all-source-blog/source-blog.slice';
-import {useFollowSourceBlogSelector} from '@/redux/slices/source_blog/api/follow-source-blog/follow-source-blog.selector';
-import {resetFollowSourceBlogState} from '@/redux/slices/source_blog/api/follow-source-blog/follow-source-blog.slice';
+} from '@/types/api/blogs/source_blog';
+import {resetSourceBlogState} from '@/redux/slices/blogs/source_blog/api/get-all-source-blog/source-blog.slice';
+import {useFollowSourceBlogSelector} from '@/redux/slices/blogs/source_blog/api/follow-source-blog/follow-source-blog.selector';
+import {resetFollowSourceBlogState} from '@/redux/slices/blogs/source_blog/api/follow-source-blog/follow-source-blog.slice';
 import toast from 'react-hot-toast';
 import SideOverGetBlogs from '@/app-page-component/blog-section/source_blogs/slide-over-get-blogs/SideOverGetBlogs';
 import {useSystemSelector} from '@/redux/slices/system/system.selector';

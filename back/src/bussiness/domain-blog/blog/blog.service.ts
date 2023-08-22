@@ -203,7 +203,6 @@ export class BlogService {
         offset ${param.pageOptionsDto.skip} limit ${param.pageOptionsDto.take}
     `;
 
-    console.log(queryText);
     const query = (await this.dataSource.query(queryText)) as any[];
 
     const listBlog = query.map(blogFromDb => {

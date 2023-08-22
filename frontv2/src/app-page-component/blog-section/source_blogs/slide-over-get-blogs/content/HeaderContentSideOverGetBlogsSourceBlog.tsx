@@ -1,12 +1,15 @@
 import React, {useEffect} from 'react';
 import FollowButton from '@/app-page-component/components/FollowButton';
 import {formatCompactNumber} from '@/utils/general';
-import {FollowSourceBlogRequest, SourceBlog} from '@/types/api/source_blog';
-import {followSourceBlogThunk} from '@/redux/slices/source_blog/api/follow-source-blog/follow-source-blog.thunk';
+import {
+  FollowSourceBlogRequest,
+  SourceBlog,
+} from '@/types/api/blogs/source_blog';
+import {followSourceBlogThunk} from '@/redux/slices/blogs/source_blog/api/follow-source-blog/follow-source-blog.thunk';
 import {useUserSessionSelector} from '@/redux/slices/auth/user/user.selector';
 import {useDispatch} from 'react-redux';
 import {ThunkDispatch} from '@reduxjs/toolkit';
-import {useFollowSourceBlogSelector} from '@/redux/slices/source_blog/api/follow-source-blog/follow-source-blog.selector';
+import {useFollowSourceBlogSelector} from '@/redux/slices/blogs/source_blog/api/follow-source-blog/follow-source-blog.selector';
 
 interface IHeaderContentSideOverGetBlogsSourceBlogProps {
   sourceBlog: SourceBlog;

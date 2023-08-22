@@ -14,7 +14,9 @@ function SideBarItem(props: ISideBarItemProps) {
   const item = props.item;
   const userSessionSelector = useUserSessionSelector();
   const router = useRouter();
-
+  console.log(pathname);
+  console.log(item.href);
+  console.log(pathname?.includes(item.href));
   return (
     <a
       className={classNames(
@@ -34,15 +36,17 @@ function SideBarItem(props: ISideBarItemProps) {
           router.push(item.href);
         }
       }}>
-      <item.icon
-        className={classNames(
-          pathname?.includes(item.href)
-            ? 'text-gray-300'
-            : 'text-gray-400 group-hover:text-gray-300',
-          'mr-3 h-6 w-6 flex-shrink-0',
-        )}
-        aria-hidden="true"
-      />
+      {item.icon && (
+        <item.icon
+          className={classNames(
+            pathname?.includes(item.href)
+              ? 'text-gray-300'
+              : 'text-gray-400 group-hover:text-gray-300',
+            'mr-3 h-6 w-6 flex-shrink-0',
+          )}
+          aria-hidden="true"
+        />
+      )}
       {item.name}
     </a>
   );

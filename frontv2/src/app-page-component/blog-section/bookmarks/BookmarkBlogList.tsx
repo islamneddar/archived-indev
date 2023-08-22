@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import BlogCard from '@/app-page-component/blog-section/blogs/blog-card/BlogCard';
-import {Blog, GetBookmarksParams} from '@/types/api/blog';
+import {Blog, GetBookmarksParams} from '@/types/api/blogs/blog';
 import {useUserSessionSelector} from '@/redux/slices/auth/user/user.selector';
 import {useDispatch} from 'react-redux';
 import {ThunkDispatch} from '@reduxjs/toolkit';
-import {getAllBookmarksThunk} from '@/redux/slices/blog/api/get-all-bookmarks/get-all-bookmarks.thunk';
-import {useGetAllBookmarksSelector} from '@/redux/slices/blog/api/get-all-bookmarks/get-all-bookmarks.selector';
-import {resetGetBookmarkState} from '@/redux/slices/blog/api/get-all-bookmarks/get-all-bookmarks.slice';
+import {getAllBookmarksThunk} from '@/redux/slices/blogs/blog/api/get-all-bookmarks/get-all-bookmarks.thunk';
+import {useGetAllBookmarksSelector} from '@/redux/slices/blogs/blog/api/get-all-bookmarks/get-all-bookmarks.selector';
+import {resetGetBookmarkState} from '@/redux/slices/blogs/blog/api/get-all-bookmarks/get-all-bookmarks.slice';
 import PrimaryButton from '@/components/button/PrimaryButton';
 
 function BookmarkBlogList() {

@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import {SourceBlogTypeItemType} from '@/types/api/source_blog';
+import {SourceBlogTypeItemType} from '@/types/api/blogs/source_blog';
 import PrimaryButton from '@/components/button/PrimaryButton';
 import {useRouter} from 'next/navigation';
 import routing from '@/routes/routing.constant';
