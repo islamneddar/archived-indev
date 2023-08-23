@@ -63,7 +63,6 @@ export class FeedBlogTypeStatsService {
     `);
       if (query.length !== 0) {
         const sourceBlogWithMostBlogsArray = query.map((result: any) => {
-          console.log(result);
           return {
             type: result.feedtype,
             content: contentTypeSourceBlog[result.feedtype],
@@ -75,7 +74,7 @@ export class FeedBlogTypeStatsService {
           };
         });
         const sourceBlogWithMostBlogs = sourceBlogWithMostBlogsArray[0];
-        console.log(sourceBlogWithMostBlogs);
+
         const feedBlogStats = new FeedBlogStatsEntity();
         feedBlogStats.type = sourceBlogWithMostBlogs.type;
         feedBlogStats.sourceBlogImage =

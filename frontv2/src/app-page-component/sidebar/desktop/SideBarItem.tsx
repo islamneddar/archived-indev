@@ -13,12 +13,10 @@ function SideBarItem(props: ISideBarItemProps) {
   const pathname = usePathname();
   const pathnameSplited = pathname?.split('/');
   const secondPathname = pathnameSplited && pathnameSplited[2];
-  console.log(secondPathname);
 
   const item = props.item;
   const itemHrefSplited = item.href.split('/');
   const secondItemHref = itemHrefSplited && itemHrefSplited[2];
-  console.log(secondItemHref);
 
   const userSessionSelector = useUserSessionSelector();
   const router = useRouter();

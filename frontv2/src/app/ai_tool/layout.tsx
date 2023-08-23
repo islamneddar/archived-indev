@@ -27,6 +27,8 @@ function Layout({children}: {children: React.ReactNode}) {
 
   const [navigationState, setNavigationState] = useState<NavigationType[]>([]);
 
+  const [loading, setLoading] = useState<boolean>(true);
+
   useEffect(() => {
     async function fetchListCategories() {
       fetchTheListOfCategories();
@@ -36,8 +38,10 @@ function Layout({children}: {children: React.ReactNode}) {
       listCategoryAiTools === undefined ||
       Object.keys(listCategoryAiTools?.listCategory).length === 0
     ) {
+      console.log('fetch');
       fetchListCategories();
     } else {
+      console.log('set');
       setListNavigation(listCategoryAiTools.listCategory);
     }
   }, []);
@@ -73,10 +77,15 @@ function Layout({children}: {children: React.ReactNode}) {
       });
     }
     setNavigationState(listCategories);
+    setLoading(false);
   };
 
-  if (getAllCategoriesAiToolsSelector.loading) {
-    return <p>Loading</p>;
+  if (getAllCategoriesAiToolsSelector.loading || loading) {
+    return (
+      <div className={'flex justify-center items-center h-screen w-screen'}>
+        <p className={'text-black'}>Loading</p>
+      </div>
+    );
   }
 
   return (

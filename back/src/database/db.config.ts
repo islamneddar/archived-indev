@@ -12,6 +12,7 @@ import {EmailValidationEntity} from '@/bussiness/email_validation/email_valdatio
 import {SourceBlogToUserEntity} from '@/bussiness/domains/blog/source-blog-user/source-blog-to-user.entity';
 import {BlogToUserEntity} from '@/bussiness/domains/blog/blog-user/blog-user.entity';
 import {FeedBlogStatsEntity} from '@/bussiness/domains/blog/feed-blog/feed-blog-type-stats/feed-blog-type-stats-entity';
+import {AiToolEntity} from '@/bussiness/domains/ai-tool/ai-tool/ai-tool.entity';
 
 const LOG = new Logger('db.config');
 
@@ -29,6 +30,7 @@ const DBModule = TypeOrmModule.forRootAsync({
       SourceBlogToUserEntity,
       BlogToUserEntity,
       FeedBlogStatsEntity,
+      AiToolEntity,
     ];
     if (process.env.NODE_ENV === 'development') {
       const configToReturn: TypeOrmModuleOptions = {

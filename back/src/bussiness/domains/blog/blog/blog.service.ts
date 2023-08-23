@@ -116,8 +116,6 @@ export class BlogService {
       .skip((pageOptionsDto.page - 1) * pageOptionsDto.take)
       .take(pageOptionsDto.take);
 
-    console.log(query.getSql());
-
     const itemCount = await query.getCount();
     const entities = await query.getMany();
     const pageMetaDto = new PageMetaDto({itemCount, pageOptionsDto});

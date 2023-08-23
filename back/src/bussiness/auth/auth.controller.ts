@@ -17,7 +17,7 @@ import {JWT_SECRET} from '@/config';
 import {UserService} from '@/bussiness/user/user.service';
 import {EmailValidationEntity} from '@/bussiness/email_validation/email_valdation.entity';
 import {EmailValidationService} from '@/bussiness/email_validation/email_validation.service';
-import {MailingService} from '@/bussiness/mailing/mailing.service';
+import {MailingService} from '@/external-services/mailing/mailing.service';
 
 @Controller('auth')
 export class AuthController {

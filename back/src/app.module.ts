@@ -4,7 +4,7 @@ import {ScheduleModule} from '@nestjs/schedule';
 import {ThrottlerGuard} from '@nestjs/throttler';
 import {APP_GUARD} from '@nestjs/core';
 import DBModule from './database/db.config';
-import {MailingConfig} from '@/bussiness/mailing/mailing.config';
+import {MailingConfig} from '@/external-services/mailing/mailing.config';
 import {adminJsMiddleware} from '@/middleware/admin.middleware';
 import {rateLimiterMiddleware} from '@/middleware/rate-limiter.middleware';
 import {modules} from '@/middleware/module-domain-listing.middleware';
