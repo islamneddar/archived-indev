@@ -2,16 +2,16 @@ import {TypeOrmModule} from '@nestjs/typeorm';
 import {Logger} from '@nestjs/common';
 import {ConfigModule, ConfigService} from '@nestjs/config';
 import {TypeOrmModuleOptions} from '@nestjs/typeorm/dist/interfaces/typeorm-options.interface';
-import {SourceBlogEntity} from '@/bussiness/domain-blog/source-blog/source_blog.entity';
-import {BlogEntity} from '@/bussiness/domain-blog/blog/blog.entity';
-import {FeedBlogEntity} from '@/bussiness/domain-blog/feed-blog/feed_blog/feed_blog.entity';
-import {TagEntity} from '@/bussiness/domain-blog/tag/tag.entity';
+import {SourceBlogEntity} from '@/bussiness/domains/blog/source-blog/source_blog.entity';
+import {BlogEntity} from '@/bussiness/domains/blog/blog/blog.entity';
+import {FeedBlogEntity} from '@/bussiness/domains/blog/feed-blog/feed_blog/feed_blog.entity';
+import {TagEntity} from '@/bussiness/domains/blog/tag/tag.entity';
 import {NewsletterEmailEntity} from '@/bussiness/email_newsletter/email_newsletter.entity';
 import {UserEntity} from '@/bussiness/user/user.entity';
 import {EmailValidationEntity} from '@/bussiness/email_validation/email_valdation.entity';
-import {SourceBlogToUserEntity} from '@/bussiness/domain-blog/source-blog-user/source-blog-to-user.entity';
-import {BlogToUserEntity} from '@/bussiness/domain-blog/blog-user/blog-user.entity';
-import {FeedBlogStatsEntity} from '@/bussiness/domain-blog/feed-blog/feed-blog-type-stats/feed-blog-type-stats-entity';
+import {SourceBlogToUserEntity} from '@/bussiness/domains/blog/source-blog-user/source-blog-to-user.entity';
+import {BlogToUserEntity} from '@/bussiness/domains/blog/blog-user/blog-user.entity';
+import {FeedBlogStatsEntity} from '@/bussiness/domains/blog/feed-blog/feed-blog-type-stats/feed-blog-type-stats-entity';
 
 const LOG = new Logger('db.config');
 

@@ -1,7 +1,7 @@
 import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
 import {BaseTable} from '@/database/base-table.entity';
-import {SourceBlogToUserEntity} from '@/bussiness/domain-blog/source-blog-user/source-blog-to-user.entity';
-import {BlogToUserEntity} from '@/bussiness/domain-blog/blog-user/blog-user.entity';
+import {SourceBlogToUserEntity} from '@/bussiness/domains/blog/source-blog-user/source-blog-to-user.entity';
+import {BlogToUserEntity} from '@/bussiness/domains/blog/blog-user/blog-user.entity';
 
 @Entity({name: 'users'})
 export class UserEntity extends BaseTable {

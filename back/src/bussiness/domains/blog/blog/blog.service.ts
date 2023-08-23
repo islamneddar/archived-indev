@@ -6,7 +6,7 @@ import {PageOptionsDto} from '@/common/pagination/page_option.dto';
 import {PageMetaDto} from '@/common/pagination/page_meta.dto';
 import {PageDto} from '@/common/pagination/page.dto';
 import {UserEntity} from '@/bussiness/user/user.entity';
-import {BlogServiceUtil} from '@/bussiness/domain-blog/blog/blog.service.util';
+import {BlogServiceUtil} from '@/bussiness/domains/blog/blog/blog.service.util';
 
 @Injectable()
 export class BlogService {

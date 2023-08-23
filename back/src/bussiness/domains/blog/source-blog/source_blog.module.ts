@@ -4,9 +4,9 @@ import {SourceBlogController} from './source_blog.controller';
 import {SourceBlogService} from './source_blog.service';
 import {SourceBlogEntity} from './source_blog.entity';
 import {UserModule} from '@/bussiness/user/user.module';
-import {SourceBlogToUserEntity} from '@/bussiness/domain-blog/source-blog-user/source-blog-to-user.entity';
-import {SourceBlogToUserService} from '@/bussiness/domain-blog/source-blog-user/source-blog-user.service';
-import {SourceBlogToUserModule} from '@/bussiness/domain-blog/source-blog-user/source-blog-use.module';
+import {SourceBlogToUserEntity} from '@/bussiness/domains/blog/source-blog-user/source-blog-to-user.entity';
+import {SourceBlogToUserService} from '@/bussiness/domains/blog/source-blog-user/source-blog-user.service';
+import {SourceBlogToUserModule} from '@/bussiness/domains/blog/source-blog-user/source-blog-use.module';
 
 @Module({
   imports: [

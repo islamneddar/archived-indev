@@ -1,5 +1,5 @@
 import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
-import {TypeFeed} from '@/bussiness/domain-blog/feed-blog/feed_blog/feed-blog.proto';
+import {TypeFeed} from '@/bussiness/domains/blog/feed-blog/feed_blog/feed-blog.proto';
 
 @Entity({
   name: 'feed_blogs_stats',

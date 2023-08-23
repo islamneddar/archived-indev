@@ -6,7 +6,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import {SourceBlogEntity} from '@/bussiness/domain-blog/source-blog/source_blog.entity';
+import {SourceBlogEntity} from '@/bussiness/domains/blog/source-blog/source_blog.entity';
 import {UserEntity} from '@/bussiness/user/user.entity';
 
 @Entity('source_blog_to_user')

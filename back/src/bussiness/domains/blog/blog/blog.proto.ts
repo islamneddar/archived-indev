@@ -2,7 +2,7 @@ import {PageOptionsDto} from '@/common/pagination/page_option.dto';
 import {IsBoolean, IsInt, IsNumber, IsOptional, Min} from 'class-validator';
 import {Type} from 'class-transformer';
 import {IsIsoString} from '@/common/validators/is-iso-string';
-import {TypeFeed} from '@/bussiness/domain-blog/feed-blog/feed_blog/feed-blog.proto';
+import {TypeFeed} from '@/bussiness/domains/blog/feed-blog/feed_blog/feed-blog.proto';
 
 export interface BlogByFeedTypeRequest {
   pageOption: PageOptionsDto;

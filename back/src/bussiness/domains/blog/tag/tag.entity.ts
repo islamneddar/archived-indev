@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import {BlogEntity} from '../blog/blog.entity';
-import {TagManagementStatus} from '@/bussiness/domain-blog/tag/tag.proto';
+import {TagManagementStatus} from '@/bussiness/domains/blog/tag/tag.proto';
 
 @Entity({
   name: 'tags',

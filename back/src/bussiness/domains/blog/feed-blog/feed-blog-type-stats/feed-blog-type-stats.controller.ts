@@ -1,5 +1,5 @@
 import {Controller} from '@nestjs/common';
-import {FeedBlogTypeStatsService} from '@/bussiness/domain-blog/feed-blog/feed-blog-type-stats/feed-blog-type-stats.service';
+import {FeedBlogTypeStatsService} from '@/bussiness/domains/blog/feed-blog/feed-blog-type-stats/feed-blog-type-stats.service';
 
 @Controller('feed_blog_stats')
 export class FeedBlogStatsController {

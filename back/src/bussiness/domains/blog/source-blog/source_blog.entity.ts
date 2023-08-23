@@ -7,9 +7,9 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import {BlogEntity} from '../blog/blog.entity';
-import {FeedBlogEntity} from '@/bussiness/domain-blog/feed-blog/feed_blog/feed_blog.entity';
+import {FeedBlogEntity} from '@/bussiness/domains/blog/feed-blog/feed_blog/feed_blog.entity';
 import {BaseTable} from '@/database/base-table.entity';
-import {SourceBlogToUserEntity} from '@/bussiness/domain-blog/source-blog-user/source-blog-to-user.entity';
+import {SourceBlogToUserEntity} from '@/bussiness/domains/blog/source-blog-user/source-blog-to-user.entity';
 
 @Entity({
   name: 'source_blogs',

@@ -9,7 +9,7 @@ import {UserEntity} from '@/bussiness/user/user.entity';
 import {
   contentTypeSourceBlog,
   TypeFeed,
-} from '@/bussiness/domain-blog/feed-blog/feed_blog/feed-blog.proto';
+} from '@/bussiness/domains/blog/feed-blog/feed_blog/feed-blog.proto';
 
 @Injectable()
 export class SourceBlogService {

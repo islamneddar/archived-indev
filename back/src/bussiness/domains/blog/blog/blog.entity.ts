@@ -9,10 +9,10 @@ import {
   OneToMany,
   Index,
 } from 'typeorm';
-import {SourceBlogEntity} from '@/bussiness/domain-blog/source-blog/source_blog.entity';
+import {SourceBlogEntity} from '@/bussiness/domains/blog/source-blog/source_blog.entity';
 import {TagEntity} from '../tag/tag.entity';
 import {BaseTable} from '@/database/base-table.entity';
-import {BlogToUserEntity} from '@/bussiness/domain-blog/blog-user/blog-user.entity';
+import {BlogToUserEntity} from '@/bussiness/domains/blog/blog-user/blog-user.entity';
 
 @Entity({name: 'blogs'})
 export class BlogEntity extends BaseTable {

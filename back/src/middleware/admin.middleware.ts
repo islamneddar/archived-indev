@@ -1,8 +1,8 @@
 import {AdminModule} from '@adminjs/nestjs';
-import {FeedBlogEntity} from '@/bussiness/domain-blog/feed-blog/feed_blog/feed_blog.entity';
-import {BlogEntity} from '@/bussiness/domain-blog/blog/blog.entity';
-import {SourceBlogEntity} from '@/bussiness/domain-blog/source-blog/source_blog.entity';
-import {TagEntity} from '@/bussiness/domain-blog/tag/tag.entity';
+import {FeedBlogEntity} from '@/bussiness/domains/blog/feed-blog/feed_blog/feed_blog.entity';
+import {BlogEntity} from '@/bussiness/domains/blog/blog/blog.entity';
+import {SourceBlogEntity} from '@/bussiness/domains/blog/source-blog/source_blog.entity';
+import {TagEntity} from '@/bussiness/domains/blog/tag/tag.entity';
 import {UserEntity} from '@/bussiness/user/user.entity';
 import AdminJS from 'adminjs';
 import * as AdminJSTypeorm from '@adminjs/typeorm';

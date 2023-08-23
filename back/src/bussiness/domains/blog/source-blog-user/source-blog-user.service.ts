@@ -1,7 +1,7 @@
 import {Injectable} from '@nestjs/common';
-import {SourceBlogToUserEntity} from '@/bussiness/domain-blog/source-blog-user/source-blog-to-user.entity';
+import {SourceBlogToUserEntity} from '@/bussiness/domains/blog/source-blog-user/source-blog-to-user.entity';
 import {InjectRepository} from '@nestjs/typeorm';
-import {SourceBlogEntity} from '@/bussiness/domain-blog/source-blog/source_blog.entity';
+import {SourceBlogEntity} from '@/bussiness/domains/blog/source-blog/source_blog.entity';
 import {UserEntity} from '@/bussiness/user/user.entity';
 
 @Injectable()

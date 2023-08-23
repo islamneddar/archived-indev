@@ -1,7 +1,7 @@
 import {Injectable} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
-import {BlogToUserEntity} from '@/bussiness/domain-blog/blog-user/blog-user.entity';
-import {BlogEntity} from '@/bussiness/domain-blog/blog/blog.entity';
+import {BlogToUserEntity} from '@/bussiness/domains/blog/blog-user/blog-user.entity';
+import {BlogEntity} from '@/bussiness/domains/blog/blog/blog.entity';
 import {UserEntity} from '@/bussiness/user/user.entity';
 import {TinyIntEnum} from '@/database/db.types';
 

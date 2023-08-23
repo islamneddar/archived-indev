@@ -23,7 +23,7 @@ import {
   UpdateLikeToBlogRequest,
 } from './blog.proto';
 import {AuthGuard} from '@/bussiness/auth/auth.guard';
-import {BlogToUserService} from '@/bussiness/domain-blog/blog-user/blog-user.service';
+import {BlogToUserService} from '@/bussiness/domains/blog/blog-user/blog-user.service';
 import {PageDto} from '@/common/pagination/page.dto';
 import {PageMetaDto} from '@/common/pagination/page_meta.dto';
 

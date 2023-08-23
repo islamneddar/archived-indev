@@ -13,15 +13,15 @@ import {
 import {Request} from 'express';
 import {SourceBlogService} from './source_blog.service';
 import {SourceBlogEntity} from './source_blog.entity';
-import LOG from '../../../utils/logger';
+import LOG from '../../../../utils/logger';
 import {AuthGuard} from '@/bussiness/auth/auth.guard';
 import {PageOptionsDto} from '@/common/pagination/page_option.dto';
 import {
   FollowSourceBlogRequest,
   GetAllByTypeQueryRequest,
   SourceBlogTypeItemTypeResponse,
-} from '@/bussiness/domain-blog/source-blog/source-blog.type';
-import {SourceBlogToUserService} from '@/bussiness/domain-blog/source-blog-user/source-blog-user.service';
+} from '@/bussiness/domains/blog/source-blog/source-blog.type';
+import {SourceBlogToUserService} from '@/bussiness/domains/blog/source-blog-user/source-blog-user.service';
 
 @Controller('source-blog')
 export class SourceBlogController {

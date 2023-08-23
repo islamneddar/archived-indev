@@ -1,5 +1,5 @@
 import {Controller, Get, Logger} from '@nestjs/common';
-import {AiToolCategoryService} from '@/bussiness/domain-ai-tool/ai-tool-category/ai-tool-category.service';
+import {AiToolCategoryService} from '@/bussiness/domains/ai-tool/ai-tool-category/ai-tool-category.service';
 
 @Controller('ai-tool-category')
 export class AiToolCategoryController {

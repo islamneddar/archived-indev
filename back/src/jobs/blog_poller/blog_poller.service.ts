@@ -3,14 +3,14 @@ import {Cron, CronExpression} from '@nestjs/schedule';
 import Parser from 'rss-parser';
 import axios from 'axios';
 import {DataSource} from 'typeorm';
-import {FeedBlogService} from '@/bussiness/domain-blog/feed-blog/feed_blog/feed_blog.service';
-import {FeedBlogEntity} from '@/bussiness/domain-blog/feed-blog/feed_blog/feed_blog.entity';
-import {SourceBlogEntity} from '@/bussiness/domain-blog/source-blog/source_blog.entity';
-import {SourceBlogService} from '@/bussiness/domain-blog/source-blog/source_blog.service';
-import {BlogService} from '@/bussiness/domain-blog/blog/blog.service';
-import {BlogEntity} from '@/bussiness/domain-blog/blog/blog.entity';
-import {TagEntity} from '@/bussiness/domain-blog/tag/tag.entity';
-import {TagService} from '@/bussiness/domain-blog/tag/tag.service';
+import {FeedBlogService} from '@/bussiness/domains/blog/feed-blog/feed_blog/feed_blog.service';
+import {FeedBlogEntity} from '@/bussiness/domains/blog/feed-blog/feed_blog/feed_blog.entity';
+import {SourceBlogEntity} from '@/bussiness/domains/blog/source-blog/source_blog.entity';
+import {SourceBlogService} from '@/bussiness/domains/blog/source-blog/source_blog.service';
+import {BlogService} from '@/bussiness/domains/blog/blog/blog.service';
+import {BlogEntity} from '@/bussiness/domains/blog/blog/blog.entity';
+import {TagEntity} from '@/bussiness/domains/blog/tag/tag.entity';
+import {TagService} from '@/bussiness/domains/blog/tag/tag.service';
 
 @Injectable()
 export default class BlogPollerService {

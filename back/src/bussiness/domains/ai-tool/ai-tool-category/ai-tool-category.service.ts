@@ -1,5 +1,5 @@
 import {Injectable} from '@nestjs/common';
-import {listAiToolCategory} from '@/bussiness/domain-ai-tool/ai-tool-category/ai-tool-catgory.proto';
+import {listAiToolCategory} from '@/bussiness/domains/ai-tool/ai-tool-category/ai-tool-catgory.proto';
 
 @Injectable()
 export class AiToolCategoryService {

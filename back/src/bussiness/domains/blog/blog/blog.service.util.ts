@@ -1,7 +1,7 @@
 import {UserEntity} from '@/bussiness/user/user.entity';
-import {BlogEntity} from '@/bussiness/domain-blog/blog/blog.entity';
-import {SourceBlogEntity} from '@/bussiness/domain-blog/source-blog/source_blog.entity';
-import {TagEntity} from '@/bussiness/domain-blog/tag/tag.entity';
+import {BlogEntity} from '@/bussiness/domains/blog/blog/blog.entity';
+import {SourceBlogEntity} from '@/bussiness/domains/blog/source-blog/source_blog.entity';
+import {TagEntity} from '@/bussiness/domains/blog/tag/tag.entity';
 import {DataSource} from 'typeorm';
 import {PageOptionsDto} from '@/common/pagination/page_option.dto';
 
