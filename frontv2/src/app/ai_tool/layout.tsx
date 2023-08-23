@@ -13,7 +13,6 @@ import {ThunkDispatch} from '@reduxjs/toolkit';
 import {getAllCategoriesAiToolsThunk} from '@/redux/slices/ai-tools/category-ai-tool/api/get-all-categories/get-all-categories.thunk';
 import {useGetAllAiToolsCategoriesSelector} from '@/redux/slices/ai-tools/category-ai-tool/api/get-all-categories/get-all-categories.selector';
 import {ListCategoryType} from '@/types/api/ai-tools/category-ai-tools';
-import SideBarMainAiTool from '@/app-page-component/sidebar-ai-tool/SideBarMainAiTool';
 
 function Layout({children}: {children: React.ReactNode}) {
   const dispatchThunk = useDispatch<ThunkDispatch<any, any, any>>();
