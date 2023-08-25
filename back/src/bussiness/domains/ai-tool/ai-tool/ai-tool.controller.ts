@@ -37,7 +37,6 @@ export default class AiToolController {
     if (keyToPass !== adminAiToolCreationSecret) {
       throw new HttpException('You are not allowed to create AI Tool', 403);
     }
-
     let imageUploadedUrl;
     try {
       imageUploadedUrl = await this.s3AppService.uploadFile(
@@ -50,7 +49,7 @@ export default class AiToolController {
       throw new HttpException('Error while uploading image', 500);
     }
 
-    console.log(imageUploadedUrl);
+    // put imageUploadedUrl to database with other data from body
 
     return {
       message: 'create',
