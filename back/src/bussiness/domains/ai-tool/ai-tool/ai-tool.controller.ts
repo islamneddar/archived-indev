@@ -13,6 +13,8 @@ import {FileInterceptor} from '@nestjs/platform-express';
 import {CreateAiToolRequest} from '@/bussiness/domains/ai-tool/ai-tool/ai-tool-proto';
 import {ConfigService} from '@nestjs/config';
 import {S3AppService} from '@/external-services/aws-s3/s3-app.service';
+import {AiToolEntity} from '@/bussiness/domains/ai-tool/ai-tool/ai-tool.entity';
+import {slugify} from '@/utils/common.util';
 
 @Controller('ai-tool')
 export default class AiToolController {
@@ -49,10 +51,19 @@ export default class AiToolController {
       throw new HttpException('Error while uploading image', 500);
     }
 
-    // put imageUploadedUrl to database with other data from body
+    const aiTool = new AiToolEntity();
+    aiTool.name = body.name;
+    aiTool.slug = slugify(body.name);
+    aiTool.description = body.description;
+    aiTool.url = body.url.toString();
+    aiTool.image = imageUploadedUrl;
+    aiTool.category = body.category;
+    aiTool.pricing = body.pricing;
+
+    await this.aiToolService.create(aiTool);
 
     return {
-      message: 'create',
+      message: aiTool,
     };
   }
 }

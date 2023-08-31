@@ -6,6 +6,7 @@ import {TagEntity} from '@/bussiness/domains/blog/tag/tag.entity';
 import {UserEntity} from '@/bussiness/user/user.entity';
 import AdminJS from 'adminjs';
 import * as AdminJSTypeorm from '@adminjs/typeorm';
+import {AiToolEntity} from '@/bussiness/domains/ai-tool/ai-tool/ai-tool.entity';
 
 const DEFAULT_ADMIN = {
   email: 'lemsijoker',
@@ -33,6 +34,7 @@ export const adminJsMiddleware = AdminModule.createAdminAsync({
         SourceBlogEntity,
         TagEntity,
         UserEntity,
+        AiToolEntity,
       ],
     },
     auth: {

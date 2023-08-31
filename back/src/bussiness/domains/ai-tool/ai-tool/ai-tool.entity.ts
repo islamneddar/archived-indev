@@ -15,6 +15,9 @@ export class AiToolEntity extends BaseTable {
   @Column({unique: true, nullable: false, name: 'name'})
   name: string;
 
+  @Column({unique: true, nullable: false, name: 'slug'})
+  slug: string;
+
   @Column({nullable: false, name: 'description'})
   description: string;
 

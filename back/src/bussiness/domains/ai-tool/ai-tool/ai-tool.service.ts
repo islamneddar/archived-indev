@@ -12,4 +12,8 @@ export class AiToolService {
     private aiToolRepository: Repository<AiToolEntity>,
     private dataSource: DataSource,
   ) {}
+
+  async create(aiTool: AiToolEntity) {
+    return await this.aiToolRepository.save(aiTool);
+  }
 }
