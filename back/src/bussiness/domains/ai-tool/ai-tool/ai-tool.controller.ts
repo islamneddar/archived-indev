@@ -39,6 +39,16 @@ export default class AiToolController {
     if (keyToPass !== adminAiToolCreationSecret) {
       throw new HttpException('You are not allowed to create AI Tool', 403);
     }
+
+    const aiToolExist = await this.aiToolService.findOneBySlugAndWebsite(
+      slugify(body.name),
+      body.url.toString(),
+    );
+
+    if (aiToolExist) {
+      throw new HttpException('AI Tool already exist', 400);
+    }
+
     let imageUploadedUrl;
     try {
       imageUploadedUrl = await this.s3AppService.uploadFile(

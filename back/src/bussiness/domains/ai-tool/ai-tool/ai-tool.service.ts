@@ -16,4 +16,13 @@ export class AiToolService {
   async create(aiTool: AiToolEntity) {
     return await this.aiToolRepository.save(aiTool);
   }
+
+  async findOneBySlugAndWebsite(s: string, website: string) {
+    return await this.aiToolRepository.findOne({
+      where: {
+        slug: s,
+        url: website,
+      },
+    });
+  }
 }
