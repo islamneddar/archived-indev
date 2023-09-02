@@ -1,4 +1,5 @@
 export enum AiToolCategoryEnum {
+  ALL = 'all',
   // TEXT & WRITING
   COPYWRITING = 'copywriting',
   GENERAL_WRITING = 'general_writing',

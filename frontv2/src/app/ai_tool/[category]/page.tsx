@@ -2,6 +2,8 @@
 
 import React from 'react';
 import {usePathname, useRouter} from 'next/navigation';
+import BookmarkBlogList from '@/app-page-component/blog-section/bookmarks/BookmarkBlogList';
+import AiToolsBody from '@/app-page-component/ai-tool-section/ai-tools/AIToolsBody';
 
 function Page() {
   // get the pathname
@@ -16,8 +18,11 @@ function Page() {
   // effects
 
   return (
-    <div>
-      <p>{category}</p>
+    <div
+      className={
+        'overflow-y-auto h-[calc(100vh_-_136px)] w-full scrollbar-hide'
+      }>
+      <AiToolsBody category={category}></AiToolsBody>
     </div>
   );
 }

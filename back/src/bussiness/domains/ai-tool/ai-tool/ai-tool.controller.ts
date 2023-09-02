@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpException,
   Logger,
   Post,
@@ -10,7 +11,10 @@ import {
 } from '@nestjs/common';
 import {AiToolService} from '@/bussiness/domains/ai-tool/ai-tool/ai-tool.service';
 import {FileInterceptor} from '@nestjs/platform-express';
-import {CreateAiToolRequest} from '@/bussiness/domains/ai-tool/ai-tool/ai-tool-proto';
+import {
+  CreateAiToolRequest,
+  GetAllAiToolsQuery,
+} from '@/bussiness/domains/ai-tool/ai-tool/ai-tool-proto';
 import {ConfigService} from '@nestjs/config';
 import {S3AppService} from '@/external-services/aws-s3/s3-app.service';
 import {AiToolEntity} from '@/bussiness/domains/ai-tool/ai-tool/ai-tool.entity';
@@ -75,5 +79,20 @@ export default class AiToolController {
     return {
       message: aiTool,
     };
+  }
+
+  @Get('list')
+  async list(@Query() query: GetAllAiToolsQuery) {
+    this.LOG.log(query.isAll);
+    if (query.isAll) {
+      return await this.aiToolService.findAll({
+        pageOption: query.pageOption,
+      });
+    }
+
+    return await this.aiToolService.findAllByCategory({
+      pageOption: query.pageOption,
+      category: query.category,
+    });
   }
 }
