@@ -1,7 +1,7 @@
 import React from 'react';
 import {GridBlogType} from '@/types/general/blog-general.type';
 import BlogCard from '@/app-page-component/blog-section/blogs/blog-card/BlogCard';
-import {Blog} from '@/types/api/blog';
+import {Blog} from '@/types/api/blogs/blog';
 import BlogCardList from '@/app-page-component/blog-section/blogs/blog-card/BlogCardList';
 import AdContainer from '@/app-page-component/ad-container/AdContainer';
 

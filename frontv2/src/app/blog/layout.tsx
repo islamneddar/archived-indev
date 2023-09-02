@@ -5,7 +5,6 @@ import {signOut, useSession} from 'next-auth/react';
 import {updateAuth} from '@/redux/slices/auth/user/user.slice';
 import {useDispatch} from 'react-redux';
 import {
-  HomeIcon,
   RssIcon,
   BookOpenIcon,
   AdjustmentsHorizontalIcon,

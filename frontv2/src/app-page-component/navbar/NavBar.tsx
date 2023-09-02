@@ -2,15 +2,14 @@ import React from 'react';
 import Image from 'next/image';
 import {logoInDev} from '../../assets/images';
 import {AiOutlineMenu} from 'react-icons/all';
-import {useRouter} from 'next/navigation';
+import {usePathname, useRouter} from 'next/navigation';
 import AuthContainer from '@/app-page-component/navbar/auth/AuthContainer';
 import {toggleSideBarMobile} from '@/redux/slices/system/system.slice';
 import {useDispatch} from 'react-redux';
 import LogoContainer from '@/app-page-component/navbar/LogoContainer';
+import routing from '@/routes/routing.constant';
 function NavBar() {
-  const router = useRouter();
   const dispatch = useDispatch();
-
   return (
     <div className="h-24 bg-primary tn:px-3 md:px-5 flex justify-between">
       {
@@ -29,7 +28,23 @@ function NavBar() {
           <LogoContainer></LogoContainer>
         </div>
       </div>
-      <AuthContainer></AuthContainer>
+      <div className={'flex items-center'}>
+        <div className={'flex justify-end pr-5'}>
+          <a
+            className={'text-sm font-semi-bold cursor-pointer'}
+            href={routing.blog.root}>
+            Ai News
+          </a>
+        </div>
+        <div className={'flex justify-end pr-5'}>
+          <a
+            className={'text-sm font-semi-bold cursor-pointer'}
+            href={routing.aiTools.root}>
+            Ai Tool
+          </a>
+        </div>
+        <AuthContainer></AuthContainer>
+      </div>
     </div>
   );
 }

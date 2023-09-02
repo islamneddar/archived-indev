@@ -10,7 +10,7 @@ export interface PageMetaResponse {
 export interface PaginationRequestMetaRequest {
   page: number;
   take: number;
-  order: Order;
+  order?: Order;
 }
 
 export enum Order {

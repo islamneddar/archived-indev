@@ -1,5 +1,5 @@
 import React from 'react';
-import {Blog} from '@/types/api/blog';
+import {Blog} from '@/types/api/blogs/blog';
 import BlogTitle from '@/app-page-component/blog-section/blogs/blog-card/card-content/BlogTitle';
 import SourceAndTimeContainer from '@/app-page-component/blog-section/blogs/blog-card/card-content/SourceAndTimeContainer';
 import TagsContainer from '@/app-page-component/blog-section/blogs/blog-card/card-content/TagsContainer';

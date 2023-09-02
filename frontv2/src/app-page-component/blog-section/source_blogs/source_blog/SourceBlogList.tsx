@@ -1,5 +1,5 @@
 import React from 'react';
-import {SourceBlog} from '@/types/api/source_blog';
+import {SourceBlog} from '@/types/api/blogs/source_blog';
 import SourceBlogCard from '@/app-page-component/blog-section/source_blogs/source_blog/SourceBlogCard';
 
 interface ISourceBlogListProps {

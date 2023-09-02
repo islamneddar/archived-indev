@@ -17,6 +17,11 @@ const nextConfig = {
         destination: '/blog/explore',
         permanent: true,
       },
+      {
+        source: '/ai_tool',
+        destination: '/ai_tool/all',
+        permanent: true,
+      },
     ];
   },
 };

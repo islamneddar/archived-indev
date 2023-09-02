@@ -1,6 +1,6 @@
 import {Module} from '@nestjs/common';
 import {UserModule} from '@/bussiness/user/user.module';
-import {MailingModule} from '@/bussiness/mailing/mailing.module';
+import {MailingModule} from '@/external-services/mailing/mailing.module';
 import {EmailValidationModule} from '@/bussiness/email_validation/email_validation.module';
 import {JwtModule} from '@nestjs/jwt';
 import {JWT_SECRET} from '@/config';

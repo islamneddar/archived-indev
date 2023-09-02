@@ -18,6 +18,10 @@ const routing = {
     },
     bookmark: '/blog/bookmark',
   },
+  aiTools: {
+    root: '/ai_tool',
+    aiTool: (tool: string) => `/ai_tool/${tool}`,
+  },
 };
 
 export default routing;

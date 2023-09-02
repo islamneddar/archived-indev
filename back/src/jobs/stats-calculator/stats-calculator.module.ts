@@ -1,5 +1,5 @@
 import {Module} from '@nestjs/common';
-import {FeedBlogTypeStatsModule} from '@/bussiness/feed-blog/feed-blog-type-stats/feed-blog-type-stats.module';
+import {FeedBlogTypeStatsModule} from '@/bussiness/domains/blog/feed-blog/feed-blog-type-stats/feed-blog-type-stats.module';
 import {StatsCalculatorService} from '@/jobs/stats-calculator/stats-calculator.service';
 
 @Module({

@@ -6,8 +6,10 @@ import {systemSlice} from '@/redux/slices/system/system.slice';
 import {signupSlice} from '@/redux/slices/auth/signup/signup.slice';
 import {loginSlice} from '@/redux/slices/auth/login/login.slice';
 import {userSessionSlice} from '@/redux/slices/auth/user/user.slice';
-import {sourceBlogReducers} from '@/redux/reducers/source-blog-reducers';
-import {blogReducers} from '@/redux/reducers/blog-reducer';
+import {sourceBlogReducers} from '@/redux/reducers/blog/source-blog-reducers';
+import {blogReducers} from '@/redux/reducers/blog/blog-reducer';
+import {categoryAiToolReducer} from '@/redux/reducers/ai-tools/category-ai-tool.reducer';
+import {aiToolReducer} from '@/redux/reducers/ai-tools/ai-tool.reducer';
 
 const middlewares = [];
 // add thunk
@@ -25,6 +27,8 @@ export const store = configureStore({
     userSessionReducer: userSessionSlice.reducer,
     ...sourceBlogReducers,
     ...blogReducers,
+    ...categoryAiToolReducer,
+    ...aiToolReducer,
   },
   devTools: process.env.NODE_ENV !== 'production',
   middleware: middlewares,
