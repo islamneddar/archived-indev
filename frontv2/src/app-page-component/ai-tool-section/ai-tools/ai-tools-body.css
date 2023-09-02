@@ -1,0 +1,12 @@
+.p-dialog .p-dialog-content {
+    background: #161616;
+}
+
+.p-dialog .p-dialog-header {
+    background: #161616;
+}
+
+:root {
+    --maskbg : rgb(255, 255, 255, 0.4);
+}
+

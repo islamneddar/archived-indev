@@ -12,9 +12,12 @@ import AiToolCard from '@/app-page-component/ai-tool-section/ai-tools/AiToolCard
 import {useGetAllAiToolSelector} from '@/redux/slices/ai-tools/ai-tool/api/get-all/get-all-ai-tool.selector';
 import {resetGetAllAiTool} from '@/redux/slices/ai-tools/ai-tool/api/get-all/get-all-ai-tool.slice';
 import toast from 'react-hot-toast';
-import Skeleton from 'react-loading-skeleton';
 import {ProgressSpinner} from 'primereact/progressspinner';
 import PrimaryButton from '@/components/button/PrimaryButton';
+import {Dialog} from 'primereact/dialog';
+
+import './ai-tools-body.css';
+import AiToolItemDialog from '@/app-page-component/ai-tool-section/ai-tools/ai-tool-dialog/AiToolItemDialog';
 
 interface AiToolsBodyProps {
   category?: string;
@@ -35,6 +38,8 @@ function AiToolsBody(props: AiToolsBodyProps) {
     hasPreviousPage: false,
     hasNextPage: false,
   });
+  const [dialogItemAiToolVisible, setDialogItemAiToolVisible] =
+    React.useState(true);
 
   // selectors
   const selectGetAllAiTool = useGetAllAiToolSelector();
@@ -55,7 +60,7 @@ function AiToolsBody(props: AiToolsBodyProps) {
   async function fetchAiTools(restart: boolean) {
     const paginationRequest: PaginationRequestMetaRequest = {
       page: page,
-      take: 1,
+      take: 30,
     };
 
     const getAllAiTools: GetAllAiToolRequest = {
@@ -97,7 +102,11 @@ function AiToolsBody(props: AiToolsBodyProps) {
   }
   return (
     <div className={'p-3'}>
-      <div className={'grid grid-cols-4 gap-4 justify-center'}>
+      <AiToolItemDialog />
+      <div
+        className={
+          'grid tn:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center'
+        }>
         {aiTools.map((aiTool, index) => {
           return (
             <AiToolCard key={aiTool.aiToolId} aiTool={aiTool}></AiToolCard>

@@ -13,6 +13,7 @@ import {ThunkDispatch} from '@reduxjs/toolkit';
 import {getAllCategoriesAiToolsThunk} from '@/redux/slices/ai-tools/category-ai-tool/api/get-all-categories/get-all-categories.thunk';
 import {useGetAllAiToolsCategoriesSelector} from '@/redux/slices/ai-tools/category-ai-tool/api/get-all-categories/get-all-categories.selector';
 import {ListCategoryType} from '@/types/api/ai-tools/category-ai-tools';
+import dayjs from 'dayjs';
 
 function Layout({children}: {children: React.ReactNode}) {
   const dispatchThunk = useDispatch<ThunkDispatch<any, any, any>>();
@@ -34,14 +35,17 @@ function Layout({children}: {children: React.ReactNode}) {
       fetchTheListOfCategories();
     }
     console.log(listCategoryAiTools);
+    const nowMinus24hours = dayjs().subtract(24, 'hour');
+    const lastUpdateIsBefore24Hours = dayjs(
+      listCategoryAiTools?.lastUpdate,
+    ).isBefore(nowMinus24hours);
     if (
       listCategoryAiTools === undefined ||
-      Object.keys(listCategoryAiTools?.listCategory).length === 0
+      Object.keys(listCategoryAiTools?.listCategory).length === 0 ||
+      lastUpdateIsBefore24Hours
     ) {
-      console.log('fetch');
       fetchListCategories();
     } else {
-      console.log('set');
       setListNavigation(listCategoryAiTools.listCategory);
     }
   }, []);
