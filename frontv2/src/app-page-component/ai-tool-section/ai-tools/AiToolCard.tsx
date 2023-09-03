@@ -7,6 +7,10 @@ import {useDispatch} from 'react-redux';
 import {setAiTool} from '@/redux/slices/ai-tools/ai-tool/ai-tool-state/ai-tool-state.slice';
 import {getAiPricing, PricingEnum} from '@/types/data/ai-tool/ai-tool-pricing';
 import {BookmarkIcon} from '@heroicons/react/24/outline';
+import {
+  AiToolCategoryEnum,
+  getAiToolCategoryFromCategory,
+} from '@/types/data/ai-tool/ai-tool-category.data';
 
 interface AiToolCardProps {
   aiTool: AiTool;
@@ -37,24 +41,36 @@ function AiToolCard(props: AiToolCardProps) {
                 {aiTool.name}
               </p>
               <div className={'flex items-end'}>
-                <Tag>
-                  <p className={'text-tn font-light'}>{aiTool.category}</p>
+                <Tag
+                  style={
+                    {
+                      //backgroundColor: '#374151',
+                    }
+                  }>
+                  {getAiPricing(aiTool.pricing as PricingEnum).name}
                 </Tag>
               </div>
             </div>
-            <div className={'h-40'}>
-              <p className={'line-clamp-2 text-sm'}>
-                {aiTool.description} fsdfsdf sdf sdfsdf sdf sdfsdfds fsdf
-                fdsfnksd f sdfk sdkf sjkdf sjkd fskjdf skjdf kdsjfskfsdkfsdjf
-                sdkf sdjkf skjdf skjdf jksf j
+            <div className={'flex flex-1'}>
+              <p className={'line-clamp-2 text-sm h-40'}>
+                {aiTool.description}
               </p>
             </div>
-            <div className={'py-2'}>
+            <div className={'py-1'}>
               <Tag
                 style={{
                   backgroundColor: '#374151',
                 }}>
-                {getAiPricing(aiTool.pricing as PricingEnum).name}
+                <p
+                  className={
+                    'text-tn font-light border p-1 rounded-lg border-indigo-500'
+                  }>
+                  {
+                    getAiToolCategoryFromCategory(
+                      aiTool.category as AiToolCategoryEnum,
+                    ).name
+                  }
+                </p>
               </Tag>
             </div>
             <div
@@ -63,34 +79,34 @@ function AiToolCard(props: AiToolCardProps) {
               }>
               <div
                 className={'flex-1 h-full w-full justify-center items-center'}>
-                <button
+                <a
                   className={
                     'flex flex-1 justify-center items-center h-full w-full bg-indigo-500 rounded-lg'
-                  }>
-                  <ArrowTopRightOnSquareIcon
-                    className={'w-5 cursor-pointer'}
-                    onClick={event => {
-                      event.stopPropagation();
-                      window.open(aiTool.url, '_blank', 'noopener,noreferrer');
-                    }}
-                  />
-                </button>
+                  }
+                  href={aiTool.url}
+                  target={'_blank'}
+                  rel={'noreferrer'}
+                  onClick={event => {
+                    event.stopPropagation();
+                  }}>
+                  <ArrowTopRightOnSquareIcon className={'w-5 cursor-pointer'} />
+                </a>
               </div>
-              <div
+              {/*<div
                 className={'flex-1 h-full w-full justify-center items-center'}>
-                <button
+                <a
                   className={
                     'flex flex-1 justify-center items-center h-full w-full border border-indigo-500 rounded-lg'
-                  }>
-                  <BookmarkIcon
-                    className={'w-5 cursor-pointer'}
-                    onClick={event => {
-                      event.stopPropagation();
-                      window.open(aiTool.url, '_blank', 'noopener,noreferrer');
-                    }}
-                  />
-                </button>
-              </div>
+                  }
+                  href={aiTool.url}
+                  target={'_blank'}
+                  rel={'noreferrer'}
+                  onClick={event => {
+                    event.stopPropagation();
+                  }}>
+                  <BookmarkIcon className={'w-5 cursor-pointer'} />
+                </a>
+              </div>*/}
             </div>
           </div>
         </div>
