@@ -32,7 +32,7 @@ function AiToolCard(props: AiToolCardProps) {
             <img
               src={props.aiTool.image}
               alt={'image tool'}
-              className={'object-cover rounded-t-xl h-38 w-full'}
+              className={'object-cover rounded-t-xl h-161 w-full'}
             />
           </div>
           <div className={'px-2 flex flex-1 flex-col '}>
