@@ -6,4 +6,6 @@ export class AiToolCategoryService {
   async getAll() {
     return listAiToolCategory;
   }
+
+  async calculateNumberOfToolByCategory() {}
 }
