@@ -106,9 +106,10 @@ function Page() {
         <option disabled={true} value={'choose a princing'}>
           choose a pricing
         </option>
-        <option value={'free'}>free</option>
-        <option value={'paid'}>paid</option>
-        <option value={'free_plan'}>freemium</option>
+        <option value={'free'}>Free</option>
+        <option value={'paid'}>Paid</option>
+        <option value={'free_plan'}>Free Plan</option>
+        <option value={'free_trial'}>Free Trial</option>
       </select>
       <button
         disabled={useCreateAiTool.loading}
