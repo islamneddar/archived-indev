@@ -3,7 +3,7 @@ import {FeedBlogEntity} from '@/bussiness/domains/blog/feed-blog/feed_blog/feed_
 import {BlogEntity} from '@/bussiness/domains/blog/blog/blog.entity';
 import {SourceBlogEntity} from '@/bussiness/domains/blog/source-blog/source_blog.entity';
 import {TagEntity} from '@/bussiness/domains/blog/tag/tag.entity';
-import {UserEntity} from '@/bussiness/user/user.entity';
+import {UserEntity} from '@/bussiness/domains/user/user.entity';
 import AdminJS from 'adminjs';
 import * as AdminJSTypeorm from '@adminjs/typeorm';
 import {AiToolEntity} from '@/bussiness/domains/ai-tool/ai-tool/ai-tool.entity';

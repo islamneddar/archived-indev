@@ -6,7 +6,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "precommit-back" : "cd back && yarn lint",
-    "precommit-front" : "cd front"
+    "precommit-back": "cd back && yarn lint",
+    "precommit-front": "cd front"
   }
 }

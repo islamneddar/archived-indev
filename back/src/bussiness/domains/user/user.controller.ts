@@ -1,7 +1,7 @@
 import {Controller, Get, HttpException, Req, UseGuards} from '@nestjs/common';
-import {UserService} from '@/bussiness/user/user.service';
+import {UserService} from '@/bussiness/domains/user/user.service';
 import {AuthGuard} from '@/bussiness/auth/auth.guard';
-import {UserEntity} from '@/bussiness/user/user.entity';
+import {UserEntity} from '@/bussiness/domains/user/user.entity';
 import {Request} from 'express';
 @Controller('user')
 export class UserController {

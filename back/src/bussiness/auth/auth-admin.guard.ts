@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import {Request} from 'express';
 import {JwtService} from '@nestjs/jwt';
-import {UserService} from '@/bussiness/domains/user/user.service';
+import {InAiTimesAdminService} from '@/bussiness/inaitimer-admin/inaitmes-admin.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -15,7 +15,7 @@ export class AuthGuard implements CanActivate {
 
   constructor(
     private jwtService: JwtService,
-    private userService: UserService,
+    private inAiTimesAdminService: InAiTimesAdminService,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -29,7 +29,7 @@ export class AuthGuard implements CanActivate {
         secret: process.env.JWT_SECRET,
       });
       // TODO get user from db and attach to request
-      const user = await this.userService.findOneByIdAndEmail({
+      const user = await this.inAiTimesAdminService.findOneByIdAndEmail({
         id: payload.id,
         email: payload.email,
       });

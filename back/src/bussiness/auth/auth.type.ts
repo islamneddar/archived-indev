@@ -1,4 +1,14 @@
-import {IsEmail, IsString, Length, MaxLength, MinLength} from 'class-validator';
+import {
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsString,
+  Length,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
+import {AdminRoleEnum} from '@/bussiness/inaitimer-admin/inaitimes-admin.proto';
+import {AiToolCategoryEnum} from '@/bussiness/domains/ai-tool/ai-tool-category/ai-tool-catgory.proto';
 
 export interface UserFromRequest {
   userId: number;
@@ -23,6 +33,28 @@ export class SignupRequest {
   @MinLength(4)
   @MaxLength(20)
   username: string;
+}
+
+export class SignupAdminRequest {
+  @IsEmail({}, {message: 'Invalid email'})
+  email: string;
+
+  @IsString()
+  @MinLength(4)
+  /*@Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$/, {
+      message:
+        'Password must contain at least one uppercase letter, one lowercase letter, and one digit',
+    })*/
+  password: string;
+
+  @IsString()
+  @MinLength(4)
+  @MaxLength(20)
+  username: string;
+
+  @IsEnum(AdminRoleEnum)
+  @IsNotEmpty()
+  role: AdminRoleEnum;
 }
 
 export class LoginRequest {

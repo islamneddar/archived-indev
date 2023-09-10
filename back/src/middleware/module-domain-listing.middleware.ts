@@ -1,4 +1,4 @@
-import {UserModule} from '@/bussiness/user/user.module';
+import {UserModule} from '@/bussiness/domains/user/user.module';
 import {SourceBlogModule} from '@/bussiness/domains/blog/source-blog/source_blog.module';
 import {BlogModule} from '@/bussiness/domains/blog/blog/blog.module';
 import {FeedBlogModule} from '@/bussiness/domains/blog/feed-blog/feed_blog/feed_blog.module';
@@ -15,10 +15,12 @@ import {StatsCalculatorModule} from '@/jobs/stats-calculator/stats-calculator.mo
 import {AiToolCategoryModule} from '@/bussiness/domains/ai-tool/ai-tool-category/ai-tool-category.module';
 import {AiToolModule} from '@/bussiness/domains/ai-tool/ai-tool/ai-tool.module';
 import {S3AppModule} from '@/external-services/aws-s3/s3-app.module';
+import {InAiTimesAdminModule} from '@/bussiness/inaitimer-admin/inaitimes-admin.module';
 
 export const modules = [
   // domains
   UserModule,
+  InAiTimesAdminModule,
   SourceBlogModule,
   BlogModule,
   FeedBlogModule,

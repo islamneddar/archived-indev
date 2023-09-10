@@ -5,7 +5,7 @@ import {BlogEntity} from './blog.entity';
 import {PageOptionsDto} from '@/common/pagination/page_option.dto';
 import {PageMetaDto} from '@/common/pagination/page_meta.dto';
 import {PageDto} from '@/common/pagination/page.dto';
-import {UserEntity} from '@/bussiness/user/user.entity';
+import {UserEntity} from '@/bussiness/domains/user/user.entity';
 import {BlogServiceUtil} from '@/bussiness/domains/blog/blog/blog.service.util';
 
 @Injectable()

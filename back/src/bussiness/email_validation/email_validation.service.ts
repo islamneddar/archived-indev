@@ -2,7 +2,7 @@ import {Injectable} from '@nestjs/common';
 import {EntityManager, Repository} from 'typeorm';
 import {InjectRepository} from '@nestjs/typeorm';
 import {EmailValidationEntity} from '@/bussiness/email_validation/email_valdation.entity';
-import {UserEntity} from '@/bussiness/user/user.entity';
+import {UserEntity} from '@/bussiness/domains/user/user.entity';
 import {v4 as uuidv4} from 'uuid';
 import {EmailValidationEnum} from '@/bussiness/email_validation/email_validation.types';
 

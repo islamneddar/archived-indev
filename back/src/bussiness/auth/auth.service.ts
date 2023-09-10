@@ -1,17 +1,18 @@
 import {Injectable, Logger} from '@nestjs/common';
 import {InjectEntityManager} from '@nestjs/typeorm';
-import {UserService} from '@/bussiness/user/user.service';
+import {UserService} from '@/bussiness/domains/user/user.service';
 import {EntityManager} from 'typeorm';
 import bcrypt from 'bcrypt';
 import {EmailValidationService} from '@/bussiness/email_validation/email_validation.service';
 import {EmailValidationEntity} from '@/bussiness/email_validation/email_valdation.entity';
+import {InAiTimesAdminService} from '@/bussiness/inaitimer-admin/inaitmes-admin.service';
 
 @Injectable()
 export class AuthService {
   private readonly LOG = new Logger(AuthService.name);
   constructor(
     private readonly userService: UserService,
-    private readonly adminService: AdminService,
+    private readonly adminService: InAiTimesAdminService,
     @InjectEntityManager() private readonly entityManager: EntityManager,
     private emailValidationService: EmailValidationService,
   ) {}
