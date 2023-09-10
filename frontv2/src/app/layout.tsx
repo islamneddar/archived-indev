@@ -14,7 +14,7 @@ import 'primereact/resources/primereact.min.css';
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   useEffect(() => {
-    const tags = localStorage.getItem('tags');
+    //const tags = localStorage.getItem('tags');
   }, []);
   return (
     <html lang="en">
