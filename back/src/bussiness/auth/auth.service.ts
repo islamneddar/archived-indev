@@ -11,12 +11,25 @@ export class AuthService {
   private readonly LOG = new Logger(AuthService.name);
   constructor(
     private readonly userService: UserService,
+    private readonly adminService: AdminService,
     @InjectEntityManager() private readonly entityManager: EntityManager,
     private emailValidationService: EmailValidationService,
   ) {}
 
   async validateUser(email: string, password: string) {
     const user = await this.userService.findOneByEmail(email);
+    if (user) {
+      const passwordMatch = await bcrypt.compare(password, user.password);
+      if (passwordMatch) {
+        const {password, ...result} = user;
+        return result;
+      }
+    }
+    return null;
+  }
+
+  async validateAdmin(email: string, password: string) {
+    const user = await this.adminService.findOneByEmail(email);
     if (user) {
       const passwordMatch = await bcrypt.compare(password, user.password);
       if (passwordMatch) {

@@ -100,4 +100,30 @@ export class AuthController {
       message: 'reset password',
     };
   }
+
+  @Post('admin/login')
+  async adminLogin(@Body() body: LoginRequest) {
+    const admin = await this.authService.validateAdmin(
+      body.email,
+      body.password,
+    );
+    if (!admin) {
+      throw new HttpException('wrong email or password', HttpStatus.NOT_FOUND);
+    }
+
+    const userToken = await this.jwtService.signAsync(
+      {
+        id: admin.userId,
+        email: admin.email,
+      },
+      {
+        secret: JWT_SECRET,
+      },
+    );
+
+    return {
+      userId: admin.userId,
+      accessToken: userToken,
+    };
+  }
 }
