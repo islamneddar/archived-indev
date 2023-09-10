@@ -1,5 +1,5 @@
 'use client';
-import React, {useEffect} from 'react';
+import {useEffect} from 'react';
 import {useUserSessionSelector} from '@/redux/slices/auth/user/user.selector';
 import {signOut, useSession} from 'next-auth/react';
 
@@ -22,7 +22,9 @@ function UseSessionAuthClient() {
   useEffect(() => {
     EventBusFront.on(EventBusFrontType.LOGOUT, async () => {
       dispatch(updateAuth({isAuthenticated: false, accessToken: null}));
-      await signOut();
+      await signOut({
+        callbackUrl: '/',
+      });
     });
   }, []);
 
