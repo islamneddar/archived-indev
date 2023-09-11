@@ -7,4 +7,5 @@ export interface AdminProfileResponse {
   id: number;
   email: string;
   username: string;
+  role: string;
 }

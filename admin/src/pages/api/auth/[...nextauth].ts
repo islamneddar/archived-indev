@@ -18,14 +18,21 @@ export const authOptions: NextAuthOptions = {
         password: {label: 'Password', type: 'password'},
       },
       async authorize(credentials, req) {
+        console.log('credentials', credentials);
         const {email, password} = credentials as any;
-        const res = await AuthService.getInstance().login(email, password);
-        if (res && res.userId) {
-          return {
-            id: res.userId.toString(),
-            accessToken: res.accessToken,
-          };
-        } else return null;
+        try {
+          const res = await AuthService.getInstance().login(email, password);
+
+          if (res && res.userId) {
+            return {
+              id: res.userId.toString(),
+              accessToken: res.accessToken,
+            };
+          } else return null;
+        } catch (e) {
+          console.log(e);
+          return null;
+        }
       },
     }),
   ],

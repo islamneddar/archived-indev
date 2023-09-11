@@ -10,8 +10,8 @@ import {JwtService} from '@nestjs/jwt';
 import {InAiTimesAdminService} from '@/bussiness/inaitimer-admin/inaitmes-admin.service';
 
 @Injectable()
-export class AuthGuard implements CanActivate {
-  LOG = new Logger(AuthGuard.name);
+export class AuthAdminGuard implements CanActivate {
+  LOG = new Logger(AuthAdminGuard.name);
 
   constructor(
     private jwtService: JwtService,
@@ -29,14 +29,14 @@ export class AuthGuard implements CanActivate {
         secret: process.env.JWT_SECRET,
       });
       // TODO get user from db and attach to request
-      const user = await this.inAiTimesAdminService.findOneByIdAndEmail({
+      const admin = await this.inAiTimesAdminService.findOneByIdAndEmail({
         id: payload.id,
         email: payload.email,
       });
-      if (!user) {
+      if (!admin) {
         throw new UnauthorizedException('unauthorized');
       }
-      request.user = user;
+      request.admin = admin;
     } catch (e) {
       throw new UnauthorizedException('unauthorized');
     }

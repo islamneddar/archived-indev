@@ -42,6 +42,7 @@ export const adminSessionSlice = createSlice({
     });
     builder.addCase(getAdminProfileThunk.fulfilled, (state, action) => {
       state.loading = false;
+      state.isAuthenticated = true;
       state.user = {
         accessToken: state.user?.accessToken || '',
         ...action.payload,

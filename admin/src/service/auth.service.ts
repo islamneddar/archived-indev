@@ -3,7 +3,7 @@ import axios from 'axios';
 import {LoginResponse} from '@/types/api/auth';
 
 export default class AuthService {
-  private endpointAuth = `${ROOT_API_URL}/admin-auth`;
+  private endpointAuth = `${ROOT_API_URL}/auth/admin`;
 
   private static instance = new AuthService();
 
@@ -12,10 +12,12 @@ export default class AuthService {
   }
 
   async login(email: string, password: string) {
+    console.log('login', email, password);
     const res = await axios.post(`${this.endpointAuth}/login`, {
       email,
       password,
     });
+    console.log(res);
     const data = await res.data;
     return data as LoginResponse;
   }

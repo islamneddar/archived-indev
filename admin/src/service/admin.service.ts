@@ -3,7 +3,7 @@ import axios from 'axios';
 import {AdminProfileResponse} from '@/types/api/auth';
 
 export default class AdminService {
-  private endpointAuth = `${ROOT_API_URL}/admin-auth`;
+  private endpointAuth = `${ROOT_API_URL}/inaitimes/admin`;
 
   private static instance = new AdminService();
 

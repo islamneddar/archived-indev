@@ -4,7 +4,7 @@ import {listAiToolCategory} from '@/common/constants/ai-tool-categories';
 import {
   AiToolCreationInput,
   aiToolCreationSchema,
-} from '@/app/ai-tool-creation/ai-tool-creation.form';
+} from '@/app/admin/ai-tool-creation/ai-tool-creation.form';
 import {useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useDispatch} from 'react-redux';
@@ -40,7 +40,6 @@ function Page() {
   // domain function
   const addAiTool = () => {
     const onSubmit = (resultInput: AiToolCreationInput) => {
-      console.log(resultInput);
       const createAiToolRequest: CreateAiToolRequest = {
         name: resultInput.name,
         description: resultInput.description,
