@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {AdminSession, UserSession} from '@/types/common/user-session.type';
+import {AdminSession} from '@/types/common/user-session.type';
 import {getAdminProfileThunk} from '@/redux/slices/auth/admin/admin.thunk';
 import {ReduxEntityBase} from '@/types/common/redux.type';
 

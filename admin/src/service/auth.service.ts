@@ -12,12 +12,10 @@ export default class AuthService {
   }
 
   async login(email: string, password: string) {
-    console.log('login', email, password);
     const res = await axios.post(`${this.endpointAuth}/login`, {
       email,
       password,
     });
-    console.log(res);
     const data = await res.data;
     return data as LoginResponse;
   }

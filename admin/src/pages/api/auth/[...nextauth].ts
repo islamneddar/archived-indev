@@ -18,7 +18,6 @@ export const authOptions: NextAuthOptions = {
         password: {label: 'Password', type: 'password'},
       },
       async authorize(credentials, req) {
-        console.log('credentials', credentials);
         const {email, password} = credentials as any;
         try {
           const res = await AuthService.getInstance().login(email, password);
@@ -30,7 +29,6 @@ export const authOptions: NextAuthOptions = {
             };
           } else return null;
         } catch (e) {
-          console.log(e);
           return null;
         }
       },
