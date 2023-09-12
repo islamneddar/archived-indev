@@ -22,7 +22,7 @@ function UseSessionAuthClient() {
   useEffect(() => {
     EventBusFront.on(EventBusFrontType.LOGOUT, async () => {
       dispatch(updateAuth({isAuthenticated: false, accessToken: null}));
-      await signOut();
+      await signOut({});
     });
   }, []);
 
