@@ -5,7 +5,7 @@ import {SourceBlogEntity} from './source_blog.entity';
 import {PageOptionsDto} from '@/common/pagination/page_option.dto';
 import {PageMetaDto} from '@/common/pagination/page_meta.dto';
 import {PageDto} from '@/common/pagination/page.dto';
-import {UserEntity} from '@/bussiness/user/user.entity';
+import {UserEntity} from '@/bussiness/domains/user/user.entity';
 import {
   contentTypeSourceBlog,
   TypeFeed,

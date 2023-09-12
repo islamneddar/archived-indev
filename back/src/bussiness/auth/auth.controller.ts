@@ -10,14 +10,16 @@ import {
   ForgotPasswordRequest,
   LoginRequest,
   ResetPasswordRequest,
+  SignupAdminRequest,
   SignupRequest,
 } from '@/bussiness/auth/auth.type';
 import {JwtService} from '@nestjs/jwt';
 import {JWT_SECRET} from '@/config';
-import {UserService} from '@/bussiness/user/user.service';
+import {UserService} from '@/bussiness/domains/user/user.service';
 import {EmailValidationEntity} from '@/bussiness/email_validation/email_valdation.entity';
 import {EmailValidationService} from '@/bussiness/email_validation/email_validation.service';
 import {MailingService} from '@/external-services/mailing/mailing.service';
+import {InAiTimesAdminService} from '@/bussiness/inaitimer-admin/inaitmes-admin.service';
 
 @Controller('auth')
 export class AuthController {
@@ -25,6 +27,7 @@ export class AuthController {
     private readonly authService: AuthService,
     private jwtService: JwtService,
     private userService: UserService,
+    private inaitimesAdminService: InAiTimesAdminService,
     private emailValidationService: EmailValidationService,
     private mailService: MailingService,
   ) {}
@@ -98,6 +101,44 @@ export class AuthController {
     );
     return {
       message: 'reset password',
+    };
+  }
+
+  @Post('admin/login')
+  async adminLogin(@Body() body: LoginRequest) {
+    const admin = await this.authService.validateAdmin(
+      body.email,
+      body.password,
+    );
+    if (!admin) {
+      throw new HttpException('wrong email or password', HttpStatus.NOT_FOUND);
+    }
+
+    const userToken = await this.jwtService.signAsync(
+      {
+        id: admin.id,
+        email: admin.email,
+      },
+      {
+        secret: JWT_SECRET,
+      },
+    );
+
+    return {
+      userId: admin.id,
+      accessToken: userToken,
+    };
+  }
+
+  @Post('/admin/signup')
+  async adminSignup(@Body() body: SignupAdminRequest) {
+    const admin = await this.inaitimesAdminService.findOneByEmail(body.email);
+    if (admin) {
+      throw new HttpException('admin already exist', HttpStatus.CONFLICT);
+    }
+    await this.inaitimesAdminService.createUser(body);
+    return {
+      message: 'user created',
     };
   }
 }

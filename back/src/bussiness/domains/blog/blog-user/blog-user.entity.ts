@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import {BaseTable} from '@/database/base-table.entity';
-import {UserEntity} from '@/bussiness/user/user.entity';
+import {UserEntity} from '@/bussiness/domains/user/user.entity';
 import {BlogEntity} from '@/bussiness/domains/blog/blog/blog.entity';
 import {TinyIntEnum} from '@/database/db.types';
 

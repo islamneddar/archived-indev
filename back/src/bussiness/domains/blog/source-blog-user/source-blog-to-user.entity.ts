@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import {SourceBlogEntity} from '@/bussiness/domains/blog/source-blog/source_blog.entity';
-import {UserEntity} from '@/bussiness/user/user.entity';
+import {UserEntity} from '@/bussiness/domains/user/user.entity';
 
 @Entity('source_blog_to_user')
 export class SourceBlogToUserEntity extends BaseTable {

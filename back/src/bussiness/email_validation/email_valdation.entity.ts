@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import {BaseTable} from '@/database/base-table.entity';
-import {UserEntity} from '@/bussiness/user/user.entity';
+import {UserEntity} from '@/bussiness/domains/user/user.entity';
 import {EmailValidationEnum} from '@/bussiness/email_validation/email_validation.types';
 
 @Entity({name: 'email_validations'})
