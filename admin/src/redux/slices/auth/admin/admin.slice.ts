@@ -1,11 +1,11 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {UserSession} from '@/types/common/user-session.type';
+import {AdminSession, UserSession} from '@/types/common/user-session.type';
 import {getAdminProfileThunk} from '@/redux/slices/auth/admin/admin.thunk';
 import {ReduxEntityBase} from '@/types/common/redux.type';
 
 export interface AdminSessionState extends ReduxEntityBase<any> {
   isAuthenticated: boolean;
-  user: UserSession;
+  user: AdminSession;
 }
 
 const initialState: AdminSessionState = {
@@ -15,6 +15,7 @@ const initialState: AdminSessionState = {
     email: '',
     username: '',
     id: 0,
+    role: '',
   },
   loading: false,
   error: undefined,
@@ -52,6 +53,8 @@ export const adminSessionSlice = createSlice({
     builder.addCase(getAdminProfileThunk.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload as string;
+      state.success = false;
+      state.isAuthenticated = false;
     });
   },
 });

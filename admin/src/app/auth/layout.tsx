@@ -9,7 +9,6 @@ function Layout({children}: {children: React.ReactNode}) {
 
   const router = useRouter();
 
-  console.log(session, adminSessionSelector);
   if (session.status === 'loading') {
     return <>Loading</>;
   } else if (
