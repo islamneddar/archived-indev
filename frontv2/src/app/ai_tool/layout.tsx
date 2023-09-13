@@ -37,7 +37,6 @@ function Layout({children}: {children: React.ReactNode}) {
     async function fetchListCategories() {
       fetchTheListOfCategories();
     }
-    console.log(listCategoryAiTools);
     const nowMinus24hours = dayjs().subtract(24, 'hour');
     const lastUpdateIsBefore24Hours = dayjs(
       listCategoryAiTools?.lastUpdate,

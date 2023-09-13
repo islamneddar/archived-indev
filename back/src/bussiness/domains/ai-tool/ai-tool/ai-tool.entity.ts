@@ -42,4 +42,7 @@ export class AiToolEntity extends BaseTable {
     enum: PricingEnum,
   })
   pricing: PricingEnum;
+
+  @Column({nullable: false, default: false, name: 'is_active'})
+  isActive: boolean;
 }

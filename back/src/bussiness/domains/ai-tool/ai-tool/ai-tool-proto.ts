@@ -30,7 +30,6 @@ export class CreateAiToolRequest {
 
 export class GetAllAiToolsQuery {
   @Transform(({value}) => {
-    console.log(value);
     return value === 'true';
   })
   @IsBoolean()

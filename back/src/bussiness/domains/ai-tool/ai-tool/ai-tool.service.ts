@@ -38,6 +38,7 @@ export class AiToolService {
     const [result, total] = await this.aiToolRepository.findAndCount({
       where: {
         softDelete: false,
+        isActive: true,
       },
       order: {
         createdAt: 'DESC',
@@ -78,6 +79,7 @@ export class AiToolService {
       where: {
         softDelete: false,
         category,
+        isActive: true,
       },
       order: {
         createdAt: 'DESC',

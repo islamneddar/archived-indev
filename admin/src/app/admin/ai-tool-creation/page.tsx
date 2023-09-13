@@ -12,11 +12,14 @@ import {ThunkDispatch} from '@reduxjs/toolkit';
 import {CreateAiToolRequest} from '@/types/api/ai-tool';
 import {createAiToolThunk} from '@/redux/slices/ai-tool/api/create-ai-tool/create-ai-tool.thunk';
 import {useCreateAiToolSelector} from '@/redux/slices/ai-tool/api/create-ai-tool/create-ai-tool.selector';
+import {useSession} from 'next-auth/react';
+import {useAdminSessionSelector} from '@/redux/slices/auth/admin/admin.selector';
 
 function Page() {
   const dispatchThunk = useDispatch<ThunkDispatch<any, any, any>>();
 
   const useCreateAiTool = useCreateAiToolSelector();
+  const adminSessionSelector = useAdminSessionSelector();
 
   const {
     register,

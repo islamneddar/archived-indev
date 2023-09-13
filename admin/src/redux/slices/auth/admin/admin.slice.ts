@@ -30,9 +30,17 @@ export const adminSessionSlice = createSlice({
       const payload = action.payload as {
         isAuthenticated: boolean;
         accessToken: string;
+        email: string;
+        username: string;
+        id: number;
+        role: string;
       };
       state.isAuthenticated = payload.isAuthenticated;
       state.user.accessToken = payload.accessToken;
+      state.user.email = payload.email;
+      state.user.username = payload.username;
+      state.user.id = payload.id;
+      state.user.role = payload.role;
     },
   },
   extraReducers: builder => {

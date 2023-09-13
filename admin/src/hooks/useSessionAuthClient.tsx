@@ -11,7 +11,6 @@ import {ThunkDispatch} from '@reduxjs/toolkit';
 
 function UseSessionAuthClient() {
   const dispatch = useDispatch();
-  const dispatchThunk = useDispatch<ThunkDispatch<any, any, any>>();
 
   const adminSessionSelector = useAdminSessionSelector();
 
@@ -19,40 +18,27 @@ function UseSessionAuthClient() {
     required: false,
   });
 
+  if (session.status === 'authenticated') {
+    const data = session.data as any;
+    dispatch(
+      updateAuth({
+        isAuthenticated: true, // we fetched the data of a user
+        // @ts-ignore
+        accessToken: session.data?.user?.accessToken,
+        email: data.admin?.email,
+        username: data.admin?.username,
+        role: data.admin?.role,
+        id: data.admin?.id,
+      }),
+    );
+  }
+
   useEffect(() => {
     EventBusFront.on(EventBusFrontType.LOGOUT, async () => {
       dispatch(updateAuth({isAuthenticated: false, accessToken: null}));
       await signOut({});
     });
   }, []);
-
-  useEffect(() => {
-    if (adminSessionSelector.success) {
-      dispatch(
-        updateAuth({
-          isAuthenticated: true, // we fetched the data of a user
-          // @ts-ignore
-          accessToken: session.data?.user?.accessToken,
-        }),
-      );
-    }
-  }, [adminSessionSelector.success]);
-
-  useEffect(() => {
-    if (
-      !adminSessionSelector.isAuthenticated &&
-      session.status === 'authenticated'
-    ) {
-      // @ts-ignore
-      const accessToken = session.data?.user?.accessToken;
-      dispatchThunk(getAdminProfileThunk(accessToken));
-    }
-  }, [
-    session.data,
-    // @ts-ignore
-    session.data?.user?.accessToken,
-    session.status,
-  ]);
 
   return {session, adminSessionSelector};
 }
