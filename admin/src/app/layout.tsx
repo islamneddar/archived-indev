@@ -1,6 +1,5 @@
 'use client';
 import './globals.css';
-import type {Metadata} from 'next';
 import {Inter} from 'next/font/google';
 import {Provider} from 'react-redux';
 import {store} from '@/redux/store';
@@ -8,6 +7,11 @@ import {SessionProvider} from 'next-auth/react';
 import {Toaster} from 'react-hot-toast';
 import React from 'react';
 import {PrimeReactProvider} from 'primereact/api';
+//theme
+import 'primereact/resources/themes/lara-light-indigo/theme.css';
+
+//core
+import 'primereact/resources/primereact.min.css';
 
 const inter = Inter({subsets: ['latin']});
 

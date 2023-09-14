@@ -1,5 +1,9 @@
 import {KEY_TO_PASS, ROOT_API_URL} from '@/service/config';
-import {CreateAiToolRequest} from '@/types/api/ai-tool';
+import {
+  AiTool,
+  AiToolWithTotalNumber,
+  CreateAiToolRequest,
+} from '@/types/api/ai-tool';
 import axios from 'axios';
 
 export class AiToolService {
@@ -28,5 +32,18 @@ export class AiToolService {
 
     const data = res.data;
     return data as any;
+  }
+
+  async getAllInvalidTool(page: number, accessToken: string) {
+    const res = await axios.get(`${this.endpoint}/list/not_validated`, {
+      params: {
+        page,
+      },
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    const data = await res.data;
+    return data as AiToolWithTotalNumber;
   }
 }

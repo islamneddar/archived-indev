@@ -3,6 +3,7 @@ import {BaseTable} from '@/database/base-table.entity';
 import {SourceBlogToUserEntity} from '@/bussiness/domains/blog/source-blog-user/source-blog-to-user.entity';
 import {BlogToUserEntity} from '@/bussiness/domains/blog/blog-user/blog-user.entity';
 import {AdminRoleEnum} from '@/bussiness/inaitimer-admin/inaitimes-admin.proto';
+import {AiToolEntity} from '@/bussiness/domains/ai-tool/ai-tool/ai-tool.entity';
 
 @Entity({name: 'inaitimes_admin'})
 export class AdminInAiTimesEntity extends BaseTable {
@@ -28,4 +29,7 @@ export class AdminInAiTimesEntity extends BaseTable {
     name: 'role',
   })
   role: AdminRoleEnum;
+
+  @OneToMany(() => AiToolEntity, aiTool => aiTool.admin)
+  aiTools: AdminInAiTimesEntity[];
 }

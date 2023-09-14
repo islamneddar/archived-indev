@@ -7,18 +7,21 @@ import {
   Post,
   Query,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import {AiToolService} from '@/bussiness/domains/ai-tool/ai-tool/ai-tool.service';
 import {FileInterceptor} from '@nestjs/platform-express';
 import {
   CreateAiToolRequest,
+  GetAllAiToolNotValidatedQuery,
   GetAllAiToolsQuery,
 } from '@/bussiness/domains/ai-tool/ai-tool/ai-tool-proto';
 import {ConfigService} from '@nestjs/config';
 import {S3AppService} from '@/external-services/aws-s3/s3-app.service';
 import {AiToolEntity} from '@/bussiness/domains/ai-tool/ai-tool/ai-tool.entity';
 import {slugify} from '@/utils/common.util';
+import {AuthAdminGuard} from '@/bussiness/auth/auth-admin.guard';
 
 @Controller('ai-tool')
 export default class AiToolController {
@@ -94,5 +97,11 @@ export default class AiToolController {
       pageOption: query.pageOption,
       category: query.category,
     });
+  }
+
+  @UseGuards(AuthAdminGuard)
+  @Get('/list/not_validated')
+  async listNotValidated(@Query() query: GetAllAiToolNotValidatedQuery) {
+    return await this.aiToolService.findAllNotValidated(query.page);
   }
 }

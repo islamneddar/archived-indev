@@ -107,4 +107,41 @@ export class AiToolService {
       }),
     );
   }
+
+  async findAllNotValidated(page: number = 1, take: number = 2) {
+    const skip = (page - 1) * take;
+    const [data, total] = await this.aiToolRepository.findAndCount({
+      where: {
+        softDelete: false,
+        isActive: false,
+      },
+      relations: ['admin'],
+      order: {
+        createdAt: 'DESC',
+      },
+      select: {
+        aiToolId: true,
+        name: true,
+        slug: true,
+        description: true,
+        url: true,
+        image: true,
+        category: true,
+        pricing: true,
+        createdAt: true,
+        isActive: true,
+        admin: {
+          id: true,
+          email: true,
+        },
+      },
+      skip: skip,
+      take: take,
+    });
+
+    return {
+      data,
+      total,
+    };
+  }
 }
