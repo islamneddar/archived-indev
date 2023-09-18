@@ -12,6 +12,7 @@ import {Column} from 'primereact/column';
 import {Tag} from 'primereact/tag';
 import {InputSwitch} from 'primereact/inputswitch';
 import toast from 'react-hot-toast';
+import ImageDialog from '@/app-components/list-ai-tool/ImageDialog';
 
 function Layout({children}: {children: React.ReactNode}) {
   const adminSelector = useAdminSessionSelector();
@@ -21,6 +22,11 @@ function Layout({children}: {children: React.ReactNode}) {
     total: 0,
   });
   const [loading, setLoading] = React.useState<boolean>(false);
+  const [imageOpenInDialog, setImageOpenInDialog] =
+    React.useState<boolean>(false);
+
+  const [currentOpenedImage, setCurrentOpenedImage] =
+    React.useState<string>('');
 
   if (adminSelector.user.role !== 'admin') {
     return router.push(routingConstant.admin.home.root);
@@ -48,7 +54,8 @@ function Layout({children}: {children: React.ReactNode}) {
         alt={aiTool.image}
         className="w-6rem shadow-2 border-round w-10 h-10 cursor-pointer"
         onClick={() => {
-          window.open(aiTool.image, '_blank');
+          setCurrentOpenedImage(aiTool.image);
+          setImageOpenInDialog(true);
         }}
       />
     );
@@ -121,6 +128,10 @@ function Layout({children}: {children: React.ReactNode}) {
 
   return (
     <div>
+      <ImageDialog
+        imageOpenInDialog={imageOpenInDialog}
+        setImageOpenInDialog={setImageOpenInDialog}
+        imageUrl={currentOpenedImage}></ImageDialog>
       <DataTable value={listTools.data} header={header} footer={footer}>
         <Column field="name" header="Name"></Column>
         <Column
