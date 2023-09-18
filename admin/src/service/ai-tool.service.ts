@@ -46,4 +46,18 @@ export class AiToolService {
     const data = await res.data;
     return data as AiToolWithTotalNumber;
   }
+
+  async validateTool(aiToolId: number, accessToken: string) {
+    const res = await axios.post(
+      `${this.endpoint}/admin/validate`,
+      {
+        aiToolId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+  }
 }

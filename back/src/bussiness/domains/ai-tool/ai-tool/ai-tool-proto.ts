@@ -56,3 +56,10 @@ export class GetAllAiToolNotValidatedQuery {
   @IsNotEmpty()
   page: number;
 }
+
+export class ValidateAiToolBody {
+  @Type(() => Number)
+  @IsNumber()
+  @IsNotEmpty()
+  aiToolId: number;
+}

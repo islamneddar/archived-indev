@@ -11,6 +11,7 @@ import {Button} from 'primereact/button';
 import {Column} from 'primereact/column';
 import {Tag} from 'primereact/tag';
 import {InputSwitch} from 'primereact/inputswitch';
+import toast from 'react-hot-toast';
 
 function Layout({children}: {children: React.ReactNode}) {
   const adminSelector = useAdminSessionSelector();
@@ -19,6 +20,7 @@ function Layout({children}: {children: React.ReactNode}) {
     data: [],
     total: 0,
   });
+  const [loading, setLoading] = React.useState<boolean>(false);
 
   if (adminSelector.user.role !== 'admin') {
     return router.push(routingConstant.admin.home.root);
@@ -30,7 +32,6 @@ function Layout({children}: {children: React.ReactNode}) {
         page,
         adminSelector.user.accessToken,
       );
-      console.log(listTools);
       setListTools(listTools);
     }
     getListProduct(Number(params?.get('page')) || 1);
@@ -85,8 +86,25 @@ function Layout({children}: {children: React.ReactNode}) {
       <InputSwitch
         checked={isActivated}
         className={'h-5'}
-        onChange={(e: any) => {
-          setIsActivated(e.value);
+        disabled={loading}
+        onChange={async (e: any) => {
+          setLoading(true);
+          try {
+            await AiToolService.getInstance().validateTool(
+              aiTool.aiToolId,
+              adminSelector.user.accessToken,
+            );
+            const listToolsFiltred = listTools.data.filter(
+              tool => tool.aiToolId !== aiTool.aiToolId,
+            );
+            setListTools({
+              data: listToolsFiltred,
+              total: listTools.total - 1,
+            });
+            setLoading(false);
+          } catch (err) {
+            toast.error(aiTool.name + ' is not activated because ' + err);
+          }
         }}></InputSwitch>
     );
   };

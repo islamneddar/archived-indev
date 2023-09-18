@@ -108,7 +108,7 @@ export class AiToolService {
     );
   }
 
-  async findAllNotValidated(page: number = 1, take: number = 2) {
+  async findAllNotValidated(page = 1, take = 100) {
     const skip = (page - 1) * take;
     const [data, total] = await this.aiToolRepository.findAndCount({
       where: {
@@ -143,5 +143,24 @@ export class AiToolService {
       data,
       total,
     };
+  }
+
+  async validate(aiToolId: number) {
+    await this.aiToolRepository.update(
+      {
+        aiToolId,
+      },
+      {
+        isActive: true,
+      },
+    );
+  }
+
+  findById(aiToolId: number) {
+    return this.aiToolRepository.findOne({
+      where: {
+        aiToolId,
+      },
+    });
   }
 }
