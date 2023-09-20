@@ -14,7 +14,6 @@ import {getAllCategoriesAiToolsThunk} from '@/redux/slices/ai-tools/category-ai-
 import {useGetAllAiToolsCategoriesSelector} from '@/redux/slices/ai-tools/category-ai-tool/api/get-all-categories/get-all-categories.selector';
 import {ListCategoryType} from '@/types/api/ai-tools/category-ai-tools';
 import dayjs from 'dayjs';
-import UseSessionAuthClient from '@/hooks/useSessionAuthClient';
 
 function Layout({children}: {children: React.ReactNode}) {
   const dispatchThunk = useDispatch<ThunkDispatch<any, any, any>>();
@@ -30,8 +29,6 @@ function Layout({children}: {children: React.ReactNode}) {
   const [navigationState, setNavigationState] = useState<NavigationType[]>([]);
 
   const [loading, setLoading] = useState<boolean>(true);
-
-  const {session, userSessionSelector} = UseSessionAuthClient();
 
   useEffect(() => {
     async function fetchListCategories() {

@@ -28,6 +28,9 @@ export class AiToolService {
       params: {
         'key-to-pass': KEY_TO_PASS,
       },
+      headers: {
+        Authorization: `Bearer ${request.accessToken}`,
+      },
     });
 
     const data = res.data;

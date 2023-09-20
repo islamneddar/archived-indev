@@ -5,6 +5,7 @@ export interface CreateAiToolRequest {
   category: string;
   pricing: string;
   file: any;
+  accessToken: string;
 }
 
 export interface AiTool {
