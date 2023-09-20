@@ -14,7 +14,6 @@ import {resetGetAllAiTool} from '@/redux/slices/ai-tools/ai-tool/api/get-all/get
 import toast from 'react-hot-toast';
 import {ProgressSpinner} from 'primereact/progressspinner';
 import PrimaryButton from '@/components/button/PrimaryButton';
-import {Dialog} from 'primereact/dialog';
 
 import './ai-tools-body.css';
 import AiToolItemDialog from '@/app-page-component/ai-tool-section/ai-tools/ai-tool-dialog/AiToolItemDialog';
@@ -37,6 +36,7 @@ function AiToolsBody(props: AiToolsBodyProps) {
     page: 1,
     hasPreviousPage: false,
     hasNextPage: false,
+    itemCount: 1,
   });
   const [dialogItemAiToolVisible, setDialogItemAiToolVisible] =
     React.useState(true);
@@ -103,6 +103,26 @@ function AiToolsBody(props: AiToolsBodyProps) {
   return (
     <div className={'p-3'}>
       <AiToolItemDialog />
+      <div className={'flex w-full h-full justify-center items-center'}>
+        <div
+          className={
+            'text-3xl py-5 font-medium flex justify-center flex-col items-center'
+          }>
+          <p className={'pb-3'}>
+            Explore the best AI tools{' '}
+            <span className={'italic font-semibold'}>
+              {category === 'all' ? '' : `in ${category}`}
+            </span>{' '}
+            Updated daily
+          </p>
+          <p>
+            Find the right tool from our list of{' '}
+            <span className={'italic font-semibold'}>
+              +{metaData.itemCount} AI tools
+            </span>
+          </p>
+        </div>
+      </div>
       <div
         className={
           'grid tn:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center'

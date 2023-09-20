@@ -92,6 +92,9 @@ export default class AiToolController {
     };
   }
 
+  /**
+   * @deprecated
+   */
   @Get('list')
   async list(@Query() query: GetAllAiToolsQuery) {
     this.LOG.log(query.isAll);
@@ -107,6 +110,9 @@ export default class AiToolController {
     });
   }
 
+  /*
+    This endpoint is used by admin to list all AI Tools that are not validated yet
+   */
   @UseGuards(AuthAdminGuard)
   @Get('/list/not_validated')
   async listNotValidated(@Query() query: GetAllAiToolNotValidatedQuery) {
