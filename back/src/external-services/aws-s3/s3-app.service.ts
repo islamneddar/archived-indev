@@ -16,7 +16,6 @@ export class S3AppService {
     );
     const awsS3Endpoint = configService.get<string>('AWS_S3_ENDPOINT');
 
-    console.log(awsS3Endpoint);
     this.s3Client = new S3({
       endpoint: awsS3Endpoint,
       region: 'ams3',

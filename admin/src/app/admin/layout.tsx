@@ -8,8 +8,8 @@ export default function Layout({children}: {children: React.ReactNode}) {
 
   const router = useRouter();
 
-  if (session.status === 'loading' || adminSessionSelector.loading) {
-    return <>Loading</>;
+  if (session.status === 'loading') {
+    return <></>;
   } else if (session.status === 'authenticated') {
     return <>{children}</>;
   } else {

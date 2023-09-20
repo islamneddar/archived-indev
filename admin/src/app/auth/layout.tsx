@@ -10,11 +10,8 @@ function Layout({children}: {children: React.ReactNode}) {
   const router = useRouter();
 
   if (session.status === 'loading') {
-    return <>Loading</>;
-  } else if (
-    session.status === 'authenticated' &&
-    adminSessionSelector.isAuthenticated
-  ) {
+    return <></>;
+  } else if (session.status === 'authenticated') {
     return router.push(routingConstant.admin.home.root);
   } else {
     return <>{children}</>;

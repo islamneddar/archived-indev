@@ -38,6 +38,7 @@ export class AiToolService {
     const [result, total] = await this.aiToolRepository.findAndCount({
       where: {
         softDelete: false,
+        isActive: true,
       },
       order: {
         createdAt: 'DESC',
@@ -78,6 +79,7 @@ export class AiToolService {
       where: {
         softDelete: false,
         category,
+        isActive: true,
       },
       order: {
         createdAt: 'DESC',
@@ -104,5 +106,61 @@ export class AiToolService {
         pageOptionsDto: param.pageOption,
       }),
     );
+  }
+
+  async findAllNotValidated(page = 1, take = 100) {
+    const skip = (page - 1) * take;
+    const [data, total] = await this.aiToolRepository.findAndCount({
+      where: {
+        softDelete: false,
+        isActive: false,
+      },
+      relations: ['admin'],
+      order: {
+        createdAt: 'DESC',
+      },
+      select: {
+        aiToolId: true,
+        name: true,
+        slug: true,
+        description: true,
+        url: true,
+        image: true,
+        category: true,
+        pricing: true,
+        createdAt: true,
+        isActive: true,
+        admin: {
+          id: true,
+          email: true,
+        },
+      },
+      skip: skip,
+      take: take,
+    });
+
+    return {
+      data,
+      total,
+    };
+  }
+
+  async validate(aiToolId: number) {
+    await this.aiToolRepository.update(
+      {
+        aiToolId,
+      },
+      {
+        isActive: true,
+      },
+    );
+  }
+
+  findById(aiToolId: number) {
+    return this.aiToolRepository.findOne({
+      where: {
+        aiToolId,
+      },
+    });
   }
 }

@@ -12,11 +12,17 @@ import {ThunkDispatch} from '@reduxjs/toolkit';
 import {CreateAiToolRequest} from '@/types/api/ai-tool';
 import {createAiToolThunk} from '@/redux/slices/ai-tool/api/create-ai-tool/create-ai-tool.thunk';
 import {useCreateAiToolSelector} from '@/redux/slices/ai-tool/api/create-ai-tool/create-ai-tool.selector';
+import {useAdminSessionSelector} from '@/redux/slices/auth/admin/admin.selector';
+import toast from 'react-hot-toast';
 
 function Page() {
   const dispatchThunk = useDispatch<ThunkDispatch<any, any, any>>();
 
   const useCreateAiTool = useCreateAiToolSelector();
+  const adminSessionSelector = useAdminSessionSelector();
+  const currentCategoryInLocalStorage = localStorage.getItem(
+    'category-creation-ai-tool',
+  );
 
   const {
     register,
@@ -29,11 +35,14 @@ function Page() {
   //useEffect
   useEffect(() => {
     if (useCreateAiTool.success) {
-      alert('success');
+      toast.success('Create ai tool successfully');
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     }
 
     if (useCreateAiTool.error) {
-      alert('error');
+      toast.error('Create ai tool failed');
     }
   }, [useCreateAiTool.success, useCreateAiTool.error]);
 
@@ -47,8 +56,10 @@ function Page() {
         category: resultInput.category,
         pricing: resultInput.pricing,
         file: resultInput.file[0],
+        accessToken: adminSessionSelector.user.accessToken,
       };
 
+      localStorage.setItem('category-creation-ai-tool', resultInput.category);
       dispatchThunk(createAiToolThunk(createAiToolRequest));
     };
     handleSubmit(onSubmit)();
@@ -91,8 +102,17 @@ function Page() {
           choose a category
         </option>
         {Object.keys(listAiToolCategory).map(option => {
+          console.log(currentCategoryInLocalStorage);
           return (
-            <option key={option} value={option}>
+            <option
+              key={option}
+              value={option}
+              selected={
+                !!(
+                  currentCategoryInLocalStorage &&
+                  currentCategoryInLocalStorage === option
+                )
+              }>
               {option}
             </option>
           );

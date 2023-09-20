@@ -11,8 +11,8 @@ import {InAiTimesAdminModule} from '@/bussiness/inaitimer-admin/inaitimes-admin.
 
 @Module({
   imports: [
-    UserModule,
     InAiTimesAdminModule,
+    UserModule,
     MailingModule,
     EmailValidationModule,
     PassportModule,

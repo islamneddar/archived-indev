@@ -3,6 +3,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 // @ts-ignore
 import {NextAuthOptions} from 'next-auth';
 import AuthService from '@/service/auth.service';
+import AdminService from '@/service/admin.service';
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -48,7 +49,11 @@ export const authOptions: NextAuthOptions = {
     },
     // @ts-ignore
     async session({session, token}) {
+      const admin = await AdminService.getInstance().getAdminProfile(
+        token.accessToken,
+      );
       session.user = token as any;
+      session.admin = admin;
       return session;
     },
   },

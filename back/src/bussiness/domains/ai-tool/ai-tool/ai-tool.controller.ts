@@ -6,19 +6,25 @@ import {
   Logger,
   Post,
   Query,
+  Req,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import {AiToolService} from '@/bussiness/domains/ai-tool/ai-tool/ai-tool.service';
 import {FileInterceptor} from '@nestjs/platform-express';
 import {
   CreateAiToolRequest,
+  GetAllAiToolNotValidatedQuery,
   GetAllAiToolsQuery,
+  ValidateAiToolBody,
 } from '@/bussiness/domains/ai-tool/ai-tool/ai-tool-proto';
 import {ConfigService} from '@nestjs/config';
 import {S3AppService} from '@/external-services/aws-s3/s3-app.service';
 import {AiToolEntity} from '@/bussiness/domains/ai-tool/ai-tool/ai-tool.entity';
 import {slugify} from '@/utils/common.util';
+import {AuthAdminGuard} from '@/bussiness/auth/auth-admin.guard';
+import {Request} from 'express';
 
 @Controller('ai-tool')
 export default class AiToolController {
@@ -31,12 +37,16 @@ export default class AiToolController {
   ) {}
 
   @Post('create')
+  @UseGuards(AuthAdminGuard)
   @UseInterceptors(FileInterceptor('image'))
   async create(
     @UploadedFile() image: Express.Multer.File,
     @Body() body: CreateAiToolRequest,
     @Query('key-to-pass') keyToPass: string,
+    @Req() req: Request,
   ) {
+    const admin = req.admin;
+
     const adminAiToolCreationSecret = this.configService.get<string>(
       'ADMIN_AI_TOOL_CREATION_SECRET',
     );
@@ -73,6 +83,7 @@ export default class AiToolController {
     aiTool.image = imageUploadedUrl;
     aiTool.category = body.category;
     aiTool.pricing = body.pricing;
+    aiTool.admin = admin;
 
     await this.aiToolService.create(aiTool);
 
@@ -94,5 +105,26 @@ export default class AiToolController {
       pageOption: query.pageOption,
       category: query.category,
     });
+  }
+
+  @UseGuards(AuthAdminGuard)
+  @Get('/list/not_validated')
+  async listNotValidated(@Query() query: GetAllAiToolNotValidatedQuery) {
+    return await this.aiToolService.findAllNotValidated(query.page);
+  }
+
+  @UseGuards(AuthAdminGuard)
+  @Post('/admin/validate')
+  async validate(@Body() body: ValidateAiToolBody) {
+    const aiTool = await this.aiToolService.findById(body.aiToolId);
+    if (!aiTool) {
+      throw new HttpException('AI Tool not found', 404);
+    }
+
+    await this.aiToolService.validate(body.aiToolId);
+    return {
+      message: 'AI Tool validated',
+      id: body.aiToolId,
+    };
   }
 }
