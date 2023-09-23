@@ -17,6 +17,11 @@ import PrimaryButton from '@/components/button/PrimaryButton';
 
 import './ai-tools-body.css';
 import AiToolItemDialog from '@/app-page-component/ai-tool-section/ai-tools/ai-tool-dialog/AiToolItemDialog';
+import {
+  AiToolCategoryEnum,
+  getAiToolCategoryFromCategory,
+  listAiToolCategory,
+} from '@/types/data/ai-tool/ai-tool-category.data';
 
 interface AiToolsBodyProps {
   category?: string;
@@ -111,7 +116,13 @@ function AiToolsBody(props: AiToolsBodyProps) {
           <p className={'pb-3'}>
             Explore the best AI tools{' '}
             <span className={'italic font-semibold'}>
-              {category === 'all' ? '' : `in ${category}`}
+              {category === 'all'
+                ? ''
+                : `in ${
+                    getAiToolCategoryFromCategory(
+                      category as AiToolCategoryEnum,
+                    ).name
+                  }`}
             </span>{' '}
             Updated daily
           </p>
