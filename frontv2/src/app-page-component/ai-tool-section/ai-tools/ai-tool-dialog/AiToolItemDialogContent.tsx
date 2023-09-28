@@ -1,14 +1,10 @@
 import React from 'react';
 import {AiTool} from '@/types/api/ai-tools/ai-tool';
 import PrimaryButton from '@/components/button/PrimaryButton';
-import {
-  AiToolCategoryEnum,
-  getAiToolCategoryFromCategory,
-} from '@/infra/data/ai-tool/ai-tool-category.data';
-import {
-  getAiPricingByType,
-  PricingEnum,
-} from '@/infra/data/ai-tool/ai-tool-pricing';
+import {getAiToolCategoryFromCategory} from '@/infra/data/ai-tool/ai-tool-category.data';
+import {getAiPricingByType} from '@/infra/data/ai-tool/ai-tool-pricing';
+import {AiToolCategoryEnum} from '@/infra/enums/ai-tool/ai-tool-category.enum';
+import {PricingEnum} from '@/infra/enums/ai-tool/pricing-mode.enum';
 
 interface AiToolItemDialogContentProps {
   aiTool: AiTool;
