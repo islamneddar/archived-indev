@@ -5,7 +5,6 @@ import AiToolController from '@/bussiness/domains/ai-tool/ai-tool/ai-tool.contro
 import {AiToolService} from '@/bussiness/domains/ai-tool/ai-tool/ai-tool.service';
 import {ConfigModule} from '@nestjs/config';
 import {S3AppModule} from '@/external-services/aws-s3/s3-app.module';
-import {InAiTimesAdminService} from '@/bussiness/inaitimer-admin/inaitmes-admin.service';
 import {InAiTimesAdminModule} from '@/bussiness/inaitimer-admin/inaitimes-admin.module';
 
 @Module({

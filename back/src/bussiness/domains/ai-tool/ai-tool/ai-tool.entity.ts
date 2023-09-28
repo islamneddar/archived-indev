@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  Index,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -25,6 +26,7 @@ export class AiToolEntity extends BaseTable {
   @Column({unique: true, nullable: false, name: 'slug'})
   slug: string;
 
+  @Index({fulltext: true})
   @Column({nullable: false, name: 'description'})
   description: string;
 

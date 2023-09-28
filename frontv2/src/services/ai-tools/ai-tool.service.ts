@@ -29,6 +29,11 @@ export class AiToolService {
     if (request.pricing) {
       paramsToSend['pricing'] = request.pricing;
     }
+
+    if (request.searchText) {
+      paramsToSend['searchText'] = request.searchText;
+    }
+
     const response = await axios.get(`${this.endpoint}/list`, {
       params: {
         ...paramsToSend,

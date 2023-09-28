@@ -18,6 +18,8 @@ import {getListAiPricingMode} from '@/infra/data/ai-tool/ai-tool-pricing';
 import {PricingEnum} from '@/infra/enums/ai-tool/pricing-mode.enum';
 import {useQuery} from 'react-query';
 import {AiToolService} from '@/services/ai-tools/ai-tool.service';
+import AiToolsBodyFilters from '@/app-page-component/ai-tool-section/ai-tools/ai-tool-body/AiToolsBodyFilters';
+import AiToolBodyHeader from '@/app-page-component/ai-tool-section/ai-tools/ai-tool-body/AiToolBodyHeader';
 
 interface AiToolsBodyProps {
   category?: string;
@@ -30,6 +32,8 @@ interface AiToolsBodyState {
   metaData: PageMetaResponse;
   selectedAiToolPricing: any;
   enabledQuery: boolean;
+  searchText: string;
+  lastSearchedText?: string;
 }
 
 function AiToolsBody(props: AiToolsBodyProps) {
@@ -53,6 +57,7 @@ function AiToolsBody(props: AiToolsBodyProps) {
       type: PricingEnum.ALL,
     },
     enabledQuery: true,
+    searchText: '',
   });
 
   // queries
@@ -85,6 +90,11 @@ function AiToolsBody(props: AiToolsBodyProps) {
     if (state.selectedAiToolPricing.type !== PricingEnum.ALL) {
       getAllAiToolsRequest['pricing'] = state.selectedAiToolPricing.type;
     }
+
+    if (state.searchText !== '') {
+      getAllAiToolsRequest['searchText'] = state.searchText;
+    }
+
     const response = await AiToolService.getInstance().findAll(
       getAllAiToolsRequest,
     );
@@ -99,6 +109,36 @@ function AiToolsBody(props: AiToolsBodyProps) {
     return response;
   }
 
+  const onChangePricingDropdown = (e: DropdownChangeEvent) => {
+    console.log(e.value);
+    setState(prevState => ({
+      ...prevState,
+      selectedAiToolPricing: e.value,
+      page: 1,
+      enabledQuery: true,
+      aiTools: [],
+    }));
+  };
+
+  const onChangeInputSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setState(prevState => ({
+      ...prevState,
+      searchText: e.target.value,
+    }));
+  };
+
+  const onSearchClick = () => {
+    if (state.searchText !== state.lastSearchedText) {
+      setState(prevState => ({
+        ...prevState,
+        lastSearchText: prevState.searchText,
+        page: 1,
+        enabledQuery: true,
+        aiTools: [],
+      }));
+    }
+  };
+
   // rendering
   if (getListToolsResults.isLoading && state.page === 1) {
     return (
@@ -111,54 +151,25 @@ function AiToolsBody(props: AiToolsBodyProps) {
   return (
     <div className={'p-3'}>
       <AiToolItemDialog />
-      <div className={'flex w-full h-full justify-center items-center'}>
-        <div
-          className={
-            'text-3xl py-5 font-medium flex justify-center flex-col items-center'
-          }>
-          <p className={'pb-3'}>
-            Explore the best AI tools{' '}
-            <span className={'italic font-semibold'}>
-              {category === 'all'
-                ? ''
-                : `in ${
-                    getAiToolCategoryFromCategory(
-                      category as AiToolCategoryEnum,
-                    ).name
-                  }`}
-            </span>{' '}
-            Updated daily
-          </p>
-          <p>
-            Find the right tool from our list of{' '}
-            <span className={'italic font-semibold'}>
-              +{state.metaData.itemCount} AI tools
-            </span>
-          </p>
-        </div>
-      </div>
-      <div className={'flex pl-5 py-5'}>
-        <div className="card flex justify-content-center">
-          <div className="card flex justify-content-center">
-            <Dropdown
-              value={state.selectedAiToolPricing}
-              onChange={(e: DropdownChangeEvent) =>
-                setState(prevState => ({
-                  ...prevState,
-                  selectedAiToolPricing: e.value,
-                  page: 1,
-                  enabledQuery: true,
-                  aiTools: [],
-                }))
-              }
-              options={aiPricingModes}
-              optionLabel="name"
-              placeholder="Select a Pricing Mode"
-              className="w-full md:w-14rem "
-            />
-          </div>
-        </div>
-      </div>
+
+      <AiToolBodyHeader
+        aiToolNumber={state.metaData.itemCount}
+        category={category}></AiToolBodyHeader>
+
+      <AiToolsBodyFilters
+        aiPricingModes={aiPricingModes}
+        selectedAiToolPricing={state.selectedAiToolPricing}
+        placeholder={'Search for AI tools'}
+        onChange={(e: DropdownChangeEvent) => {
+          onChangePricingDropdown(e.value);
+        }}
+        onChangeSearch={(e: React.ChangeEvent<HTMLInputElement>) => {
+          onChangeInputSearch(e);
+        }}
+        onSearchClick={() => {
+          onSearchClick();
+        }}></AiToolsBodyFilters>
+
       <div
         className={
           'grid tn:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center'
