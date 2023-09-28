@@ -92,21 +92,12 @@ export default class AiToolController {
     };
   }
 
-  /**
-   * @deprecated
-   */
   @Get('list')
   async list(@Query() query: GetAllAiToolsQuery) {
-    this.LOG.log(query.isAll);
-    if (query.isAll) {
-      return await this.aiToolService.findAll({
-        pageOption: query.pageOption,
-      });
-    }
-
-    return await this.aiToolService.findAllByCategory({
+    return await this.aiToolService.findAll({
       pageOption: query.pageOption,
       category: query.category,
+      pricing: query.pricing,
     });
   }
 

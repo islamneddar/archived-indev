@@ -16,7 +16,7 @@ import {BookmarkIcon} from '@heroicons/react/24/outline';
 import {BookmarkIcon as BookmarkIconSolid} from '@heroicons/react/24/solid';
 import {bookmarkBlogThunk} from '@/redux/slices/blogs/blog/api/bookmark-blog/bookmark-blog.thunk';
 import {useBookmarkBlogSelector} from '@/redux/slices/blogs/blog/api/bookmark-blog/bookmark-blog.selector';
-import {GridBlogType} from '@/types/general/blog-general.type';
+import {GridBlogType} from '@/infra/enums/blog-general.type';
 
 interface IReactionGroupButtonCardProps {
   classNameContainer: string;

@@ -1,9 +1,6 @@
 import React from 'react';
-import {blogAffichageType, gridBlogType} from '@/types/data/blog-general.data';
-import {
-  BlogAffichageType,
-  GridBlogType,
-} from '@/types/general/blog-general.type';
+import {blogAffichageType, gridBlogType} from '@/infra/data/blog-general.data';
+import {BlogAffichageType, GridBlogType} from '@/infra/enums/blog-general.type';
 
 export interface IContainerForFilterGetDataAndGridTypeProps {
   stateAffichage: BlogAffichageType;

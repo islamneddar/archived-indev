@@ -6,6 +6,7 @@ import {PageOptionsDto} from '@/common/pagination/page_option.dto';
 import {AiToolCategoryEnum} from '@/bussiness/domains/ai-tool/ai-tool-category/ai-tool-catgory.proto';
 import {PageDto} from '@/common/pagination/page.dto';
 import {PageMetaDto} from '@/common/pagination/page_meta.dto';
+import {PricingEnum} from '@/common/constant/pricing.enum';
 
 @Injectable()
 export class AiToolService {
@@ -30,15 +31,31 @@ export class AiToolService {
     });
   }
 
-  async findAll(param: {pageOption: PageOptionsDto}) {
+  async findAll(param: {
+    pageOption: PageOptionsDto;
+    category?: AiToolCategoryEnum;
+    pricing?: PricingEnum;
+  }) {
     const {pageOption} = param;
     const {page, take} = pageOption;
     const offset = (page - 1) * take;
 
+    const whereClause = {
+      softDelete: false,
+      isActive: true,
+    };
+
+    if (param.category) {
+      whereClause['category'] = param.category;
+    }
+
+    if (param.pricing) {
+      whereClause['pricing'] = param.pricing;
+    }
+
     const [result, total] = await this.aiToolRepository.findAndCount({
       where: {
-        softDelete: false,
-        isActive: true,
+        ...whereClause,
       },
       order: {
         createdAt: 'DESC',

@@ -1,8 +1,7 @@
 'use client';
 
 import React from 'react';
-import {usePathname, useRouter} from 'next/navigation';
-import BookmarkBlogList from '@/app-page-component/blog-section/bookmarks/BookmarkBlogList';
+import {usePathname} from 'next/navigation';
 import AiToolsBody from '@/app-page-component/ai-tool-section/ai-tools/AIToolsBody';
 
 function Page() {
@@ -12,10 +11,6 @@ function Page() {
   const partsPathname = pathname?.split('/');
 
   const category = partsPathname?.[partsPathname.length - 1];
-
-  // state
-
-  // effects
 
   return (
     <div

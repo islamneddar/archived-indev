@@ -5,12 +5,15 @@ import {ArrowTopRightOnSquareIcon} from '@heroicons/react/24/solid';
 import {Tag} from 'primereact/tag';
 import {useDispatch} from 'react-redux';
 import {setAiTool} from '@/redux/slices/ai-tools/ai-tool/ai-tool-state/ai-tool-state.slice';
-import {getAiPricing, PricingEnum} from '@/types/data/ai-tool/ai-tool-pricing';
+import {
+  getAiPricingByType,
+  PricingEnum,
+} from '@/infra/data/ai-tool/ai-tool-pricing';
 import {BookmarkIcon} from '@heroicons/react/24/outline';
 import {
   AiToolCategoryEnum,
   getAiToolCategoryFromCategory,
-} from '@/types/data/ai-tool/ai-tool-category.data';
+} from '@/infra/data/ai-tool/ai-tool-category.data';
 
 interface AiToolCardProps {
   aiTool: AiTool;
@@ -47,7 +50,7 @@ function AiToolCard(props: AiToolCardProps) {
                       //backgroundColor: '#374151',
                     }
                   }>
-                  {getAiPricing(aiTool.pricing as PricingEnum).name}
+                  {getAiPricingByType(aiTool.pricing as PricingEnum).name}
                 </Tag>
               </div>
             </div>

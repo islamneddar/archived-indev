@@ -1,7 +1,7 @@
 'use client';
 
 import BlogList from './BlogList';
-import {GridBlogType} from '@/types/general/blog-general.type';
+import {GridBlogType} from '@/infra/enums/blog-general.type';
 
 function BlogsBody() {
   return (

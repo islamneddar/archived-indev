@@ -12,12 +12,12 @@ import {
 import routing from '@/routes/routing.constant';
 import {ThunkDispatch} from '@reduxjs/toolkit';
 import {getUserProfileThunk} from '@/redux/slices/auth/user/user.thunk';
-import {EventBusFront, EventBusFrontType} from '@/events/event_bus';
+import {EventBusFront, EventBusFrontType} from '@/infra/events/event_bus';
 import {useUserSessionSelector} from '@/redux/slices/auth/user/user.selector';
 import {NavigationType} from '@/types/general/sidebar.type';
 import SideBarMain from '@/app-page-component/sidebar/SideBarMain';
 import {GlobeEuropeAfricaIcon} from '@heroicons/react/24/solid';
-import UseSessionAuthClient from '@/hooks/useSessionAuthClient';
+import UseSessionAuthClient from '@/infra/hooks/useSessionAuthClient';
 
 const navigationState: NavigationType[] = [
   {

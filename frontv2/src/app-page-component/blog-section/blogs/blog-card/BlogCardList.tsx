@@ -4,7 +4,7 @@ import BlogTitle from '@/app-page-component/blog-section/blogs/blog-card/card-co
 import SourceAndTimeContainer from '@/app-page-component/blog-section/blogs/blog-card/card-content/SourceAndTimeContainer';
 import TagsContainer from '@/app-page-component/blog-section/blogs/blog-card/card-content/TagsContainer';
 import ReactionGroupButtonCardBlog from '@/app-page-component/blog-section/blogs/blog-card/card-content/ReactionGroupButtonCard';
-import {GridBlogType} from '@/types/general/blog-general.type';
+import {GridBlogType} from '@/infra/enums/blog-general.type';
 
 interface IBlogCardListProps {
   blog: Blog;

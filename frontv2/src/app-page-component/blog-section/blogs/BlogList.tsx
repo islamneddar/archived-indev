@@ -11,10 +11,7 @@ import {getAllBlogThunk} from '@/redux/slices/blogs/blog/api/get-all-blog/blog.t
 import {useBlogSelector} from '@/redux/slices/blogs/blog/api/get-all-blog/blog.selector';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import {ThunkDispatch} from '@reduxjs/toolkit';
-import {
-  BlogAffichageType,
-  GridBlogType,
-} from '@/types/general/blog-general.type';
+import {BlogAffichageType, GridBlogType} from '@/infra/enums/blog-general.type';
 import BlogsCardLists from '@/app-page-component/blog-section/blogs/BlogsCardLists';
 import {
   Blog,
