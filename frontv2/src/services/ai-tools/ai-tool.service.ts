@@ -17,14 +17,21 @@ export class AiToolService {
   public async findAll(
     request: GetAllAiToolRequest,
   ): Promise<GetAllAiToolResponse> {
+    const paramsToSend: any = {
+      pageOption: {
+        page: request.pageOption.page,
+        take: request.pageOption.take,
+      },
+    };
+    if (request.category) {
+      paramsToSend['category'] = request.category;
+    }
+    if (request.pricing) {
+      paramsToSend['pricing'] = request.pricing;
+    }
     const response = await axios.get(`${this.endpoint}/list`, {
       params: {
-        pageOption: {
-          page: request.pageOption.page,
-          take: request.pageOption.take,
-        },
-        category: request.category,
-        isAll: request.isAll,
+        ...paramsToSend,
       },
     });
 

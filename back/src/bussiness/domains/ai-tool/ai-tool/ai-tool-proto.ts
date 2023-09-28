@@ -4,6 +4,7 @@ import {
   IsEnum,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
   IsUrl,
 } from 'class-validator';
@@ -36,18 +37,16 @@ export class CreateAiToolRequest {
 }
 
 export class GetAllAiToolsQuery {
-  @Transform(({value}) => {
-    return value === 'true';
-  })
-  @IsBoolean()
-  @IsNotEmpty()
-  isAll: boolean;
-
   @IsEnum(AiToolCategoryEnum)
+  @IsOptional()
   category: AiToolCategoryEnum;
 
   @Type(() => PageOptionsDto)
   pageOption: PageOptionsDto;
+
+  @IsEnum(PricingEnum)
+  @IsOptional()
+  pricing?: PricingEnum;
 }
 
 export class GetAllAiToolNotValidatedQuery {

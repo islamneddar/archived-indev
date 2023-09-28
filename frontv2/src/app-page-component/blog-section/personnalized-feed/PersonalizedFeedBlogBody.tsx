@@ -1,6 +1,6 @@
 import React from 'react';
 import BlogList from '@/app-page-component/blog-section/blogs/BlogList';
-import {GridBlogType} from '@/types/general/blog-general.type';
+import {GridBlogType} from '@/infra/enums/blog-general.type';
 
 function PersonalizedFeedBlogBody() {
   return (

@@ -11,6 +11,8 @@ import 'react-tooltip/dist/react-tooltip.css';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 //core
 import 'primereact/resources/primereact.min.css';
+import {QueryClient, QueryClientProvider} from 'react-query';
+const queryClient = new QueryClient();
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   useEffect(() => {
@@ -39,10 +41,12 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
       </head>
       <body>
         <SessionProvider>
-          <Provider store={store}>
-            {children}
-            <ToasterClient />
-          </Provider>
+          <QueryClientProvider client={queryClient}>
+            <Provider store={store}>
+              {children}
+              <ToasterClient />
+            </Provider>
+          </QueryClientProvider>
         </SessionProvider>
       </body>
     </html>

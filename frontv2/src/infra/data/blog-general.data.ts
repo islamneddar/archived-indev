@@ -1,7 +1,4 @@
-import {
-  BlogAffichageType,
-  GridBlogType,
-} from '@/types/general/blog-general.type';
+import {BlogAffichageType, GridBlogType} from '@/infra/enums/blog-general.type';
 export const gridBlogType = [
   {
     value: GridBlogType.GRID,

@@ -3,8 +3,8 @@ import {SourceBlog} from '@/types/api/blogs/source_blog';
 import HeaderContentSideOverGetBlogsSourceBlog from '@/app-page-component/blog-section/source_blogs/slide-over-get-blogs/content/HeaderContentSideOverGetBlogsSourceBlog';
 import {Divider} from 'primereact/divider';
 import BlogList from '@/app-page-component/blog-section/blogs/BlogList';
-import {GridBlogType} from '@/types/general/blog-general.type';
-import useResponsive from '@/hooks/useResponsive';
+import {GridBlogType} from '@/infra/enums/blog-general.type';
+import useResponsive from '@/infra/hooks/useResponsive';
 
 interface IContentSideOverGetBlogsProps {
   sourceBlog: SourceBlog;

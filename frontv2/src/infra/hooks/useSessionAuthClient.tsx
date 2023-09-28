@@ -3,7 +3,7 @@ import {useEffect} from 'react';
 import {useUserSessionSelector} from '@/redux/slices/auth/user/user.selector';
 import {signOut, useSession} from 'next-auth/react';
 
-import {EventBusFront, EventBusFrontType} from '@/events/event_bus';
+import {EventBusFront, EventBusFrontType} from '@/infra/events/event_bus';
 import {updateAuth} from '@/redux/slices/auth/user/user.slice';
 import {getUserProfileThunk} from '@/redux/slices/auth/user/user.thunk';
 import {useDispatch} from 'react-redux';

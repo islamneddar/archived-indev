@@ -5,8 +5,9 @@ import {
 
 export interface GetAllAiToolRequest {
   pageOption: PaginationRequestMetaRequest;
-  category: string;
+  category?: string;
   isAll: boolean;
+  pricing?: string;
 }
 
 export interface GetAllAiToolResponse {

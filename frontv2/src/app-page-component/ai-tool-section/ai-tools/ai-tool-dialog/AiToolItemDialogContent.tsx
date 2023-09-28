@@ -4,8 +4,11 @@ import PrimaryButton from '@/components/button/PrimaryButton';
 import {
   AiToolCategoryEnum,
   getAiToolCategoryFromCategory,
-} from '@/types/data/ai-tool/ai-tool-category.data';
-import {getAiPricing, PricingEnum} from '@/types/data/ai-tool/ai-tool-pricing';
+} from '@/infra/data/ai-tool/ai-tool-category.data';
+import {
+  getAiPricingByType,
+  PricingEnum,
+} from '@/infra/data/ai-tool/ai-tool-pricing';
 
 interface AiToolItemDialogContentProps {
   aiTool: AiTool;
@@ -35,7 +38,7 @@ function AiToolItemDialogContent(props: AiToolItemDialogContentProps) {
               className={
                 'p-1 px-3 bg-amber-500 rounded-xl font-semibold text-sm'
               }>
-              {getAiPricing(aiTool.pricing as PricingEnum).name}
+              {getAiPricingByType(aiTool.pricing as PricingEnum).name}
             </p>
           </div>
         </div>
