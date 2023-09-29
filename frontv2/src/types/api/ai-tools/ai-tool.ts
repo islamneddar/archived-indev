@@ -8,6 +8,7 @@ export interface GetAllAiToolRequest {
   category?: string;
   isAll: boolean;
   pricing?: string;
+  searchText?: string;
 }
 
 export interface GetAllAiToolResponse {

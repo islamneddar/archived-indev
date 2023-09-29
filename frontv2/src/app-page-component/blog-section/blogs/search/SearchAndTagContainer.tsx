@@ -1,5 +1,5 @@
 import React from 'react';
-import SearchBlogInput from '@/app-page-component/blog-section/blogs/searchBlogInput';
+import SearchInput from '@/app-page-component/components/SearchInput';
 import {MagnifyingGlassCircleIcon} from '@heroicons/react/24/solid';
 import Select from 'react-select';
 
@@ -8,18 +8,7 @@ export interface TagOption {
   readonly label: string;
 }
 
-export const tagOptions: readonly TagOption[] = [
-  {value: 'ocean', label: 'Ocean'},
-  {value: 'blue', label: 'Blue'},
-  {value: 'purple', label: 'Purple'},
-  {value: 'red', label: 'Red'},
-  {value: 'orange', label: 'Orange'},
-  {value: 'yellow', label: 'Yellow'},
-  {value: 'green', label: 'Green'},
-  {value: 'forest', label: 'Forest'},
-  {value: 'slate', label: 'Slate'},
-  {value: 'silver', label: 'Silver'},
-];
+export const tagOptions: readonly TagOption[] = [];
 
 interface SearchAndTagContainerProps {
   searchPhrase: string;
@@ -89,10 +78,11 @@ function SearchAndTagContainer(props: SearchAndTagContainerProps) {
             props.search();
           }
         }}>
-        <SearchBlogInput
+        <SearchInput
           onChange={e => {
             props.setSearchPhrase(e.target.value);
           }}
+          placeholder={'chatgpt, bard, ...'}
         />
         <div className={'flex justify-center items-center'}>
           <MagnifyingGlassCircleIcon

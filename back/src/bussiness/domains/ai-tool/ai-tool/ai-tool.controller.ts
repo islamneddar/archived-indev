@@ -98,6 +98,7 @@ export default class AiToolController {
       pageOption: query.pageOption,
       category: query.category,
       pricing: query.pricing,
+      searchText: query.searchText,
     });
   }
 

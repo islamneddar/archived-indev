@@ -7,6 +7,7 @@ import {AiToolCategoryEnum} from '@/bussiness/domains/ai-tool/ai-tool-category/a
 import {PageDto} from '@/common/pagination/page.dto';
 import {PageMetaDto} from '@/common/pagination/page_meta.dto';
 import {PricingEnum} from '@/common/constant/pricing.enum';
+import {Raw} from 'typeorm';
 
 @Injectable()
 export class AiToolService {
@@ -35,6 +36,7 @@ export class AiToolService {
     pageOption: PageOptionsDto;
     category?: AiToolCategoryEnum;
     pricing?: PricingEnum;
+    searchText?: string;
   }) {
     const {pageOption} = param;
     const {page, take} = pageOption;
@@ -51,6 +53,20 @@ export class AiToolService {
 
     if (param.pricing) {
       whereClause['pricing'] = param.pricing;
+    }
+
+    if (param.searchText) {
+      whereClause['description'] = Raw(
+        alias => `to_tsvector(${alias}) @@ to_tsquery(:query)`,
+        {
+          query: `${param.searchText
+            .trim()
+            .split(' ')
+            .filter(word => word.length >= 3)
+            .map(word => `${word}:*`)
+            .join(' & ')}`,
+        },
+      );
     }
 
     const [result, total] = await this.aiToolRepository.findAndCount({

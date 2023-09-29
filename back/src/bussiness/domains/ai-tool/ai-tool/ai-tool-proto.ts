@@ -47,6 +47,10 @@ export class GetAllAiToolsQuery {
   @IsEnum(PricingEnum)
   @IsOptional()
   pricing?: PricingEnum;
+
+  @IsString()
+  @IsOptional()
+  searchText?: string;
 }
 
 export class GetAllAiToolNotValidatedQuery {
