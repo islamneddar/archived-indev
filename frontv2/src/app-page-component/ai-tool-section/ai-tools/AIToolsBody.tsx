@@ -161,7 +161,7 @@ function AiToolsBody(props: AiToolsBodyProps) {
         selectedAiToolPricing={state.selectedAiToolPricing}
         placeholder={'Search for AI tools'}
         onChange={(e: DropdownChangeEvent) => {
-          onChangePricingDropdown(e.value);
+          onChangePricingDropdown(e);
         }}
         onChangeSearch={(e: React.ChangeEvent<HTMLInputElement>) => {
           onChangeInputSearch(e);
