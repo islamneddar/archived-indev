@@ -13,5 +13,3 @@ ENV PUPPETEER_EXECUTABLE_PATH /usr/bin/chromium
 
 RUN yarn build
 
-USER node
-
