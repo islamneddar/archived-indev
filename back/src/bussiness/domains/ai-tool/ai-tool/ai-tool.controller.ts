@@ -25,6 +25,8 @@ import {AiToolEntity} from '@/bussiness/domains/ai-tool/ai-tool/ai-tool.entity';
 import {slugify} from '@/utils/common.util';
 import {AuthAdminGuard} from '@/bussiness/auth/auth-admin.guard';
 import {Request} from 'express';
+import {ScreenshotService} from '@/external-services/screenshot-service/screenshot.service';
+import LOG from '@/utils/logger';
 
 @Controller('ai-tool')
 export default class AiToolController {
@@ -34,6 +36,7 @@ export default class AiToolController {
     private aiToolService: AiToolService,
     private configService: ConfigService,
     private s3AppService: S3AppService,
+    private screenShotService: ScreenshotService,
   ) {}
 
   @Post('create')
@@ -62,14 +65,26 @@ export default class AiToolController {
     if (aiToolExist) {
       throw new HttpException('AI Tool already exist', 400);
     }
+    let imageUploadedUrl: string;
 
-    let imageUploadedUrl;
     try {
-      imageUploadedUrl = await this.s3AppService.uploadFile(
-        image,
-        'public-read',
-        'ai-tool',
-      );
+      if (!image) {
+        const screenShot = await this.screenShotService.getScreenShot(
+          body.url.toString(),
+        );
+        imageUploadedUrl = await this.s3AppService.uploadFileFromBuffer(
+          screenShot,
+          'public-read',
+          'ai-tool',
+          `${Date.now()}-${body.name}.png`,
+        );
+      } else {
+        imageUploadedUrl = await this.s3AppService.uploadFile(
+          image,
+          'public-read',
+          'ai-tool',
+        );
+      }
     } catch (e) {
       this.LOG.error(e);
       throw new HttpException('Error while uploading image', 500);

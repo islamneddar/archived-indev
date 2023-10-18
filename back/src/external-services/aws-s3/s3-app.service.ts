@@ -34,6 +34,16 @@ export class S3AppService {
     return await this.s3Upload(base64Data, this.bucketName, fileKey, acl);
   }
 
+  async uploadFileFromBuffer(
+    fileBuffer: Buffer,
+    acl: string,
+    prefixFile: string,
+    fileName: string,
+  ) {
+    const fileKey = `${prefixFile}/${Date.now()}-${fileName}`;
+    return await this.s3Upload(fileBuffer, this.bucketName, fileKey, acl);
+  }
+
   async s3Upload(
     fileBuffer: Buffer,
     bucketName: string,
