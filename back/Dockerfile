@@ -3,13 +3,7 @@ FROM node:20.8.1
 
 RUN apt-get update && apt-get install -y libnss3
 
-WORKDIR /app
-
-COPY package*.json ./
-
-COPY yarn.lock ./
-
-RUN yarn install
+WORKDIR /back
 
 COPY . .
 
