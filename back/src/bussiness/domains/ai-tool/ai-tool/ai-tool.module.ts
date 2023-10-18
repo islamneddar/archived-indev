@@ -6,6 +6,7 @@ import {AiToolService} from '@/bussiness/domains/ai-tool/ai-tool/ai-tool.service
 import {ConfigModule} from '@nestjs/config';
 import {S3AppModule} from '@/external-services/aws-s3/s3-app.module';
 import {InAiTimesAdminModule} from '@/bussiness/inaitimer-admin/inaitimes-admin.module';
+import {ScreenshotModule} from '@/external-services/screenshot-service/screenshot.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import {InAiTimesAdminModule} from '@/bussiness/inaitimer-admin/inaitimes-admin.
     InAiTimesAdminModule,
     ConfigModule,
     S3AppModule,
+    ScreenshotModule,
   ],
   controllers: [AiToolController],
   providers: [AiToolService],
