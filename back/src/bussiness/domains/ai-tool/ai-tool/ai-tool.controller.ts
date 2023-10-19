@@ -3,7 +3,6 @@ import {
   Controller,
   Get,
   HttpException,
-  Logger,
   Post,
   Query,
   Req,
@@ -26,11 +25,10 @@ import {slugify} from '@/utils/common.util';
 import {AuthAdminGuard} from '@/bussiness/auth/auth-admin.guard';
 import {Request} from 'express';
 import {ScreenshotService} from '@/external-services/screenshot-service/screenshot.service';
+import LOG from '@/utils/logger';
 
 @Controller('ai-tool')
 export default class AiToolController {
-  private readonly LOG = new Logger(AiToolController.name);
-
   constructor(
     private aiToolService: AiToolService,
     private configService: ConfigService,
@@ -85,7 +83,7 @@ export default class AiToolController {
         );
       }
     } catch (e) {
-      this.LOG.error(e);
+      LOG.error(e);
       throw new HttpException('Error while uploading image', 500);
     }
 

@@ -1,5 +1,5 @@
 import {Injectable} from '@nestjs/common';
-import puppeteer from 'puppeteer';
+import puppeteer, {Browser, Page} from 'puppeteer';
 import LOG from '@/utils/logger';
 
 @Injectable()
@@ -15,17 +15,25 @@ export class ScreenshotService {
 
     page.setDefaultNavigationTimeout(60000);
 
-    LOG.debug('go to url', url);
-    await page.goto(url, {
-      waitUntil: 'networkidle2',
-    });
+    try {
+      LOG.debug('go to url', url);
+      await page.goto(url, {
+        waitUntil: 'networkidle2',
+      });
+      const screenshot = await page.screenshot();
+      await this.closeBrowserAndPage(browser, page);
+      return screenshot;
+    } catch (error) {
+      LOG.error('error when get screenshot', error);
+      await this.closeBrowserAndPage(browser, page);
+      throw new Error(error);
+    }
+  }
 
-    const screenshot = await page.screenshot();
-
+  async closeBrowserAndPage(browser: Browser, page: Page) {
     await page.close();
-
+    LOG.debug('----------- page closed -----------');
     await browser.close();
     LOG.debug('----------- browser closed -----------');
-    return screenshot;
   }
 }
