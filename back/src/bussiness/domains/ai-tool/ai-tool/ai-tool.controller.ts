@@ -26,7 +26,6 @@ import {slugify} from '@/utils/common.util';
 import {AuthAdminGuard} from '@/bussiness/auth/auth-admin.guard';
 import {Request} from 'express';
 import {ScreenshotService} from '@/external-services/screenshot-service/screenshot.service';
-import LOG from '@/utils/logger';
 
 @Controller('ai-tool')
 export default class AiToolController {
