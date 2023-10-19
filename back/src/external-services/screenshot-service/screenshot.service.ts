@@ -11,8 +11,12 @@ export class ScreenshotService {
     });
     const page = await browser.newPage();
 
+    await page.setViewport({width: 1366, height: 768});
+
     LOG.debug('go to url', url);
-    await page.goto(url, {waitUntil: 'networkidle0'});
+    await page.goto(url, {
+      waitUntil: 'networkidle2',
+    });
     const screenshot = await page.screenshot();
 
     await browser.close();
