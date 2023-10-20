@@ -11,6 +11,7 @@ import {BlogService} from '@/bussiness/domains/blog/blog/blog.service';
 import {BlogEntity} from '@/bussiness/domains/blog/blog/blog.entity';
 import {TagEntity} from '@/bussiness/domains/blog/tag/tag.entity';
 import {TagService} from '@/bussiness/domains/blog/tag/tag.service';
+import LOG from '@/utils/logger';
 
 @Injectable()
 export default class BlogPollerService {
@@ -42,6 +43,7 @@ export default class BlogPollerService {
     if (process.env.NODE_ENV === 'production') {
       const feedBlogs = await this.feedBlogService.getAll();
       for (const feedBlog of feedBlogs) {
+        LOG.debug(`start to read feed ${feedBlog.urlFeed}`);
         try {
           this.currentUrl = feedBlog.urlFeed;
           await this.readAndCreateBlogs(feedBlog);
@@ -94,6 +96,7 @@ export default class BlogPollerService {
       if (blogCheck !== null) {
         continue;
       }
+      LOG.debug(`start to create blog ${item.title}`);
       const blog = new BlogEntity();
       blog.title = item.title;
       blog.publishDate = new Date(item.pubDate);
@@ -104,7 +107,7 @@ export default class BlogPollerService {
       // TODO to enable later but find a way how to save in data base or put content snippet
       // blog-section.content = "";//item.content
       await this.dataSource.transaction(async () => {
-        const blogCreated = await this.blogService.getOrCreate(blog);
+        await this.blogService.getOrCreate(blog);
       });
     }
   }
