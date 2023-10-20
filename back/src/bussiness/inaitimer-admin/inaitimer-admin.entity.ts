@@ -1,7 +1,5 @@
 import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
 import {BaseTable} from '@/database/base-table.entity';
-import {SourceBlogToUserEntity} from '@/bussiness/domains/blog/source-blog-user/source-blog-to-user.entity';
-import {BlogToUserEntity} from '@/bussiness/domains/blog/blog-user/blog-user.entity';
 import {AdminRoleEnum} from '@/bussiness/inaitimer-admin/inaitimes-admin.proto';
 import {AiToolEntity} from '@/bussiness/domains/ai-tool/ai-tool/ai-tool.entity';
 

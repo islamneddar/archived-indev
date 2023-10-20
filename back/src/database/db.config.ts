@@ -1,5 +1,4 @@
 import {TypeOrmModule} from '@nestjs/typeorm';
-import {Logger} from '@nestjs/common';
 import {ConfigModule, ConfigService} from '@nestjs/config';
 import {TypeOrmModuleOptions} from '@nestjs/typeorm/dist/interfaces/typeorm-options.interface';
 import {SourceBlogEntity} from '@/bussiness/domains/blog/source-blog/source_blog.entity';
@@ -14,11 +13,11 @@ import {BlogToUserEntity} from '@/bussiness/domains/blog/blog-user/blog-user.ent
 import {FeedBlogStatsEntity} from '@/bussiness/domains/blog/feed-blog/feed-blog-type-stats/feed-blog-type-stats-entity';
 import {AiToolEntity} from '@/bussiness/domains/ai-tool/ai-tool/ai-tool.entity';
 import {AdminInAiTimesEntity} from '@/bussiness/inaitimer-admin/inaitimer-admin.entity';
-
-const LOG = new Logger('db.config');
+import {AiToolCategoryEntity} from '@/bussiness/domains/ai-tool/ai-tool-category/ai-tool-category.entity';
 
 const DBModule = TypeOrmModule.forRootAsync({
   imports: [ConfigModule],
+
   useFactory: () => {
     const listEntities = [
       SourceBlogEntity,
@@ -33,6 +32,7 @@ const DBModule = TypeOrmModule.forRootAsync({
       FeedBlogStatsEntity,
       AiToolEntity,
       AdminInAiTimesEntity,
+      AiToolCategoryEntity,
     ];
     if (process.env.NODE_ENV === 'development') {
       const configToReturn: TypeOrmModuleOptions = {
