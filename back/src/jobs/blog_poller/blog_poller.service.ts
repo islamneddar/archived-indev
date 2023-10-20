@@ -37,7 +37,7 @@ export default class BlogPollerService {
     private dataSource: DataSource,
   ) {}
 
-  @Cron(CronExpression.EVERY_10_MINUTES)
+  @Cron(CronExpression.EVERY_30_MINUTES)
   async handleCron() {
     if (process.env.NODE_ENV === 'production') {
       const feedBlogs = await this.feedBlogService.getAll();
