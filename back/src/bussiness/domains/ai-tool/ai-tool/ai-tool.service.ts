@@ -1,5 +1,5 @@
 import {Injectable, Logger} from '@nestjs/common';
-import {DataSource, Repository} from 'typeorm';
+import {Repository} from 'typeorm';
 import {AiToolEntity} from '@/bussiness/domains/ai-tool/ai-tool/ai-tool.entity';
 import {InjectRepository} from '@nestjs/typeorm';
 import {PageOptionsDto} from '@/common/pagination/page_option.dto';
@@ -16,7 +16,6 @@ export class AiToolService {
   constructor(
     @InjectRepository(AiToolEntity)
     private aiToolRepository: Repository<AiToolEntity>,
-    private dataSource: DataSource,
   ) {}
 
   async create(aiTool: AiToolEntity) {
