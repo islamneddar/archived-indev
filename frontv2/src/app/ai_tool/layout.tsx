@@ -86,7 +86,9 @@ function Layout({children}: {children: React.ReactNode}) {
         },
       });
     }
-    listCategories.sort((a, b) => b.name.localeCompare(a.name));
+    listCategories.sort((a, b) =>
+      b.name.charAt(0).localeCompare(a.name.charAt(0)),
+    );
     listCategories.unshift({
       name: 'All',
       href: routing.aiTools.aiTool('all'),
