@@ -1,5 +1,5 @@
 'use client';
-import React, {useEffect} from 'react';
+import React from 'react';
 import './globals.css';
 import {Provider} from 'react-redux';
 import {store} from '@/redux/store';
@@ -15,9 +15,6 @@ import {QueryClient, QueryClientProvider} from 'react-query';
 const queryClient = new QueryClient();
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
-  useEffect(() => {
-    //const tags = localStorage.getItem('tags');
-  }, []);
   return (
     <html lang="en">
       <head>
