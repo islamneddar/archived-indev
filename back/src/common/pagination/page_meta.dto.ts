@@ -5,7 +5,7 @@ export class PageMetaDto {
 
   //readonly take: number;
 
-  //readonly itemCount: number;
+  readonly itemCount: number;
 
   //readonly pageCount: number;
 
@@ -16,7 +16,7 @@ export class PageMetaDto {
   constructor({pageOptionsDto, itemCount}: PageMetaDtoParameters) {
     this.page = pageOptionsDto.page;
     //this.take = pageOptionsDto.take;
-    //this.itemCount = itemCount;
+    this.itemCount = itemCount;
     //this.pageCount = Math.ceil(this.itemCount / this.take);
     const pageCount = Math.ceil(itemCount / pageOptionsDto.take);
     this.hasPreviousPage = this.page > 1;

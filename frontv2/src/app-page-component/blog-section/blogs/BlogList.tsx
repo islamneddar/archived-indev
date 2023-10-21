@@ -1,5 +1,5 @@
 'use client';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Order,
   PageMetaResponse,
@@ -11,10 +11,7 @@ import {getAllBlogThunk} from '@/redux/slices/blogs/blog/api/get-all-blog/blog.t
 import {useBlogSelector} from '@/redux/slices/blogs/blog/api/get-all-blog/blog.selector';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import {ThunkDispatch} from '@reduxjs/toolkit';
-import {
-  BlogAffichageType,
-  GridBlogType,
-} from '@/types/general/blog-general.type';
+import {BlogAffichageType, GridBlogType} from '@/infra/enums/blog-general.type';
 import BlogsCardLists from '@/app-page-component/blog-section/blogs/BlogsCardLists';
 import {
   Blog,
@@ -32,8 +29,6 @@ import ContainerForFilterGetDataAndGridType from '@/app-page-component/blog-sect
 import {getAllBlogBySourceBlogRequestThunk} from '@/redux/slices/blogs/blog/api/get-all-blog-by-source/get-all-blog-by-source.thunk';
 import {useGetBlogsBySourceBlogSelector} from '@/redux/slices/blogs/blog/api/get-all-blog-by-source/get-all-blog-by-source.selector';
 import {resetBlogBySourceBlogState} from '@/redux/slices/blogs/blog/api/get-all-blog-by-source/get-all-blog-by-source.slice';
-import SearchBlogInput from '@/app-page-component/blog-section/blogs/searchBlogInput';
-import {MagnifyingGlassCircleIcon} from '@heroicons/react/24/solid';
 import {useGetAllBlogBySearchSelector} from '@/redux/slices/blogs/blog/api/get-blogs-by-search/get-blog-by-search.selector';
 import {getAllBlogBySearchThunk} from '@/redux/slices/blogs/blog/api/get-blogs-by-search/get-blog-by-search.thunk';
 import {resetGetAllBlogBySearchSlice} from '@/redux/slices/blogs/blog/api/get-blogs-by-search/get-blog-by-search.slice';

@@ -2,10 +2,7 @@
 import React, {Fragment, useEffect, useState} from 'react';
 import NavBar from '@/app-page-component/navbar/NavBar';
 import SideBarMain from '@/app-page-component/sidebar/SideBarMain';
-import {
-  ListCategoryTypeInLocalStorage,
-  NavigationType,
-} from '@/types/general/sidebar.type';
+import {NavigationType} from '@/types/general/sidebar.type';
 import routing from '@/routes/routing.constant';
 import {useLocalStorage} from 'usehooks-ts';
 import {useDispatch} from 'react-redux';
@@ -14,6 +11,7 @@ import {getAllCategoriesAiToolsThunk} from '@/redux/slices/ai-tools/category-ai-
 import {useGetAllAiToolsCategoriesSelector} from '@/redux/slices/ai-tools/category-ai-tool/api/get-all-categories/get-all-categories.selector';
 import {ListCategoryType} from '@/types/api/ai-tools/category-ai-tools';
 import dayjs from 'dayjs';
+import {ListCategoryTypeInLocalStorage} from '@/types/general/local-storage/ai-tool-category';
 
 function Layout({children}: {children: React.ReactNode}) {
   const dispatchThunk = useDispatch<ThunkDispatch<any, any, any>>();
@@ -34,7 +32,6 @@ function Layout({children}: {children: React.ReactNode}) {
     async function fetchListCategories() {
       fetchTheListOfCategories();
     }
-    console.log(listCategoryAiTools);
     const nowMinus24hours = dayjs().subtract(24, 'hour');
     const lastUpdateIsBefore24Hours = dayjs(
       listCategoryAiTools?.lastUpdate,

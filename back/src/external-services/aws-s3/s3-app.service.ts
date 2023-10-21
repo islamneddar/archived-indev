@@ -16,7 +16,6 @@ export class S3AppService {
     );
     const awsS3Endpoint = configService.get<string>('AWS_S3_ENDPOINT');
 
-    console.log(awsS3Endpoint);
     this.s3Client = new S3({
       endpoint: awsS3Endpoint,
       region: 'ams3',
@@ -33,6 +32,16 @@ export class S3AppService {
     const base64Data = file.buffer;
     const fileKey = `${prefixFile}/${Date.now()}-${file.originalname}`;
     return await this.s3Upload(base64Data, this.bucketName, fileKey, acl);
+  }
+
+  async uploadFileFromBuffer(
+    fileBuffer: Buffer,
+    acl: string,
+    prefixFile: string,
+    fileName: string,
+  ) {
+    const fileKey = `${prefixFile}/${Date.now()}-${fileName}`;
+    return await this.s3Upload(fileBuffer, this.bucketName, fileKey, acl);
   }
 
   async s3Upload(

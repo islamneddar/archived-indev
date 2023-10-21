@@ -1,5 +1,13 @@
 import {Transform, Type} from 'class-transformer';
-import {IsBoolean, IsEnum, IsNotEmpty, IsString, IsUrl} from 'class-validator';
+import {
+  IsBoolean,
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  IsUrl,
+} from 'class-validator';
 import {AiToolCategoryEnum} from '@/bussiness/domains/ai-tool/ai-tool-category/ai-tool-catgory.proto';
 import {PricingEnum} from '@/common/constant/pricing.enum';
 import {PageOptionsDto} from '@/common/pagination/page_option.dto';
@@ -29,17 +37,32 @@ export class CreateAiToolRequest {
 }
 
 export class GetAllAiToolsQuery {
-  @Transform(({value}) => {
-    console.log(value);
-    return value === 'true';
-  })
-  @IsBoolean()
-  @IsNotEmpty()
-  isAll: boolean;
-
   @IsEnum(AiToolCategoryEnum)
+  @IsOptional()
   category: AiToolCategoryEnum;
 
   @Type(() => PageOptionsDto)
   pageOption: PageOptionsDto;
+
+  @IsEnum(PricingEnum)
+  @IsOptional()
+  pricing?: PricingEnum;
+
+  @IsString()
+  @IsOptional()
+  searchText?: string;
+}
+
+export class GetAllAiToolNotValidatedQuery {
+  @Type(() => Number)
+  @IsNumber()
+  @IsNotEmpty()
+  page: number;
+}
+
+export class ValidateAiToolBody {
+  @Type(() => Number)
+  @IsNumber()
+  @IsNotEmpty()
+  aiToolId: number;
 }

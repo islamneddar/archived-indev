@@ -1,9 +1,10 @@
-import {UserEntity} from '@/bussiness/user/user.entity';
+import {UserEntity} from '@/bussiness/domains/user/user.entity';
 
 declare global {
   namespace Express {
     export interface Request {
       user?: UserEntity;
+      admin?: AdminInAiTimesEntity;
     }
   }
 }

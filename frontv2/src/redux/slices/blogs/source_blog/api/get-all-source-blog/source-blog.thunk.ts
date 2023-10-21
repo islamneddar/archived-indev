@@ -4,7 +4,7 @@ import {
   GetAllSourceBlogResponse,
 } from '@/types/api/blogs/source_blog';
 import SourceBlogService from '@/services/blogs/source_blog.service';
-import {EventBusFront, EventBusFrontType} from '@/events/event_bus';
+import {EventBusFront, EventBusFrontType} from '@/infra/events/event_bus';
 
 export const getAllSourceBlogThunk = createAsyncThunk<
   GetAllSourceBlogResponse,

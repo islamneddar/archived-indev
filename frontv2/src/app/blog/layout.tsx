@@ -12,11 +12,12 @@ import {
 import routing from '@/routes/routing.constant';
 import {ThunkDispatch} from '@reduxjs/toolkit';
 import {getUserProfileThunk} from '@/redux/slices/auth/user/user.thunk';
-import {EventBusFront, EventBusFrontType} from '@/events/event_bus';
+import {EventBusFront, EventBusFrontType} from '@/infra/events/event_bus';
 import {useUserSessionSelector} from '@/redux/slices/auth/user/user.selector';
 import {NavigationType} from '@/types/general/sidebar.type';
 import SideBarMain from '@/app-page-component/sidebar/SideBarMain';
 import {GlobeEuropeAfricaIcon} from '@heroicons/react/24/solid';
+import UseSessionAuthClient from '@/infra/hooks/useSessionAuthClient';
 
 const navigationState: NavigationType[] = [
   {
@@ -46,50 +47,7 @@ const navigationState: NavigationType[] = [
 ];
 
 export default function Layout({children}: {children: React.ReactNode}) {
-  const dispatch = useDispatch();
-  const dispatchThunk = useDispatch<ThunkDispatch<any, any, any>>();
-  const userSessionSelector = useUserSessionSelector();
-
-  const session = useSession({
-    required: false,
-  });
-
-  useEffect(() => {
-    EventBusFront.on(EventBusFrontType.LOGOUT, async () => {
-      dispatch(updateAuth({isAuthenticated: false, accessToken: null}));
-      await signOut();
-    });
-  }, []);
-
-  useEffect(() => {
-    if (userSessionSelector.success) {
-      dispatch(
-        updateAuth({
-          isAuthenticated: true, // we fetched the data of a user
-          // @ts-ignore
-          accessToken: session.data?.user?.accessToken,
-        }),
-      );
-    }
-  }, [userSessionSelector.success]);
-
-  useEffect(() => {
-    if (
-      !userSessionSelector.isAuthenticated &&
-      session.status === 'authenticated'
-    ) {
-      // @ts-ignore
-      const accessToken = session.data?.user?.accessToken;
-      dispatchThunk(getUserProfileThunk(accessToken));
-    }
-  }, [
-    session.data,
-    // @ts-ignore
-    session.data?.user?.accessToken,
-    session.status,
-  ]);
-
-  // Rendering
+  const {session, userSessionSelector} = UseSessionAuthClient(); // Rendering
 
   if (
     (session.status === 'authenticated' &&
@@ -110,6 +68,4 @@ export default function Layout({children}: {children: React.ReactNode}) {
   } else {
     return <div className={'h-screen bg-secondary'}></div>;
   }
-
-  return null;
 }

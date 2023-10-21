@@ -12,4 +12,11 @@ export class AiToolCategoryController {
       data: await this.aiToolCategoryService.getAll(),
     };
   }
+
+  @Get('/all-v2')
+  async getAllV2() {
+    return {
+      data: await this.aiToolCategoryService.getAllV2(),
+    };
+  }
 }

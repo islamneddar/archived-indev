@@ -33,8 +33,10 @@ function SideBarProfileSection() {
           <div>
             <PowerIcon
               className="h-6 w-6 text-white hover:text-gray-400"
-              onClick={() => {
-                signOut();
+              onClick={async () => {
+                await signOut({
+                  callbackUrl: '/',
+                });
               }}
             />
           </div>

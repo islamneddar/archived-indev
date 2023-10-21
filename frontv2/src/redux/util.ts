@@ -1,4 +1,4 @@
-import {EventBusFront, EventBusFrontType} from '@/events/event_bus';
+import {EventBusFront, EventBusFrontType} from '@/infra/events/event_bus';
 
 export async function templateThinkCall<Request, Response>(param: {
   request: Request;

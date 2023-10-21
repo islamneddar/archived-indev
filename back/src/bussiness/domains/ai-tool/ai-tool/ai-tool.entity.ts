@@ -1,7 +1,15 @@
-import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import {BaseTable} from '@/database/base-table.entity';
 import {AiToolCategoryEnum} from '@/bussiness/domains/ai-tool/ai-tool-category/ai-tool-catgory.proto';
 import {PricingEnum} from '@/common/constant/pricing.enum';
+import {AdminInAiTimesEntity} from '@/bussiness/inaitimer-admin/inaitimer-admin.entity';
 
 @Entity({
   name: 'ai_tools',
@@ -18,6 +26,7 @@ export class AiToolEntity extends BaseTable {
   @Column({unique: true, nullable: false, name: 'slug'})
   slug: string;
 
+  @Index({fulltext: true})
   @Column({nullable: false, name: 'description'})
   description: string;
 
@@ -42,4 +51,11 @@ export class AiToolEntity extends BaseTable {
     enum: PricingEnum,
   })
   pricing: PricingEnum;
+
+  @Column({nullable: false, default: false, name: 'is_active'})
+  isActive: boolean;
+
+  @ManyToOne(() => AdminInAiTimesEntity, admin => admin.aiTools)
+  @JoinColumn({name: 'admin_id'})
+  admin: AdminInAiTimesEntity;
 }

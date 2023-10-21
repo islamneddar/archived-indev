@@ -12,6 +12,7 @@ export const createAiToolThunk = createAsyncThunk<any, CreateAiToolRequest>(
         return await AiToolService.getInstance().create(request);
       },
       rejectWithValue: rejectWithValue,
+      isProtected: true,
     });
   },
 );

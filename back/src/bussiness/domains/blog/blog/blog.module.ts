@@ -3,7 +3,7 @@ import {TypeOrmModule} from '@nestjs/typeorm';
 import {BlogService} from './blog.service';
 import {BlogEntity} from './blog.entity';
 import BlogController from './blog.controller';
-import {UserModule} from '@/bussiness/user/user.module';
+import {UserModule} from '@/bussiness/domains/user/user.module';
 import {BlogToUserModule} from '@/bussiness/domains/blog/blog-user/blog-user.module';
 
 @Module({

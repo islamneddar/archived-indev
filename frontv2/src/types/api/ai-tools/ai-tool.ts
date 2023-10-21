@@ -5,8 +5,10 @@ import {
 
 export interface GetAllAiToolRequest {
   pageOption: PaginationRequestMetaRequest;
-  category: string;
+  category?: string;
   isAll: boolean;
+  pricing?: string;
+  searchText?: string;
 }
 
 export interface GetAllAiToolResponse {

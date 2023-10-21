@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {createLogger} from 'redux-logger';
 import thunk from 'redux-thunk';
 import {aiToolReducer} from '@/redux/reducers/ai-tool-reducer';
+import {adminSessionSlice} from '@/redux/slices/auth/admin/admin.slice';
 
 const middlewares = [];
 middlewares.push(thunk);
@@ -14,6 +15,7 @@ if (process.env.NODE_ENV === `development`) {
 export const store = configureStore({
   reducer: {
     ...aiToolReducer,
+    adminSessionReducer: adminSessionSlice.reducer,
   },
   devTools: process.env.NODE_ENV !== 'production',
   middleware: middlewares,

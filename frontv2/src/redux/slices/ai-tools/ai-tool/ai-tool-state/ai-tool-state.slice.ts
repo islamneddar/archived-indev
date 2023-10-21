@@ -1,5 +1,4 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {SourceBlog} from '@/types/api/blogs/source_blog';
 import {AiTool} from '@/types/api/ai-tools/ai-tool';
 
 export interface AiToolStateSlice {
