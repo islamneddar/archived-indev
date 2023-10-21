@@ -3,4 +3,5 @@ export interface NavigationType {
   href: string;
   icon?: any;
   isAuth?: boolean;
+  extraData?: any;
 }

@@ -15,8 +15,14 @@ export class AiToolCategoryController {
 
   @Get('/all-v2')
   async getAllV2() {
+    const categories = await this.aiToolCategoryService.getAllV2();
+    const categoriesToRender = {};
+    categories.forEach(category => {
+      categoriesToRender[category.type] = category;
+    });
+
     return {
-      data: await this.aiToolCategoryService.getAllV2(),
+      data: categoriesToRender,
     };
   }
 }

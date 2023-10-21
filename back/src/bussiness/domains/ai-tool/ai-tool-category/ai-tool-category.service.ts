@@ -40,7 +40,7 @@ export class AiToolCategoryService {
 
   async getAllV2() {
     return this.aiToolCategoryRepository.find({
-      select: ['aiToolCategoryId', 'name', 'type'],
+      select: ['aiToolCategoryId', 'name', 'type', 'numberOfTool'],
     });
   }
 
