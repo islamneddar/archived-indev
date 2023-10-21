@@ -48,7 +48,7 @@ function SideBarItem(props: ISideBarItemProps) {
             isCurrentPath
               ? 'text-gray-300'
               : 'text-gray-400 group-hover:text-gray-300',
-            'mr-3 h-6 w-6 flex-shrink-0',
+            'mr-3 h-6 w-6 flex-shrink-0 line-clamp-1',
           )}
           aria-hidden="true"
         />

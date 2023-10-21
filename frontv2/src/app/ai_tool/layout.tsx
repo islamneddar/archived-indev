@@ -76,13 +76,7 @@ function Layout({children}: {children: React.ReactNode}) {
       extraData?: {
         numberOfTool: number | undefined;
       } | null;
-    }[] = [
-      {
-        name: 'All',
-        href: routing.aiTools.aiTool('all'),
-        extraData: null,
-      },
-    ];
+    }[] = [];
     for (const [key, value] of Object.entries(listCategoriesAiToolsToPut)) {
       listCategories.push({
         name: value.name,
@@ -92,6 +86,12 @@ function Layout({children}: {children: React.ReactNode}) {
         },
       });
     }
+    listCategories.sort((a, b) => b.name.localeCompare(a.name));
+    listCategories.unshift({
+      name: 'All',
+      href: routing.aiTools.aiTool('all'),
+      extraData: null,
+    });
     setState(prevState => ({
       ...prevState,
       enabledQuery: false,
