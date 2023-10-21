@@ -6,6 +6,7 @@ export class AiToolCategoryController {
   private readonly LOG = new Logger(AiToolCategoryController.name);
   constructor(private aiToolCategoryService: AiToolCategoryService) {}
 
+  // todo remove this
   @Get('/all')
   async getAll() {
     return {
