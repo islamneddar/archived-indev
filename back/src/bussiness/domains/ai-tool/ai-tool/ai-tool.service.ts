@@ -8,6 +8,8 @@ import {PageDto} from '@/common/pagination/page.dto';
 import {PageMetaDto} from '@/common/pagination/page_meta.dto';
 import {PricingEnum} from '@/common/constant/pricing.enum';
 import {Raw} from 'typeorm';
+import LOG from '@/utils/logger';
+import {AiToolCategoryEntity} from '@/bussiness/domains/ai-tool/ai-tool-category/ai-tool-category.entity';
 
 @Injectable()
 export class AiToolService {
@@ -194,5 +196,14 @@ export class AiToolService {
         aiToolId,
       },
     });
+  }
+
+  async update(aiTool: AiToolEntity) {
+    await this.aiToolRepository.update(
+      {
+        aiToolId: aiTool.aiToolId,
+      },
+      aiTool,
+    );
   }
 }
