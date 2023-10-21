@@ -22,7 +22,7 @@ export class StatsCalculatorService {
 
   @Cron(
     process.env.NODE_ENV === 'production'
-      ? CronExpression.EVERY_DAY_AT_1AM
+      ? CronExpression.EVERY_DAY_AT_3AM
       : CronExpression.EVERY_MINUTE,
   )
   async cronToCalculateNumberOfToolByCategory() {

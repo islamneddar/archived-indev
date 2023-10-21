@@ -10,6 +10,7 @@ import {BaseTable} from '@/database/base-table.entity';
 import {AiToolCategoryEnum} from '@/bussiness/domains/ai-tool/ai-tool-category/ai-tool-catgory.proto';
 import {PricingEnum} from '@/common/constant/pricing.enum';
 import {AdminInAiTimesEntity} from '@/bussiness/inaitimer-admin/inaitimer-admin.entity';
+import {AiToolCategoryEntity} from '@/bussiness/domains/ai-tool/ai-tool-category/ai-tool-category.entity';
 
 @Entity({
   name: 'ai_tools',
@@ -58,4 +59,11 @@ export class AiToolEntity extends BaseTable {
   @ManyToOne(() => AdminInAiTimesEntity, admin => admin.aiTools)
   @JoinColumn({name: 'admin_id'})
   admin: AdminInAiTimesEntity;
+
+  @ManyToOne(
+    () => AiToolCategoryEntity,
+    aiToolCategory => aiToolCategory.aiTools,
+  )
+  @JoinColumn({name: 'ai_tool_category_id'})
+  aiToolCategory: AiToolCategoryEntity;
 }

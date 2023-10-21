@@ -26,6 +26,9 @@ import {AuthAdminGuard} from '@/bussiness/auth/auth-admin.guard';
 import {Request} from 'express';
 import {ScreenshotService} from '@/external-services/screenshot-service/screenshot.service';
 import LOG from '@/utils/logger';
+import {PageOptionsDto} from '@/common/pagination/page_option.dto';
+import {AiToolCategoryService} from '@/bussiness/domains/ai-tool/ai-tool-category/ai-tool-category.service';
+import {AiToolCategoryEntity} from '@/bussiness/domains/ai-tool/ai-tool-category/ai-tool-category.entity';
 
 @Controller('ai-tool')
 export default class AiToolController {
@@ -34,6 +37,7 @@ export default class AiToolController {
     private configService: ConfigService,
     private s3AppService: S3AppService,
     private screenShotService: ScreenshotService,
+    private aiToolCategoryService: AiToolCategoryService,
   ) {}
 
   @Post('create')
@@ -135,6 +139,38 @@ export default class AiToolController {
     return {
       message: 'AI Tool validated',
       id: body.aiToolId,
+    };
+  }
+
+  @UseGuards(AuthAdminGuard)
+  @Get('/update_ai_cateogry_id')
+  async updateAiCategoryId() {
+    const pageOption = new PageOptionsDto();
+    pageOption.page = 1;
+    pageOption.take = 1000;
+
+    const aiTools = await this.aiToolService.findAll({
+      pageOption: pageOption,
+    });
+
+    const mapCategory: {[key: string]: AiToolCategoryEntity} = {};
+    for (const aiTool of aiTools.data) {
+      if (mapCategory !== null && mapCategory[aiTool.category]) {
+        aiTool.aiToolCategory = mapCategory[aiTool.category];
+      } else {
+        const aiToolCategory = await this.aiToolCategoryService.findBytype(
+          aiTool.category,
+        );
+        if (aiToolCategory) {
+          aiTool.aiToolCategory = aiToolCategory;
+          mapCategory[aiTool.category] = aiToolCategory;
+        }
+      }
+      await this.aiToolService.update(aiTool);
+    }
+
+    return {
+      message: 'Done',
     };
   }
 }
