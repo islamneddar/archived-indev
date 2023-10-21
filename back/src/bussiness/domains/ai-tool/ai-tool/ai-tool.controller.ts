@@ -26,9 +26,7 @@ import {AuthAdminGuard} from '@/bussiness/auth/auth-admin.guard';
 import {Request} from 'express';
 import {ScreenshotService} from '@/external-services/screenshot-service/screenshot.service';
 import LOG from '@/utils/logger';
-import {PageOptionsDto} from '@/common/pagination/page_option.dto';
 import {AiToolCategoryService} from '@/bussiness/domains/ai-tool/ai-tool-category/ai-tool-category.service';
-import {AiToolCategoryEntity} from '@/bussiness/domains/ai-tool/ai-tool-category/ai-tool-category.entity';
 
 @Controller('ai-tool')
 export default class AiToolController {
@@ -142,8 +140,8 @@ export default class AiToolController {
     };
   }
 
-  @UseGuards(AuthAdminGuard)
-  @Get('/update_ai_cateogry_id')
+  /*@UseGuards(AuthAdminGuard)
+  @Get('/update_ai_category_id')
   async updateAiCategoryId() {
     const pageOption = new PageOptionsDto();
     pageOption.page = 1;
@@ -172,5 +170,5 @@ export default class AiToolController {
     return {
       message: 'Done',
     };
-  }
+  }*/
 }

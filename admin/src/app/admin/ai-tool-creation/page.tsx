@@ -102,7 +102,6 @@ function Page() {
           choose a category
         </option>
         {Object.keys(listAiToolCategory).map(option => {
-          console.log(currentCategoryInLocalStorage);
           return (
             <option
               key={option}

@@ -53,7 +53,12 @@ function SideBarItem(props: ISideBarItemProps) {
           aria-hidden="true"
         />
       )}
-      {item.name}
+      {item.name}{' '}
+      <span className={'font-semibold'}>
+        {item.extraData && item.extraData.numberOfTool
+          ? `  (+${item.extraData.numberOfTool})`
+          : ''}
+      </span>
     </a>
   );
 }

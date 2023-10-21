@@ -110,7 +110,6 @@ function AiToolsBody(props: AiToolsBodyProps) {
   }
 
   const onChangePricingDropdown = (e: DropdownChangeEvent) => {
-    console.log(e.value);
     setState(prevState => ({
       ...prevState,
       selectedAiToolPricing: e.value,

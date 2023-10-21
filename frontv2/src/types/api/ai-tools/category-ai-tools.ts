@@ -6,5 +6,6 @@ export interface ListCategoryType {
   [key: string]: {
     type: string;
     name: string;
+    numberOfTool?: number;
   };
 }

@@ -17,4 +17,11 @@ export default class AiToolCategoryService {
     const data = await res.data;
     return data as GetAllCategoriesAiToolResponse;
   }
+
+  async getAllV2() {
+    const res = await axios.get(`${this.endpointCategoriesAiTool}/all-v2`);
+
+    const data = await res.data;
+    return data as GetAllCategoriesAiToolResponse;
+  }
 }
