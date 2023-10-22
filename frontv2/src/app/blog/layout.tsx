@@ -1,19 +1,12 @@
 'use client';
 import NavBar from '@/app-page-component/navbar/NavBar';
-import React, {Fragment, useEffect} from 'react';
-import {signOut, useSession} from 'next-auth/react';
-import {updateAuth} from '@/redux/slices/auth/user/user.slice';
-import {useDispatch} from 'react-redux';
+import React, {Fragment} from 'react';
 import {
   RssIcon,
   BookOpenIcon,
   AdjustmentsHorizontalIcon,
 } from '@heroicons/react/20/solid';
 import routing from '@/routes/routing.constant';
-import {ThunkDispatch} from '@reduxjs/toolkit';
-import {getUserProfileThunk} from '@/redux/slices/auth/user/user.thunk';
-import {EventBusFront, EventBusFrontType} from '@/infra/events/event_bus';
-import {useUserSessionSelector} from '@/redux/slices/auth/user/user.selector';
 import {NavigationType} from '@/types/general/sidebar.type';
 import SideBarMain from '@/app-page-component/sidebar/SideBarMain';
 import {GlobeEuropeAfricaIcon} from '@heroicons/react/24/solid';
