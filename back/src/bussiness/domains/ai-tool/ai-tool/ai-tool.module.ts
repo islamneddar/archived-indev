@@ -8,6 +8,7 @@ import {S3AppModule} from '@/external-services/aws-s3/s3-app.module';
 import {InAiTimesAdminModule} from '@/bussiness/inaitimer-admin/inaitimes-admin.module';
 import {ScreenshotModule} from '@/external-services/screenshot-service/screenshot.module';
 import {AiToolCategoryModule} from '@/bussiness/domains/ai-tool/ai-tool-category/ai-tool-category.module';
+import {MailingModule} from '@/external-services/mailing/mailing.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import {AiToolCategoryModule} from '@/bussiness/domains/ai-tool/ai-tool-category
     S3AppModule,
     ScreenshotModule,
     AiToolCategoryModule,
+    MailingModule,
   ],
   controllers: [AiToolController],
   providers: [AiToolService],
