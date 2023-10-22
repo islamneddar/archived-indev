@@ -4,7 +4,7 @@
   "sourceRoot": "src",
   "compilerOptions": {
     "deleteOutDir": true,
-    "assets": ["./bussiness/mailing/templates/**/*.hbs"],
+    "assets": ["./external-services/mailing/templates/**/*.hbs"],
     "watchAssets": true
   }
 }

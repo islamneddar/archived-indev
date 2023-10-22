@@ -40,7 +40,7 @@ function Layout({children}: {children: React.ReactNode}) {
   );
 
   const setCategoriesAiTool = () => {
-    const nowMinus24hours = dayjs().subtract(24, 'hour');
+    const nowMinus24hours = dayjs().subtract(12, 'hour');
     const lastUpdateIsBefore24Hours = dayjs(
       listCategoryAiTools?.lastUpdate,
     ).isBefore(nowMinus24hours);

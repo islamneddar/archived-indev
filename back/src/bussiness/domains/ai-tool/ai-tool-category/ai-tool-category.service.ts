@@ -28,6 +28,7 @@ export class AiToolCategoryService {
     for (const category of categories) {
       category.numberOfTool = await this.aiToolRepository.count({
         where: {
+          isActive: true,
           aiToolCategory: {
             aiToolCategoryId: category.aiToolCategoryId,
           },
@@ -44,10 +45,10 @@ export class AiToolCategoryService {
     });
   }
 
-  async findBytype(category: AiToolCategoryEnum) {
+  async findByType(inAiTimesCategory: string) {
     return this.aiToolCategoryRepository.findOne({
       where: {
-        type: category,
+        type: inAiTimesCategory as AiToolCategoryEnum,
       },
     });
   }
