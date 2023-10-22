@@ -10,6 +10,7 @@ import dayjs from 'dayjs';
 import {ListCategoryTypeInLocalStorage} from '@/types/general/local-storage/ai-tool-category';
 import {useQuery} from 'react-query';
 import AiToolCategoryService from '@/services/ai-tools/ai-tool-category.service';
+import UseSessionAuthClient from '@/infra/hooks/useSessionAuthClient';
 
 interface LayoutState {
   enabledQuery: boolean;
@@ -17,6 +18,7 @@ interface LayoutState {
 }
 
 function Layout({children}: {children: React.ReactNode}) {
+  const {session, userSessionSelector} = UseSessionAuthClient(); // Rendering
   const [listCategoryAiTools, setListCategoryAiTools] =
     useLocalStorage<ListCategoryTypeInLocalStorage>('list_category_ai_tool', {
       lastUpdate: new Date(),
@@ -121,17 +123,25 @@ function Layout({children}: {children: React.ReactNode}) {
     );
   }
 
-  return (
-    <>
-      <NavBar />
-      <div className="bg-secondary h-[calc(100vh_-_96px)]">
-        <SideBarMain navigation={state.navigation} />
-        <Fragment>
-          <div className={' w-full md:pl-64'}>{children}</div>
-        </Fragment>
-      </div>
-    </>
-  );
+  if (
+    (session.status === 'authenticated' &&
+      userSessionSelector.isAuthenticated) ||
+    session.status === 'unauthenticated'
+  ) {
+    return (
+      <>
+        <NavBar />
+        <div className="bg-secondary h-[calc(100vh_-_96px)]">
+          <SideBarMain navigation={state.navigation} />
+          <Fragment>
+            <div className={' w-full md:pl-64'}>{children}</div>
+          </Fragment>
+        </div>
+      </>
+    );
+  } else {
+    return <div className={'h-screen bg-secondary'}></div>;
+  }
 }
 
 export default Layout;
