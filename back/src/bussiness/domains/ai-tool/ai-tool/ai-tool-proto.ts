@@ -8,7 +8,7 @@ import {
   IsUrl,
 } from 'class-validator';
 import {AiToolCategoryEnum} from '@/bussiness/domains/ai-tool/ai-tool-category/ai-tool-catgory.proto';
-import {PricingEnum} from '@/common/constant/pricing.enum';
+import {AIToolPricingEnum} from '@/bussiness/domains/ai-tool/ai-tool-pricing/ai-tool-pricing-proto';
 import {PageOptionsDto} from '@/common/pagination/page_option.dto';
 
 export class CreateAiToolRequest {
@@ -31,8 +31,8 @@ export class CreateAiToolRequest {
   @IsNotEmpty()
   category: AiToolCategoryEnum;
 
-  @IsEnum(PricingEnum)
-  pricing: PricingEnum;
+  @IsEnum(AIToolPricingEnum)
+  pricing: AIToolPricingEnum;
 }
 
 export class GetAllAiToolsQuery {
@@ -43,9 +43,9 @@ export class GetAllAiToolsQuery {
   @Type(() => PageOptionsDto)
   pageOption: PageOptionsDto;
 
-  @IsEnum(PricingEnum)
+  @IsEnum(AIToolPricingEnum)
   @IsOptional()
-  pricing?: PricingEnum;
+  pricing?: AIToolPricingEnum;
 
   @IsString()
   @IsOptional()

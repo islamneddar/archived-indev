@@ -16,6 +16,7 @@ import ImageDialog from '@/app-components/list-ai-tool/ImageDialog';
 import {Tooltip} from 'primereact/tooltip';
 import ConfirmDeleteDialog from '@/app-components/list-ai-tool/ConfirmDeleteDialog';
 import {useMutation, useQuery} from 'react-query';
+import EditAiProductDialog from '@/app-components/list-ai-tool/edit-ai-product-dialog/EditAiProductDialog';
 
 interface LayoutState {
   enabledQuery: boolean;
@@ -25,6 +26,7 @@ interface LayoutState {
   page?: number;
   imageOpenInDialog: boolean;
   currentAiToolToDelete?: AiTool | null;
+  currentAiToolToUpdate?: AiTool | null;
 }
 function Layout({children}: {children: React.ReactNode}) {
   const adminSelector = useAdminSessionSelector();
@@ -41,12 +43,16 @@ function Layout({children}: {children: React.ReactNode}) {
     page: Number(params?.get('page')) || 1,
     imageOpenInDialog: false,
     currentAiToolToDelete: null,
+    currentAiToolToUpdate: null,
   });
 
   const [showConfirmDeleteDialog, setShowConfirmDeleteDialog] =
     React.useState<boolean>(false);
 
-  const getListProductNotAlreadyActivated = useQuery(
+  const [showEditAiToolDialog, setShowEditAiToolDialog] =
+    React.useState<boolean>(false);
+
+  useQuery(
     ['getListProductNotAlreadyActivated'],
     async () => {
       const currentPage = state.page || 1;
@@ -108,11 +114,16 @@ function Layout({children}: {children: React.ReactNode}) {
           data: listToolsFiltred,
           total: state.listTools.total - 1,
         },
+        currentAiToolToDelete: null,
       }));
     },
     onError: (error: any) => {
       console.log(error);
       //toast.error(error);
+      setState(prevState => ({
+        ...prevState,
+        currentAiToolToDelete: null,
+      }));
     },
   });
 
@@ -213,6 +224,23 @@ function Layout({children}: {children: React.ReactNode}) {
     );
   };
 
+  const editBodyTemplate = (aiTool: AiTool) => {
+    return (
+      <Button
+        style={{
+          padding: '0.5rem 0.5rem',
+        }}
+        label={'Edit'}
+        onClick={() => {
+          setState(prevState => ({
+            ...prevState,
+            currentAiToolToUpdate: aiTool,
+          }));
+          setShowEditAiToolDialog(true);
+        }}></Button>
+    );
+  };
+
   const header = (
     <>
       <div className="flex flex-wrap items-center justify-between gap-2">
@@ -263,6 +291,14 @@ function Layout({children}: {children: React.ReactNode}) {
         setVisible={setShowConfirmDeleteDialog}
         footerContent={confirmDeleteDialogFooter}
       />
+      <EditAiProductDialog
+        currentAiToolToUpdate={
+          state.currentAiToolToUpdate ? state.currentAiToolToUpdate : undefined
+        }
+        visible={showEditAiToolDialog}
+        setVisible={setShowEditAiToolDialog}
+        postEditSuccess={aiTool => {}}
+      />
       <DataTable
         value={state.listTools.data}
         header={header}
@@ -274,28 +310,34 @@ function Layout({children}: {children: React.ReactNode}) {
         <Column
           field="softdelete"
           header="Soft Delete"
-          body={softDeletedBodyTemplate}></Column>
-        <Column field="name" header="Name" sortable={true}></Column>
+          body={softDeletedBodyTemplate}
+        />
+        <Column
+          field="softdelete"
+          header="Soft Delete"
+          body={editBodyTemplate}
+        />
+        <Column field="name" header="Name" sortable={true} />
         <Column
           field="isActivated"
           header="Activated"
-          body={activatedToolBodyTemplate}></Column>
+          body={activatedToolBodyTemplate}
+        />
         <Column
           field={'description'}
           header={'Description'}
-          body={descriptionBodyTemplate}></Column>
-        <Column header="Image" body={imageBodyTemplate}></Column>
-        <Column field="url" header="WebSite" body={webSiteTemplate}></Column>
-        <Column field="category" header="Category"></Column>
-        <Column header="Pricing" body={statusBodyTemplate}></Column>
+          body={descriptionBodyTemplate}
+        />
+        <Column header="Image" body={imageBodyTemplate} />
+        <Column field="url" header="WebSite" body={webSiteTemplate} />
+        <Column field="category" header="Category" />
+        <Column header="Pricing" body={statusBodyTemplate} />
         <Column
           field="createdAt"
           header="Created At"
-          body={dateCreationBodyTemplate}></Column>
-        <Column
-          field="addedBy"
-          header="Added By"
-          body={AddedByTemplate}></Column>
+          body={dateCreationBodyTemplate}
+        />
+        <Column field="addedBy" header="Added By" body={AddedByTemplate} />
       </DataTable>
     </div>
   );

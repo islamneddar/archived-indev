@@ -28,3 +28,21 @@ export interface AiToolWithTotalNumber {
   data: AiTool[];
   total: number;
 }
+
+export interface AiToolCategory {
+  aiToolCategoryId: number;
+  name: string;
+  type: string;
+}
+
+export interface AiToolPricing {
+  aiToolPricingId: number;
+  name: string;
+  type: string;
+}
+
+export interface AiToolPlatform {
+  aiToolPlatformId: number;
+  name: string;
+  type: string;
+}

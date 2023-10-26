@@ -1,5 +1,6 @@
-import {Controller, Get, Logger} from '@nestjs/common';
+import {Controller, Get, Logger, UseGuards} from '@nestjs/common';
 import {AiToolCategoryService} from '@/bussiness/domains/ai-tool/ai-tool-category/ai-tool-category.service';
+import {AuthAdminGuard} from '@/bussiness/auth/auth-admin.guard';
 
 @Controller('ai-tool-category')
 export class AiToolCategoryController {
@@ -24,6 +25,15 @@ export class AiToolCategoryController {
 
     return {
       data: categoriesToRender,
+    };
+  }
+
+  // admin
+  @UseGuards(AuthAdminGuard)
+  @Get('/admin/all/list')
+  async getAllList() {
+    return {
+      data: await this.aiToolCategoryService.getAllV2(),
     };
   }
 }

@@ -1,4 +1,4 @@
-import type { Config } from 'tailwindcss'
+import type {Config} from 'tailwindcss';
 
 const config: Config = {
   content: [
@@ -92,6 +92,6 @@ const config: Config = {
       // => @media (min-width: 1440px) { ... }
     },
   },
-  plugins: [require('tailwind-scrollbar-hide')],
-}
-export default config
+  plugins: [require('tailwind-scrollbar-hide'), require('@tailwindcss/forms')],
+};
+export default config;

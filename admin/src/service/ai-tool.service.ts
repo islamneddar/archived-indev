@@ -1,6 +1,8 @@
 import {KEY_TO_PASS, ROOT_API_URL} from '@/service/config';
 import {
-  AiTool,
+  AiToolCategory,
+  AiToolPlatform,
+  AiToolPricing,
   AiToolWithTotalNumber,
   CreateAiToolRequest,
 } from '@/types/api/ai-tool';
@@ -73,5 +75,44 @@ export class AiToolService {
         Authorization: `Bearer ${accessToken}`,
       },
     });
+  }
+
+  async getAllAiToolCategory(accessToken: string) {
+    const res = await axios.get(
+      `${ROOT_API_URL}/ai-tool-category/admin/all/list`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+    const data = await res.data.data;
+    return data as AiToolCategory[];
+  }
+
+  async getAllAiToolPricing(accessToken: string) {
+    const res = await axios.get(
+      `${ROOT_API_URL}/ai-tool-pricing/admin/all/list`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+    const data = await res.data.data;
+    return data as AiToolPricing[];
+  }
+
+  async getAllAiToolPlatform(accessToken: string) {
+    const res = await axios.get(
+      `${ROOT_API_URL}/ai-tool-platforms/admin/all/list`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+    const data = await res.data.data;
+    return data as AiToolPlatform[];
   }
 }

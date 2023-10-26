@@ -6,10 +6,8 @@ import {PageOptionsDto} from '@/common/pagination/page_option.dto';
 import {AiToolCategoryEnum} from '@/bussiness/domains/ai-tool/ai-tool-category/ai-tool-catgory.proto';
 import {PageDto} from '@/common/pagination/page.dto';
 import {PageMetaDto} from '@/common/pagination/page_meta.dto';
-import {PricingEnum} from '@/common/constant/pricing.enum';
+import {AIToolPricingEnum} from '@/bussiness/domains/ai-tool/ai-tool-pricing/ai-tool-pricing-proto';
 import {Raw} from 'typeorm';
-import LOG from '@/utils/logger';
-import {AiToolCategoryEntity} from '@/bussiness/domains/ai-tool/ai-tool-category/ai-tool-category.entity';
 
 @Injectable()
 export class AiToolService {
@@ -36,7 +34,7 @@ export class AiToolService {
   async findAll(param: {
     pageOption: PageOptionsDto;
     category?: AiToolCategoryEnum;
-    pricing?: PricingEnum;
+    pricing?: AIToolPricingEnum;
     searchText?: string;
   }) {
     const {pageOption} = param;

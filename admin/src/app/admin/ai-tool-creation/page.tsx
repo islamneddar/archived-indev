@@ -7,18 +7,14 @@ import {
 } from '@/app/admin/ai-tool-creation/ai-tool-creation.form';
 import {useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
-import {useDispatch} from 'react-redux';
-import {ThunkDispatch} from '@reduxjs/toolkit';
 import {CreateAiToolRequest} from '@/types/api/ai-tool';
-import {createAiToolThunk} from '@/redux/slices/ai-tool/api/create-ai-tool/create-ai-tool.thunk';
-import {useCreateAiToolSelector} from '@/redux/slices/ai-tool/api/create-ai-tool/create-ai-tool.selector';
 import {useAdminSessionSelector} from '@/redux/slices/auth/admin/admin.selector';
 import toast from 'react-hot-toast';
+import {useMutation} from 'react-query';
+import {templateApiCall} from '@/redux/util';
+import {AiToolService} from '@/service/ai-tool.service';
 
 function Page() {
-  const dispatchThunk = useDispatch<ThunkDispatch<any, any, any>>();
-
-  const useCreateAiTool = useCreateAiToolSelector();
   const adminSessionSelector = useAdminSessionSelector();
   const currentCategoryInLocalStorage = localStorage.getItem(
     'category-creation-ai-tool',
@@ -32,19 +28,26 @@ function Page() {
     resolver: yupResolver(aiToolCreationSchema),
   });
 
-  //useEffect
-  useEffect(() => {
-    if (useCreateAiTool.success) {
+  const createAiToolMutation = useMutation({
+    mutationFn: async (createAiToolRequest: CreateAiToolRequest) => {
+      return await templateApiCall<CreateAiToolRequest, any>({
+        request: createAiToolRequest,
+        callback: async (request: CreateAiToolRequest) => {
+          return await AiToolService.getInstance().create(request);
+        },
+        isProtected: true,
+      });
+    },
+    onSuccess: () => {
       toast.success('Create ai tool successfully');
       setTimeout(() => {
         window.location.reload();
       }, 1000);
-    }
-
-    if (useCreateAiTool.error) {
+    },
+    onError: () => {
       toast.error('Create ai tool failed');
-    }
-  }, [useCreateAiTool.success, useCreateAiTool.error]);
+    },
+  });
 
   // domain function
   const addAiTool = () => {
@@ -60,7 +63,7 @@ function Page() {
       };
 
       localStorage.setItem('category-creation-ai-tool', resultInput.category);
-      dispatchThunk(createAiToolThunk(createAiToolRequest));
+      createAiToolMutation.mutate(createAiToolRequest);
     };
     handleSubmit(onSubmit)();
   };
@@ -130,12 +133,12 @@ function Page() {
         <option value={'free_trial'}>Free Trial</option>
       </select>
       <button
-        disabled={useCreateAiTool.loading}
+        disabled={createAiToolMutation.isLoading}
         className={'bg-amber-100 py-3'}
         onClick={() => {
           addAiTool();
         }}>
-        {useCreateAiTool.loading ? 'Adding the tool' : 'Submit'}
+        {createAiToolMutation.isLoading ? 'Adding the tool' : 'Submit'}
       </button>
     </div>
   );
