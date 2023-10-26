@@ -12,18 +12,21 @@ import 'primereact/resources/themes/lara-light-indigo/theme.css';
 
 //core
 import 'primereact/resources/primereact.min.css';
+import {QueryClient, QueryClientProvider} from 'react-query';
 
 const inter = Inter({subsets: ['latin']});
-
+const queryClient = new QueryClient();
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <SessionProvider>
       <Provider store={store}>
         <PrimeReactProvider>
-          <html lang="en">
-            <body className={inter.className}>{children}</body>
-            <Toaster></Toaster>
-          </html>
+          <QueryClientProvider client={queryClient}>
+            <html lang="en">
+              <body className={inter.className}>{children}</body>
+              <Toaster></Toaster>
+            </html>
+          </QueryClientProvider>
         </PrimeReactProvider>
       </Provider>
     </SessionProvider>

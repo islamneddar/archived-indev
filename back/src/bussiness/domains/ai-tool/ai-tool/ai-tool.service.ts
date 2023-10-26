@@ -206,4 +206,16 @@ export class AiToolService {
       aiTool,
     );
   }
+
+  async softDelete(aiToolId: number) {
+    console.log(aiToolId);
+    await this.aiToolRepository.update(
+      {
+        aiToolId,
+      },
+      {
+        softDelete: true,
+      },
+    );
+  }
 }

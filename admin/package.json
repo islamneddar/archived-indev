@@ -26,6 +26,7 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.45.4",
     "react-hot-toast": "^2.4.1",
+    "react-query": "^3.39.3",
     "react-redux": "^8.1.2",
     "redux-logger": "^3.0.6",
     "tailwind-scrollbar-hide": "^1.1.7",
@@ -36,9 +37,9 @@
   },
   "devDependencies": {
     "@types/redux-logger": "^3.0.9",
+    "@typescript-eslint/eslint-plugin": "^6.4.1",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^5.0.0",
-    "prettier": "2.8.8",
-    "@typescript-eslint/eslint-plugin": "^6.4.1"
+    "prettier": "2.8.8"
   }
 }

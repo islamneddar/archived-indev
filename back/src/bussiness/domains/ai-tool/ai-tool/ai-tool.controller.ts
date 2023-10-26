@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpException,
   Post,
@@ -218,6 +219,23 @@ export default class AiToolController {
       message: 'adding the list is in its way',
     };
   }*/
+
+  @UseGuards(AuthAdminGuard)
+  @Delete('/admin/delete')
+  async delete(@Query('aiToolId') aiToolId: number) {
+    const aiTool = await this.aiToolService.findById(aiToolId);
+    if (!aiTool) {
+      throw new HttpException('AI Tool not found', 404);
+    }
+
+    await this.aiToolService.softDelete(aiToolId);
+    return {
+      message: 'AI Tool deleted',
+      id: aiToolId,
+    };
+  }
+
+  // general function
   async generateImageFromUrl(
     image: Express.Multer.File,
     url: URL,

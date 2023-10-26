@@ -63,4 +63,15 @@ export class AiToolService {
       },
     );
   }
+
+  async deleteTool(aiToolId: number, accessToken: string) {
+    const res = await axios.delete(`${this.endpoint}/admin/delete`, {
+      params: {
+        aiToolId,
+      },
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+  }
 }

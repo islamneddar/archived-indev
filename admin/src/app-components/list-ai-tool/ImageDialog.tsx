@@ -3,7 +3,7 @@ import {Dialog} from 'primereact/dialog';
 
 interface ImageDialogProps {
   imageOpenInDialog: boolean;
-  setImageOpenInDialog: (value: boolean) => void;
+  setState: (value: any) => void;
   imageUrl: string;
 }
 function ImageDialog(props: ImageDialogProps) {
@@ -12,7 +12,10 @@ function ImageDialog(props: ImageDialogProps) {
       visible={props.imageOpenInDialog}
       style={{width: '70vw', height: '80vh', backgroundColor: '#000'}}
       onHide={() => {
-        props.setImageOpenInDialog(false);
+        props.setState((prevState: any) => ({
+          ...prevState,
+          imageOpenInDialog: false,
+        }));
       }}
       closeOnEscape={true}>
       <div className={'flex h-full w-full justify-center items-center'}>
