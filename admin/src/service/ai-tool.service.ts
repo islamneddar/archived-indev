@@ -1,6 +1,8 @@
 import {KEY_TO_PASS, ROOT_API_URL} from '@/service/config';
 import {
-  AiTool,
+  AiToolCategory,
+  AiToolPlatform,
+  AiToolPricing,
   AiToolWithTotalNumber,
   CreateAiToolRequest,
 } from '@/types/api/ai-tool';
@@ -51,8 +53,91 @@ export class AiToolService {
   }
 
   async validateTool(aiToolId: number, accessToken: string) {
-    const res = await axios.post(
+    await axios.post(
       `${this.endpoint}/admin/validate`,
+      {
+        aiToolId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+  }
+
+  async deleteTool(aiToolId: number, accessToken: string) {
+    const res = await axios.delete(`${this.endpoint}/admin/delete`, {
+      params: {
+        aiToolId,
+      },
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+  }
+
+  async getAllAiToolCategory(accessToken: string) {
+    const res = await axios.get(
+      `${ROOT_API_URL}/ai-tool-category/admin/all/list`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+    const data = await res.data.data;
+    return data as AiToolCategory[];
+  }
+
+  async getAllAiToolPricing(accessToken: string) {
+    const res = await axios.get(
+      `${ROOT_API_URL}/ai-tool-pricing/admin/all/list`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+    const data = await res.data.data;
+    return data as AiToolPricing[];
+  }
+
+  async getAllAiToolPlatform(accessToken: string) {
+    const res = await axios.get(
+      `${ROOT_API_URL}/ai-tool-platforms/admin/all/list`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+    const data = await res.data.data;
+    return data as AiToolPlatform[];
+  }
+
+  async getAllNotConfirmedByAdminTools(
+    currentPage: number,
+    accessToken: string,
+  ) {
+    const res = await axios.get(
+      `${ROOT_API_URL}/ai-tool/admin/list/not_confirmed_by_admin`,
+      {
+        params: {
+          page: currentPage,
+        },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+    const data = await res.data;
+    return data as AiToolWithTotalNumber;
+  }
+
+  async confirmTool(aiToolId: number, accessToken: string) {
+    await axios.post(
+      `${ROOT_API_URL}/ai-tool/admin/confirm`,
       {
         aiToolId,
       },

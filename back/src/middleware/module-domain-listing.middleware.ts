@@ -17,6 +17,8 @@ import {AiToolModule} from '@/bussiness/domains/ai-tool/ai-tool/ai-tool.module';
 import {S3AppModule} from '@/external-services/aws-s3/s3-app.module';
 import {InAiTimesAdminModule} from '@/bussiness/inaitimer-admin/inaitimes-admin.module';
 import {ScreenshotModule} from '@/external-services/screenshot-service/screenshot.module';
+import {AiToolPricingModule} from '@/bussiness/domains/ai-tool/ai-tool-pricing/ai-tool-pricing.module';
+import {AiToolPlatformModule} from '@/bussiness/domains/ai-tool/ai-tool-platform/ai-tool-platform.module';
 
 export const modules = [
   // domains
@@ -33,6 +35,8 @@ export const modules = [
   FeedBlogTypeStatsModule,
   AiToolCategoryModule,
   AiToolModule,
+  AiToolPricingModule,
+  AiToolPlatformModule,
 
   // external services
   S3AppModule,

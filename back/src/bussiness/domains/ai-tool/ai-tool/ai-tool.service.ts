@@ -6,10 +6,8 @@ import {PageOptionsDto} from '@/common/pagination/page_option.dto';
 import {AiToolCategoryEnum} from '@/bussiness/domains/ai-tool/ai-tool-category/ai-tool-catgory.proto';
 import {PageDto} from '@/common/pagination/page.dto';
 import {PageMetaDto} from '@/common/pagination/page_meta.dto';
-import {PricingEnum} from '@/common/constant/pricing.enum';
+import {AIToolPricingEnum} from '@/bussiness/domains/ai-tool/ai-tool-pricing/ai-tool-pricing-proto';
 import {Raw} from 'typeorm';
-import LOG from '@/utils/logger';
-import {AiToolCategoryEntity} from '@/bussiness/domains/ai-tool/ai-tool-category/ai-tool-category.entity';
 
 @Injectable()
 export class AiToolService {
@@ -36,7 +34,7 @@ export class AiToolService {
   async findAll(param: {
     pageOption: PageOptionsDto;
     category?: AiToolCategoryEnum;
-    pricing?: PricingEnum;
+    pricing?: AIToolPricingEnum;
     searchText?: string;
   }) {
     const {pageOption} = param;
@@ -204,6 +202,80 @@ export class AiToolService {
         aiToolId: aiTool.aiToolId,
       },
       aiTool,
+    );
+  }
+
+  async softDelete(aiToolId: number) {
+    console.log(aiToolId);
+    await this.aiToolRepository.update(
+      {
+        aiToolId,
+      },
+      {
+        softDelete: true,
+      },
+    );
+  }
+
+  async findAllNotConfirmedByAdmin(page: number, take = 100) {
+    const skip = (page - 1) * take;
+    const [data, total] = await this.aiToolRepository.findAndCount({
+      where: {
+        softDelete: false,
+        isConfirmedByAdmin: false,
+      },
+      relations: ['admin', 'aiToolCategory', 'aiToolPricing', 'aiToolPlatform'],
+      order: {
+        createdAt: 'DESC',
+      },
+      select: {
+        aiToolId: true,
+        name: true,
+        description: true,
+        url: true,
+        image: true,
+        category: true,
+        pricing: true,
+        createdAt: true,
+        admin: {
+          id: true,
+          email: true,
+        },
+        aiToolCategory: {
+          aiToolCategoryId: true,
+          name: true,
+          type: true,
+        },
+        aiToolPricing: {
+          aiToolPricingId: true,
+          name: true,
+          type: true,
+        },
+        aiToolPlatform: {
+          aiToolPlatformId: true,
+          name: true,
+          type: true,
+        },
+        isConfirmedByAdmin: true,
+      },
+      skip: skip,
+      take: take,
+    });
+
+    return {
+      data,
+      total,
+    };
+  }
+
+  async confirmByAdmin(aiToolId: number) {
+    await this.aiToolRepository.update(
+      {
+        aiToolId,
+      },
+      {
+        isConfirmedByAdmin: true,
+      },
     );
   }
 }

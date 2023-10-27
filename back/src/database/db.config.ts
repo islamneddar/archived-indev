@@ -14,6 +14,8 @@ import {FeedBlogStatsEntity} from '@/bussiness/domains/blog/feed-blog/feed-blog-
 import {AiToolEntity} from '@/bussiness/domains/ai-tool/ai-tool/ai-tool.entity';
 import {AdminInAiTimesEntity} from '@/bussiness/inaitimer-admin/inaitimer-admin.entity';
 import {AiToolCategoryEntity} from '@/bussiness/domains/ai-tool/ai-tool-category/ai-tool-category.entity';
+import {AiToolPricingEntity} from '@/bussiness/domains/ai-tool/ai-tool-pricing/ai-tool-pricing.entity';
+import {AiToolPlatformEntity} from '@/bussiness/domains/ai-tool/ai-tool-platform/ai-tool-platform.entity';
 
 const DBModule = TypeOrmModule.forRootAsync({
   imports: [ConfigModule],
@@ -30,9 +32,11 @@ const DBModule = TypeOrmModule.forRootAsync({
       SourceBlogToUserEntity,
       BlogToUserEntity,
       FeedBlogStatsEntity,
-      AiToolEntity,
       AdminInAiTimesEntity,
+      AiToolEntity,
       AiToolCategoryEntity,
+      AiToolPricingEntity,
+      AiToolPlatformEntity,
     ];
     if (process.env.NODE_ENV === 'development') {
       const configToReturn: TypeOrmModuleOptions = {

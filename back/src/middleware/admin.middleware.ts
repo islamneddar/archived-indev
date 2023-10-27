@@ -9,6 +9,8 @@ import * as AdminJSTypeorm from '@adminjs/typeorm';
 import {AiToolEntity} from '@/bussiness/domains/ai-tool/ai-tool/ai-tool.entity';
 import {AiToolCategoryEntity} from '@/bussiness/domains/ai-tool/ai-tool-category/ai-tool-category.entity';
 import {AdminInAiTimesEntity} from '@/bussiness/inaitimer-admin/inaitimer-admin.entity';
+import {AiToolPricingEntity} from '@/bussiness/domains/ai-tool/ai-tool-pricing/ai-tool-pricing.entity';
+import {AiToolPlatformEntity} from '@/bussiness/domains/ai-tool/ai-tool-platform/ai-tool-platform.entity';
 
 const DEFAULT_ADMIN = {
   email: 'lemsijoker',
@@ -39,6 +41,8 @@ export const adminJsMiddleware = AdminModule.createAdminAsync({
         AiToolEntity,
         AdminInAiTimesEntity,
         AiToolCategoryEntity,
+        AiToolPricingEntity,
+        AiToolPlatformEntity,
       ],
     },
     auth: {

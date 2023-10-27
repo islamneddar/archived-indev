@@ -18,13 +18,47 @@ export interface AiTool {
   image: string;
   createdAt: string;
   isActive: boolean;
+  isConfirmedByAdmin: boolean;
   admin: {
     id: number;
     email: string;
   };
+  aiToolCategory: {
+    aiToolCategoryId: number;
+    name: string;
+    type: string;
+  } | null;
+  aiToolPricing: {
+    aiToolPricingId: number;
+    name: string;
+    type: string;
+  } | null;
+  aiToolPlatform: {
+    aiToolPlatformId: number;
+    name: string;
+    type: string;
+  } | null;
 }
 
 export interface AiToolWithTotalNumber {
   data: AiTool[];
   total: number;
+}
+
+export interface AiToolCategory {
+  aiToolCategoryId: number;
+  name: string;
+  type: string;
+}
+
+export interface AiToolPricing {
+  aiToolPricingId: number;
+  name: string;
+  type: string;
+}
+
+export interface AiToolPlatform {
+  aiToolPlatformId: number;
+  name: string;
+  type: string;
 }

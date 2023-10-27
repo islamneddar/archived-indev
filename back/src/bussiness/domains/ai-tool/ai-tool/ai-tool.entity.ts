@@ -8,9 +8,11 @@ import {
 } from 'typeorm';
 import {BaseTable} from '@/database/base-table.entity';
 import {AiToolCategoryEnum} from '@/bussiness/domains/ai-tool/ai-tool-category/ai-tool-catgory.proto';
-import {PricingEnum} from '@/common/constant/pricing.enum';
+import {AIToolPricingEnum} from '@/bussiness/domains/ai-tool/ai-tool-pricing/ai-tool-pricing-proto';
 import {AdminInAiTimesEntity} from '@/bussiness/inaitimer-admin/inaitimer-admin.entity';
 import {AiToolCategoryEntity} from '@/bussiness/domains/ai-tool/ai-tool-category/ai-tool-category.entity';
+import {AiToolPricingEntity} from '@/bussiness/domains/ai-tool/ai-tool-pricing/ai-tool-pricing.entity';
+import {AiToolPlatformEntity} from '@/bussiness/domains/ai-tool/ai-tool-platform/ai-tool-platform.entity';
 
 @Entity({
   name: 'ai_tools',
@@ -49,12 +51,15 @@ export class AiToolEntity extends BaseTable {
     name: 'pricing',
     type: 'enum',
     nullable: false,
-    enum: PricingEnum,
+    enum: AIToolPricingEnum,
   })
-  pricing: PricingEnum;
+  pricing: AIToolPricingEnum;
 
   @Column({nullable: false, default: false, name: 'is_active'})
   isActive: boolean;
+
+  @Column({nullable: false, default: false, name: 'is_confirmed_by_admin'})
+  isConfirmedByAdmin: boolean;
 
   @ManyToOne(() => AdminInAiTimesEntity, admin => admin.aiTools)
   @JoinColumn({name: 'admin_id'})
@@ -66,4 +71,15 @@ export class AiToolEntity extends BaseTable {
   )
   @JoinColumn({name: 'ai_tool_category_id'})
   aiToolCategory: AiToolCategoryEntity;
+
+  @ManyToOne(() => AiToolPricingEntity, aiToolPricing => aiToolPricing.aiTools)
+  @JoinColumn({name: 'ai_tool_pricing_id'})
+  aiToolPricing: AiToolPricingEntity;
+
+  @ManyToOne(
+    () => AiToolPlatformEntity,
+    aiToolPlatform => aiToolPlatform.aiTools,
+  )
+  @JoinColumn({name: 'ai_tool_platform_id'})
+  aiToolPlatform: AiToolPlatformEntity;
 }
