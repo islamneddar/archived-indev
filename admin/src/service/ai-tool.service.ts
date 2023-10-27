@@ -53,7 +53,7 @@ export class AiToolService {
   }
 
   async validateTool(aiToolId: number, accessToken: string) {
-    const res = await axios.post(
+    await axios.post(
       `${this.endpoint}/admin/validate`,
       {
         aiToolId,
@@ -114,5 +114,38 @@ export class AiToolService {
     );
     const data = await res.data.data;
     return data as AiToolPlatform[];
+  }
+
+  async getAllNotConfirmedByAdminTools(
+    currentPage: number,
+    accessToken: string,
+  ) {
+    const res = await axios.get(
+      `${ROOT_API_URL}/ai-tool/admin/list/not_confirmed_by_admin`,
+      {
+        params: {
+          page: currentPage,
+        },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+    const data = await res.data;
+    return data as AiToolWithTotalNumber;
+  }
+
+  async confirmTool(aiToolId: number, accessToken: string) {
+    await axios.post(
+      `${ROOT_API_URL}/ai-tool/admin/confirm`,
+      {
+        aiToolId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
   }
 }

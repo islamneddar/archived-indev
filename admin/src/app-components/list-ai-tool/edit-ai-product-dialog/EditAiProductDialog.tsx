@@ -22,6 +22,12 @@ interface EditAiProductDialogProps {
 }
 
 function EditAiProductDialog(props: EditAiProductDialogProps) {
+  const aiTool = props.currentAiToolToUpdate;
+  if (!aiTool) {
+    props.setVisible(false);
+    return <></>;
+  }
+
   const {
     register,
     handleSubmit,
@@ -29,8 +35,6 @@ function EditAiProductDialog(props: EditAiProductDialogProps) {
   } = useForm<EditAiProductInput>({
     resolver: yupResolver(editAiProductSchema),
   });
-
-  const aiTool = props.currentAiToolToUpdate;
 
   const mapCategory = JSON.parse(localStorage.getItem('mapCategory') ?? '{}');
   const listCategory = Object.values(mapCategory) as AiToolCategory[];
@@ -41,7 +45,26 @@ function EditAiProductDialog(props: EditAiProductDialogProps) {
   const mapPlatforms = JSON.parse(localStorage.getItem('mapPlatforms') ?? '{}');
   const listPlatforms = Object.values(mapPlatforms) as AiToolPlatform[];
 
-  if (!aiTool) return <></>;
+  const onSubmit = (resultInput: EditAiProductInput) => {
+    /*const aiToolData: AiTool = {
+      aiToolId: aiTool.aiToolId,
+      name: resultInput.name,
+      description: resultInput.description,
+      url: aiTool.url,
+      aiToolCategory: listCategory.find(
+        category => category.aiToolCategoryId === resultInput.categoryId,
+      ),
+      aiToolPricing: listPricing.find(
+        pricing => pricing.aiToolPricingId === resultInput.pricingId,
+      ),
+      aiToolPlatform: listPlatforms.find(
+        platform => platform.aiToolPlatformId === resultInput.platformId,
+      ),
+    };*/
+    //props.postEditSuccess(aiTool);
+    console.log(resultInput);
+  };
+
   return (
     <Dialog
       onHide={() => props.setVisible(false)}
@@ -85,7 +108,10 @@ function EditAiProductDialog(props: EditAiProductDialogProps) {
               return (
                 <option
                   key={category.aiToolCategoryId}
-                  selected={aiTool.category === category.type}
+                  selected={
+                    !!aiTool.aiToolCategory &&
+                    aiTool.aiToolCategory?.type === category.type
+                  }
                   value={category.aiToolCategoryId}>
                   {category.name}
                 </option>
@@ -105,7 +131,10 @@ function EditAiProductDialog(props: EditAiProductDialogProps) {
               return (
                 <option
                   key={pricing.aiToolPricingId}
-                  selected={aiTool.pricing === pricing.type}
+                  selected={
+                    !!aiTool.aiToolPricing &&
+                    aiTool.aiToolPricing?.type === pricing.type
+                  }
                   value={pricing.aiToolPricingId}>
                   {pricing.name}
                 </option>
@@ -125,7 +154,10 @@ function EditAiProductDialog(props: EditAiProductDialogProps) {
               return (
                 <option
                   key={platform.aiToolPlatformId}
-                  selected={aiTool.platforms === platform.type}
+                  selected={
+                    !!aiTool.aiToolPlatform &&
+                    aiTool.aiToolPlatform?.type === platform.type
+                  }
                   value={platform.aiToolPlatformId}>
                   {platform.name}
                 </option>
@@ -142,7 +174,10 @@ function EditAiProductDialog(props: EditAiProductDialogProps) {
           type={'button'}
           className={
             'rounded bg-indigo-600 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 w-full'
-          }>
+          }
+          onClick={() => {
+            handleSubmit(onSubmit)();
+          }}>
           <span>Save</span>
         </button>
       </div>

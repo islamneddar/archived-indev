@@ -106,6 +106,12 @@ export default class AiToolController {
   }
 
   @UseGuards(AuthAdminGuard)
+  @Get('/admin/list/not_confirmed_by_admin')
+  async listNotFeatured(@Query() query: GetAllAiToolNotValidatedQuery) {
+    return await this.aiToolService.findAllNotConfirmedByAdmin(query.page);
+  }
+
+  @UseGuards(AuthAdminGuard)
   @Post('/admin/validate')
   async validate(@Body() body: ValidateAiToolBody) {
     const aiTool = await this.aiToolService.findById(body.aiToolId);
@@ -116,6 +122,21 @@ export default class AiToolController {
     await this.aiToolService.validate(body.aiToolId);
     return {
       message: 'AI Tool validated',
+      id: body.aiToolId,
+    };
+  }
+
+  @UseGuards(AuthAdminGuard)
+  @Post('/admin/confirm')
+  async confirm(@Body() body: ValidateAiToolBody) {
+    const aiTool = await this.aiToolService.findById(body.aiToolId);
+    if (!aiTool) {
+      throw new HttpException('AI Tool not found', 404);
+    }
+
+    await this.aiToolService.confirmByAdmin(body.aiToolId);
+    return {
+      message: 'AI Tool confirmed',
       id: body.aiToolId,
     };
   }

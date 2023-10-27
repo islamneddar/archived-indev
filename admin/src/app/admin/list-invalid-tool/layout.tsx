@@ -53,13 +53,14 @@ function Layout({children}: {children: React.ReactNode}) {
     React.useState<boolean>(false);
 
   useQuery(
-    ['getListProductNotAlreadyActivated'],
+    ['getListProductNotAlreadyConfirmedByAdmin'],
     async () => {
       const currentPage = state.page || 1;
-      const listTools = await AiToolService.getInstance().getAllInvalidTool(
-        currentPage,
-        adminSelector.user.accessToken,
-      );
+      const listTools =
+        await AiToolService.getInstance().getAllNotConfirmedByAdminTools(
+          currentPage,
+          adminSelector.user.accessToken,
+        );
       setState(prevState => ({
         ...prevState,
         listTools: listTools,
@@ -72,9 +73,9 @@ function Layout({children}: {children: React.ReactNode}) {
     },
   );
 
-  const activateToolMutation = useMutation({
+  const confirmToolMutation = useMutation({
     mutationFn: async (aiTool: AiTool) => {
-      await AiToolService.getInstance().validateTool(
+      await AiToolService.getInstance().confirmTool(
         aiTool.aiToolId,
         adminSelector.user.accessToken,
       );
@@ -151,7 +152,9 @@ function Layout({children}: {children: React.ReactNode}) {
   };
 
   const statusBodyTemplate = (aiTool: AiTool) => {
-    return <Tag value={aiTool.pricing}></Tag>;
+    return (
+      <Tag value={aiTool.aiToolPricing ? aiTool.aiToolPricing.type : '-'}></Tag>
+    );
   };
 
   const webSiteTemplate = (aiTool: AiTool) => {
@@ -174,17 +177,17 @@ function Layout({children}: {children: React.ReactNode}) {
     return aiTool.admin.email;
   };
 
-  const activatedToolBodyTemplate = (aiTool: AiTool) => {
+  const confirmToolBodyTemplate = (aiTool: AiTool) => {
     const [isActivated, setIsActivated] = React.useState<boolean>(
-      aiTool.isActive,
+      aiTool.isConfirmedByAdmin,
     );
     return (
       <InputSwitch
         checked={isActivated}
         className={'h-5'}
-        disabled={activateToolMutation.isLoading}
+        disabled={confirmToolMutation.isLoading}
         onChange={async (e: any) => {
-          activateToolMutation.mutate(aiTool);
+          confirmToolMutation.mutate(aiTool);
         }}></InputSwitch>
     );
   };
@@ -319,9 +322,9 @@ function Layout({children}: {children: React.ReactNode}) {
         />
         <Column field="name" header="Name" sortable={true} />
         <Column
-          field="isActivated"
-          header="Activated"
-          body={activatedToolBodyTemplate}
+          field="isConfirmedByAdmin"
+          header="Confirm"
+          body={confirmToolBodyTemplate}
         />
         <Column
           field={'description'}
@@ -330,7 +333,13 @@ function Layout({children}: {children: React.ReactNode}) {
         />
         <Column header="Image" body={imageBodyTemplate} />
         <Column field="url" header="WebSite" body={webSiteTemplate} />
-        <Column field="category" header="Category" />
+        <Column
+          field="category"
+          header="Category"
+          body={(aiTool: AiTool) => {
+            return <Tag value={aiTool.aiToolCategory?.name}></Tag>;
+          }}
+        />
         <Column header="Pricing" body={statusBodyTemplate} />
         <Column
           field="createdAt"

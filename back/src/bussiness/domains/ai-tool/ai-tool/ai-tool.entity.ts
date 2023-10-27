@@ -58,6 +58,9 @@ export class AiToolEntity extends BaseTable {
   @Column({nullable: false, default: false, name: 'is_active'})
   isActive: boolean;
 
+  @Column({nullable: false, default: false, name: 'is_confirmed_by_admin'})
+  isConfirmedByAdmin: boolean;
+
   @ManyToOne(() => AdminInAiTimesEntity, admin => admin.aiTools)
   @JoinColumn({name: 'admin_id'})
   admin: AdminInAiTimesEntity;

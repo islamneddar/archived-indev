@@ -216,4 +216,66 @@ export class AiToolService {
       },
     );
   }
+
+  async findAllNotConfirmedByAdmin(page: number, take = 100) {
+    const skip = (page - 1) * take;
+    const [data, total] = await this.aiToolRepository.findAndCount({
+      where: {
+        softDelete: false,
+        isConfirmedByAdmin: false,
+      },
+      relations: ['admin', 'aiToolCategory', 'aiToolPricing', 'aiToolPlatform'],
+      order: {
+        createdAt: 'DESC',
+      },
+      select: {
+        aiToolId: true,
+        name: true,
+        description: true,
+        url: true,
+        image: true,
+        category: true,
+        pricing: true,
+        createdAt: true,
+        admin: {
+          id: true,
+          email: true,
+        },
+        aiToolCategory: {
+          aiToolCategoryId: true,
+          name: true,
+          type: true,
+        },
+        aiToolPricing: {
+          aiToolPricingId: true,
+          name: true,
+          type: true,
+        },
+        aiToolPlatform: {
+          aiToolPlatformId: true,
+          name: true,
+          type: true,
+        },
+        isConfirmedByAdmin: true,
+      },
+      skip: skip,
+      take: take,
+    });
+
+    return {
+      data,
+      total,
+    };
+  }
+
+  async confirmByAdmin(aiToolId: number) {
+    await this.aiToolRepository.update(
+      {
+        aiToolId,
+      },
+      {
+        isConfirmedByAdmin: true,
+      },
+    );
+  }
 }
