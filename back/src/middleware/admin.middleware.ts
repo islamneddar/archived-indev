@@ -28,21 +28,85 @@ AdminJS.registerAdapter({
   Database: AdminJSTypeorm.Database,
 });
 
+const BlogSection = {
+  name: 'Blog',
+  icon: 'Blog',
+};
+
+const UserSection = {
+  name: 'User',
+  icon: 'User',
+};
+
+const AiToolSection = {
+  name: 'AiTool',
+  icon: 'AiTool',
+};
 export const adminJsMiddleware = AdminModule.createAdminAsync({
   useFactory: () => ({
     adminJsOptions: {
       rootPath: '/admin',
       resources: [
-        FeedBlogEntity,
-        BlogEntity,
-        SourceBlogEntity,
-        TagEntity,
-        UserEntity,
-        AiToolEntity,
-        AdminInAiTimesEntity,
-        AiToolCategoryEntity,
-        AiToolPricingEntity,
-        AiToolPlatformEntity,
+        {
+          resource: FeedBlogEntity,
+          options: {
+            parent: BlogSection,
+          },
+        },
+        {
+          resource: BlogEntity,
+          options: {
+            parent: BlogSection,
+          },
+        },
+        {
+          resource: SourceBlogEntity,
+          options: {
+            parent: BlogSection,
+          },
+        },
+        {
+          resource: TagEntity,
+          options: {
+            parent: BlogSection,
+          },
+        },
+        {
+          resource: UserEntity,
+          options: {
+            parent: UserSection,
+          },
+        },
+        {
+          resource: AiToolEntity,
+          options: {
+            parent: AiToolSection,
+          },
+        },
+        {
+          resource: AdminInAiTimesEntity,
+          options: {
+            parent: AiToolSection,
+          },
+        },
+        {
+          resource: AiToolCategoryEntity,
+          options: {
+            parent: AiToolSection,
+          },
+        },
+        {
+          resource: AiToolPricingEntity,
+          options: {
+            parent: AiToolSection,
+          },
+        },
+        {
+          resource: AiToolPlatformEntity,
+          options: {
+            parent: AiToolSection,
+          },
+        },
       ],
     },
     auth: {
