@@ -40,6 +40,9 @@ export default class BlogPollerService {
 
   @Cron(CronExpression.EVERY_30_MINUTES)
   async handleCron() {
+    LOG.debug(
+      '---------------------- new period of scrapping ----------------------',
+    );
     if (process.env.NODE_ENV === 'production') {
       const feedBlogs = await this.feedBlogService.getAll();
       for (const feedBlog of feedBlogs) {
@@ -52,6 +55,7 @@ export default class BlogPollerService {
         }
       }
     }
+    LOG.debug('---------------------- end of scrapping ----------------------');
   }
 
   @Cron(CronExpression.EVERY_MINUTE)
@@ -70,6 +74,7 @@ export default class BlogPollerService {
   }
 
   async initFeed() {
+    LOG.debug('init feed ' + this.currentUrl);
     this.feed = await this.parser.parseURL(this.currentUrl);
   }
 
@@ -78,6 +83,7 @@ export default class BlogPollerService {
   }
 
   public async readAndCreateBlogs(feedBlog: FeedBlogEntity) {
+    LOG.info('readAndCreateBlogs');
     try {
       await this.initFeed();
     } catch (err) {
@@ -89,10 +95,13 @@ export default class BlogPollerService {
       return;
     }
 
+    LOG.debug('source blog already getting');
+
     for (const item of this.feed.items) {
       const blogCheck: BlogEntity = await this.blogService.getByTitle(
         item.title,
       );
+      LOG.debug('getting blog = ' + item.title);
       if (blogCheck !== null) {
         continue;
       }
