@@ -79,6 +79,7 @@ export default class BlogPollerService {
   }
 
   async initFeedString(feedContent: string) {
+    LOG.debug('init feed string');
     this.feed = await this.parser.parseString(feedContent);
   }
 
