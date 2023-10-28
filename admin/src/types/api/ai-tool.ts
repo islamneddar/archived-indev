@@ -38,6 +38,7 @@ export interface AiTool {
     name: string;
     type: string;
   } | null;
+  featuresText: string;
 }
 
 export interface AiToolWithTotalNumber {

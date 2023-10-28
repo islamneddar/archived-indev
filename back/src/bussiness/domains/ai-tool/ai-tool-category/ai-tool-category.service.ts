@@ -52,4 +52,13 @@ export class AiToolCategoryService {
       },
     });
   }
+
+  async findById(aiToolCategoryId: number) {
+    return this.aiToolCategoryRepository.findOne({
+      where: {
+        aiToolCategoryId,
+        softDelete: false,
+      },
+    });
+  }
 }

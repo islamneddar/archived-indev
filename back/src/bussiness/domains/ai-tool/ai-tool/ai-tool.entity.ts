@@ -82,4 +82,7 @@ export class AiToolEntity extends BaseTable {
   )
   @JoinColumn({name: 'ai_tool_platform_id'})
   aiToolPlatform: AiToolPlatformEntity;
+
+  @Column({default: '', type: 'text', name: 'features_text'})
+  featuresText: string;
 }

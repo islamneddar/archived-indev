@@ -1,5 +1,6 @@
 import {KEY_TO_PASS, ROOT_API_URL} from '@/service/config';
 import {
+  AiTool,
   AiToolCategory,
   AiToolPlatform,
   AiToolPricing,
@@ -147,5 +148,21 @@ export class AiToolService {
         },
       },
     );
+  }
+
+  async update(request: {[key: string]: any}) {
+    const response = await axios.post(
+      `${ROOT_API_URL}/ai-tool/admin/update`,
+      {
+        ...request.editableData,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${request.accessToken}`,
+        },
+      },
+    );
+    const data = await response.data;
+    return data as AiTool;
   }
 }

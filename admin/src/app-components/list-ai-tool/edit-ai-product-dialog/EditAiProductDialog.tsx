@@ -13,6 +13,11 @@ import {
   editAiProductSchema,
 } from '@/app-components/list-ai-tool/edit-ai-product-dialog/edit-ai-product-dialog.form';
 import {yupResolver} from '@hookform/resolvers/yup';
+import {templateApiCall} from '@/redux/util';
+import {useMutation} from 'react-query';
+import {AiToolService} from '@/service/ai-tool.service';
+import toast from 'react-hot-toast';
+import {useAdminSessionSelector} from '@/redux/slices/auth/admin/admin.selector';
 
 interface EditAiProductDialogProps {
   visible: boolean;
@@ -27,6 +32,28 @@ function EditAiProductDialog(props: EditAiProductDialogProps) {
     props.setVisible(false);
     return <></>;
   }
+
+  const userAdminSelector = useAdminSessionSelector();
+
+  const editAiToolMutation = useMutation({
+    mutationFn: async (editAiToolRequest: {[key: string]: any}) => {
+      return await templateApiCall<{[key: string]: any}, any>({
+        request: editAiToolRequest,
+        callback: async (request: {[key: string]: any}) => {
+          return await AiToolService.getInstance().update(request);
+        },
+        isProtected: false,
+      });
+    },
+    onSuccess: (aiTool: AiTool) => {
+      console.log(aiTool);
+      props.postEditSuccess(aiTool);
+      props.setVisible(false);
+    },
+    onError: () => {
+      toast.error('update ai tool failed');
+    },
+  });
 
   const {
     register,
@@ -46,23 +73,33 @@ function EditAiProductDialog(props: EditAiProductDialogProps) {
   const listPlatforms = Object.values(mapPlatforms) as AiToolPlatform[];
 
   const onSubmit = (resultInput: EditAiProductInput) => {
-    /*const aiToolData: AiTool = {
+    console.log('onSubmit');
+    let editableData: {[key: string]: any} = {
       aiToolId: aiTool.aiToolId,
-      name: resultInput.name,
-      description: resultInput.description,
-      url: aiTool.url,
-      aiToolCategory: listCategory.find(
-        category => category.aiToolCategoryId === resultInput.categoryId,
-      ),
-      aiToolPricing: listPricing.find(
-        pricing => pricing.aiToolPricingId === resultInput.pricingId,
-      ),
-      aiToolPlatform: listPlatforms.find(
-        platform => platform.aiToolPlatformId === resultInput.platformId,
-      ),
-    };*/
-    //props.postEditSuccess(aiTool);
-    console.log(resultInput);
+    };
+    if (resultInput.name !== aiTool.name) {
+      editableData['name'] = resultInput.name;
+    }
+    if (resultInput.description !== aiTool.description) {
+      editableData['description'] = resultInput.description;
+    }
+    if (resultInput.categoryId !== aiTool.aiToolCategory?.aiToolCategoryId) {
+      editableData['aiToolCategoryId'] = resultInput.categoryId;
+    }
+    if (resultInput.pricingId !== aiTool.aiToolPricing?.aiToolPricingId) {
+      editableData['aiToolPricingId'] = resultInput.pricingId;
+    }
+    if (resultInput.platformId !== aiTool.aiToolPlatform?.aiToolPlatformId) {
+      editableData['aiToolPlatformId'] = resultInput.platformId;
+    }
+    if (resultInput.featuresText !== aiTool.featuresText) {
+      editableData['featuresText'] = resultInput.featuresText;
+    }
+
+    editAiToolMutation.mutate({
+      editableData: editableData,
+      accessToken: userAdminSelector.user.accessToken,
+    });
   };
 
   return (
@@ -80,7 +117,7 @@ function EditAiProductDialog(props: EditAiProductDialogProps) {
           <input
             type="text"
             id="name"
-            value={aiTool.name}
+            defaultValue={aiTool.name}
             className={'border border-gray-800 p-2'}
             {...register('name')}
           />
@@ -91,9 +128,21 @@ function EditAiProductDialog(props: EditAiProductDialogProps) {
           </label>
           <textarea
             id="description"
-            value={aiTool.description}
+            defaultValue={aiTool.description}
             className={'border border-gray-800 p-2'}
             {...register('description')}
+          />
+        </div>
+        <div className={'flex flex-col py-2'}>
+          <label htmlFor="featuresText" className={'py-2'}>
+            Features :{' '}
+          </label>
+          <textarea
+            rows={4}
+            id="featuresText"
+            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            defaultValue={aiTool.featuresText}
+            {...register('featuresText')}
           />
         </div>
         <div className={'flex flex-col py-2'}>

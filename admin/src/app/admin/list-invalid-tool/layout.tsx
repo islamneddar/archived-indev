@@ -300,7 +300,19 @@ function Layout({children}: {children: React.ReactNode}) {
         }
         visible={showEditAiToolDialog}
         setVisible={setShowEditAiToolDialog}
-        postEditSuccess={aiTool => {}}
+        postEditSuccess={aiTool => {
+          const listToolsFiltred = state.listTools.data.filter(
+            tool => tool.aiToolId !== aiTool.aiToolId,
+          );
+          setState(prevState => ({
+            ...prevState,
+            listTools: {
+              data: [...listToolsFiltred, aiTool],
+              total: state.listTools.total,
+            },
+            currentAiToolToUpdate: null,
+          }));
+        }}
       />
       <DataTable
         value={state.listTools.data}

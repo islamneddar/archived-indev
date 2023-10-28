@@ -9,6 +9,8 @@ import {InAiTimesAdminModule} from '@/bussiness/inaitimer-admin/inaitimes-admin.
 import {ScreenshotModule} from '@/external-services/screenshot-service/screenshot.module';
 import {AiToolCategoryModule} from '@/bussiness/domains/ai-tool/ai-tool-category/ai-tool-category.module';
 import {MailingModule} from '@/external-services/mailing/mailing.module';
+import {AiToolPricingModule} from '@/bussiness/domains/ai-tool/ai-tool-pricing/ai-tool-pricing.module';
+import {AiToolPlatformModule} from '@/bussiness/domains/ai-tool/ai-tool-platform/ai-tool-platform.module';
 
 @Module({
   imports: [
@@ -18,6 +20,8 @@ import {MailingModule} from '@/external-services/mailing/mailing.module';
     S3AppModule,
     ScreenshotModule,
     AiToolCategoryModule,
+    AiToolPricingModule,
+    AiToolPlatformModule,
     MailingModule,
   ],
   controllers: [AiToolController],
