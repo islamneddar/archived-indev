@@ -22,4 +22,13 @@ export class AiToolPricingService {
       },
     });
   }
+
+  async findById(aiToolPricingId: number) {
+    return await this.aiToolPricingEntityRepository.findOne({
+      where: {
+        aiToolPricingId,
+        softDelete: false,
+      },
+    });
+  }
 }

@@ -65,3 +65,40 @@ export class ValidateAiToolBody {
   @IsNotEmpty()
   aiToolId: number;
 }
+
+export class UpdateAiToolBodyRequest {
+  @Type(() => Number)
+  @IsNumber()
+  @IsNotEmpty()
+  aiToolId: number;
+
+  @Type(() => String)
+  @IsString()
+  @IsOptional()
+  name: string;
+
+  @Type(() => String)
+  @IsString()
+  @IsOptional()
+  description: string;
+
+  @Type(() => Number)
+  @IsNumber()
+  @IsOptional()
+  aiToolCategoryId: number;
+
+  @Type(() => Number)
+  @IsNumber()
+  @IsOptional()
+  aiToolPricingId: number;
+
+  @Type(() => Number)
+  @IsNumber()
+  @IsOptional()
+  aiToolPlatformId: number;
+
+  @Type(() => String)
+  @IsString()
+  @IsOptional()
+  featuresText: string;
+}

@@ -140,6 +140,7 @@ export class AiToolService {
     );
   }
 
+  // @deperecated
   async findAllNotValidated(page = 1, take = 100) {
     const skip = (page - 1) * take;
     const [data, total] = await this.aiToolRepository.findAndCount({
@@ -196,8 +197,20 @@ export class AiToolService {
     });
   }
 
+  async findByIdForPublic(aiToolId: number) {
+    return await this.aiToolRepository.findOne({
+      where: {
+        aiToolId,
+      },
+      relations: ['admin', 'aiToolCategory', 'aiToolPricing', 'aiToolPlatform'],
+      select: {
+        ...this.selectPublicAiTool,
+      },
+    });
+  }
+
   async update(aiTool: AiToolEntity) {
-    await this.aiToolRepository.update(
+    return await this.aiToolRepository.update(
       {
         aiToolId: aiTool.aiToolId,
       },
@@ -226,37 +239,10 @@ export class AiToolService {
       },
       relations: ['admin', 'aiToolCategory', 'aiToolPricing', 'aiToolPlatform'],
       order: {
-        createdAt: 'DESC',
+        updatedAt: 'ASC',
       },
       select: {
-        aiToolId: true,
-        name: true,
-        description: true,
-        url: true,
-        image: true,
-        category: true,
-        pricing: true,
-        createdAt: true,
-        admin: {
-          id: true,
-          email: true,
-        },
-        aiToolCategory: {
-          aiToolCategoryId: true,
-          name: true,
-          type: true,
-        },
-        aiToolPricing: {
-          aiToolPricingId: true,
-          name: true,
-          type: true,
-        },
-        aiToolPlatform: {
-          aiToolPlatformId: true,
-          name: true,
-          type: true,
-        },
-        isConfirmedByAdmin: true,
+        ...this.selectPublicAiTool,
       },
       skip: skip,
       take: take,
@@ -278,4 +264,37 @@ export class AiToolService {
       },
     );
   }
+
+  private selectPublicAiTool = {
+    aiToolId: true,
+    name: true,
+    description: true,
+    url: true,
+    image: true,
+    category: true,
+    pricing: true,
+    updatedAt: true,
+    createdAt: true,
+    admin: {
+      id: true,
+      email: true,
+    },
+    aiToolCategory: {
+      aiToolCategoryId: true,
+      name: true,
+      type: true,
+    },
+    aiToolPricing: {
+      aiToolPricingId: true,
+      name: true,
+      type: true,
+    },
+    aiToolPlatform: {
+      aiToolPlatformId: true,
+      name: true,
+      type: true,
+    },
+    isConfirmedByAdmin: true,
+    featuresText: true,
+  };
 }

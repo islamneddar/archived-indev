@@ -17,6 +17,7 @@ import {
   CreateAiToolRequest,
   GetAllAiToolNotValidatedQuery,
   GetAllAiToolsQuery,
+  UpdateAiToolBodyRequest,
   ValidateAiToolBody,
 } from '@/bussiness/domains/ai-tool/ai-tool/ai-tool-proto';
 import {ConfigService} from '@nestjs/config';
@@ -27,6 +28,9 @@ import {AuthAdminGuard} from '@/bussiness/auth/auth-admin.guard';
 import {Request} from 'express';
 import {ScreenshotService} from '@/external-services/screenshot-service/screenshot.service';
 import LOG from '@/utils/logger';
+import {AiToolCategoryService} from '@/bussiness/domains/ai-tool/ai-tool-category/ai-tool-category.service';
+import {AiToolPlatformService} from '@/bussiness/domains/ai-tool/ai-tool-platform/ai-tool-platform.service';
+import {AiToolPricingService} from '@/bussiness/domains/ai-tool/ai-tool-pricing/ai-tool-pricing.service';
 
 @Controller('ai-tool')
 export default class AiToolController {
@@ -35,6 +39,9 @@ export default class AiToolController {
     private configService: ConfigService,
     private s3AppService: S3AppService,
     private screenShotService: ScreenshotService,
+    private aiToolCategoryService: AiToolCategoryService,
+    private aiToolPlatformService: AiToolPlatformService,
+    private aiToolPricingService: AiToolPricingService,
   ) {}
 
   @Post('create')
@@ -254,6 +261,65 @@ export default class AiToolController {
       message: 'AI Tool deleted',
       id: aiToolId,
     };
+  }
+
+  @UseGuards(AuthAdminGuard)
+  @Post('/admin/update')
+  async update(@Body() body: UpdateAiToolBodyRequest) {
+    // name, description, category, platform, pricing, featureText (only)
+    const aiTool = await this.aiToolService.findById(body.aiToolId);
+    if (!aiTool) {
+      throw new HttpException('AI Tool not found', 404);
+    }
+
+    if (body.name) {
+      aiTool.name = body.name;
+      aiTool.slug = slugify(body.name);
+    }
+
+    if (body.description) {
+      aiTool.description = body.description;
+    }
+
+    if (body.aiToolCategoryId) {
+      const category = await this.aiToolCategoryService.findById(
+        body.aiToolCategoryId,
+      );
+      if (!category) {
+        throw new HttpException('Category not found', 404);
+      }
+      aiTool.aiToolCategory = category;
+    }
+
+    if (body.aiToolPlatformId) {
+      const platform = await this.aiToolPlatformService.findById(
+        body.aiToolPlatformId,
+      );
+      if (!platform) {
+        throw new HttpException('Platform not found', 404);
+      }
+      aiTool.aiToolPlatform = platform;
+    }
+
+    if (body.aiToolPricingId) {
+      const pricing = await this.aiToolPricingService.findById(
+        body.aiToolPricingId,
+      );
+      if (!pricing) {
+        throw new HttpException('Pricing not found', 404);
+      }
+      aiTool.aiToolPricing = pricing;
+    }
+
+    if (body.featuresText) {
+      aiTool.featuresText = body.featuresText;
+    }
+
+    aiTool.updatedAt = new Date();
+
+    await this.aiToolService.update(aiTool);
+
+    return await this.aiToolService.findByIdForPublic(aiTool.aiToolId);
   }
 
   // general function

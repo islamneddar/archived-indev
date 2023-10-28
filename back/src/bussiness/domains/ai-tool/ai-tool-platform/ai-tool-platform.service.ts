@@ -22,4 +22,13 @@ export class AiToolPlatformService {
       },
     });
   }
+
+  async findById(aiToolPlatformId: number) {
+    return await this.aiToolPlatformEntityRepository.findOne({
+      where: {
+        aiToolPlatformId,
+        softDelete: false,
+      },
+    });
+  }
 }

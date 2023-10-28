@@ -6,6 +6,7 @@ export interface EditAiProductInput {
   categoryId: number;
   pricingId: number;
   platformId: number;
+  featuresText: string;
 }
 
 export const editAiProductSchema = yup.object({
@@ -26,4 +27,8 @@ export const editAiProductSchema = yup.object({
     .number()
     .label('Platform')
     .required('Please enter your platform'),
+  featuresText: yup
+    .string()
+    .label('Features')
+    .required('Please enter your features'),
 });
