@@ -70,6 +70,8 @@ module.exports = {
       },
       padding: {
         30: '30px',
+        300: '300px',
+        358: '358px',
       },
       flex: {
         2: '2 2 0%',

@@ -13,10 +13,7 @@ function Page() {
   const category = partsPathname?.[partsPathname.length - 1];
 
   return (
-    <div
-      className={
-        'overflow-y-auto h-[calc(100vh_-_136px)] w-full scrollbar-hide'
-      }>
+    <div className={'w-full'}>
       <AiToolsBody category={category}></AiToolsBody>
     </div>
   );

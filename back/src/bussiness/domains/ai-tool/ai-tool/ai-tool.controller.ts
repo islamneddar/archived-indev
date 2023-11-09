@@ -95,7 +95,7 @@ export default class AiToolController {
 
   @Get('list')
   async list(@Query() query: GetAllAiToolsQuery) {
-    return await this.aiToolService.findAll({
+    return await this.aiToolService.findAllActiveNotDeletedWithFilters({
       pageOption: query.pageOption,
       category: query.category,
       pricing: query.pricing,
@@ -103,6 +103,23 @@ export default class AiToolController {
     });
   }
 
+  @Get('/update/pricing')
+  async updatePricingCategory() {
+    const listPricing = await this.aiToolPricingService.getAll();
+    const pricingMap = {};
+    listPricing.forEach(pricing => {
+      pricingMap[pricing.type] = pricing;
+    });
+
+    const listAiTools = await this.aiToolService.findAll();
+
+    for (const aiTool of listAiTools) {
+      if (!aiTool.aiToolPricing) {
+        aiTool.aiToolPricing = pricingMap[aiTool.pricing];
+        await this.aiToolService.update(aiTool);
+      }
+    }
+  }
   /*
     This endpoint is used by admin to list all AI Tools that are not validated yet
    */
@@ -115,7 +132,9 @@ export default class AiToolController {
   @UseGuards(AuthAdminGuard)
   @Get('/admin/list/not_confirmed_by_admin')
   async listNotFeatured(@Query() query: GetAllAiToolNotValidatedQuery) {
-    return await this.aiToolService.findAllNotConfirmedByAdmin(query.page);
+    return await this.aiToolService.findAllNotConfirmedByAdminAndNotDeleted(
+      query.page,
+    );
   }
 
   @UseGuards(AuthAdminGuard)

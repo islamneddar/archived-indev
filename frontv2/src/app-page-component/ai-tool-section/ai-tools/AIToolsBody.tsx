@@ -5,7 +5,7 @@ import {
   PageMetaResponse,
   PaginationRequestMetaRequest,
 } from '@/types/api/common';
-import AiToolCard from '@/app-page-component/ai-tool-section/ai-tools/AiToolCard';
+import AiToolCard from '@/app-page-component/ai-tool-section/ai-tools/ai-tool-body/listing/AiToolCard';
 import {ProgressSpinner} from 'primereact/progressspinner';
 import PrimaryButton from '@/components/button/PrimaryButton';
 
@@ -18,8 +18,10 @@ import {getListAiPricingMode} from '@/infra/data/ai-tool/ai-tool-pricing';
 import {PricingEnum} from '@/infra/enums/ai-tool/pricing-mode.enum';
 import {useQuery} from 'react-query';
 import {AiToolService} from '@/services/ai-tools/ai-tool.service';
-import AiToolsBodyFilters from '@/app-page-component/ai-tool-section/ai-tools/ai-tool-body/AiToolsBodyFilters';
-import AiToolBodyHeader from '@/app-page-component/ai-tool-section/ai-tools/ai-tool-body/AiToolBodyHeader';
+import AiToolsHeaderFilters from '@/app-page-component/ai-tool-section/ai-tools/ai-tool-body/header-filter/AiToolsHeaderFilters';
+import AiToolBodyHeader from '@/app-page-component/ai-tool-section/ai-tools/ai-tool-body/header/AiToolBodyHeader';
+import AiToolList from '@/app-page-component/ai-tool-section/ai-tools/ai-tool-body/listing/AiToolList';
+import AiToolsListingContainer from '@/app-page-component/ai-tool-section/ai-tools/ai-tool-body/AiToolsListingContainer';
 
 interface AiToolsBodyProps {
   category?: string;
@@ -155,7 +157,7 @@ function AiToolsBody(props: AiToolsBodyProps) {
         aiToolNumber={state.metaData.itemCount}
         category={category}></AiToolBodyHeader>
 
-      <AiToolsBodyFilters
+      <AiToolsHeaderFilters
         aiPricingModes={aiPricingModes}
         selectedAiToolPricing={state.selectedAiToolPricing}
         placeholder={'Search for AI tools'}
@@ -167,41 +169,20 @@ function AiToolsBody(props: AiToolsBodyProps) {
         }}
         onSearchClick={() => {
           onSearchClick();
-        }}></AiToolsBodyFilters>
+        }}></AiToolsHeaderFilters>
 
-      <div
-        className={
-          'grid tn:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center'
-        }>
-        {state.aiTools.map((aiTool, index) => {
-          return (
-            <AiToolCard key={aiTool.aiToolId} aiTool={aiTool}></AiToolCard>
-          );
-        })}
-      </div>
-      {getListToolsResults.isLoading && (
-        <div className={'flex pt-5'}>
-          <ProgressSpinner></ProgressSpinner>
-        </div>
-      )}
-      {state.metaData.hasNextPage && !getListToolsResults.isLoading && (
-        <div className={'flex justify-center mt-3'}>
-          <PrimaryButton
-            buttonClassName={
-              'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
-            }
-            title={'Load more'}
-            loading={getListToolsResults.isLoading}
-            disabled={getListToolsResults.isLoading}
-            onClick={() => {
-              setState(prevState => ({
-                ...prevState,
-                page: prevState.page + 1,
-                enabledQuery: true,
-              }));
-            }}></PrimaryButton>
-        </div>
-      )}
+      <AiToolsListingContainer
+        aiTools={state.aiTools}
+        isLoading={getListToolsResults.isLoading}
+        hasNextPage={state.metaData.hasNextPage}
+        onClickLoadMore={() => {
+          setState(prevState => ({
+            ...prevState,
+            page: prevState.page + 1,
+            enabledQuery: true,
+          }));
+        }}
+      />
     </div>
   );
 }

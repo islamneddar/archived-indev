@@ -19,13 +19,15 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
     <html lang="en">
       <head>
         <title>AI Hub</title>
-        <script
-          async
-          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
-        />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
+        {process.env.NODE_ENV === 'production' && (
+          <>
+            <script
+              async
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
+            />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
@@ -33,8 +35,10 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
               page_path: window.location.pathname,
             });
           `,
-          }}
-        />
+              }}
+            />
+          </>
+        )}
       </head>
       <body>
         <SessionProvider>

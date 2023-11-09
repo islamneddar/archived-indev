@@ -31,7 +31,7 @@ export class AiToolService {
     });
   }
 
-  async findAll(param: {
+  async findAllActiveNotDeletedWithFilters(param: {
     pageOption: PageOptionsDto;
     category?: AiToolCategoryEnum;
     pricing?: AIToolPricingEnum;
@@ -230,7 +230,7 @@ export class AiToolService {
     );
   }
 
-  async findAllNotConfirmedByAdmin(page: number, take = 100) {
+  async findAllNotConfirmedByAdminAndNotDeleted(page: number, take = 100) {
     const skip = (page - 1) * take;
     const [data, total] = await this.aiToolRepository.findAndCount({
       where: {
@@ -263,6 +263,18 @@ export class AiToolService {
         isConfirmedByAdmin: true,
       },
     );
+  }
+
+  async findAll() {
+    return await this.aiToolRepository.find({
+      relations: ['admin', 'aiToolCategory', 'aiToolPricing', 'aiToolPlatform'],
+      order: {
+        createdAt: 'DESC',
+      },
+      select: {
+        ...this.selectPublicAiTool,
+      },
+    });
   }
 
   private selectPublicAiTool = {

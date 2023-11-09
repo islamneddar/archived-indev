@@ -110,7 +110,7 @@ function Layout({children}: {children: React.ReactNode}) {
   if (getListCategoriesAiToolQuery.isLoading) {
     return (
       <div className={'flex justify-center items-center h-screen w-screen'}>
-        <p className={'text-black'}>Loading</p>
+        <p className={'text-black'}>Loading...</p>
       </div>
     );
   }
@@ -118,7 +118,10 @@ function Layout({children}: {children: React.ReactNode}) {
   if (getListCategoriesAiToolQuery.isError) {
     return (
       <div className={'flex justify-center items-center h-screen w-screen'}>
-        <p className={'text-black'}>Error</p>
+        <p className={'text-black font-bold'}>
+          Please refresh the page or try later. If the problem persists, please
+          contact us at on support@inoomify.com
+        </p>
       </div>
     );
   }
@@ -131,10 +134,9 @@ function Layout({children}: {children: React.ReactNode}) {
     return (
       <>
         <NavBar />
-        <div className="bg-secondary h-[calc(100vh_-_96px)]">
-          <SideBarMain navigation={state.navigation} />
+        <div className="bg-secondary">
           <Fragment>
-            <div className={' w-full md:pl-64'}>{children}</div>
+            <div className={' w-full'}>{children}</div>
           </Fragment>
         </div>
       </>
