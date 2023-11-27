@@ -17,10 +17,10 @@ function AiToolsHeaderFilters(props: AiToolsBodyFiltersProps) {
   return (
     <div className={'flex pl-5 py-5 w-full'}>
       <div className="card flex justify-between items-center w-full">
-        <div className={' w-full flex flex-row px-20'}>
+        <div className={' w-full flex flex-row'}>
           <div
             className={
-              'flex flex-row bg-white w-full justify-center items-center px-1 py-1'
+              'flex flex-row bg-white w-full justify-center items-center px-1 py-1 rounded'
             }>
             <SearchInput
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,7 +28,12 @@ function AiToolsHeaderFilters(props: AiToolsBodyFiltersProps) {
               }}
               placeholder={props.placeholder}></SearchInput>
             <div>
-              <Button>Search</Button>
+              <button
+                className={
+                  'px-3 py-3 bg-indigo-500 rounded hover:bg-indigo-700'
+                }>
+                <p className={'text-sm'}>Search</p>
+              </button>
             </div>
           </div>
         </div>

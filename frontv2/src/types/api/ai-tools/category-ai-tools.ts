@@ -3,9 +3,11 @@ export interface GetAllCategoriesAiToolResponse {
 }
 
 export interface ListCategoryType {
-  [key: string]: {
-    type: string;
-    name: string;
-    numberOfTool?: number;
-  };
+  [key: string]: CategoryType;
+}
+
+export interface CategoryType {
+  type: string;
+  name: string;
+  numberOfTool?: number;
 }

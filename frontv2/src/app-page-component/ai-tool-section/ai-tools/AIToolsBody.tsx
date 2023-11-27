@@ -157,32 +157,34 @@ function AiToolsBody(props: AiToolsBodyProps) {
         aiToolNumber={state.metaData.itemCount}
         category={category}></AiToolBodyHeader>
 
-      <AiToolsHeaderFilters
-        aiPricingModes={aiPricingModes}
-        selectedAiToolPricing={state.selectedAiToolPricing}
-        placeholder={'Search for AI tools'}
-        onChange={(e: DropdownChangeEvent) => {
-          onChangePricingDropdown(e);
-        }}
-        onChangeSearch={(e: React.ChangeEvent<HTMLInputElement>) => {
-          onChangeInputSearch(e);
-        }}
-        onSearchClick={() => {
-          onSearchClick();
-        }}></AiToolsHeaderFilters>
+      <div className={'px-20'}>
+        <AiToolsHeaderFilters
+          aiPricingModes={aiPricingModes}
+          selectedAiToolPricing={state.selectedAiToolPricing}
+          placeholder={'Search for AI tools'}
+          onChange={(e: DropdownChangeEvent) => {
+            onChangePricingDropdown(e);
+          }}
+          onChangeSearch={(e: React.ChangeEvent<HTMLInputElement>) => {
+            onChangeInputSearch(e);
+          }}
+          onSearchClick={() => {
+            onSearchClick();
+          }}></AiToolsHeaderFilters>
 
-      <AiToolsListingContainer
-        aiTools={state.aiTools}
-        isLoading={getListToolsResults.isLoading}
-        hasNextPage={state.metaData.hasNextPage}
-        onClickLoadMore={() => {
-          setState(prevState => ({
-            ...prevState,
-            page: prevState.page + 1,
-            enabledQuery: true,
-          }));
-        }}
-      />
+        <AiToolsListingContainer
+          aiTools={state.aiTools}
+          isLoading={getListToolsResults.isLoading}
+          hasNextPage={state.metaData.hasNextPage}
+          onClickLoadMore={() => {
+            setState(prevState => ({
+              ...prevState,
+              page: prevState.page + 1,
+              enabledQuery: true,
+            }));
+          }}
+        />
+      </div>
     </div>
   );
 }

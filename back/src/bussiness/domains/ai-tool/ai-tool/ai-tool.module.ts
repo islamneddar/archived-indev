@@ -11,6 +11,8 @@ import {AiToolCategoryModule} from '@/bussiness/domains/ai-tool/ai-tool-category
 import {MailingModule} from '@/external-services/mailing/mailing.module';
 import {AiToolPricingModule} from '@/bussiness/domains/ai-tool/ai-tool-pricing/ai-tool-pricing.module';
 import {AiToolPlatformModule} from '@/bussiness/domains/ai-tool/ai-tool-platform/ai-tool-platform.module';
+import {InMemoryCachingProvider} from '@/external-services/caching-service/caching-providers';
+import {CachingService} from '@/external-services/caching-service/caching.service';
 
 @Module({
   imports: [
@@ -25,7 +27,7 @@ import {AiToolPlatformModule} from '@/bussiness/domains/ai-tool/ai-tool-platform
     MailingModule,
   ],
   controllers: [AiToolController],
-  providers: [AiToolService],
+  providers: [AiToolService, CachingService, InMemoryCachingProvider],
   exports: [AiToolService],
 })
 export class AiToolModule {}

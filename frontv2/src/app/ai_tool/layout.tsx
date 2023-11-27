@@ -1,39 +1,49 @@
 'use client';
-import React, {Fragment, useEffect, useState} from 'react';
+import React, {
+  Fragment,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import NavBar from '@/app-page-component/navbar/NavBar';
-import SideBarMain from '@/app-page-component/sidebar/SideBarMain';
-import {NavigationType} from '@/types/general/sidebar.type';
-import routing from '@/routes/routing.constant';
 import {useLocalStorage} from 'usehooks-ts';
-import {ListCategoryType} from '@/types/api/ai-tools/category-ai-tools';
 import dayjs from 'dayjs';
 import {ListCategoryTypeInLocalStorage} from '@/types/general/local-storage/ai-tool-category';
 import {useQuery} from 'react-query';
 import AiToolCategoryService from '@/services/ai-tools/ai-tool-category.service';
 import UseSessionAuthClient from '@/infra/hooks/useSessionAuthClient';
+import {LocalStorageKeysEnums} from '@/infra/enums/local-storage-enums';
+import {AiToolService} from '@/services/ai-tools/ai-tool.service';
 
 interface LayoutState {
   enabledQuery: boolean;
-  navigation: NavigationType[];
 }
 
 function Layout({children}: {children: React.ReactNode}) {
   const {session, userSessionSelector} = UseSessionAuthClient(); // Rendering
   const [listCategoryAiTools, setListCategoryAiTools] =
-    useLocalStorage<ListCategoryTypeInLocalStorage>('list_category_ai_tool', {
-      lastUpdate: new Date(),
-      listCategory: {},
-    });
+    useLocalStorage<ListCategoryTypeInLocalStorage>(
+      LocalStorageKeysEnums.LIST_CATEGORY_AI_TOOLS,
+      {
+        lastUpdate: new Date(),
+        listCategory: {},
+      },
+    );
+
+  const listAiToolPricing = useMemo(() => {
+    return localStorage.getItem(LocalStorageKeysEnums.LIST_PRICING_AI_TOOLS);
+  }, []);
 
   const [state, setState] = useState<LayoutState>({
     enabledQuery: false,
-    navigation: [],
   });
 
   const getListCategoriesAiToolQuery = useQuery(
     ['getListCategoriesAiTools'],
     () => {
-      return fetchListCategories();
+      //return fetchListCategories();
+      return fetchListOnLoadedData(); // categories, prices
     },
     {
       keepPreviousData: true,
@@ -41,6 +51,7 @@ function Layout({children}: {children: React.ReactNode}) {
     },
   );
 
+  // functions
   const setCategoriesAiTool = () => {
     const nowMinus24hours = dayjs().subtract(12, 'hour');
     const lastUpdateIsBefore24Hours = dayjs(
@@ -56,51 +67,25 @@ function Layout({children}: {children: React.ReactNode}) {
         enabledQuery: true,
       }));
     } else {
-      updateAndSetAiToolCategories(listCategoryAiTools?.listCategory);
+      //updateAndSetAiToolCategories(listCategoryAiTools?.listCategory);
     }
   };
 
+  const fetchListOnLoadedData = async () => {
+    const getAllAiToolOnLoadedData =
+      await AiToolService.getInstance().getAllOnLoadedData();
+  };
+
+  // @deprecated
   const fetchListCategories = async () => {
-    const response = await AiToolCategoryService.getInstance().getAllV2();
+    const getAllAiToolsCategories =
+      await AiToolCategoryService.getInstance().getAllV2();
+
     setListCategoryAiTools({
       lastUpdate: new Date(),
-      listCategory: response.data,
+      listCategory: getAllAiToolsCategories.data,
     });
-    updateAndSetAiToolCategories(response.data);
-  };
-
-  const updateAndSetAiToolCategories = (
-    listCategoriesAiToolsToPut: ListCategoryType,
-  ) => {
-    const listCategories: {
-      name: string;
-      href: string;
-      extraData?: {
-        numberOfTool: number | undefined;
-      } | null;
-    }[] = [];
-    for (const [key, value] of Object.entries(listCategoriesAiToolsToPut)) {
-      listCategories.push({
-        name: value.name,
-        href: routing.aiTools.aiTool(value.type),
-        extraData: {
-          numberOfTool: value.numberOfTool,
-        },
-      });
-    }
-    listCategories.sort((a, b) =>
-      b.name.charAt(0).localeCompare(a.name.charAt(0)),
-    );
-    listCategories.unshift({
-      name: 'All',
-      href: routing.aiTools.aiTool('all'),
-      extraData: null,
-    });
-    setState(prevState => ({
-      ...prevState,
-      enabledQuery: false,
-      navigation: listCategories,
-    }));
+    //updateAndSetAiToolCategories(response.data);
   };
 
   useEffect(() => {

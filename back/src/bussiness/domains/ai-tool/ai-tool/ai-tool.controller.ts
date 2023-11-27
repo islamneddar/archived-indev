@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   HttpException,
+  Logger,
   Post,
   Query,
   Req,
@@ -31,6 +32,8 @@ import LOG from '@/utils/logger';
 import {AiToolCategoryService} from '@/bussiness/domains/ai-tool/ai-tool-category/ai-tool-category.service';
 import {AiToolPlatformService} from '@/bussiness/domains/ai-tool/ai-tool-platform/ai-tool-platform.service';
 import {AiToolPricingService} from '@/bussiness/domains/ai-tool/ai-tool-pricing/ai-tool-pricing.service';
+import {CachingService} from '@/external-services/caching-service/caching.service';
+import {AiToolConstant} from '@/bussiness/domains/ai-tool/ai-tool/constant';
 
 @Controller('ai-tool')
 export default class AiToolController {
@@ -42,6 +45,7 @@ export default class AiToolController {
     private aiToolCategoryService: AiToolCategoryService,
     private aiToolPlatformService: AiToolPlatformService,
     private aiToolPricingService: AiToolPricingService,
+    private cachingService: CachingService,
   ) {}
 
   @Post('create')
@@ -103,23 +107,34 @@ export default class AiToolController {
     });
   }
 
-  @Get('/update/pricing')
-  async updatePricingCategory() {
-    const listPricing = await this.aiToolPricingService.getAll();
-    const pricingMap = {};
-    listPricing.forEach(pricing => {
-      pricingMap[pricing.type] = pricing;
-    });
+  // using cache
+  @Get('info-on-loaded')
+  async getInfoOnLoaded() {
+    const listOnLoadedData = await this.cachingService.read(
+      AiToolConstant.AI_TOOL_INFO_CACHE_KEY,
+    );
 
-    const listAiTools = await this.aiToolService.findAll();
-
-    for (const aiTool of listAiTools) {
-      if (!aiTool.aiToolPricing) {
-        aiTool.aiToolPricing = pricingMap[aiTool.pricing];
-        await this.aiToolService.update(aiTool);
-      }
+    if (listOnLoadedData) {
+      return listOnLoadedData;
     }
+    const listAiToolsCategory = await this.aiToolCategoryService.getAllV2();
+    const listAiToolsPlatform = await this.aiToolPlatformService.getAll();
+    const listAiToolsPricing = await this.aiToolPricingService.getAll();
+
+    const listOnLoadedDataCached = {
+      aiToolsCategory: listAiToolsCategory,
+      aiToolsPlatform: listAiToolsPlatform,
+      aiToolsPricing: listAiToolsPricing,
+    };
+
+    this.cachingService.create(
+      AiToolConstant.AI_TOOL_INFO_CACHE_KEY,
+      listOnLoadedDataCached,
+    );
+
+    return listOnLoadedDataCached;
   }
+
   /*
     This endpoint is used by admin to list all AI Tools that are not validated yet
    */
@@ -339,6 +354,25 @@ export default class AiToolController {
     await this.aiToolService.update(aiTool);
 
     return await this.aiToolService.findByIdForPublic(aiTool.aiToolId);
+  }
+
+  @UseGuards(AuthAdminGuard)
+  @Get('/update/pricing')
+  async updatePricingCategory() {
+    const listPricing = await this.aiToolPricingService.getAll();
+    const pricingMap = {};
+    listPricing.forEach(pricing => {
+      pricingMap[pricing.type] = pricing;
+    });
+
+    const listAiTools = await this.aiToolService.findAll();
+
+    for (const aiTool of listAiTools) {
+      if (!aiTool.aiToolPricing) {
+        aiTool.aiToolPricing = pricingMap[aiTool.pricing];
+        await this.aiToolService.update(aiTool);
+      }
+    }
   }
 
   // general function
