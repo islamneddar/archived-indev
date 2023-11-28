@@ -14,7 +14,7 @@ interface AiToolsBodyFiltersProps {
 
 function AiToolsHeaderFilters(props: AiToolsBodyFiltersProps) {
   return (
-    <div className={'flex pl-5 py-5 w-full'}>
+    <div className={'flex py-5 w-full'}>
       <div className="card flex justify-between items-center w-full">
         <div className={' w-full flex flex-row'}>
           <div
@@ -30,7 +30,10 @@ function AiToolsHeaderFilters(props: AiToolsBodyFiltersProps) {
               <button
                 className={
                   'px-3 py-3 bg-indigo-500 rounded hover:bg-indigo-700'
-                }>
+                }
+                onClick={() => {
+                  props.onSearchClick();
+                }}>
                 <p className={'text-sm'}>Search</p>
               </button>
             </div>

@@ -25,6 +25,13 @@ function AiToolList(props: AiToolListProps) {
           );
         })}
       </div>
+      <div>
+        {props.aiTools.length === 0 && (
+          <div className={'flex justify-center'}>
+            <p className={'text-gray-500 text-xl'}>No AI Tools found</p>
+          </div>
+        )}
+      </div>
       {props.isLoading && (
         <div className={'flex pt-5'}>
           <ProgressSpinner></ProgressSpinner>

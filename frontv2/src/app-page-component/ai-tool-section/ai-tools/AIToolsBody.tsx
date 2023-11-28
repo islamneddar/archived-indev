@@ -15,7 +15,6 @@ import {PricingEnum} from '@/infra/enums/ai-tool/pricing-mode.enum';
 import {useQuery} from 'react-query';
 import {AiToolService} from '@/infra/web-services/services/ai-tools/ai-tool.service';
 import AiToolsHeaderFilters from '@/app-page-component/ai-tool-section/ai-tools/ai-tool-body/header-filter/AiToolsHeaderFilters';
-import AiToolBodyHeader from '@/app-page-component/ai-tool-section/ai-tools/ai-tool-body/header/AiToolBodyHeader';
 import AiToolsListingContainer from '@/app-page-component/ai-tool-section/ai-tools/ai-tool-body/AiToolsListingContainer';
 
 interface AiToolsBodyProps {
@@ -55,8 +54,8 @@ function AiToolsBody(props: AiToolsBodyProps) {
       name: 'ALL',
       type: PricingEnum.ALL,
     },
-    enabledQuery: true,
     searchText: '',
+    enabledQuery: true,
   });
 
   /**
@@ -157,9 +156,9 @@ function AiToolsBody(props: AiToolsBodyProps) {
     <div className={'p-3'}>
       <AiToolItemDialog />
 
-      <AiToolBodyHeader
+      {/*<AiToolBodyHeader
         aiToolNumber={state.metaData.itemCount}
-        category={category}></AiToolBodyHeader>
+        category={category}></AiToolBodyHeader>*/}
 
       <div className={'px-20'}>
         <AiToolsHeaderFilters

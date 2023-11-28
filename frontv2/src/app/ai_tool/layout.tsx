@@ -145,14 +145,14 @@ function Layout({children}: {children: React.ReactNode}) {
     session.status === 'unauthenticated'
   ) {
     return (
-      <>
+      <div className={'min-h-screen bg-secondary'}>
         <NavBar />
-        <div className="bg-secondary">
+        <div className="">
           <Fragment>
-            <div className={' w-full'}>{children}</div>
+            <div className={'w-full'}>{children}</div>
           </Fragment>
         </div>
-      </>
+      </div>
     );
   } else {
     return <div className={'h-screen bg-secondary'}></div>;

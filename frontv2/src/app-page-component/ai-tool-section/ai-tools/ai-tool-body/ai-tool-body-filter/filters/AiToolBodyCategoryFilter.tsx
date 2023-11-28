@@ -11,7 +11,7 @@ function AiToolBodyCategoryFilter() {
 
   return (
     <div>
-      <h2 className={'text-black text-sm'}>Categories </h2>
+      <h2 className={'text-black text-md'}>Categories </h2>
       <div className={'h-180 overflow-auto py-2'}>
         {listCategoriesAiTools.map((categoryItem: CategoryType, index) => {
           return (
