@@ -11,3 +11,7 @@ export interface CategoryType {
   name: string;
   numberOfTool?: number;
 }
+
+export interface CategoryAiToolWithId extends CategoryType {
+  aiToolCategoryId: number;
+}

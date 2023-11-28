@@ -1,6 +1,6 @@
-import {ReduxEntityBase} from '@/types/general/redux.type';
+import {ReduxEntityBase} from '@/infra/types/redux.type';
 import {createSlice} from '@reduxjs/toolkit';
-import {FollowSourceBlogResponse} from '@/types/api/blogs/source_blog';
+import {FollowSourceBlogResponse} from '@/infra/web-services/types/blogs/source_blog';
 import {followSourceBlogThunk} from '@/redux/slices/blogs/source_blog/api/follow-source-blog/follow-source-blog.thunk';
 
 export type FollowSourceBlogSliceState =

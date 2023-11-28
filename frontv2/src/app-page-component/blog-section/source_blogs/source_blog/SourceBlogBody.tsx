@@ -6,7 +6,7 @@ import {
   Order,
   PageMetaResponse,
   PaginationRequestMetaRequest,
-} from '@/types/api/common';
+} from '@/infra/web-services/types/common';
 import {useDispatch} from 'react-redux';
 import {ThunkDispatch} from '@reduxjs/toolkit';
 import {getAllSourceBlogThunk} from '@/redux/slices/blogs/source_blog/api/get-all-source-blog/source-blog.thunk';
@@ -16,7 +16,7 @@ import {
   GetAllSourceBlogRequest,
   SourceBlog,
   TypeFeed,
-} from '@/types/api/blogs/source_blog';
+} from '@/infra/web-services/types/blogs/source_blog';
 import {resetSourceBlogState} from '@/redux/slices/blogs/source_blog/api/get-all-source-blog/source-blog.slice';
 import {useFollowSourceBlogSelector} from '@/redux/slices/blogs/source_blog/api/follow-source-blog/follow-source-blog.selector';
 import {resetFollowSourceBlogState} from '@/redux/slices/blogs/source_blog/api/follow-source-blog/follow-source-blog.slice';

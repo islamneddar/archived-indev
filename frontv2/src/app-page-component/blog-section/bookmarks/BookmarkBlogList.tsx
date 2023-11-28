@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import BlogCard from '@/app-page-component/blog-section/blogs/blog-card/BlogCard';
-import {Blog, GetBookmarksParams} from '@/types/api/blogs/blog';
+import {Blog, GetBookmarksParams} from '@/infra/web-services/types/blogs/blog';
 import {useUserSessionSelector} from '@/redux/slices/auth/user/user.selector';
 import {useDispatch} from 'react-redux';
 import {ThunkDispatch} from '@reduxjs/toolkit';

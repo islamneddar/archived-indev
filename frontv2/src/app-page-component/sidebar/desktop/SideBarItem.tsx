@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import {usePathname, useRouter} from 'next/navigation';
-import {NavigationType} from '@/types/general/sidebar.type';
+import {NavigationType} from '@/infra/types/sidebar.type';
 import {useUserSessionSelector} from '@/redux/slices/auth/user/user.selector';
 import routing from '@/routes/routing.constant';
 

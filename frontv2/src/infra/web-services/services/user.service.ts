@@ -1,6 +1,6 @@
-import {ROOT_API_URL} from '@/services/config';
+import {ROOT_API_URL} from '@/infra/web-services/config';
 import axios from 'axios';
-import {UserProfileResponse} from '@/types/api/auth';
+import {UserProfileResponse} from '@/infra/web-services/types/auth';
 
 export default class UserService {
   private endpointAuth = `${ROOT_API_URL}/user`;

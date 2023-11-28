@@ -1,7 +1,10 @@
-import BlogService from '@/services/blogs/blog.service';
+import BlogService from '@/infra/web-services/services/blogs/blog.service';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {templateThinkCall} from '@/redux/util';
-import {GetBookmarksParams, GetBookmarksResponse} from '@/types/api/blogs/blog';
+import {
+  GetBookmarksParams,
+  GetBookmarksResponse,
+} from '@/infra/web-services/types/blogs/blog';
 
 export const getAllBookmarksThunk = createAsyncThunk<
   GetBookmarksResponse,

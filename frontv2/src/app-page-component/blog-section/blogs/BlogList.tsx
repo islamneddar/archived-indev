@@ -4,8 +4,8 @@ import {
   Order,
   PageMetaResponse,
   PaginationRequestMetaRequest,
-} from '@/types/api/common';
-import {TypeFeed} from '@/types/api/blogs/source_blog';
+} from '@/infra/web-services/types/common';
+import {TypeFeed} from '@/infra/web-services/types/blogs/source_blog';
 import {useDispatch} from 'react-redux';
 import {getAllBlogThunk} from '@/redux/slices/blogs/blog/api/get-all-blog/blog.thunk';
 import {useBlogSelector} from '@/redux/slices/blogs/blog/api/get-all-blog/blog.selector';
@@ -17,7 +17,7 @@ import {
   Blog,
   GetAllBlogByPaginationForSourceBlogIdRequest,
   GetBlogsBySearchRequest,
-} from '@/types/api/blogs/blog';
+} from '@/infra/web-services/types/blogs/blog';
 import {useLikeBlogSelector} from '@/redux/slices/blogs/blog/api/like-blog/like-blog.selector';
 import {resetBlogState} from '@/redux/slices/blogs/blog/api/get-all-blog/blog.slice';
 import {resetLikeBlogState} from '@/redux/slices/blogs/blog/api/like-blog/like-blog.slice';

@@ -1,7 +1,7 @@
 import React from 'react';
 import AiToolCard from '@/app-page-component/ai-tool-section/ai-tools/ai-tool-body/listing/AiToolCard';
 import {ProgressSpinner} from 'primereact/progressspinner';
-import {AiTool} from '@/types/api/ai-tools/ai-tool';
+import {AiTool} from '@/infra/web-services/types/ai-tools/ai-tool';
 import PrimaryButton from '@/components/button/PrimaryButton';
 
 interface AiToolListProps {

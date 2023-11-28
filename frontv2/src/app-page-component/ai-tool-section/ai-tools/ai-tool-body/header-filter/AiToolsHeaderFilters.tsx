@@ -2,11 +2,10 @@ import React from 'react';
 import {DropdownChangeEvent} from 'primereact/dropdown';
 import SearchInput from '@/app-page-component/components/SearchInput';
 import './ai-tool-body-filters.css';
-import {Button} from 'primereact/button';
 
 interface AiToolsBodyFiltersProps {
   selectedAiToolPricing: any;
-  aiPricingModes: any;
+  aiPricingModes?: any;
   placeholder: string;
   onChange: (e: DropdownChangeEvent) => void;
   onChangeSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;

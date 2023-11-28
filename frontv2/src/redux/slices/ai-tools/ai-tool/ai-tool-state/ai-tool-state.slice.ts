@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {AiTool} from '@/types/api/ai-tools/ai-tool';
+import {AiTool} from '@/infra/web-services/types/ai-tools/ai-tool';
 
 export interface AiToolStateSlice {
   currentSelectedAiToolInDialog: AiTool | null;

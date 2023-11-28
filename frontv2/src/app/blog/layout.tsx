@@ -7,7 +7,7 @@ import {
   AdjustmentsHorizontalIcon,
 } from '@heroicons/react/20/solid';
 import routing from '@/routes/routing.constant';
-import {NavigationType} from '@/types/general/sidebar.type';
+import {NavigationType} from '@/infra/types/sidebar.type';
 import SideBarMain from '@/app-page-component/sidebar/SideBarMain';
 import {GlobeEuropeAfricaIcon} from '@heroicons/react/24/solid';
 import UseSessionAuthClient from '@/infra/hooks/useSessionAuthClient';

@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import {ScrollMenu} from 'react-horizontal-scrolling-menu';
-import {Blog} from '@/types/api/blogs/blog';
+import {Blog} from '@/infra/web-services/types/blogs/blog';
 import 'react-horizontal-scrolling-menu/dist/styles.css';
 
 export interface TagsContainerProps {

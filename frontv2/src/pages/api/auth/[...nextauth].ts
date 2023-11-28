@@ -1,6 +1,6 @@
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import AuthService from '@/services/auth.service';
+import AuthService from '@/infra/web-services/services/auth.service';
 // @ts-ignore
 import {NextAuthOptions} from 'next-auth';
 

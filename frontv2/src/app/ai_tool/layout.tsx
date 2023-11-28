@@ -1,20 +1,19 @@
 'use client';
-import React, {
-  Fragment,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, {Fragment, useCallback, useEffect, useState} from 'react';
 import NavBar from '@/app-page-component/navbar/NavBar';
-import {useLocalStorage} from 'usehooks-ts';
 import dayjs from 'dayjs';
-import {ListCategoryTypeInLocalStorage} from '@/types/general/local-storage/ai-tool-category';
 import {useQuery} from 'react-query';
-import AiToolCategoryService from '@/services/ai-tools/ai-tool-category.service';
 import UseSessionAuthClient from '@/infra/hooks/useSessionAuthClient';
-import {LocalStorageKeysEnums} from '@/infra/enums/local-storage-enums';
-import {AiToolService} from '@/services/ai-tools/ai-tool.service';
+import {AiToolService} from '@/infra/web-services/services/ai-tools/ai-tool.service';
+import {LocalStorageService} from '@/infra/external-service/local-storage/local-storage.service';
+import {
+  AiToolCategoryMap,
+  AiToolPlatformMap,
+  AiToolPricingMap,
+  InfoAiToolOnLoad,
+} from '@/infra/types/ai-tool.type';
+import {GetAllAiToolsOnLoadedInfoResponse} from '@/infra/web-services/types/ai-tools/ai-tool';
+import {CategoryAiToolWithId} from '@/infra/web-services/types/ai-tools/category-ai-tools';
 
 interface LayoutState {
   enabledQuery: boolean;
@@ -22,44 +21,44 @@ interface LayoutState {
 
 function Layout({children}: {children: React.ReactNode}) {
   const {session, userSessionSelector} = UseSessionAuthClient(); // Rendering
-  const [listCategoryAiTools, setListCategoryAiTools] =
-    useLocalStorage<ListCategoryTypeInLocalStorage>(
-      LocalStorageKeysEnums.LIST_CATEGORY_AI_TOOLS,
-      {
-        lastUpdate: new Date(),
-        listCategory: {},
-      },
-    );
 
-  const listAiToolPricing = useMemo(() => {
-    return localStorage.getItem(LocalStorageKeysEnums.LIST_PRICING_AI_TOOLS);
-  }, []);
+  const infoAiToolOnLoad =
+    LocalStorageService.getInstance().getInfoAiToolOnLoadedData();
 
   const [state, setState] = useState<LayoutState>({
     enabledQuery: false,
   });
 
-  const getListCategoriesAiToolQuery = useQuery(
+  const getDataAiInfoOnLoaded = useQuery(
     ['getListCategoriesAiTools'],
     () => {
       //return fetchListCategories();
       return fetchListOnLoadedData(); // categories, prices
     },
     {
+      onSuccess: data => {
+        getDataInfoAiToolOnLoadedSuccess(data);
+      },
       keepPreviousData: true,
       enabled: state.enabledQuery,
     },
   );
 
-  // functions
-  const setCategoriesAiTool = () => {
+  /**
+   * Functions
+   */
+  const setDataAiToolsInfoOnLoad = useCallback(() => {
     const nowMinus24hours = dayjs().subtract(12, 'hour');
     const lastUpdateIsBefore24Hours = dayjs(
-      listCategoryAiTools?.lastUpdate,
+      infoAiToolOnLoad?.lastUpdate,
     ).isBefore(nowMinus24hours);
     if (
-      listCategoryAiTools === undefined ||
-      Object.keys(listCategoryAiTools?.listCategory).length === 0 ||
+      infoAiToolOnLoad?.aiToolCategories === undefined ||
+      infoAiToolOnLoad?.aiToolsPricing === null ||
+      infoAiToolOnLoad?.aiToolsPlatform === null ||
+      infoAiToolOnLoad.aiToolCategories.length === 0 ||
+      infoAiToolOnLoad.aiToolsPricing.length === 0 ||
+      infoAiToolOnLoad.aiToolsPlatform.length === 0 ||
       lastUpdateIsBefore24Hours
     ) {
       setState(prevState => ({
@@ -69,30 +68,60 @@ function Layout({children}: {children: React.ReactNode}) {
     } else {
       //updateAndSetAiToolCategories(listCategoryAiTools?.listCategory);
     }
-  };
+  }, [infoAiToolOnLoad?.aiToolCategories, infoAiToolOnLoad?.lastUpdate]);
 
   const fetchListOnLoadedData = async () => {
-    const getAllAiToolOnLoadedData =
-      await AiToolService.getInstance().getAllOnLoadedData();
+    return await AiToolService.getInstance().getAllOnLoadedData();
   };
 
-  // @deprecated
-  const fetchListCategories = async () => {
-    const getAllAiToolsCategories =
-      await AiToolCategoryService.getInstance().getAllV2();
+  const getDataInfoAiToolOnLoadedSuccess = (
+    data: GetAllAiToolsOnLoadedInfoResponse,
+  ) => {
+    const listCategory = data.aiToolsCategory;
+    const listPricing = data.aiToolsPricing;
+    const listPlatforms = data.aiToolsPlatform;
 
-    setListCategoryAiTools({
+    const dataAiToolLastUpdated: InfoAiToolOnLoad = {
       lastUpdate: new Date(),
-      listCategory: getAllAiToolsCategories.data,
-    });
-    //updateAndSetAiToolCategories(response.data);
+      aiToolCategories: listCategory,
+      aiToolsPricing: listPricing,
+      aiToolsPlatform: listPlatforms,
+    };
+
+    LocalStorageService.getInstance().setInfoAiToolOnLoadedData(
+      dataAiToolLastUpdated,
+    );
+    LocalStorageService.getInstance().setCategoriesAiToolMap(
+      listCategory.reduce((acc, category) => {
+        acc[category.type] = category;
+        return acc;
+      }, {} as AiToolCategoryMap),
+    );
+    LocalStorageService.getInstance().setPriceAiToolMap(
+      listPricing.reduce((acc, pricing) => {
+        acc[pricing.type] = pricing;
+        return acc;
+      }, {} as AiToolPricingMap),
+    );
+    LocalStorageService.getInstance().setPlatformAiToolMap(
+      listPlatforms.reduce((acc, platform) => {
+        acc[platform.type] = platform;
+        return acc;
+      }, {} as AiToolPlatformMap),
+    );
   };
 
+  /**
+   * Effects
+   */
   useEffect(() => {
-    setCategoriesAiTool();
-  }, []);
+    setDataAiToolsInfoOnLoad();
+  }, [setDataAiToolsInfoOnLoad]);
 
-  if (getListCategoriesAiToolQuery.isLoading) {
+  /**
+   * Rendering
+   */
+  if (getDataAiInfoOnLoaded.isLoading) {
     return (
       <div className={'flex justify-center items-center h-screen w-screen'}>
         <p className={'text-black'}>Loading...</p>
@@ -100,7 +129,7 @@ function Layout({children}: {children: React.ReactNode}) {
     );
   }
 
-  if (getListCategoriesAiToolQuery.isError) {
+  if (getDataAiInfoOnLoaded.isError) {
     return (
       <div className={'flex justify-center items-center h-screen w-screen'}>
         <p className={'text-black font-bold'}>

@@ -1,6 +1,9 @@
-import {GetAllBlogRequest, GetBlogsResponse} from '@/types/api/blogs/blog';
+import {
+  GetAllBlogRequest,
+  GetBlogsResponse,
+} from '@/infra/web-services/types/blogs/blog';
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import BlogService from '@/services/blogs/blog.service';
+import BlogService from '@/infra/web-services/services/blogs/blog.service';
 
 export const getAllBlogThunk = createAsyncThunk<
   GetBlogsResponse,

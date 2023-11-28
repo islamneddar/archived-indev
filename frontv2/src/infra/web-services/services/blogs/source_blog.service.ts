@@ -1,4 +1,4 @@
-import {ROOT_API_URL} from '@/services/config';
+import {ROOT_API_URL} from '@/infra/web-services/config';
 import axios from 'axios';
 import {
   FollowSourceBlogRequest,
@@ -7,7 +7,7 @@ import {
   GetAllSourceBlogResponse,
   GetAllTypeSourceBlogRequest,
   GetAllTypeSourceBlogResponse,
-} from '@/types/api/blogs/source_blog';
+} from '@/infra/web-services/types/blogs/source_blog';
 
 export default class SourceBlogService {
   private endpointSourceBlog = `${ROOT_API_URL}/source-blog`;

@@ -1,5 +1,5 @@
 import React from 'react';
-import {NavigationType} from '@/types/general/sidebar.type';
+import {NavigationType} from '@/infra/types/sidebar.type';
 import SideBarDesktop from '@/app-page-component/sidebar/desktop/SideBarDesktop';
 import SideBarMobile from '@/app-page-component/sidebar/mobile/SideBarMobile';
 

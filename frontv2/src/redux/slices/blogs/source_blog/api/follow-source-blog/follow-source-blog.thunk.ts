@@ -2,8 +2,8 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 import {
   FollowSourceBlogRequest,
   FollowSourceBlogResponse,
-} from '@/types/api/blogs/source_blog';
-import SourceBlogService from '@/services/blogs/source_blog.service';
+} from '@/infra/web-services/types/blogs/source_blog';
+import SourceBlogService from '@/infra/web-services/services/blogs/source_blog.service';
 import {templateThinkCall} from '@/redux/util';
 
 export const followSourceBlogThunk = createAsyncThunk<

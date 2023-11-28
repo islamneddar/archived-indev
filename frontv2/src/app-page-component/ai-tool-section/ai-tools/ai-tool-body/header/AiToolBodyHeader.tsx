@@ -1,12 +1,15 @@
+'use client';
 import React from 'react';
-import {getAiToolCategoryFromCategory} from '@/infra/data/ai-tool/ai-tool-category.data';
 import {AiToolCategoryEnum} from '@/infra/enums/ai-tool/ai-tool-category.enum';
+import {LocalStorageService} from '@/infra/external-service/local-storage/local-storage.service';
 
 interface AiToolBodyHeaderProps {
   category?: string;
   aiToolNumber?: number;
 }
 function AiToolBodyHeader(props: AiToolBodyHeaderProps) {
+  const aiToolCategoryMap =
+    LocalStorageService.getInstance().getCategoriesAiToolMap() || {};
   return (
     <div className={'flex w-full h-full justify-center items-center'}>
       <div
@@ -19,9 +22,7 @@ function AiToolBodyHeader(props: AiToolBodyHeaderProps) {
             {props.category === 'all'
               ? ''
               : `in ${
-                  getAiToolCategoryFromCategory(
-                    props.category as AiToolCategoryEnum,
-                  ).name
+                  aiToolCategoryMap[props.category as AiToolCategoryEnum]?.name
                 }`}
           </span>{' '}
           Updated daily

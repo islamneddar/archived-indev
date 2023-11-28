@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import {Tooltip as ReactTooltip} from 'react-tooltip';
-import {Blog} from '@/types/api/blogs/blog';
+import {Blog} from '@/infra/web-services/types/blogs/blog';
 import {timeSince} from '@/utils/time.util';
 
 export interface SourceAndTimeContainerProps {

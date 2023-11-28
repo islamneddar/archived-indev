@@ -1,44 +1,14 @@
 'use client';
 import React from 'react';
-import {LocalStorageKeysEnums} from '@/infra/enums/local-storage-enums';
-import {
-  CategoryType,
-  ListCategoryType,
-} from '@/types/api/ai-tools/category-ai-tools';
-import {StringUtils} from '@/utils/string';
-import useGetCategoryFromPathName from '@/infra/hooks/useGetCategoryFromPathName';
+import {CategoryType} from '@/infra/web-services/types/ai-tools/category-ai-tools';
+import useGetCategoryFromPathName from '@/infra/hooks/ai-tool-section/useGetCategoryFromPathName';
+import useGetListAiToolCategories from '@/infra/hooks/ai-tool-section/useGetListAiToolCategories';
 
 function AiToolBodyCategoryFilter() {
   const category = useGetCategoryFromPathName();
-  console.log('category', category);
-  const categoriesAiToolsString = localStorage.getItem(
-    LocalStorageKeysEnums.LIST_CATEGORY_AI_TOOLS,
-  );
 
-  const listCategoriesAiToolsTypes = JSON.parse(
-    categoriesAiToolsString as string,
-  ) as ListCategoryType;
+  const listCategoriesAiTools = useGetListAiToolCategories();
 
-  const listCategoriesAiTools = Array.from(
-    Object.values(listCategoriesAiToolsTypes.listCategory),
-  );
-
-  listCategoriesAiTools.sort((a, b) => {
-    const firstLetterInA =
-      StringUtils.getInstance().getFirstLetterAlphanumericInAString(a.name);
-    const firstLetterInB =
-      StringUtils.getInstance().getFirstLetterAlphanumericInAString(b.name);
-    if (firstLetterInA && firstLetterInB) {
-      return firstLetterInA.localeCompare(firstLetterInB);
-    } else return 0;
-  });
-
-  listCategoriesAiTools.unshift({
-    name: 'All',
-    type: 'all',
-  });
-
-  console.log('listCategoriesAiTools', listCategoriesAiTools);
   return (
     <div>
       <h2 className={'text-black text-sm'}>Categories </h2>

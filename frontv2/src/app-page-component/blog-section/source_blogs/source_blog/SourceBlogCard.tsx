@@ -3,7 +3,7 @@ import React, {useEffect} from 'react';
 import {
   FollowSourceBlogRequest,
   SourceBlog,
-} from '@/types/api/blogs/source_blog';
+} from '@/infra/web-services/types/blogs/source_blog';
 import {useUserSessionSelector} from '@/redux/slices/auth/user/user.selector';
 import {ThunkDispatch} from '@reduxjs/toolkit';
 import {useDispatch} from 'react-redux';

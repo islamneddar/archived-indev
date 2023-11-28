@@ -1,7 +1,7 @@
 import {
   PageMetaResponse,
   PaginationRequestMetaRequest,
-} from '@/types/api/common';
+} from '@/infra/web-services/types/common';
 
 export enum TypeFeed {
   COMMUNITY = 'community',

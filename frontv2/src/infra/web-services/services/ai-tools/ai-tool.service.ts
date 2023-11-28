@@ -1,8 +1,9 @@
-import {ROOT_API_URL} from '@/services/config';
+import {ROOT_API_URL} from '@/infra/web-services/config';
 import {
   GetAllAiToolRequest,
   GetAllAiToolResponse,
-} from '@/types/api/ai-tools/ai-tool';
+  GetAllAiToolsOnLoadedInfoResponse,
+} from '@/infra/web-services/types/ai-tools/ai-tool';
 import axios from 'axios';
 
 export class AiToolService {
@@ -42,5 +43,12 @@ export class AiToolService {
 
     const data = await response.data;
     return data as GetAllAiToolResponse;
+  }
+
+  public async getAllOnLoadedData() {
+    const response = await axios.get(`${this.endpoint}/info-on-loaded`);
+
+    const data = await response.data;
+    return data as GetAllAiToolsOnLoadedInfoResponse;
   }
 }

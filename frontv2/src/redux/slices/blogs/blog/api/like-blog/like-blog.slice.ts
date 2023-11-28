@@ -1,5 +1,5 @@
-import {LikeBlogResponse} from '@/types/api/blogs/blog';
-import {ReduxEntityBase} from '@/types/general/redux.type';
+import {LikeBlogResponse} from '@/infra/web-services/types/blogs/blog';
+import {ReduxEntityBase} from '@/infra/types/redux.type';
 import {createSlice} from '@reduxjs/toolkit';
 import {likeBlogThunk} from '@/redux/slices/blogs/blog/api/like-blog/like-blog.thunk';
 

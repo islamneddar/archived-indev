@@ -1,11 +1,11 @@
-import {ROOT_API_URL} from '@/services/config';
+import {ROOT_API_URL} from '@/infra/web-services/config';
 import axios from 'axios';
 import {
   LoginResponse,
   ResetPasswordRequest,
   ResetPasswordResponse,
   SignupRequest,
-} from '@/types/api/auth';
+} from '@/infra/web-services/types/auth';
 
 export default class AuthService {
   private endpointAuth = `${ROOT_API_URL}/auth`;

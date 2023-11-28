@@ -5,7 +5,7 @@ import {useGetAllSourceBlogTypesSelector} from '@/redux/slices/blogs/source_blog
 import {
   GetAllTypeSourceBlogRequest,
   SourceBlogTypeItemType,
-} from '@/types/api/blogs/source_blog';
+} from '@/infra/web-services/types/blogs/source_blog';
 import {useUserSessionSelector} from '@/redux/slices/auth/user/user.selector';
 import {getAllSourceBlogTypesThunk} from '@/redux/slices/blogs/source_blog/api/get-all-source-blog-types/get-all-source-blog-types.thunk';
 import toast from 'react-hot-toast';

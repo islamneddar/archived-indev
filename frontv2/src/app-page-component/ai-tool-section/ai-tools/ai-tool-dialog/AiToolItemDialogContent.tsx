@@ -1,16 +1,21 @@
+'use client';
 import React from 'react';
-import {AiTool} from '@/types/api/ai-tools/ai-tool';
+import {AiTool} from '@/infra/web-services/types/ai-tools/ai-tool';
 import PrimaryButton from '@/components/button/PrimaryButton';
-import {getAiToolCategoryFromCategory} from '@/infra/data/ai-tool/ai-tool-category.data';
-import {getAiPricingByType} from '@/infra/data/ai-tool/ai-tool-pricing';
 import {AiToolCategoryEnum} from '@/infra/enums/ai-tool/ai-tool-category.enum';
 import {PricingEnum} from '@/infra/enums/ai-tool/pricing-mode.enum';
+import {LocalStorageService} from '@/infra/external-service/local-storage/local-storage.service';
 
 interface AiToolItemDialogContentProps {
   aiTool: AiTool;
 }
 
 function AiToolItemDialogContent(props: AiToolItemDialogContentProps) {
+  const aiToolPricingMap =
+    LocalStorageService.getInstance().getPriceAiToolMap() || {};
+
+  const aiToolCategoryMap =
+    LocalStorageService.getInstance().getCategoriesAiToolMap() || {};
   const aiTool = props.aiTool;
   return (
     <div className={'flex px-5 py-3 w-full'}>
@@ -22,11 +27,7 @@ function AiToolItemDialogContent(props: AiToolItemDialogContentProps) {
               className={
                 'p-1 px-3 bg-amber-500 rounded-xl font-semibold text-sm'
               }>
-              {
-                getAiToolCategoryFromCategory(
-                  aiTool.category as AiToolCategoryEnum,
-                ).name
-              }
+              {aiToolCategoryMap[aiTool.category as AiToolCategoryEnum].name}
             </p>
           </div>
           <div className={'flex items-center justify-center pl-5'}>
@@ -34,7 +35,7 @@ function AiToolItemDialogContent(props: AiToolItemDialogContentProps) {
               className={
                 'p-1 px-3 bg-amber-500 rounded-xl font-semibold text-sm'
               }>
-              {getAiPricingByType(aiTool.pricing as PricingEnum).name}
+              {aiToolPricingMap[aiTool.pricing as PricingEnum].name}
             </p>
           </div>
         </div>

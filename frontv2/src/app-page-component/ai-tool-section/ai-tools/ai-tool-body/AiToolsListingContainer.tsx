@@ -1,6 +1,6 @@
 import React from 'react';
 import AiToolList from '@/app-page-component/ai-tool-section/ai-tools/ai-tool-body/listing/AiToolList';
-import {AiTool} from '@/types/api/ai-tools/ai-tool';
+import {AiTool} from '@/infra/web-services/types/ai-tools/ai-tool';
 import AiToolBodyFilter from '@/app-page-component/ai-tool-section/ai-tools/ai-tool-body/ai-tool-body-filter/AiToolBodyFilter';
 
 interface AiToolsListingContainerProps {

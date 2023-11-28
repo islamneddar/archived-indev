@@ -1,6 +1,6 @@
-import {ROOT_API_URL} from '../config';
+import {ROOT_API_URL} from '../../config';
 import axios from 'axios';
-import {GetAllCategoriesAiToolResponse} from '@/types/api/ai-tools/category-ai-tools';
+import {GetAllCategoriesAiToolResponse} from '@/infra/web-services/types/ai-tools/category-ai-tools';
 
 export default class AiToolCategoryService {
   private endpointCategoriesAiTool = `${ROOT_API_URL}/ai-tool-category`;

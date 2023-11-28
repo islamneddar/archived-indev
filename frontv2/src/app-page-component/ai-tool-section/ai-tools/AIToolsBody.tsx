@@ -1,26 +1,21 @@
 'use client';
 import React, {useState} from 'react';
-import {AiTool, GetAllAiToolRequest} from '@/types/api/ai-tools/ai-tool';
+import {AiTool} from '@/infra/web-services/types/ai-tools/ai-tool';
 import {
   PageMetaResponse,
   PaginationRequestMetaRequest,
-} from '@/types/api/common';
-import AiToolCard from '@/app-page-component/ai-tool-section/ai-tools/ai-tool-body/listing/AiToolCard';
+} from '@/infra/web-services/types/common';
 import {ProgressSpinner} from 'primereact/progressspinner';
-import PrimaryButton from '@/components/button/PrimaryButton';
 
 import './ai-tools-body.css';
 import AiToolItemDialog from '@/app-page-component/ai-tool-section/ai-tools/ai-tool-dialog/AiToolItemDialog';
-import {getAiToolCategoryFromCategory} from '@/infra/data/ai-tool/ai-tool-category.data';
 import {AiToolCategoryEnum} from '@/infra/enums/ai-tool/ai-tool-category.enum';
-import {Dropdown, DropdownChangeEvent} from 'primereact/dropdown';
-import {getListAiPricingMode} from '@/infra/data/ai-tool/ai-tool-pricing';
+import {DropdownChangeEvent} from 'primereact/dropdown';
 import {PricingEnum} from '@/infra/enums/ai-tool/pricing-mode.enum';
 import {useQuery} from 'react-query';
-import {AiToolService} from '@/services/ai-tools/ai-tool.service';
+import {AiToolService} from '@/infra/web-services/services/ai-tools/ai-tool.service';
 import AiToolsHeaderFilters from '@/app-page-component/ai-tool-section/ai-tools/ai-tool-body/header-filter/AiToolsHeaderFilters';
 import AiToolBodyHeader from '@/app-page-component/ai-tool-section/ai-tools/ai-tool-body/header/AiToolBodyHeader';
-import AiToolList from '@/app-page-component/ai-tool-section/ai-tools/ai-tool-body/listing/AiToolList';
 import AiToolsListingContainer from '@/app-page-component/ai-tool-section/ai-tools/ai-tool-body/AiToolsListingContainer';
 
 interface AiToolsBodyProps {
@@ -41,9 +36,11 @@ interface AiToolsBodyState {
 function AiToolsBody(props: AiToolsBodyProps) {
   // data
   const category = props.category || 'all';
-  const aiPricingModes = getListAiPricingMode();
+  //const aiPricingModes = getListAiPricingMode();
 
-  // state
+  /**
+   * State
+   */
   const [state, setState] = useState<AiToolsBodyState>({
     aiTools: [],
     restart: true,
@@ -62,7 +59,9 @@ function AiToolsBody(props: AiToolsBodyProps) {
     searchText: '',
   });
 
-  // queries
+  /**
+   * Query
+   */
   const getListToolsResults = useQuery(
     ['getListQuery', state.page],
     () => {
@@ -74,7 +73,9 @@ function AiToolsBody(props: AiToolsBodyProps) {
     },
   );
 
-  // functions
+  /**
+   * Functions
+   */
   async function fetchAiTools(restart: boolean) {
     const paginationRequest: PaginationRequestMetaRequest = {
       page: state.page,
@@ -140,7 +141,10 @@ function AiToolsBody(props: AiToolsBodyProps) {
     }
   };
 
-  // rendering
+  /**
+   * Rendering
+   */
+
   if (getListToolsResults.isLoading && state.page === 1) {
     return (
       <div className={'flex h-full items-center'}>
@@ -159,7 +163,7 @@ function AiToolsBody(props: AiToolsBodyProps) {
 
       <div className={'px-20'}>
         <AiToolsHeaderFilters
-          aiPricingModes={aiPricingModes}
+          //aiPricingModes={aiPricingModes}
           selectedAiToolPricing={state.selectedAiToolPricing}
           placeholder={'Search for AI tools'}
           onChange={(e: DropdownChangeEvent) => {

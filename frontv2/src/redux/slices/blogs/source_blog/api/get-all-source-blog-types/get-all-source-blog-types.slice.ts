@@ -1,6 +1,6 @@
-import {ReduxEntityBase} from '@/types/general/redux.type';
+import {ReduxEntityBase} from '@/infra/types/redux.type';
 import {createSlice} from '@reduxjs/toolkit';
-import {GetAllTypeSourceBlogResponse} from '@/types/api/blogs/source_blog';
+import {GetAllTypeSourceBlogResponse} from '@/infra/web-services/types/blogs/source_blog';
 import {getAllSourceBlogTypesThunk} from '@/redux/slices/blogs/source_blog/api/get-all-source-blog-types/get-all-source-blog-types.thunk';
 
 export type getAllSourceBlogTypesState =

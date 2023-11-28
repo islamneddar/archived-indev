@@ -1,14 +1,13 @@
 'use client';
 import React from 'react';
-import {AiTool} from '@/types/api/ai-tools/ai-tool';
+import {AiTool} from '@/infra/web-services/types/ai-tools/ai-tool';
 import {ArrowTopRightOnSquareIcon} from '@heroicons/react/24/solid';
 import {Tag} from 'primereact/tag';
 import {useDispatch} from 'react-redux';
 import {setAiTool} from '@/redux/slices/ai-tools/ai-tool/ai-tool-state/ai-tool-state.slice';
-import {getAiPricingByType} from '@/infra/data/ai-tool/ai-tool-pricing';
-import {getAiToolCategoryFromCategory} from '@/infra/data/ai-tool/ai-tool-category.data';
 import {PricingEnum} from '@/infra/enums/ai-tool/pricing-mode.enum';
 import {AiToolCategoryEnum} from '@/infra/enums/ai-tool/ai-tool-category.enum';
+import {LocalStorageService} from '@/infra/external-service/local-storage/local-storage.service';
 
 interface AiToolCardProps {
   aiTool: AiTool;
@@ -16,6 +15,11 @@ interface AiToolCardProps {
 function AiToolCard(props: AiToolCardProps) {
   const dispatch = useDispatch();
   const aiTool = props.aiTool;
+  const aiToolPricingMap =
+    LocalStorageService.getInstance().getPriceAiToolMap() || {};
+
+  const aiToolCategoryMap =
+    LocalStorageService.getInstance().getCategoriesAiToolMap() || {};
   return (
     <div className={'flex w-full items-center justify-center'}>
       <div
@@ -38,16 +42,18 @@ function AiToolCard(props: AiToolCardProps) {
               <p className={'font-medium text-lg line-clamp-1'}>
                 {aiTool.name}
               </p>
-              <div className={'flex items-end'}>
-                <Tag
-                  style={
-                    {
-                      //backgroundColor: '#374151',
-                    }
-                  }>
-                  {getAiPricingByType(aiTool.pricing as PricingEnum).name}
-                </Tag>
-              </div>
+              {aiToolPricingMap[aiTool.pricing as PricingEnum] && (
+                <div className={'flex items-end'}>
+                  <Tag
+                    style={
+                      {
+                        //backgroundColor: '#374151',
+                      }
+                    }>
+                    {aiToolPricingMap[aiTool.pricing as PricingEnum].name}
+                  </Tag>
+                </div>
+              )}
             </div>
             <div className={'flex flex-1'}>
               <p className={'line-clamp-2 text-sm h-40'}>
@@ -64,9 +70,8 @@ function AiToolCard(props: AiToolCardProps) {
                     'text-tn font-light border p-1 rounded-lg border-indigo-500'
                   }>
                   {
-                    getAiToolCategoryFromCategory(
-                      aiTool.category as AiToolCategoryEnum,
-                    ).name
+                    aiToolCategoryMap[aiTool.category as AiToolCategoryEnum]
+                      .name
                   }
                 </p>
               </Tag>

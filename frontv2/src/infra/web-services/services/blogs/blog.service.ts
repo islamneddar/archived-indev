@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {TypeFeed} from '@/types/api/blogs/source_blog';
+import {TypeFeed} from '@/infra/web-services/types/blogs/source_blog';
 import {
   BookmarkBlogRequest,
   BookmarkBlogResponse,
@@ -11,9 +11,9 @@ import {
   GetBookmarksResponse,
   LikeBlogRequest,
   LikeBlogResponse,
-} from '@/types/api/blogs/blog';
-import {PaginationRequestMetaRequest} from '@/types/api/common';
-import {ROOT_API_URL} from '@/services/config';
+} from '@/infra/web-services/types/blogs/blog';
+import {PaginationRequestMetaRequest} from '@/infra/web-services/types/common';
+import {ROOT_API_URL} from '@/infra/web-services/config';
 
 export default class BlogService {
   private endpointBlog = `${ROOT_API_URL}/blogs`;

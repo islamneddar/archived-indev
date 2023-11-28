@@ -2,9 +2,9 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 import {
   GetBlogsBySearchRequest,
   GetBlogsResponse,
-} from '@/types/api/blogs/blog';
+} from '@/infra/web-services/types/blogs/blog';
 import {templateThinkCall} from '@/redux/util';
-import BlogService from '@/services/blogs/blog.service';
+import BlogService from '@/infra/web-services/services/blogs/blog.service';
 
 export const getAllBlogBySearchThunk = createAsyncThunk<
   GetBlogsResponse,

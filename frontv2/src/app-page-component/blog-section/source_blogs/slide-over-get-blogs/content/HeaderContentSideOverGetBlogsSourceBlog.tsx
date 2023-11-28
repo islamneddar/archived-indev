@@ -4,7 +4,7 @@ import {formatCompactNumber} from '@/utils/general';
 import {
   FollowSourceBlogRequest,
   SourceBlog,
-} from '@/types/api/blogs/source_blog';
+} from '@/infra/web-services/types/blogs/source_blog';
 import {followSourceBlogThunk} from '@/redux/slices/blogs/source_blog/api/follow-source-blog/follow-source-blog.thunk';
 import {useUserSessionSelector} from '@/redux/slices/auth/user/user.selector';
 import {useDispatch} from 'react-redux';

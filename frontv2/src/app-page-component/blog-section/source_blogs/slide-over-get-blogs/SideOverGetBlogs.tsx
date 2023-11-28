@@ -8,7 +8,7 @@ import {usePathname, useRouter, useSearchParams} from 'next/navigation';
 import {useSystemSelector} from '@/redux/slices/system/system.selector';
 import {toggleSideOverForGetBlogsBySourceBlog} from '@/redux/slices/system/system.slice';
 import {useDispatch} from 'react-redux';
-import {SourceBlog} from '@/types/api/blogs/source_blog';
+import {SourceBlog} from '@/infra/web-services/types/blogs/source_blog';
 import {useSourceBlogStateSelector} from '@/redux/slices/blogs/source_blog/source-blog-state/source-blog-state.selector';
 import {setSourceBlog} from '@/redux/slices/blogs/source_blog/source-blog-state/source-blog-state.slice';
 function SideOverGetBlogs() {

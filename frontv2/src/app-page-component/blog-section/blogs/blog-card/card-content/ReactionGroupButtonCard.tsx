@@ -5,7 +5,7 @@ import {
   Blog,
   BookmarkBlogRequest,
   LikeBlogRequest,
-} from '@/types/api/blogs/blog';
+} from '@/infra/web-services/types/blogs/blog';
 import {useLikeBlogSelector} from '@/redux/slices/blogs/blog/api/like-blog/like-blog.selector';
 import {useUserSessionSelector} from '@/redux/slices/auth/user/user.selector';
 import {ThunkDispatch} from '@reduxjs/toolkit';

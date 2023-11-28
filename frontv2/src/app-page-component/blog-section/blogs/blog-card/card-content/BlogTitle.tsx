@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import {Blog} from '@/types/api/blogs/blog';
+import {Blog} from '@/infra/web-services/types/blogs/blog';
 
 interface IBlogTitleProps {
   blog: Blog;

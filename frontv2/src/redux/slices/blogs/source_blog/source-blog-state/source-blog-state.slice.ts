@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {SourceBlog} from '@/types/api/blogs/source_blog';
+import {SourceBlog} from '@/infra/web-services/types/blogs/source_blog';
 
 export interface SourceBlogStateSlice {
   currentSelectedSourceBlog: SourceBlog | null; // the side bar for mobile
