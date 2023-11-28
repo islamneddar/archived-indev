@@ -13,7 +13,6 @@ import {
   InfoAiToolOnLoad,
 } from '@/infra/types/ai-tool.type';
 import {GetAllAiToolsOnLoadedInfoResponse} from '@/infra/web-services/types/ai-tools/ai-tool';
-import {CategoryAiToolWithId} from '@/infra/web-services/types/ai-tools/category-ai-tools';
 
 interface LayoutState {
   enabledQuery: boolean;

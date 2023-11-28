@@ -219,7 +219,6 @@ export class AiToolService {
   }
 
   async softDelete(aiToolId: number) {
-    console.log(aiToolId);
     await this.aiToolRepository.update(
       {
         aiToolId,

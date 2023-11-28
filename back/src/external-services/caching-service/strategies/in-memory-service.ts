@@ -6,12 +6,10 @@ export class InMemoryService<T> implements CachingServiceInterface<T> {
   private dataStore: Map<string, T> = new Map();
 
   create(key: string, value: T) {
-    console.log('InMemoryService.create');
     this.dataStore.set(key, value);
   }
 
   read(key: string) {
-    console.log('InMemoryService.read => ', key);
     return this.dataStore.get(key);
   }
 
