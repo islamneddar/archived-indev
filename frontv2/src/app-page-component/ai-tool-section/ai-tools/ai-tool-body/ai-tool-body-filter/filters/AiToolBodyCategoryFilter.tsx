@@ -19,8 +19,17 @@ function AiToolBodyCategoryFilter() {
               key={index}
               className={`${
                 categoryItem.type === category ? 'bg-indigo-200' : ''
-              } text-black p-2 cursor-pointer text-sm`}>
-              {categoryItem.name}
+              } text-black p-2 cursor-pointer text-sm`}
+              onClick={() => {
+                // @ts-ignore
+                window.location.href = `/ai_tool/${categoryItem.type}`;
+              }}>
+              {categoryItem.name}{' '}
+              {`${
+                categoryItem.name === 'All'
+                  ? ''
+                  : '(+' + categoryItem.numberOfTool + ')'
+              }`}{' '}
             </div>
           );
         })}
